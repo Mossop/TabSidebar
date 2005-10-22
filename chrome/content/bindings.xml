@@ -144,6 +144,19 @@
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
 
+      <method name="_resize">
+        <body>
+        <![CDATA[
+        	var previews = this.previews;
+        	for (var i=0; i<previews.length; i++)
+        	{
+        		previews[i]._resize();
+        	}
+        	this.redraw();
+        ]]>
+        </body>
+      </method>
+
       <!-- Helper properties -->
 
       <field name="preferences">
@@ -161,6 +174,63 @@
       <!-- Attribute based properties -->
       <!-- Configuration options -->
 
+      <field name="_customSize">false</field>
+      <property name="customSize">
+        <getter>
+          return this._customSize;
+        </getter>
+        <setter>
+          if (this._customSize==val)
+          {
+            return val;
+          }
+          this._customSize=val;
+          if (!val)
+          {
+            onResize();
+          }
+          redraw();
+        </setter>
+      </property>
+      
+      <field name="_width">0</field>
+      <property name="previewWidth">
+        <getter>
+          return this._width;
+        </getter>
+        <setter>
+        <![CDATA[
+          if (val==this._width && this._customWidth)
+          {
+            return val;
+          }
+          this._width=val;
+          this.customSize=true;
+          this._resize();
+          return val;
+        ]]>
+        </setter>
+      </property>
+      
+      <field name="_height">0</field>
+      <property name="previewHeight">
+        <getter>
+          return this._height;
+        </getter>
+        <setter>
+        <![CDATA[
+          if (val==this._height && this._customSize)
+          {
+            return val;
+          }
+          this._height=val;
+          this.customSize=true;
+          this._resize();
+          return val;
+        ]]>
+        </setter>
+      </property>
+      
       <field name="_refreshRate">120000</field>
       <property name="refreshRate">
         <getter>
@@ -266,7 +336,9 @@
         	{
         		this.appendChild(preview);
         	}
+        	preview.init();
         	preview.browser=browser;
+        	this.onResize();
         ]]>
         </body>
       </method>
@@ -277,6 +349,7 @@
         	var preview = this.getPreviewForBrowser(browser);
         	preview.browser=null;
         	preview.parentNode.removeChild(preview);
+        	this.onResize();
         </body>
       </method>
       
@@ -338,6 +411,48 @@
         </body>
       </method>
 
+      <method name="onResize">
+        <body>
+        <![CDATA[
+          if (this.customSize)
+          {
+            return false;
+          }
+          var newWidth=0;
+          var newHeight=0;
+          var previews = this.previews;
+          
+          for (var i=0; i<previews.length; i++)
+          {
+            if (previews[i]._browser)
+            {
+              var preview = previews[i];
+              var computed = window.getComputedStyle(preview,null);
+              newWidth = parseInt(computed.width);
+              if (newWidth<0)
+              {
+                newWidth=0;
+              }
+              var bwidth = preview._browser.contentWindow.innerWidth;
+              var bheight = preview._browser.contentWindow.innerHeight;
+              newHeight = parseInt((bheight/bwidth)*newWidth);
+
+              break;
+            }
+          }
+          
+          if (this._width!=newWidth || this._height!=newHeight)
+          {
+            this._width=newWidth;
+            this._height=newHeight;
+          	this._resize();
+          	return true;
+          }
+          return false;
+        ]]>
+        </body>
+      </method>
+      
       <!--  Start of nsITimerCallback implementation -->
 
       <method name="notify">
@@ -372,30 +487,61 @@
             case "loaddelay":
               this.loadDelay=this.preferences.getIntPref(data);
               break;
+            case "previewWidth":
+              if (this.preferences.prefHasUserValue(data))
+              {
+                this.previewWidth=this.preferences.getIntPref(data);
+              }
+              else
+              {
+                this.customSize=false;
+              }
+              break;
+            case "previewHeight":
+              if (this.preferences.prefHasUserValue(data))
+              {
+                this.previewHeight=this.preferences.getIntPref(data);
+              }
+              else
+              {
+                this.customSize=false;
+              }
+              break;
           }
         ]]>
         </body>
       </method>
-      
     </implementation>
     
+    <handlers>
+      
+      <handler event="dblclick">
+      <![CDATA[
+        if (event.originalTarget==this && event.button==0)
+        {
+          var newTab = this.tabbrowser.addTab("about:blank");
+          this.tabbrowser.selectedTab=newTab;
+        }
+      ]]>
+      </handler>
+
+    </handlers>
+
   </binding>
   
   <binding id="tabpreview" name="tabpreview">
 
     <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
-      <xul:vbox anonid="box" align="stretch" tooltip="previewtooltip">
-        <xul:hbox align="center">
-          <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
-          <xul:image anonid="loading"/>
-          <xul:toolbarbutton anonid="security"/>
-          <xul:spacer flex="1"/>
-          <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
-        </xul:hbox>
-        <xhtml:canvas anonid="canvas"/>
-        <xul:label anonid="title" crop="end"/>
-        <xul:label anonid="uri" crop="end"/>
-      </xul:vbox>
+      <xul:hbox align="center">
+        <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+        <xul:image anonid="loading"/>
+        <xul:toolbarbutton anonid="security"/>
+        <xul:spacer flex="1"/>
+        <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
+      </xul:hbox>
+      <xhtml:canvas anonid="canvas"/>
+      <xul:label anonid="title" crop="end"/>
+      <xul:label anonid="uri" crop="end"/>
     </content>
 
     <implementation implements="nsIWebProgressListener,nsITimerCallback">
@@ -409,6 +555,12 @@
           this._removeListeners();
         }
       </destructor>
+      
+      <method name="init">
+        <body>
+          this._resize();
+        </body>
+      </method>
       
       <!-- Event handling gubbins -->
       
@@ -494,20 +646,6 @@
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
       
-      <field name="_width"/>
-      <property name="previewWidth">
-        <getter>
-          return this._width;
-        </getter>
-      </property>
-      
-      <field name="_height"/>
-      <property name="previewHeight">
-        <getter>
-          return this._height;
-        </getter>
-      </property>
-
       <field name="_browser"></field>
       <property name="browser">
         <getter>
@@ -537,27 +675,11 @@
         <body>
         <![CDATA[
           var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
-          if (this._browser)
-          {
-            var computed = window.getComputedStyle(canvas.parentNode,null);
-            this._width = parseInt(computed.width);
-            if (this._width<0)
-            {
-              this._width=0;
-            }
-            var bwidth = this._browser.contentWindow.innerWidth;
-            var bheight = this._browser.contentWindow.innerHeight;
-            this._height = parseInt((bheight/bwidth)*this._width);
-          }
-          else
-          {
-            this._width=0;
-            this._height=0;
-          }
-          canvas.style.width=this._width+"px";
-          canvas.style.height=this._height+"px";
-          canvas.setAttribute("width",this._width);
-          canvas.setAttribute("height",this._height);
+          canvas.hidden=this.previews.previewHeight>0;
+          //canvas.setAttribute("width",this.previews.previewWidth);
+          canvas.setAttribute("height",this.previews.previewHeight);
+          //canvas.style.width=this.previews.previewWidth+"px";
+          //canvas.style.height=this.previews.previewHeight+"px";
         ]]>
         </body>
       </method>
@@ -736,17 +858,24 @@
       
       <method name="redraw">
         <body>
-          this._resize();
-          if (!this._browser || this._loading)
+          if (!this._browser || this._loading || this.previews.previewWidth==0)
           {
             return;
           }
           var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
-          var ctx = canvas.getContext("2d");
+          try
+          {
+            var ctx = canvas.getContext("2d");
+          }
+          catch (e)
+          {
+            canvas.hidden=true;
+            return;
+          }
           var win = this._browser.contentWindow;
-          ctx.clearRect(0, 0, this._width, this._height);
+          ctx.clearRect(0, 0, this.previews.previewWidth, this.previews.previewHeight);
           ctx.save();
-          ctx.scale(this._width/win.innerWidth,this._height/win.innerHeight);
+          ctx.scale(this.previews.previewWidth/win.innerWidth,this.previews.previewHeight/win.innerHeight);
           try
           {
             var top = 0;

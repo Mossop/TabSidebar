@@ -1,27 +1,25 @@
 tabpreviews {
   padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
   
 tabpreview {
-  margin-left: 10px;
-  margin-right: 10px;
   margin-bottom: 10px;
-}
-
-tabpreview[selected="true"] vbox[anonid="box"] {
-  background-color: #c1d2ee !important;
-}
-
-tabpreview vbox[anonid="box"]:hover {
-  background-color: #e0e8f6;
-}
-
-tabpreview vbox[anonid="box"] {
   padding: 5px;
   background-color: #ffffff;
   border: 1px #c1d2ee solid;
+  -moz-border-radius: 8px;
 }
 
+tabpreview[selected="true"] {
+  background-color: #c1d2ee !important;
+}
+
+tabpreview:hover {
+  background-color: #e0e8f6;
+}
+  
 tabpreview canvas {
   background-color: #ffffff;
   border: 1px #c1d2ee solid;

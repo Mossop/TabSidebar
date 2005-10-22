@@ -21,9 +21,8 @@ tabpreview[loading="false"] image[anonid="loading"] {
   display: none;
 }
 
-tabpreview vbox[anonid="box"] {
+tabpreview {
   -moz-box-align: center;
-  -moz-border-radius: 8px;
 }
 
 tabpreview[security="none"] toolbarbutton[anonid="security"] {
