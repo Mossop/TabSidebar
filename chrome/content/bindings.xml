@@ -55,7 +55,7 @@
     <content>
     </content>
     
-    <implementation implements="nsITimerCallback">
+    <implementation implements="nsITimerCallback,nsIObserver">
     
       <constructor>
       <![CDATA[
@@ -76,6 +76,12 @@
       	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
 
         this._refreshTimer.initWithCallback(this, this.refreshRate, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+        
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                              .getService(Components.interfaces.nsIPrefBranchInternal);
+        prefs.addObserver("tabsidebar.", this, false);
+        this.observe(prefs,"","tabsidebar.refreshrate");
+        this.observe(prefs,"","tabsidebar.drawscrolled");
       ]]>
       </constructor>
       
@@ -85,6 +91,10 @@
       	container.removeEventListener("select", this._eventListener, false);
       	container.removeEventListener("DOMNodeInserted", this._eventListener, false);
       	container.removeEventListener("DOMNodeRemoved", this._eventListener, false);
+
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                              .getService(Components.interfaces.nsIPrefBranchInternal);
+        prefs.removeObserver("tabsidebar.", this);
       </destructor>
       
       <!-- Event handling gubbins -->
@@ -136,6 +146,10 @@
 
       <!-- Helper properties -->
 
+      <field name="preferences">
+        Components.classes["@mozilla.org/preferences-service;1"]
+            .getService(Components.interfaces.nsIPrefService)
+            .getBranch("tabsidebar.");</field>
       <field name="tabbrowser">window.parent.document.getElementById("content")</field>
       
       <property name="previews">
@@ -147,22 +161,52 @@
       <!-- Attribute based properties -->
       <!-- Configuration options -->
 
-      <field name="_refreshRate">60000</field>
+      <field name="_refreshRate">120000</field>
       <property name="refreshRate">
         <getter>
           return this._refreshRate;
         </getter>
         <setter>
+          if (this._refreshRate==val)
+          {
+            return val;
+          }
           this._refreshTimer.cancel();
           this._refreshRate=val;
           this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+          return val;
         </setter>
       </property>
       
+      <field name="_loadDelay">500</field>
+      <property name="loadDelay">
+        <getter>
+          return this._loadDelay;
+        </getter>
+        <setter>
+          if (this._loadDelay==val)
+          {
+            return val;
+          }
+          this._loadDelay=val;
+          return val;
+        </setter>
+      </property>
+      
+      <field name="_drawScrolled">true</field>
       <property name="drawScrolled">
         <getter>
-          return true;
+          return this._drawScrolled;
         </getter>
+        <setter>
+          if (val==this._drawScrolled)
+          {
+            return val;
+          }
+          this._drawScrolled=val;
+          this.redraw();
+          return val;
+        </setter>
       </property>
       
       <!-- Methods -->
@@ -307,7 +351,32 @@
         ]]>
         </body>
       </method>
+      
+      <!-- Start of nsIObserver implementation -->
 
+      <method name="observe">
+        <parameter name="subject"/>
+        <parameter name="topic"/>
+        <parameter name="data"/>
+        <body>
+        <![CDATA[
+          data=data.substring(11);
+          switch (data)
+          {
+            case "refreshrate":
+              this.refreshRate=this.preferences.getIntPref(data);
+              break;
+            case "drawscrolled":
+              this.drawScrolled=this.preferences.getBoolPref(data);
+              break;
+            case "loaddelay":
+              this.loadDelay=this.preferences.getIntPref(data);
+              break;
+          }
+        ]]>
+        </body>
+      </method>
+      
     </implementation>
     
   </binding>
@@ -460,6 +529,7 @@
           }
           this.update();
           this.redraw();
+          return val;
         </setter>
       </property>
 
@@ -501,7 +571,7 @@
       
       <method name="_loadComplete">
         <body>
-          this._redrawTimer.initWithCallback(this, 500, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._redrawTimer.initWithCallback(this, this.loadDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -565,6 +635,7 @@
           {
             this.setAttribute("loading","true");
           }
+          return val;
         ]]>
         </setter>
       </property>
@@ -585,6 +656,7 @@
           {
             this.setAttribute("selected","true");
           }
+          return val;
         ]]>
         </setter>
       </property>
@@ -600,6 +672,12 @@
       <property name="drawScrolled">
         <getter>
           return this.previews.drawScrolled;
+        </getter>
+      </property>
+      
+      <property name="loadDelay">
+        <getter>
+          return this.previews.loadDelay;
         </getter>
       </property>
       
