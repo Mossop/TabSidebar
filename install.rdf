@@ -17,10 +17,9 @@
     </em:targetApplication>
     
     <!-- Front End MetaData -->
-    <em:name>Nightly Tester Tools</em:name>
-    <em:description>Useful tools for the nightly tester (Formerly known as the Build ID Copier).</em:description>
+    <em:name>Tab Sidebar</em:name>
+    <em:description>Displays previews of your tabs in your sidebar.</em:description>
     <em:creator>Mossop</em:creator>
-    <em:iconURL>chrome://tabsidebar/skin/icon.png</em:iconURL>
     <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/tabsidebar/tabsidebar.html</em:homepageURL>
     <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/update.rdf?guid=%ITEM_ID%&amp;version=%ITEM_VERSION%&amp;app=%APP_ID%&amp;appver=%APP_VERSION%</em:updateURL>
 

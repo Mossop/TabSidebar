@@ -52,7 +52,7 @@
     <content>
     </content>
     
-    <implementation>
+    <implementation implements="nsITimerCallback">
     
       <constructor>
       <![CDATA[
@@ -71,6 +71,8 @@
       	container.addEventListener("select", this._eventListener, false);
       	container.addEventListener("DOMNodeInserted", this._eventListener, false);
       	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
+
+        this._refreshTimer.initWithCallback(this, this.refreshRate, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
       ]]>
       </constructor>
       
@@ -85,6 +87,27 @@
       <field name="tabbrowser">window.parent.document.getElementById("content")</field>
       <field name="_selected"/>
       <field name="_eventListener"/>
+      <field name="_refreshTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      
+      <field name="_refreshRate">60000</field>
+      <property name="refreshRate">
+        <getter>
+          return this._refreshRate;
+        </getter>
+        <setter>
+          this._refreshTimer.cancel();
+          this._refreshRate=val;
+          this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+        </setter>
+      </property>
+      
+      <property name="drawScrolled">
+        <getter>
+          return true;
+        </getter>
+      </property>
       
       <property name="previews">
         <getter>
@@ -254,6 +277,20 @@
         </body>
       </method>
 
+      <!--  Start of nsITimerCallback implementation -->
+
+      <method name="notify">
+        <parameter name="timer"/>
+        <body>
+        <![CDATA[
+          if (timer==this._refreshTimer)
+          {
+            this.redraw();
+          }
+        ]]>
+        </body>
+      </method>
+
     </implementation>
     
   </binding>
@@ -286,6 +323,7 @@
         }
       </destructor>
 
+      <field name="_loading">false</field>
       <field name="_eventListener"/>
       
       <method name="_addListeners">
@@ -365,7 +403,17 @@
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
       
-      <field name="refreshRate">60000</field>
+      <property name="refreshRate">
+        <getter>
+          return this.previews.refreshRate;
+        </getter>
+      </property>
+      
+      <property name="drawScrolled">
+        <getter>
+          return this.previews.drawScrolled;
+        </getter>
+      </property>
       
       <field name="_width"/>
       <property name="previewWidth">
@@ -479,7 +527,7 @@
       <method name="redraw">
         <body>
           this._resize();
-          if (!this._browser)
+          if (!this._browser || this._loading)
           {
             return;
           }
@@ -491,7 +539,20 @@
           ctx.scale(this._width/win.innerWidth,this._height/win.innerHeight);
           try
           {
-            ctx.drawWindow(win,0,0,win.innerWidth,win.innerHeight,"rgba(255,255,255,255)");
+            var top = 0;
+            var left = 0;
+            var height = win.innerHeight;
+            var width = win.innerWidth;
+            if (this.drawScrolled)
+            {
+              top=win.scrollY;
+              left=win.scrollX;
+            }
+            else
+            {
+              height=Math.max(height,win.scrollY+1);
+            }
+            ctx.drawWindow(win,left,top,width,height,"rgba(255,255,255,255)");
           }
           catch (e)
           {
@@ -503,6 +564,7 @@
       
       <method name="loadStarted">
         <body>
+          this._loading=true;
           this._redrawTimer.cancel();
           var throbber = document.getAnonymousElementByAttribute(this,"anonid","loading");
           throbber.hidden=false;
@@ -626,13 +688,9 @@
         <![CDATA[
           if (timer==this._redrawTimer)
           {
+            this._loading=false;
             this.update();
             this.redraw();
-            if (this.refreshRate>0)
-            {
-              this._redrawTimer.initWithCallback(this, this.refreshRate,
-                                                Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-            }
           }
         ]]>
         </body>
