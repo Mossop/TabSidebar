@@ -42,6 +42,8 @@
    - $Revision$
    -->
 
+<!DOCTYPE bindings SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+
 <bindings id="TabSidebarBindings"
           xmlns="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -49,6 +51,7 @@
           xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <binding id="tabpreviews" name="tabpreviews">
+
     <content>
     </content>
     
@@ -84,37 +87,10 @@
       	container.removeEventListener("DOMNodeRemoved", this._eventListener, false);
       </destructor>
       
-      <field name="tabbrowser">window.parent.document.getElementById("content")</field>
-      <field name="_selected"/>
+      <!-- Event handling gubbins -->
+
       <field name="_eventListener"/>
-      <field name="_refreshTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-      
-      <field name="_refreshRate">60000</field>
-      <property name="refreshRate">
-        <getter>
-          return this._refreshRate;
-        </getter>
-        <setter>
-          this._refreshTimer.cancel();
-          this._refreshRate=val;
-          this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
-        </setter>
-      </property>
-      
-      <property name="drawScrolled">
-        <getter>
-          return true;
-        </getter>
-      </property>
-      
-      <property name="previews">
-        <getter>
-          return document.getElementsByTagName("tabpreview");
-        </getter>
-      </property>
-      
+
       <method name="eventFilter">
         <parameter name="event"/>
         <body>
@@ -150,6 +126,47 @@
         </body>
       </method>
       
+      <!-- Internal fields and methods -->
+
+      <field name="_selected"/>
+
+      <field name="_refreshTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+
+      <!-- Helper properties -->
+
+      <field name="tabbrowser">window.parent.document.getElementById("content")</field>
+      
+      <property name="previews">
+        <getter>
+          return document.getElementsByTagName("tabpreview");
+        </getter>
+      </property>
+      
+      <!-- Attribute based properties -->
+      <!-- Configuration options -->
+
+      <field name="_refreshRate">60000</field>
+      <property name="refreshRate">
+        <getter>
+          return this._refreshRate;
+        </getter>
+        <setter>
+          this._refreshTimer.cancel();
+          this._refreshRate=val;
+          this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+        </setter>
+      </property>
+      
+      <property name="drawScrolled">
+        <getter>
+          return true;
+        </getter>
+      </property>
+      
+      <!-- Methods -->
+
       <method name="getPreviewForBrowser">
         <parameter name="browser"/>
         <body>
@@ -297,13 +314,14 @@
   
   <binding id="tabpreview" name="tabpreview">
 
-    <content orient="vertical" align="stretch" selected="false">
-      <xul:vbox anonid="box" align="stretch">
+    <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
+      <xul:vbox anonid="box" align="stretch" tooltip="previewtooltip">
         <xul:hbox align="center">
-          <xul:toolbarbutton anonid="refresh"/>
-          <xul:toolbarbutton hidden="true" anonid="loading"/>
+          <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+          <xul:image anonid="loading"/>
+          <xul:toolbarbutton anonid="security"/>
           <xul:spacer flex="1"/>
-          <xul:toolbarbutton anonid="close"/>
+          <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
         </xul:hbox>
         <xhtml:canvas anonid="canvas"/>
         <xul:label anonid="title" crop="end"/>
@@ -322,8 +340,9 @@
           this._removeListeners();
         }
       </destructor>
-
-      <field name="_loading">false</field>
+      
+      <!-- Event handling gubbins -->
+      
       <field name="_eventListener"/>
       
       <method name="_addListeners">
@@ -335,7 +354,7 @@
           }
           this._browser.addEventListener("DOMTitleChanged", this._eventListener,false);
           var WP = Components.interfaces.nsIWebProgress;
-          var mask = WP.NOTIFY_STATE_DOCUMENT + WP.NOTIFY_STATUS + WP.NOTIFY_LOCATION;
+          var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
         </body>
       </method>
@@ -399,21 +418,12 @@
           }
         });</field>
       <field name="_resizeListener"/>
+
+      <!-- Internal fields and methods -->
+      
       <field name="_redrawTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
-      
-      <property name="refreshRate">
-        <getter>
-          return this.previews.refreshRate;
-        </getter>
-      </property>
-      
-      <property name="drawScrolled">
-        <getter>
-          return this.previews.drawScrolled;
-        </getter>
-      </property>
       
       <field name="_width"/>
       <property name="previewWidth">
@@ -429,10 +439,134 @@
         </getter>
       </property>
 
+      <field name="_browser"></field>
+      <property name="browser">
+        <getter>
+          return this._browser;
+        </getter>
+        <setter>
+          if (this._browser)
+          {
+            this._removeListeners();
+          }
+          this._browser=val;
+          if (val)
+          {
+            this._addListeners();
+            if (this._browser.securityUI)
+            {
+              this._setSecurity(val.securityUI.state);
+            }
+          }
+          this.update();
+          this.redraw();
+        </setter>
+      </property>
+
+      <method name="_resize">
+        <body>
+        <![CDATA[
+          var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          if (this._browser)
+          {
+            var computed = window.getComputedStyle(canvas.parentNode,null);
+            this._width = parseInt(computed.width);
+            if (this._width<0)
+            {
+              this._width=0;
+            }
+            var bwidth = this._browser.contentWindow.innerWidth;
+            var bheight = this._browser.contentWindow.innerHeight;
+            this._height = parseInt((bheight/bwidth)*this._width);
+          }
+          else
+          {
+            this._width=0;
+            this._height=0;
+          }
+          canvas.style.width=this._width+"px";
+          canvas.style.height=this._height+"px";
+          canvas.setAttribute("width",this._width);
+          canvas.setAttribute("height",this._height);
+        ]]>
+        </body>
+      </method>
+      
+      <method name="_loadStarted">
+        <body>
+          this.loading=true;
+          this._redrawTimer.cancel();
+        </body>
+      </method>
+      
+      <method name="_loadComplete">
+        <body>
+          this._redrawTimer.initWithCallback(this, 500, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        </body>
+      </method>
+      
+      <method name="_setSecurity">
+        <parameter name="state"/>
+        <body>
+          const WPL = Components.interfaces.nsIWebProgressListener;
+                       
+          switch (state)
+          {
+            case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_HIGH:
+              this.setAttribute("security", "high");
+              break;
+            case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_LOW:
+              this.setAttribute("security", "low");
+              break;
+            case WPL.STATE_IS_BROKEN:
+              this.setAttribute("security", "broken");
+              break;
+            case WPL.STATE_IS_INSECURE:
+            default:
+              this.setAttribute("security", "none");
+              break;
+          }
+          
+          var icon = document.getAnonymousElementByAttribute(this,"anonid","security");
+          if (this._browser.securityUI)
+          {
+            icon.setAttribute("tooltiptext",this._browser.securityUI.tooltipText);
+          }
+          else
+          {
+            icon.removeAttribute("tooltiptext");
+          }
+        </body>
+      </method>
+      
+      <!-- Helper properties -->
+      
       <property name="previews">
         <getter>
           return this.parentNode;
         </getter>
+      </property>
+      
+      <!-- Attribute based properties -->
+      
+      <property name="loading">
+        <getter>
+        <![CDATA[
+          return this.hasAttribute("loading") && (this.getAttribute("loading")=="true");
+        ]]>
+        </getter>
+        <setter>
+        <![CDATA[
+          if (!val)
+          {
+            this.setAttribute("loading","false");
+          }
+          else
+          {
+            this.setAttribute("loading","true");
+          }
+        ]]>
+        </setter>
       </property>
       
       <property name="selected">
@@ -455,6 +589,22 @@
         </setter>
       </property>
 
+      <!-- Configuration options -->
+
+      <property name="refreshRate">
+        <getter>
+          return this.previews.refreshRate;
+        </getter>
+      </property>
+      
+      <property name="drawScrolled">
+        <getter>
+          return this.previews.drawScrolled;
+        </getter>
+      </property>
+      
+      <!-- Properties generated from the browser -->
+      
       <property name="title">
         <getter>
         <![CDATA[
@@ -493,26 +643,8 @@
         </getter>
       </property>
 
-      <field name="_browser"></field>
-      <property name="browser">
-        <getter>
-          return this._browser;
-        </getter>
-        <setter>
-          if (this._browser)
-          {
-            this._removeListeners();
-          }
-          this._browser=val;
-          if (val)
-          {
-            this._addListeners();
-          }
-          this.update();
-          this.redraw();
-        </setter>
-      </property>
-
+      <!-- Methods -->
+      
       <method name="update">
         <body>
           var el = document.getAnonymousElementByAttribute(this,"anonid","uri");
@@ -562,63 +694,6 @@
         </body>
       </method>
       
-      <method name="loadStarted">
-        <body>
-          this._loading=true;
-          this._redrawTimer.cancel();
-          var throbber = document.getAnonymousElementByAttribute(this,"anonid","loading");
-          throbber.hidden=false;
-          var refresh = document.getAnonymousElementByAttribute(this,"anonid","refresh");
-          refresh.hidden=true;
-        </body>
-      </method>
-      
-      <method name="loadComplete">
-        <body>
-          var throbber = document.getAnonymousElementByAttribute(this,"anonid","loading");
-          throbber.hidden=true;
-          var refresh = document.getAnonymousElementByAttribute(this,"anonid","refresh");
-          refresh.hidden=false;
-          this._redrawTimer.initWithCallback(this, 500, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-        </body>
-      </method>
-      
-      <method name="_resize">
-        <body>
-        <![CDATA[
-          var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
-          if (this._browser)
-          {
-            var computed = window.getComputedStyle(canvas.parentNode,null);
-            this._width = parseInt(computed.width);
-            if (this._width<0)
-            {
-              this._width=0;
-            }
-            var bwidth = this._browser.contentWindow.innerWidth;
-            var bheight = this._browser.contentWindow.innerHeight;
-            this._height = parseInt((bheight/bwidth)*this._width);
-          }
-          else
-          {
-            this._width=0;
-            this._height=0;
-          }
-          canvas.style.width=this._width+"px";
-          canvas.style.height=this._height+"px";
-          canvas.setAttribute("width",this._width);
-          canvas.setAttribute("height",this._height);
-        ]]>
-        </body>
-      </method>
-      
-      <method name="onTitleChange">
-        <parameter name="event"/>
-        <body>
-          this.update();
-        </body>
-      </method>
-      
       <!--  Start of nsIWebProgressListener implementation -->
 
       <method name="onLocationChange">
@@ -641,11 +716,11 @@
           {
           	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
           	{
-              this.loadComplete();
+              this._loadComplete();
             }
             else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
             {
-              this.loadStarted();
+              this._loadStarted();
             }
       		}
       	]]>
@@ -677,6 +752,7 @@
         <parameter name="request"/>
         <parameter name="state"/>
         <body>
+          this._setSecurity(state);
         </body>
       </method>
       
@@ -688,7 +764,7 @@
         <![CDATA[
           if (timer==this._redrawTimer)
           {
-            this._loading=false;
+            this.loading=false;
             this.update();
             this.redraw();
           }
@@ -707,7 +783,7 @@
         var tabbrowser = this.previews.tabbrowser;
         var panel = this._browser.parentNode.id;
         var tab = tabbrowser.ownerDocument.getAnonymousElementByAttribute(tabbrowser,"linkedpanel",panel);
-        if (event.originalTarget.getAttribute("anonid")=="refresh")
+        if (event.originalTarget.getAttribute("anonid")=="reload")
         {
           tabbrowser.reloadTab(tab);
         }
@@ -715,9 +791,22 @@
         {
           tabbrowser.removeTab(tab);
         }
+        else if (event.originalTarget.getAttribute("anonid")=="security")
+        {
+        }
         else
         {
-          tabbrowser.selectedTab=tab;
+          if (event.button==1)
+          {
+            tabbrowser.removeTab(tab);
+          }
+          else if (event.button==2)
+          {
+          }
+          else
+          {
+            tabbrowser.selectedTab=tab;
+          }
         }
       </handler>
     </handlers>

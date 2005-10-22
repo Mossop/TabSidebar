@@ -1,12 +1,5 @@
-window {
-}
-  
 tabpreviews {
   padding-top: 10px;
-  -moz-box-align: stretch;
-  -moz-box-orient: vertical;
-  overflow: auto;
-  -moz-box-flex: 1;
 }
   
 tabpreview {
@@ -14,7 +7,7 @@ tabpreview {
   margin-right: 10px;
   margin-bottom: 10px;
 }
-  
+
 tabpreview[selected="true"] vbox[anonid="box"] {
   background-color: #c1d2ee !important;
 }
@@ -25,10 +18,8 @@ tabpreview vbox[anonid="box"]:hover {
 
 tabpreview vbox[anonid="box"] {
   padding: 5px;
-  -moz-box-align: center;
   background-color: #ffffff;
   border: 1px #c1d2ee solid;
-  -moz-border-radius: 8px;
 }
 
 tabpreview canvas {
@@ -41,25 +32,28 @@ tabpreview label {
   font: message-box;
 }
 
-tabpreview toolbarbutton[anonid="loading"] {
+tabpreview image[anonid="loading"] {
   list-style-image: url("chrome://global/skin/throbber/Throbber-small.gif");
   opacity: 0.5;
-  -moz-appearance: none;
-  border: none !important;
+  padding: 3px;
 }
 
-tabpreview toolbarbutton[anonid="refresh"] {
+tabpreview toolbarbutton[anonid="reload"] {
   list-style-image: url("chrome://browser/skin/Toolbar-small.png");
   -moz-appearance: none;
   -moz-image-region: rect(0px, 64px, 16px, 48px);
   border: none !important;
 }
 
-tabpreview toolbarbutton[anonid="refresh"]:hover {
+tabpreview toolbarbutton[anonid="reload"] image {
+  margin-right: 0px;
+}
+
+tabpreview toolbarbutton[anonid="reload"]:hover {
   -moz-image-region: rect(16px, 64px, 32px, 48px);
 }
 
-tabpreview toolbarbutton[anonid="refresh"]:hover:active {
+tabpreview toolbarbutton[anonid="reload"]:hover:active {
   -moz-image-region: rect(16px, 64px, 32px, 48px);
 }
 
@@ -80,4 +74,20 @@ tabpreview toolbarbutton[anonid="close"]:hover {
 
 tabpreview toolbarbutton[anonid="close"]:hover:active {
   -moz-image-region: rect(0px, 48px, 16px, 32px);
+}
+
+tabpreview toolbarbutton[anonid="security"] {
+  list-style-image: url("chrome://browser/skin/Secure.png");
+  -moz-appearance: none;
+  border: none !important;
+}
+
+tabpreview[security="high"] toolbarbutton[anonid="security"],
+tabpreview[security="low"] toolbarbutton[anonid="security"] {
+  list-style-image: url("chrome://browser/skin/Secure.png");
+}
+
+	
+tabpreview[security="broken"] toolbarbutton[anonid="security"] {
+  list-style-image: url("chrome://browser/skin/Security-broken.png");
 }

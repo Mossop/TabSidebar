@@ -58,6 +58,6 @@ init: function()
  
 destroy: function()
 {
-	sidebar.window.parent.removeEventListener("resize",sidebar.onResize,false);
+	window.parent.removeEventListener("resize",sidebar.onResize,false);
 },
 }

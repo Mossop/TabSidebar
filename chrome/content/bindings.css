@@ -5,3 +5,27 @@ tabpreview {
 tabpreviews {
   -moz-binding: url('chrome://tabsidebar/content/bindings.xml#tabpreviews');
 }
+
+tabpreviews {
+  -moz-box-align: stretch;
+  -moz-box-orient: vertical;
+  overflow: auto;
+  -moz-box-flex: 1;
+}
+  
+tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
+  display: none;
+}
+  
+tabpreview[loading="false"] image[anonid="loading"] {
+  display: none;
+}
+
+tabpreview vbox[anonid="box"] {
+  -moz-box-align: center;
+  -moz-border-radius: 8px;
+}
+
+tabpreview[security="none"] toolbarbutton[anonid="security"] {
+  display: none;
+}

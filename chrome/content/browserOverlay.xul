@@ -42,21 +42,23 @@
    - $Revision$
    -->
 
+<!DOCTYPE overlay SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+
 <overlay id="TabSidebarOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <!-- Sidebar -->
   <broadcasterset id="mainBroadcasterSet">
-    <broadcaster id="viewDeliciousBarSidebar"
+    <broadcaster id="viewTabSidebar"
           autoCheck="false" 
-          label="Tab Sidebar"
+          label="&tabsidebar.title;"
           type="checkbox"
           group="sidebar"
           sidebarurl="chrome://tabsidebar/content/sidebar.xul"
-          oncommand="toggleSidebar('viewDeliciousBarSidebar');"/>
+          oncommand="toggleSidebar('viewTabSidebar');"/>
   </broadcasterset>
 
   <menupopup id="viewSidebarMenu">
-    <menuitem observes="viewDeliciousBarSidebar"/>
+    <menuitem observes="viewTabSidebar"/>
   </menupopup>
 
 </overlay>

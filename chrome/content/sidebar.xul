@@ -45,9 +45,11 @@
 <?xml-stylesheet href="chrome://tabsidebar/content/bindings.css" type="text/css"?>
 <?xml-stylesheet href="chrome://tabsidebar/skin/sidebar.css" type="text/css"?>
 
+<!DOCTYPE page SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+
 <page
     id="tab-sidebar"
-    title="Tab Sidebar"
+    title="&tabsidebar.title;"
     onload="sidebar.init()"
     onunload="sidebar.destroy()"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
