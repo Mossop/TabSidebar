@@ -41,62 +41,15 @@
  * $Revision$
  *
  */
-var previews = null;
 
-var sidebar = {
+var preview = {
 
-hidden: false,
-
-onResize: function(event)
+refreshChanged: function()
 {
-	previews.onResize();
-},
+	dump("here");
+	var refresh = document.getElementById("autorefresh");
+	var box = document.getElementById("ratebox");
+	box.disabled=!refresh.value;
+}
 
-openPreferences: function()
-{
-  var instantApply = false; //getBoolPref("browser.preferences.instantApply", false);
-  var features = "chrome,titlebar,toolbar,centerscreen" + (instantApply ? ",dialog=no" : ",modal");
-
-  var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                     .getService(Components.interfaces.nsIWindowMediator);
-  var win = wm.getMostRecentWindow("Browser:Preferences");
-  if (win)
-  {
-    win.focus();
-  }
-  else
-  {
-    openDialog("chrome://tabsidebar/content/preferences.xul",
-               "Preferences", features);
-	}
-},
-
-init: function()
-{
-	previews = document.getElementById("previews");
-	window.parent.addEventListener("resize",sidebar.onResize,false);
-	
-	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService)
-                        .getBranch("tabsidebar.");
-  if (prefs.getBoolPref("hidetabs"))
-  {
-  	sidebar.hidden=true;
-  	var tabbrowser = window.parent.document.getElementById("content");
-  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-strip");
-  	tabstrip.style.display="none";
-  }
-},
- 
-destroy: function()
-{
-	window.parent.removeEventListener("resize",sidebar.onResize,false);
-	
-	if (sidebar.hidden)
-	{
-  	var tabbrowser = window.parent.document.getElementById("content");
-  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-strip");
-  	tabstrip.style.display=null;
-	}
-},
 }

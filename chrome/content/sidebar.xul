@@ -56,6 +56,8 @@
   
 	<script type="application/x-javascript" src="sidebar.js"/>
 
+  <button onclick="sidebar.openPreferences()" label="Options"/>
+  
   <tabpreviews id="previews">
   </tabpreviews>
    

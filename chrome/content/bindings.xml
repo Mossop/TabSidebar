@@ -50,21 +50,40 @@
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <binding id="tabpreviews" name="tabpreviews">
+  <binding id="tabpreviews" name="tabpreviews" extends="chrome://global/content/bindings/scrollbox.xml#scrollbox">
 
     <content>
+      <xul:tooltip id="tabpreview_tooltip" orient="vertical">
+        <xul:label value="Title"/>
+        <xul:label value="URI"/>
+      </xul:tooltip>
+
+      <xul:scrollbox allowevents="true" anonid="scrollbox" align="stretch" orient="vertical">
+        <children/>
+      </xul:scrollbox>
     </content>
     
     <implementation implements="nsITimerCallback,nsIObserver">
     
       <constructor>
       <![CDATA[
+        var scrollbox = document.getAnonymousElementByAttribute(this,"anonid","scrollbox");
+        this.scrollBoxObject=scrollbox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+        
+        this.previewContainer=this;
+        
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                              .getService(Components.interfaces.nsIPrefBranchInternal);
+        prefs.addObserver("tabsidebar.", this, false);
+        this.observe(prefs,"","tabsidebar.drawscrolled");
+        this.observe(prefs,"","tabsidebar.refreshrate");
+        this.observe(prefs,"","tabsidebar.autorefresh");
+
         var browsers = this.tabbrowser.browsers;
         for (var i=0; i<browsers.length; i++)
         {
           this.addPreview(browsers[i]);
         }
-        this.selectPreview(this.tabbrowser.selectedBrowser);
       	
       	var self=this;
       	this._eventListener = function(event) { self.eventFilter(event); };
@@ -74,14 +93,6 @@
       	container.addEventListener("select", this._eventListener, false);
       	container.addEventListener("DOMNodeInserted", this._eventListener, false);
       	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
-
-        this._refreshTimer.initWithCallback(this, this.refreshRate, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
-        
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                              .getService(Components.interfaces.nsIPrefBranchInternal);
-        prefs.addObserver("tabsidebar.", this, false);
-        this.observe(prefs,"","tabsidebar.refreshrate");
-        this.observe(prefs,"","tabsidebar.drawscrolled");
       ]]>
       </constructor>
       
@@ -164,6 +175,8 @@
             .getService(Components.interfaces.nsIPrefService)
             .getBranch("tabsidebar.");</field>
       <field name="tabbrowser">window.parent.document.getElementById("content")</field>
+      <field name="previewContainer"></field>
+      <field name="scrollBoxObject"></field>
       
       <property name="previews">
         <getter>
@@ -174,6 +187,32 @@
       <!-- Attribute based properties -->
       <!-- Configuration options -->
 
+      <property name="showButtonStrip">
+        <getter>
+          return this.preferences.getBoolPref("content.buttons");
+        </getter>
+      </property>
+      
+      <property name="showPreview">
+        <getter>
+        <![CDATA[
+          return (this.previewWidth!=0 && this.previewHeight!=0 && this.preferences.getBoolPref("content.preview"));
+        ]]>
+        </getter>
+      </property>
+      
+      <property name="showTitle">
+        <getter>
+          return this.preferences.getBoolPref("content.title");
+        </getter>
+      </property>
+      
+      <property name="showURI">
+        <getter>
+          return this.preferences.getBoolPref("content.uri");
+        </getter>
+      </property>
+      
       <field name="_customSize">false</field>
       <property name="customSize">
         <getter>
@@ -200,7 +239,7 @@
         </getter>
         <setter>
         <![CDATA[
-          if (val==this._width && this._customWidth)
+          if (val==this._width && this._customSize)
           {
             return val;
           }
@@ -231,19 +270,45 @@
         </setter>
       </property>
       
-      <field name="_refreshRate">120000</field>
+      <field name="_autoRefresh">false</field>
+      <property name="autoRefresh">
+        <getter>
+          return this._autoRefresh;
+        </getter>
+        <setter>
+          if (val==this._autoRefresh)
+          {
+            return val;
+          }
+          this._autoRefresh=val;
+          if (val)
+          {
+            this._refreshTimer.cancel();
+          }
+          else
+          {
+            this._refreshTimer.initWithCallback(this, this.refreshRate, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+          }
+          return val;
+        </setter>
+      </property>
+      
+      <field name="_refreshRate">120</field>
       <property name="refreshRate">
         <getter>
-          return this._refreshRate;
+          return this._refreshRate*1000;
         </getter>
         <setter>
           if (this._refreshRate==val)
           {
             return val;
           }
-          this._refreshTimer.cancel();
           this._refreshRate=val;
-          this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+          if (this.autoRefresh)
+          {
+            this._refreshTimer.cancel();
+            this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
+          }
           return val;
         </setter>
       </property>
@@ -291,7 +356,7 @@
         		return preview;
         	}
         	var id=browser.parentNode.id;
-        	var previews = document.getElementsByTagName("tabpreview");
+        	var previews = this.previews;
         	for (var i=0; i<previews.length; i++)
         	{
         		var preview = previews[i];
@@ -325,20 +390,25 @@
         		var next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
         		if (next)
         		{
-          		this.insertBefore(preview,next);
+          		this.previewContainer.insertBefore(preview,next);
           	}
           	else
           	{
-              this.appendChild(preview);
+              this.previewContainer.appendChild(preview);
           	}
         	}
         	else
         	{
-        		this.appendChild(preview);
+        		this.previewContainer.appendChild(preview);
         	}
         	preview.init();
         	preview.browser=browser;
         	this.onResize();
+        	
+        	if (this.tabbrowser.selectedBrowser==browser)
+        	{
+        	  this.selectPreview(browser);
+        	}
         ]]>
         </body>
       </method>
@@ -359,7 +429,7 @@
           var preview = this.getPreviewForBrowser(browser);
           if (preview)
           {
-            this.removeChild(preview);
+            preview.parentNode.removeChild(preview);
             this.addPreview(browser);
           }
         </body>
@@ -372,13 +442,14 @@
         	var preview = this.getPreviewForBrowser(browser);
         	if (this._selected)
         	{
-            this._selected.selected=false;
+            this._selected.setAttribute("selected","false");
         	}
         	if (preview)
         	{
-          	preview.selected=true;
+          	preview.setAttribute("selected","true");
           }
         	this._selected=preview;
+        	this.scrollBoxObject.ensureElementIsVisible(preview);
         ]]>
         </body>
       </method>
@@ -396,6 +467,19 @@
         <body>
           var preview = this.getPreviewForBrowser(browser);
           preview.redraw();
+        </body>
+      </method>
+
+      <method name="updateContent">
+        <body>
+        <![CDATA[
+        	var previews = this.previews;
+        	for (var i=0; i<previews.length; i++)
+        	{
+        		previews[i].updateContent();
+        	}
+        	this.onResize();
+        ]]>
         </body>
       </method>
 
@@ -476,10 +560,18 @@
         <body>
         <![CDATA[
           data=data.substring(11);
+          if (data.substring(0,8)=="content.")
+          {
+            this.updateContent();
+            return;
+          }
           switch (data)
           {
             case "refreshrate":
               this.refreshRate=this.preferences.getIntPref(data);
+              break;
+            case "autorefresh":
+              this.autoRefresh=this.preferences.getBoolPref(data);
               break;
             case "drawscrolled":
               this.drawScrolled=this.preferences.getBoolPref(data);
@@ -524,6 +616,14 @@
         }
       ]]>
       </handler>
+      
+      <handler event="popupshowing">
+        dump("showing\n");
+        dump(document.popupNode+"\n");
+        dump(event.target.localName+"\n");
+        dump(event.currentTarget.localName+"\n");
+        dump(event.originalTarget.localName+"\n");
+      </handler>
 
     </handlers>
 
@@ -532,16 +632,18 @@
   <binding id="tabpreview" name="tabpreview">
 
     <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
-      <xul:hbox align="center">
+      <xul:hbox align="center" anonid="buttonstrip">
         <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
         <xul:image anonid="loading"/>
         <xul:toolbarbutton anonid="security"/>
         <xul:spacer flex="1"/>
         <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
       </xul:hbox>
-      <xhtml:canvas anonid="canvas"/>
-      <xul:label anonid="title" crop="end"/>
-      <xul:label anonid="uri" crop="end"/>
+      <xul:vbox align="center" tooltip="tabpreview_tooltip">
+        <xhtml:canvas anonid="canvas" tooltip="tabpreview_tooltip"/>
+        <xul:label anonid="title" crop="end"/>
+        <xul:label anonid="uri" crop="end"/>
+      </xul:vbox>
     </content>
 
     <implementation implements="nsIWebProgressListener,nsITimerCallback">
@@ -558,6 +660,7 @@
       
       <method name="init">
         <body>
+          this.updateContent();
           this._resize();
         </body>
       </method>
@@ -675,11 +778,18 @@
         <body>
         <![CDATA[
           var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
-          canvas.hidden=this.previews.previewHeight>0;
-          //canvas.setAttribute("width",this.previews.previewWidth);
+          if (this.previews.showPreview)
+          {
+            canvas.style.display=null;
+          }
+          else
+          {
+            canvas.style.display="none";
+          }
+          canvas.setAttribute("width",this.previews.previewWidth);
           canvas.setAttribute("height",this.previews.previewHeight);
-          //canvas.style.width=this.previews.previewWidth+"px";
-          //canvas.style.height=this.previews.previewHeight+"px";
+          canvas.style.width=this.previews.previewWidth+"px";
+          canvas.style.height=this.previews.previewHeight+"px";
         ]]>
         </body>
       </method>
@@ -693,7 +803,7 @@
       
       <method name="_loadComplete">
         <body>
-          this._redrawTimer.initWithCallback(this, this.loadDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._redrawTimer.initWithCallback(this, this.previews.loadDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -762,47 +872,7 @@
         </setter>
       </property>
       
-      <property name="selected">
-        <getter>
-        <![CDATA[
-          return this.hasAttribute("selected") && (this.getAttribute("selected")=="true");
-        ]]>
-        </getter>
-        <setter>
-        <![CDATA[
-          if (!val)
-          {
-            this.setAttribute("selected","false");
-          }
-          else
-          {
-            this.setAttribute("selected","true");
-          }
-          return val;
-        ]]>
-        </setter>
-      </property>
-
       <!-- Configuration options -->
-
-      <property name="refreshRate">
-        <getter>
-          return this.previews.refreshRate;
-        </getter>
-      </property>
-      
-      <property name="drawScrolled">
-        <getter>
-          return this.previews.drawScrolled;
-        </getter>
-      </property>
-      
-      <property name="loadDelay">
-        <getter>
-          return this.previews.loadDelay;
-        </getter>
-      </property>
-      
       <!-- Properties generated from the browser -->
       
       <property name="title">
@@ -856,20 +926,49 @@
         </body>
       </method>
       
+      <method name="updateContent">
+        <body>
+          var el = document.getAnonymousElementByAttribute(this,"anonid","buttonstrip");
+          el.hidden=!this.previews.showButtonStrip;
+          el = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          if (this.previews.showPreview)
+          {
+            if (el.style.display=="none")
+            {
+              el.style.display=null;
+              this.redraw();
+            }
+            else
+            {
+              el.style.display=null;
+            }
+          }
+          else
+          {
+            el.style.display="none";
+          }
+          el = document.getAnonymousElementByAttribute(this,"anonid","title");
+          el.hidden=!this.previews.showTitle;
+          el = document.getAnonymousElementByAttribute(this,"anonid","uri");
+          el.hidden=!this.previews.showURI;
+        </body>
+      </method>
+      
       <method name="redraw">
         <body>
-          if (!this._browser || this._loading || this.previews.previewWidth==0)
+          if (!this._browser || this._loading || !this.previews.showPreview)
           {
             return;
           }
           var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          var ctx = null;
           try
           {
-            var ctx = canvas.getContext("2d");
+            ctx = canvas.getContext("2d");
           }
           catch (e)
           {
-            canvas.hidden=true;
+            canvas.style.display="none";
             return;
           }
           var win = this._browser.contentWindow;
@@ -882,7 +981,7 @@
             var left = 0;
             var height = win.innerHeight;
             var width = win.innerWidth;
-            if (this.drawScrolled)
+            if (this.previews.drawScrolled)
             {
               top=win.scrollY;
               left=win.scrollX;
@@ -1000,6 +1099,23 @@
         }
         else if (event.originalTarget.getAttribute("anonid")=="security")
         {
+          var args = {doc: this._browser.contentDocument, initialTab: "securityTab"};
+          var url = this._browser.contentDocument.location;
+
+          var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
+          var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+          var windows = windowManagerInterface.getEnumerator("Browser:page-info");
+
+          // Check for windows matching the url
+          while (windows.hasMoreElements()) {
+            var currentWindow = windows.getNext();
+            if (currentWindow.document.firstChild.getAttribute("relatedUrl") == url) {
+              currentWindow.focus();
+              return;
+            }
+          }
+
+          window.openDialog("chrome://browser/content/pageInfo.xul", "_blank", "chrome,dialog=no", args);
         }
         else
         {

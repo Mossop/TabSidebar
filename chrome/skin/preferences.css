@@ -1,0 +1,12 @@
+prefwindow {
+  width: 35em;
+  height: 30em;
+}
+
+.content-box {
+	-moz-box-flex: 1;
+}
+
+#ratebox {
+   width: 5em;
+}

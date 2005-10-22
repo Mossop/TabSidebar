@@ -1,0 +1,15 @@
+<!ENTITY tabsidebar.options.title       "Tab Sidebar Options">
+
+<!ENTITY paneDisplay.title              "Display">
+<!ENTITY paneDisplay.description        "This section allows you to customise what is displayed for each tab in the sidebar.">
+
+<!ENTITY paneDisplay.content.buttons		"Display tab buttons">
+<!ENTITY paneDisplay.content.preview		"Display previews">
+<!ENTITY paneDisplay.content.title   		"Display tab title">
+<!ENTITY paneDisplay.content.uri    		"Display tab URL">
+
+<!ENTITY panePreviews.title             "Previews">
+<!ENTITY panePreviews.description       "You can customise when previews are refreshed and what part of the browser window gets drawn.">
+
+<!ENTITY panePreviews.drawscrolled      "Draw the browser as it is currently scrolled.">
+<!ENTITY panePreviews.autorefresh       "Continually refresh the preview this often (seconds):">

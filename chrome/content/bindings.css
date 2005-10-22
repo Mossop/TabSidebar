@@ -7,12 +7,16 @@ tabpreviews {
 }
 
 tabpreviews {
+  -moz-box-flex: 1;
   -moz-box-align: stretch;
   -moz-box-orient: vertical;
-  overflow: auto;
-  -moz-box-flex: 1;
 }
-  
+
+tabpreviews scrollbox {
+  -moz-box-flex: 1;
+  overflow-y: scroll;
+}
+
 tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
   display: none;
 }
