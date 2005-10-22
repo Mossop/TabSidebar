@@ -63,24 +63,28 @@
         }
         this.selectPreview(this.tabbrowser.selectedBrowser);
       	
-      	this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this.eventFilter, false);
+      	var self=this;
+      	this._eventListener = function(event) { self.eventFilter(event); };
+      	
+      	this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
       	var container = this.tabbrowser.mPanelContainer;
-      	container.addEventListener("select", this.eventFilter, false);
-      	container.addEventListener("DOMNodeInserted", this.eventFilter, false);
-      	container.addEventListener("DOMNodeRemoved", this.eventFilter, false);
+      	container.addEventListener("select", this._eventListener, false);
+      	container.addEventListener("DOMNodeInserted", this._eventListener, false);
+      	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
       ]]>
       </constructor>
       
       <destructor>
-      	this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this.eventFilter, false);
+      	this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
       	var container = this.tabbrowser.mPanelContainer;
-      	container.removeEventListener("select", this.eventFilter, false);
-      	container.removeEventListener("DOMNodeInserted", this.eventFilter, false);
-      	container.removeEventListener("DOMNodeRemoved", this.eventFilter, false);
+      	container.removeEventListener("select", this._eventListener, false);
+      	container.removeEventListener("DOMNodeInserted", this._eventListener, false);
+      	container.removeEventListener("DOMNodeRemoved", this._eventListener, false);
       </destructor>
       
       <field name="tabbrowser">window.parent.document.getElementById("content")</field>
       <field name="_selected"/>
+      <field name="_eventListener"/>
       
       <property name="previews">
         <getter>
@@ -91,20 +95,19 @@
       <method name="eventFilter">
         <parameter name="event"/>
         <body>
-          var previews = document.getElementsByTagName("tabpreviews")[0];
           if (event.type=="DOMNodeInserted")
           {
         		if (event.relatedNode==previews.tabbrowser.mPanelContainer)
         		{
           		var browser = event.target.childNodes[1];
-          		previews.addPreview(browser);
+          		this.addPreview(browser);
         		}
         		else if (event.relatedNode==previews.tabbrowser.tabContainer)
         		{
         		  var browser = event.target.linkedBrowser;
         		  if (browser)
         		  {
-        		    previews.movePreview(browser);
+        		    this.movePreview(browser);
         		  }
         		}
           }
@@ -113,13 +116,13 @@
         		if (event.relatedNode==previews.tabbrowser.mPanelContainer)
         		{
           		var browser = event.target.childNodes[1];
-          		previews.removePreview(browser);
+          		this.removePreview(browser);
         		}
           }
           else if (event.type=="select")
           {
-        		var newBrowser = previews.tabbrowser.getBrowserAtIndex(previews.tabbrowser.mTabContainer.selectedIndex);
-        		previews.selectPreview(newBrowser);
+        		var newBrowser = this.tabbrowser.getBrowserAtIndex(this.tabbrowser.mTabContainer.selectedIndex);
+        		this.selectPreview(newBrowser);
           }
         </body>
       </method>
@@ -283,19 +286,26 @@
         }
       </destructor>
 
+      <field name="_eventListener"/>
+      
       <method name="_addListeners">
         <body>
+          if (!this._eventListener)
+          {
+            var self = this;
+            this._eventListener = function(event) { self.eventFilter(event); };
+          }
+          this._browser.addEventListener("DOMTitleChanged", this._eventListener,false);
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT + WP.NOTIFY_STATUS + WP.NOTIFY_LOCATION;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
-          this._browser.addEventListener("DOMTitleChanged",this.eventFilter,false);
         </body>
       </method>
       
       <method name="_removeListeners">
         <body>
           this._browser.webProgress.removeProgressListener(this._progressListener);
-          this._browser.removeEventListener("DOMTitleChanged",this.eventFilter,false);
+          this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
         </body>
       </method>
       
@@ -505,8 +515,7 @@
           throbber.hidden=true;
           var refresh = document.getAnonymousElementByAttribute(this,"anonid","refresh");
           refresh.hidden=false;
-          this._redrawTimer.initWithCallback(this, 500,
-                                              Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._redrawTimer.initWithCallback(this, 500, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -536,6 +545,13 @@
           canvas.setAttribute("width",this._width);
           canvas.setAttribute("height",this._height);
         ]]>
+        </body>
+      </method>
+      
+      <method name="onTitleChange">
+        <parameter name="event"/>
+        <body>
+          this.update();
         </body>
       </method>
       
