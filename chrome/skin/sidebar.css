@@ -1,0 +1,82 @@
+window {
+  overflow: scroll !important;
+}
+  
+tabpreviews {
+  padding-top: 10px;
+  -moz-box-align: stretch;
+  -moz-box-orient: vertical;
+}
+  
+tabpreview {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+  
+tabpreview[selected="true"] vbox[anonid="box"] {
+  background-color: #c1d2ee !important;
+}
+
+tabpreview vbox[anonid="box"]:hover {
+  background-color: #e0e8f6;
+}
+
+tabpreview vbox[anonid="box"] {
+  padding: 5px;
+  -moz-box-align: center;
+  background-color: #ffffff;
+  border: 1px #c1d2ee solid;
+  -moz-border-radius: 8px;
+}
+
+tabpreview canvas {
+  background-color: #ffffff;
+  border: 1px #c1d2ee solid;
+}
+
+tabpreview label {
+  margin: 2px;
+  font: message-box;
+}
+
+tabpreview toolbarbutton[anonid="loading"] {
+  list-style-image: url("chrome://global/skin/throbber/Throbber-small.gif");
+  opacity: 0.5;
+  -moz-appearance: none;
+  border: none !important;
+}
+
+tabpreview toolbarbutton[anonid="refresh"] {
+  list-style-image: url("chrome://browser/skin/Toolbar-small.png");
+  -moz-appearance: none;
+  -moz-image-region: rect(0px, 64px, 16px, 48px);
+  border: none !important;
+}
+
+tabpreview toolbarbutton[anonid="refresh"]:hover {
+  -moz-image-region: rect(16px, 64px, 32px, 48px);
+}
+
+tabpreview toolbarbutton[anonid="refresh"]:hover:active {
+  -moz-image-region: rect(16px, 64px, 32px, 48px);
+}
+
+tabpreview toolbarbutton[anonid="close"] {
+  list-style-image: url("chrome://global/skin/icons/close.png");
+  -moz-appearance: none;
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  border: none !important;
+}
+
+tabpreview toolbarbutton[anonid="close"] image {
+   margin-right: 0px;
+}
+
+tabpreview toolbarbutton[anonid="close"]:hover {
+  -moz-image-region: rect(0px, 32px, 16px, 16px);
+}
+
+tabpreview toolbarbutton[anonid="close"]:hover:active {
+  -moz-image-region: rect(0px, 48px, 16px, 32px);
+}

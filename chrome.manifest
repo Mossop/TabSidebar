@@ -1,0 +1,6 @@
+content			tabsidebar																					file:chrome/content/
+skin				tabsidebar					classic/1.0											file:chrome/skin/
+
+locale			tabsidebar					en-US														file:chrome/locale/en-US/
+
+overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul

@@ -1,0 +1,7 @@
+tabpreview {
+  -moz-binding: url('chrome://tabsidebar/content/bindings.xml#tabpreview');
+}
+
+tabpreviews {
+  -moz-binding: url('chrome://tabsidebar/content/bindings.xml#tabpreviews');
+}

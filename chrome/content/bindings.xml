@@ -1,0 +1,650 @@
+<?xml version="1.0"?>
+
+ <!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Tab Sidebar Display.
+   -
+   - The Initial Developer of the Original Code is
+   -     Dave Townsend <dave.townsend@blueprintit.co.uk>.
+   - Portions created by the Initial Developer are Copyright (C) 2005
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK *****
+   -
+   - $HeadURL$
+   - $LastChangedBy$
+   - $Date$
+   - $Revision$
+   -->
+
+<bindings id="TabSidebarBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <binding id="tabpreviews" name="tabpreviews">
+    <content>
+    </content>
+    
+    <implementation>
+    
+      <constructor>
+      <![CDATA[
+        var browsers = this.tabbrowser.browsers;
+        for (var i=0; i<browsers.length; i++)
+        {
+          this.addPreview(browsers[i]);
+        }
+        this.selectPreview(this.tabbrowser.selectedBrowser);
+      	
+      	this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this.eventFilter, false);
+      	var container = this.tabbrowser.mPanelContainer;
+      	container.addEventListener("select", this.eventFilter, false);
+      	container.addEventListener("DOMNodeInserted", this.eventFilter, false);
+      	container.addEventListener("DOMNodeRemoved", this.eventFilter, false);
+      ]]>
+      </constructor>
+      
+      <destructor>
+      	this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this.eventFilter, false);
+      	var container = this.tabbrowser.mPanelContainer;
+      	container.removeEventListener("select", this.eventFilter, false);
+      	container.removeEventListener("DOMNodeInserted", this.eventFilter, false);
+      	container.removeEventListener("DOMNodeRemoved", this.eventFilter, false);
+      </destructor>
+      
+      <field name="tabbrowser">window.parent.document.getElementById("content")</field>
+      <field name="_selected"/>
+      
+      <property name="previews">
+        <getter>
+          return document.getElementsByTagName("tabpreview");
+        </getter>
+      </property>
+      
+      <method name="eventFilter">
+        <parameter name="event"/>
+        <body>
+          var previews = document.getElementsByTagName("tabpreviews")[0];
+          if (event.type=="DOMNodeInserted")
+          {
+        		if (event.relatedNode==previews.tabbrowser.mPanelContainer)
+        		{
+          		var browser = event.target.childNodes[1];
+          		previews.addPreview(browser);
+        		}
+        		else if (event.relatedNode==previews.tabbrowser.tabContainer)
+        		{
+        		  var browser = event.target.linkedBrowser;
+        		  if (browser)
+        		  {
+        		    previews.movePreview(browser);
+        		  }
+        		}
+          }
+          else if (event.type=="DOMNodeRemoved")
+          {
+        		if (event.relatedNode==previews.tabbrowser.mPanelContainer)
+        		{
+          		var browser = event.target.childNodes[1];
+          		previews.removePreview(browser);
+        		}
+          }
+          else if (event.type=="select")
+          {
+        		var newBrowser = previews.tabbrowser.getBrowserAtIndex(previews.tabbrowser.mTabContainer.selectedIndex);
+        		previews.selectPreview(newBrowser);
+          }
+        </body>
+      </method>
+      
+      <method name="getPreviewForBrowser">
+        <parameter name="browser"/>
+        <body>
+        <![CDATA[
+          var preview = document.getElementById(browser.parentNode.id);
+        	if (preview)
+        	{
+        		return preview;
+        	}
+        	var id=browser.parentNode.id;
+        	var previews = document.getElementsByTagName("tabpreview");
+        	for (var i=0; i<previews.length; i++)
+        	{
+        		var preview = previews[i];
+        		if (preview.browser==browser)
+        		{
+        		if (id)
+        		{
+        		  preview.id=id;
+        		}
+        		  return preview;
+        		}
+        	}
+        ]]>
+        </body>
+      </method>
+      
+      <method name="addPreview">
+        <parameter name="browser"/>
+        <body>
+        <![CDATA[
+        	var preview = document.createElement("tabpreview");
+        	var id=browser.parentNode.id;
+        	if (id)
+        	{
+        		preview.id=id;
+        	}
+          var panel = browser.parentNode.id;
+          var tab = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"linkedpanel",panel);
+        	if (tab && tab.nextSibling)
+        	{
+        		var next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
+        		if (next)
+        		{
+          		this.insertBefore(preview,next);
+          	}
+          	else
+          	{
+              this.appendChild(preview);
+          	}
+        	}
+        	else
+        	{
+        		this.appendChild(preview);
+        	}
+        	preview.browser=browser;
+        ]]>
+        </body>
+      </method>
+      
+      <method name="removePreview">
+        <parameter name="browser"/>
+        <body>
+        	var preview = this.getPreviewForBrowser(browser);
+        	preview.browser=null;
+        	preview.parentNode.removeChild(preview);
+        </body>
+      </method>
+      
+      <method name="movePreview">
+        <parameter name="browser"/>
+        <body>
+          var preview = this.getPreviewForBrowser(browser);
+          if (preview)
+          {
+            this.removeChild(preview);
+            this.addPreview(browser);
+          }
+        </body>
+      </method>
+      
+      <method name="selectPreview">
+        <parameter name="browser"/>
+        <body>
+        <![CDATA[
+        	var preview = this.getPreviewForBrowser(browser);
+        	if (this._selected)
+        	{
+            this._selected.selected=false;
+        	}
+        	if (preview)
+        	{
+          	preview.selected=true;
+          }
+        	this._selected=preview;
+        ]]>
+        </body>
+      </method>
+            
+      <method name="updatePreview">
+        <parameter name="browser"/>
+        <body>
+          var preview = this.getPreviewForBrowser(browser);
+          preview.update();
+        </body>
+      </method>
+      
+      <method name="redrawPreview">
+        <parameter name="browser"/>
+        <body>
+          var preview = this.getPreviewForBrowser(browser);
+          preview.redraw();
+        </body>
+      </method>
+
+      <method name="redraw">
+        <body>
+        <![CDATA[
+        	var previews = this.previews;
+        	for (var i=0; i<previews.length; i++)
+        	{
+        		previews[i].redraw();
+        	}
+        ]]>
+        </body>
+      </method>
+
+    </implementation>
+    
+  </binding>
+  
+  <binding id="tabpreview" name="tabpreview">
+
+    <content orient="vertical" align="stretch" selected="false">
+      <xul:vbox anonid="box" align="stretch">
+        <xul:hbox align="center">
+          <xul:toolbarbutton anonid="refresh"/>
+          <xul:toolbarbutton hidden="true" anonid="loading"/>
+          <xul:spacer flex="1"/>
+          <xul:toolbarbutton anonid="close"/>
+        </xul:hbox>
+        <xhtml:canvas anonid="canvas"/>
+        <xul:label anonid="title" crop="end"/>
+        <xul:label anonid="uri" crop="end"/>
+      </xul:vbox>
+    </content>
+
+    <implementation implements="nsIWebProgressListener,nsITimerCallback">
+
+      <constructor>
+      </constructor>
+
+      <destructor>
+        if (this._browser)
+        {
+          this._removeListeners();
+        }
+      </destructor>
+
+      <method name="_addListeners">
+        <body>
+          var WP = Components.interfaces.nsIWebProgress;
+          var mask = WP.NOTIFY_STATE_DOCUMENT + WP.NOTIFY_STATUS + WP.NOTIFY_LOCATION;
+          this._browser.webProgress.addProgressListener(this._progressListener,mask);
+          this._browser.addEventListener("DOMTitleChanged",this.eventFilter,false);
+        </body>
+      </method>
+      
+      <method name="_removeListeners">
+        <body>
+          this._browser.webProgress.removeProgressListener(this._progressListener);
+          this._browser.removeEventListener("DOMTitleChanged",this.eventFilter,false);
+        </body>
+      </method>
+      
+      <method name="eventFilter">
+        <parameter name="event"/>
+        <body>
+          var previews = document.getElementsByTagName("tabpreviews")[0];
+          if (event.type=="DOMTitleChanged")
+          {
+            var preview = previews.getPreviewForBrowser(event.currentTarget);
+            preview.update();
+          }
+        </body>
+      </method>
+      
+      <field name="_progressListener">({
+          tabpreview: this,
+
+          onProgressChange : function (aWebProgress, aRequest,
+                                       aCurSelfProgress, aMaxSelfProgress,
+                                       aCurTotalProgress, aMaxTotalProgress)
+          {
+            this.tabpreview.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
+          },
+
+          onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
+          {
+            this.tabpreview.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
+          },
+
+          onLocationChange : function(aWebProgress, aRequest, aLocation)
+          {
+            this.tabpreview.onLocationChange(aWebProgress, aRequest, aLocation);
+          },
+
+          onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage)
+          {
+            this.tabpreview.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
+          },
+
+          onSecurityChange : function(aWebProgress, aRequest, aState)
+          {
+            this.tabpreview.onSecurityChange(aWebProgress, aRequest, aState);
+          },
+
+          QueryInterface : function(aIID)
+          {
+            if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                aIID.equals(Components.interfaces.nsISupports))
+              return this;
+            throw Components.results.NS_NOINTERFACE;
+          }
+        });</field>
+      <field name="_resizeListener"/>
+      <field name="_redrawTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      
+      <field name="refreshRate">60000</field>
+      
+      <field name="_width"/>
+      <property name="previewWidth">
+        <getter>
+          return this._width;
+        </getter>
+      </property>
+      
+      <field name="_height"/>
+      <property name="previewHeight">
+        <getter>
+          return this._height;
+        </getter>
+      </property>
+
+      <property name="previews">
+        <getter>
+          return this.parentNode;
+        </getter>
+      </property>
+      
+      <property name="selected">
+        <getter>
+        <![CDATA[
+          return this.hasAttribute("selected") && (this.getAttribute("selected")=="true");
+        ]]>
+        </getter>
+        <setter>
+        <![CDATA[
+          if (!val)
+          {
+            this.setAttribute("selected","false");
+          }
+          else
+          {
+            this.setAttribute("selected","true");
+          }
+        ]]>
+        </setter>
+      </property>
+
+      <property name="title">
+        <getter>
+        <![CDATA[
+          if (!this._browser)
+          {
+            return "";
+          }
+          var title = this._browser.contentTitle;
+          if (title && title.length>0)
+          {
+            return title;
+          }
+          else
+          {
+            return "(Untitled)";
+          }
+        ]]>
+        </getter>
+      </property>
+
+      <property name="uri">
+        <getter>
+          if (!this._browser)
+          {
+            return "";
+          }
+          var uri = this._browser.currentURI;
+          if (uri)
+          {
+            return uri.spec;
+          }
+          else
+          {
+            return "";
+          }
+        </getter>
+      </property>
+
+      <field name="_browser"></field>
+      <property name="browser">
+        <getter>
+          return this._browser;
+        </getter>
+        <setter>
+          if (this._browser)
+          {
+            this._removeListeners();
+          }
+          this._browser=val;
+          if (val)
+          {
+            this._addListeners();
+          }
+          this.update();
+          this.redraw();
+        </setter>
+      </property>
+
+      <method name="update">
+        <body>
+          var el = document.getAnonymousElementByAttribute(this,"anonid","uri");
+          el.value=this.uri;
+          el = document.getAnonymousElementByAttribute(this,"anonid","title");
+          el.value=this.title;
+        </body>
+      </method>
+      
+      <method name="redraw">
+        <body>
+          this._resize();
+          if (!this._browser)
+          {
+            return;
+          }
+          var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          var ctx = canvas.getContext("2d");
+          var win = this._browser.contentWindow;
+          ctx.clearRect(0, 0, this._width, this._height);
+          ctx.save();
+          ctx.scale(this._width/win.innerWidth,this._height/win.innerHeight);
+          try
+          {
+            ctx.drawWindow(win,0,0,win.innerWidth,win.innerHeight,"rgba(255,255,255,255)");
+          }
+          catch (e)
+          {
+            dump(e);
+          }
+          ctx.restore();
+        </body>
+      </method>
+      
+      <method name="loadStarted">
+        <body>
+          this._redrawTimer.cancel();
+          var throbber = document.getAnonymousElementByAttribute(this,"anonid","loading");
+          throbber.hidden=false;
+          var refresh = document.getAnonymousElementByAttribute(this,"anonid","refresh");
+          refresh.hidden=true;
+        </body>
+      </method>
+      
+      <method name="loadComplete">
+        <body>
+          var throbber = document.getAnonymousElementByAttribute(this,"anonid","loading");
+          throbber.hidden=true;
+          var refresh = document.getAnonymousElementByAttribute(this,"anonid","refresh");
+          refresh.hidden=false;
+          this._redrawTimer.initWithCallback(this, 500,
+                                              Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        </body>
+      </method>
+      
+      <method name="_resize">
+        <body>
+        <![CDATA[
+          var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          if (this._browser)
+          {
+            var computed = window.getComputedStyle(canvas.parentNode,null);
+            this._width = parseInt(computed.width);
+            if (this._width<0)
+            {
+              this._width=0;
+            }
+            var bwidth = this._browser.contentWindow.innerWidth;
+            var bheight = this._browser.contentWindow.innerHeight;
+            this._height = parseInt((bheight/bwidth)*this._width);
+          }
+          else
+          {
+            this._width=0;
+            this._height=0;
+          }
+          canvas.style.width=this._width+"px";
+          canvas.style.height=this._height+"px";
+          canvas.setAttribute("width",this._width);
+          canvas.setAttribute("height",this._height);
+        ]]>
+        </body>
+      </method>
+      
+      <!--  Start of nsIWebProgressListener implementation -->
+
+      <method name="onLocationChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="location"/>
+        <body>
+          this.update();
+        </body>
+      </method>
+      
+      <method name="onStateChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="stateFlags"/>
+        <parameter name="status"/>
+        <body>
+        <![CDATA[
+          if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT)
+          {
+          	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
+          	{
+              this.loadComplete();
+            }
+            else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
+            {
+              this.loadStarted();
+            }
+      		}
+      	]]>
+        </body>
+      </method>
+      
+      <method name="onStatusChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="status"/>
+        <parameter name="message"/>
+        <body>
+        </body>
+      </method>
+      
+      <method name="onProgressChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="curSelfProgress"/>
+        <parameter name="maxSelfProgress"/>
+        <parameter name="curTotalProgress"/>
+        <parameter name="maxTotalProgress"/>
+        <body>
+        </body>
+      </method>
+      
+      <method name="onSecurityChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="state"/>
+        <body>
+        </body>
+      </method>
+      
+      <!--  Start of nsITimerCallback implementation -->
+
+      <method name="notify">
+        <parameter name="timer"/>
+        <body>
+        <![CDATA[
+          if (timer==this._redrawTimer)
+          {
+            this.update();
+            this.redraw();
+            if (this.refreshRate>0)
+            {
+              this._redrawTimer.initWithCallback(this, this.refreshRate,
+                                                Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            }
+          }
+        ]]>
+        </body>
+      </method>
+
+    </implementation>
+
+    <handlers>
+      <handler event="click">
+        if (!this._browser)
+        {
+          return;
+        }
+        var tabbrowser = this.previews.tabbrowser;
+        var panel = this._browser.parentNode.id;
+        var tab = tabbrowser.ownerDocument.getAnonymousElementByAttribute(tabbrowser,"linkedpanel",panel);
+        if (event.originalTarget.getAttribute("anonid")=="refresh")
+        {
+          tabbrowser.reloadTab(tab);
+        }
+        else if (event.originalTarget.getAttribute("anonid")=="close")
+        {
+          tabbrowser.removeTab(tab);
+        }
+        else
+        {
+          tabbrowser.selectedTab=tab;
+        }
+      </handler>
+    </handlers>
+      
+  </binding>
+</bindings>
