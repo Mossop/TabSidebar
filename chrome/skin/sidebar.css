@@ -5,6 +5,8 @@ tabpreviews {
   padding-top: 10px;
   -moz-box-align: stretch;
   -moz-box-orient: vertical;
+  overflow: auto;
+  -moz-box-flex: 1;
 }
   
 tabpreview {

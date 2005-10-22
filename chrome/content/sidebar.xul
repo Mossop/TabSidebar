@@ -45,7 +45,7 @@
 <?xml-stylesheet href="chrome://tabsidebar/content/bindings.css" type="text/css"?>
 <?xml-stylesheet href="chrome://tabsidebar/skin/sidebar.css" type="text/css"?>
 
-<window
+<page
     id="tab-sidebar"
     title="Tab Sidebar"
     onload="sidebar.init()"
@@ -57,4 +57,4 @@
   <tabpreviews id="previews">
   </tabpreviews>
    
-</window>
+</page>

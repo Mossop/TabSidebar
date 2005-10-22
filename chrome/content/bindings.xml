@@ -468,9 +468,11 @@
       <method name="update">
         <body>
           var el = document.getAnonymousElementByAttribute(this,"anonid","uri");
-          el.value=this.uri;
+          if (el)
+            el.value=this.uri;
           el = document.getAnonymousElementByAttribute(this,"anonid","title");
-          el.value=this.title;
+          if (el)
+            el.value=this.title;
         </body>
       </method>
       
