@@ -361,12 +361,15 @@
       
       <method name="update">
         <body>
+          var uri = this.uri;
           var el = document.getAnonymousElementByAttribute(this,"anonid","uri");
           if (el)
-            el.value=this.uri;
+            el.value=uri;
           el = document.getAnonymousElementByAttribute(this,"anonid","title");
           if (el)
             el.value=this.title;
+          var reload = document.getAnonymousElementByAttribute(this,"anonid","reload");
+          reload.disabled=(uri=="about:blank" || uri=="");
         </body>
       </method>
       
@@ -510,12 +513,12 @@
         var tabbrowser = this.previews.tabbrowser;
         if (event.originalTarget.getAttribute("anonid")=="reload")
         {
-          if (event.button==0)
+          if (event.button==0 && !event.originalTarget.disabled)
             tabbrowser.reloadTab(this.tab);
         }
         else if (event.originalTarget.getAttribute("anonid")=="close")
         {
-          if (event.button==0)
+          if (event.button==0 && !event.originalTarget.disabled)
             tabbrowser.removeTab(this.tab);
         }
         else if (event.originalTarget.getAttribute("anonid")=="security")

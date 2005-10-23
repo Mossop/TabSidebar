@@ -71,10 +71,13 @@ tabpreview toolbarbutton[anonid="reload"] image {
   margin-right: 0px;
 }
 
-tabpreview toolbarbutton[anonid="reload"]:hover {
-  -moz-image-region: rect(16px, 16px, 32px, 0px);
+tabpreview toolbarbutton[anonid="reload"][disabled="true"],
+tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover,
+tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover:active {
+  -moz-image-region: rect(32px, 16px, 48px, 0px);
 }
 
+tabpreview toolbarbutton[anonid="reload"]:hover,
 tabpreview toolbarbutton[anonid="reload"]:hover:active {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
