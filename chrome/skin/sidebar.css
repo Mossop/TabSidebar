@@ -14,9 +14,13 @@ tabpreviews .dropindicator {
    border: 1px solid transparent;
 }
 
-tabpreviews .dropindicator[selected="true"] {
-   height: 0px;
-   border: 1px solid black;
+tabpreviews .dropindicator[droptarget="true"] {
+  height: 0px;
+  border: 1px solid black;
+}
+
+tabpreviews tabpreview[droptarget="true"] {
+  background-color: #ea90ec !important;
 }
 
 tabpreview {

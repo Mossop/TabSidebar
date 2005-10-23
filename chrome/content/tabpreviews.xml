@@ -643,8 +643,8 @@
           if (drop!=this._lastDrop)
           {
             if (this._lastDrop)
-              this._lastDrop.removeAttribute("selected");
-            drop.setAttribute("selected","true");
+              this._lastDrop.removeAttribute("droptarget");
+            drop.setAttribute("droptarget","true");
             this._lastDrop=drop;
           }
         </body>
@@ -702,7 +702,10 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          if (aDragSession.canDrop && aDragSession.sourceNode &&
+          if (!aDragSession.canDrop)
+            return;
+            
+          if (aDragSession.sourceNode &&
              (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
           {
             var newpos = this.getNewPosition(aEvent);
@@ -712,7 +715,15 @@
           {
             if (aEvent.target.localName=="tabpreview")
             {
-              // TODO highlight the potential drop tabpreview
+              if (aEvent.target!=this._lastDrop)
+              {
+                if (this._lastDrop)
+                {
+                  this._lastDrop.removeAttribute("droptarget");
+                }
+                aEvent.target.setAttribute("droptarget","true");
+                this._lastDrop=aEvent.target;
+              }
             }
             else
             {
@@ -810,7 +821,7 @@
         <![CDATA[
           if (this._lastDrop)
           {
-            this._lastDrop.removeAttribute("selected");
+            this._lastDrop.removeAttribute("droptarget");
             this._lastDrop=null;
           }
         ]]>
