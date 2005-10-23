@@ -2,7 +2,7 @@ page {
    background-color: threedface;
 }
   
-tabpreviews scrollbox {
+tabpreviews scrollbox[anonid="scrollbox"] {
   padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
@@ -11,20 +11,26 @@ tabpreviews scrollbox {
 tabpreview {
   margin-bottom: 10px;
   padding: 5px;
-  border: 1px #c1d2ee solid;
+  border: 1px grey solid;
   -moz-border-radius: 8px;
 }
 
 tabpreview[selected="true"] {
+  border-color: black;
   background-color: #c1d2ee !important;
 }
 
 tabpreview:hover {
+  border-color: black;
   background-color: #e0e8f6;
 }
 
 tabpreview canvas {
-  border: 1px #c1d2ee solid;
+  border: 1px grey solid;
+}
+
+tabpreview:hover canvas, tabpreview[selected="true"] canvas {
+  border: 1px black solid;
 }
 
 tabpreview label {

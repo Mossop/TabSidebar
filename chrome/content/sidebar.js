@@ -54,7 +54,10 @@ onResize: function(event)
 
 openPreferences: function()
 {
-  var instantApply = false; //getBoolPref("browser.preferences.instantApply", false);
+  var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService);
+
+  var instantApply = prefs.getBoolPref("browser.preferences.instantApply", false);
   var features = "chrome,titlebar,toolbar,centerscreen" + (instantApply ? ",dialog=no" : ",modal");
 
   var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
@@ -83,8 +86,8 @@ init: function()
   {
   	sidebar.hidden=true;
   	var tabbrowser = window.parent.document.getElementById("content");
-  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-strip");
-  	tabstrip.style.display="none";
+  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
+  	tabstrip.hidden=true;
   }
 },
  
@@ -95,8 +98,8 @@ destroy: function()
 	if (sidebar.hidden)
 	{
   	var tabbrowser = window.parent.document.getElementById("content");
-  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-strip");
-  	tabstrip.style.display=null;
+  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
+  	tabstrip.hidden=false;
 	}
 },
 }

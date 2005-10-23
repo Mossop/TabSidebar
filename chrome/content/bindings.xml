@@ -53,12 +53,28 @@
   <binding id="tabpreviews" name="tabpreviews" extends="chrome://global/content/bindings/scrollbox.xml#scrollbox">
 
     <content>
-      <xul:tooltip id="tabpreview_tooltip" orient="vertical">
-        <xul:label value="Title"/>
-        <xul:label value="URI"/>
-      </xul:tooltip>
-
-      <xul:scrollbox allowevents="true" anonid="scrollbox" align="stretch" orient="vertical">
+      <xul:popupset>
+        <xul:tooltip id="tabpreview_tooltip" orient="vertical">
+          <xul:label value="Title"/>
+          <xul:label value="URI"/>
+        </xul:tooltip>
+        <xul:popup id="tabpreview_context">
+          <xul:menuitem id="selectTab" label="&tabsidebar.select.tooltip;"/>
+          <xul:menuitem id="reloadTab" label="&tabsidebar.reload.tooltip;"/>
+          <xul:menuitem id="closeTab" label="&tabsidebar.close.tooltip;"/>
+          <xul:menuseparator/>
+          <xul:menuitem id="refreshPreview" label="&tabsidebar.refresh.label;"/>
+          <xul:menuseparator/>
+          <xul:menuitem id="options" label="&tabsidebar.options.label;"/>
+        </xul:popup>
+        <xul:popup id="tabpreviews_context">
+          <xul:menuitem id="refreshPreviews" label="&tabsidebar.refreshall.label;"/>
+          <xul:menuseparator/>
+          <xul:menuitem id="options" label="&tabsidebar.options.label;"/>
+        </xul:popup>
+      </xul:popupset>
+      
+      <xul:scrollbox context="tabpreviews_context" allowevents="true" anonid="scrollbox" align="stretch" orient="vertical">
         <children/>
       </xul:scrollbox>
     </content>
@@ -373,6 +389,15 @@
         </body>
       </method>
       
+      <method name="getTabForPreview">
+        <parameter name="preview"/>
+        <body>
+          var tabbrowser = this.tabbrowser;
+          var panel = preview._browser.parentNode.id;
+          return tabbrowser.ownerDocument.getAnonymousElementByAttribute(tabbrowser,"linkedpanel",panel);
+        </body>
+      </method>
+      
       <method name="addPreview">
         <parameter name="browser"/>
         <body>
@@ -607,6 +632,54 @@
     
     <handlers>
       
+      <handler event="command">
+      <![CDATA[
+        if (document.popupNode && document.popupNode.localName=="tabpreview")
+        {
+          if (event.originalTarget.id=="selectTab")
+          {
+            this.tabbrowser.selectedTab=document.popupNode.tab;
+          }
+          else if (event.originalTarget.id=="reloadTab")
+          {
+            this.tabbrowser.reloadTab(document.popupNode.tab);
+          }
+          else if (event.originalTarget.id=="refreshPreview")
+          {
+            document.popupNode.redraw();
+          }
+          else if (event.originalTarget.id=="closeTab")
+          {
+            this.tabbrowser.removeTab(document.popupNode.tab);
+          }
+        }
+        if (event.originalTarget.id=="options")
+        {
+          var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                                .getService(Components.interfaces.nsIPrefService);
+          var instantApply = prefs.getBoolPref("browser.preferences.instantApply", false);
+          var features = "chrome,titlebar,toolbar,centerscreen" + (instantApply ? ",dialog=no" : ",modal");
+        
+          var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                             .getService(Components.interfaces.nsIWindowMediator);
+          var win = wm.getMostRecentWindow("Browser:Preferences");
+          if (win)
+          {
+            win.focus();
+          }
+          else
+          {
+            window.openDialog("chrome://tabsidebar/content/preferences.xul",
+                              "Preferences", features);
+        	}
+        }
+        else if (event.originalTarget.id=="refreshPreviews")
+        {
+          this.redraw();
+        }
+      ]]>
+      </handler>
+      
       <handler event="dblclick">
       <![CDATA[
         if (event.originalTarget==this && event.button==0)
@@ -618,11 +691,16 @@
       </handler>
       
       <handler event="popupshowing">
-        dump("showing\n");
-        dump(document.popupNode+"\n");
-        dump(event.target.localName+"\n");
-        dump(event.currentTarget.localName+"\n");
-        dump(event.originalTarget.localName+"\n");
+        if (event.originalTarget.id=="tabpreview_tooltip")
+        {
+          var preview = document.tooltipNode;
+          while (preview.localName!="tabpreview")
+          {
+            preview=preview.parentNode;
+          }
+          event.originalTarget.childNodes[0].value=preview.title;
+          event.originalTarget.childNodes[1].value=preview.uri;
+        }
       </handler>
 
     </handlers>
@@ -631,16 +709,20 @@
   
   <binding id="tabpreview" name="tabpreview">
 
-    <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
-      <xul:hbox align="center" anonid="buttonstrip">
-        <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
-        <xul:image anonid="loading"/>
-        <xul:toolbarbutton anonid="security"/>
-        <xul:spacer flex="1"/>
-        <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
-      </xul:hbox>
-      <xul:vbox align="center" tooltip="tabpreview_tooltip">
+    <content context="tabpreview_context" orient="vertical" align="stretch" selected="false" loading="false" security="none">
+      <xul:stack>
         <xhtml:canvas anonid="canvas" tooltip="tabpreview_tooltip"/>
+        <xul:vbox pack="start">
+          <xul:hbox align="center" anonid="buttonstrip">
+            <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+            <xul:image anonid="loading"/>
+            <xul:toolbarbutton anonid="security"/>
+            <xul:spacer flex="1"/>
+            <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
+          </xul:hbox>
+        </xul:vbox>
+      </xul:stack>
+      <xul:vbox align="center" tooltip="tabpreview_tooltip">
         <xul:label anonid="title" crop="end"/>
         <xul:label anonid="uri" crop="end"/>
       </xul:vbox>
@@ -846,6 +928,12 @@
       <property name="previews">
         <getter>
           return this.parentNode;
+        </getter>
+      </property>
+      
+      <property name="tab">
+        <getter>
+          return this.previews.getTabForPreview(this);
         </getter>
       </property>
       
@@ -1082,55 +1170,60 @@
 
     <handlers>
       <handler event="click">
+      <![CDATA[
         if (!this._browser)
         {
           return;
         }
         var tabbrowser = this.previews.tabbrowser;
-        var panel = this._browser.parentNode.id;
-        var tab = tabbrowser.ownerDocument.getAnonymousElementByAttribute(tabbrowser,"linkedpanel",panel);
         if (event.originalTarget.getAttribute("anonid")=="reload")
         {
-          tabbrowser.reloadTab(tab);
+          if (event.button==0)
+            tabbrowser.reloadTab(this.tab);
         }
         else if (event.originalTarget.getAttribute("anonid")=="close")
         {
-          tabbrowser.removeTab(tab);
+          if (event.button==0)
+            tabbrowser.removeTab(this.tab);
         }
         else if (event.originalTarget.getAttribute("anonid")=="security")
         {
-          var args = {doc: this._browser.contentDocument, initialTab: "securityTab"};
-          var url = this._browser.contentDocument.location;
-
-          var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-          var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-          var windows = windowManagerInterface.getEnumerator("Browser:page-info");
-
-          // Check for windows matching the url
-          while (windows.hasMoreElements()) {
-            var currentWindow = windows.getNext();
-            if (currentWindow.document.firstChild.getAttribute("relatedUrl") == url) {
-              currentWindow.focus();
-              return;
+          if (event.button==0)
+          {
+            var args = {doc: this._browser.contentDocument, initialTab: "securityTab"};
+            var url = this._browser.contentDocument.location;
+  
+            var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
+            var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+            var windows = windowManagerInterface.getEnumerator("Browser:page-info");
+  
+            // Check for windows matching the url
+            while (windows.hasMoreElements()) {
+              var currentWindow = windows.getNext();
+              if (currentWindow.document.firstChild.getAttribute("relatedUrl") == url) {
+                currentWindow.focus();
+                return;
+              }
             }
+  
+            window.parent.openDialog("chrome://browser/content/pageInfo.xul", "_blank", "chrome,dialog=no", args);
           }
-
-          window.openDialog("chrome://browser/content/pageInfo.xul", "_blank", "chrome,dialog=no", args);
         }
         else
         {
           if (event.button==1)
           {
-            tabbrowser.removeTab(tab);
+            tabbrowser.removeTab(this.tab);
           }
           else if (event.button==2)
           {
           }
           else
           {
-            tabbrowser.selectedTab=tab;
+            tabbrowser.selectedTab=this.tab;
           }
         }
+      ]]>
       </handler>
     </handlers>
       

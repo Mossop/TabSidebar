@@ -1,5 +1,10 @@
-<!ENTITY tabsidebar.title          "Tab Sidebar">
-<!ENTITY tabsidebar.menu.label     "Tab Sidebar">
+<!ENTITY tabsidebar.title            "Tab Sidebar">
+<!ENTITY tabsidebar.menu.label       "Tab Sidebar">
 
-<!ENTITY tabsidebar.close.tooltip  "Close tab">
-<!ENTITY tabsidebar.reload.tooltip "Reload tab">
+<!ENTITY tabsidebar.select.tooltip   "Switch to tab">
+<!ENTITY tabsidebar.reload.tooltip   "Reload tab">
+<!ENTITY tabsidebar.close.tooltip    "Close tab">
+
+<!ENTITY tabsidebar.refresh.label    "Refresh preview">
+<!ENTITY tabsidebar.refreshall.label "Refresh all previews">
+<!ENTITY tabsidebar.options.label    "Options">

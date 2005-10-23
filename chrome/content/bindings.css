@@ -12,7 +12,7 @@ tabpreviews {
   -moz-box-orient: vertical;
 }
 
-tabpreviews scrollbox {
+tabpreviews scrollbox[anonid="scrollbox"] {
   -moz-box-flex: 1;
   overflow-y: scroll;
 }
