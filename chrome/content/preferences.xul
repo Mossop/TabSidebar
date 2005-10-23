@@ -101,6 +101,14 @@
                  name="tabsidebar.autorefresh" onchange="preview.refreshChanged()"/>
       <preference type="int"  id="refreshrate"
                  name="tabsidebar.refreshrate"/>
+      <preference type="bool"  id="loadrefresh"
+                 name="tabsidebar.loadrefresh" onchange="preview.loadRefreshChanged()"/>
+      <preference type="int"  id="loadrefreshrate"
+                 name="tabsidebar.loadrefreshrate"/>
+      <preference type="int"  id="loaddelay"
+                 name="tabsidebar.loaddelay"/>
+      <preference type="bool"  id="showadvanced"
+                 name="tabsidebar.showadvanced" onchange="preview.toggleAdvanced()"/>
     </preferences>
     
     <vbox>
@@ -108,8 +116,21 @@
       
       <checkbox preference="drawscrolled" label="&panePreviews.drawscrolled;"/>
       <hbox>
-        <checkbox preference="autorefresh" label="&panePreviews.autorefresh;"/>
+        <checkbox preference="autorefresh" flex="1" label="&panePreviews.autorefresh;"/>
         <textbox id="ratebox" preference="refreshrate"/>
+      </hbox>
+      <checkbox preference="showadvanced" label="&panePreviews.showadvanced;"/>
+    </vbox>
+    
+    <vbox class="advanced">
+      <description>&tabsidebar.advanced;</description>
+      <hbox>
+        <checkbox preference="loadrefresh" flex="1" label="&panePreviews.loadrefresh;"/>
+        <textbox id="loadratebox" preference="loadrefreshrate"/>
+      </hbox>
+      <hbox align="center">
+        <label flex="1" value="&panePreviews.loaddelay;"/>
+        <textbox preference="loaddelay"/>
       </hbox>
     </vbox>
     

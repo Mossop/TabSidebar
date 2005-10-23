@@ -4,6 +4,9 @@ pref("tabsidebar.autorefresh", true);
 pref("tabsidebar.drawscrolled", true);
 pref("tabsidebar.hidetabs", false);
 pref("tabsidebar.loaddelay", 500);
+pref("tabsidebar.loadrefreshrate", 1000);
+pref("tabsidebar.loadrefresh", false);
+pref("tabsidebar.showadvanced", false);
 
 pref("tabsidebar.content.buttons", true);
 pref("tabsidebar.content.preview", true);

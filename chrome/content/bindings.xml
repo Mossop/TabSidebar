@@ -314,6 +314,18 @@
         </getter>
       </property>
       
+      <property name="loadRefresh">
+        <getter>
+          return this.preferences.getBoolPref("loadrefresh");
+        </getter>
+      </property>
+      
+      <property name="loadRefreshRate">
+        <getter>
+          return Math.max(100,this.preferences.getIntPref("loadrefreshrate"));
+        </getter>
+      </property>
+      
       <property name="loadDelay">
         <getter>
           return this.preferences.getIntPref("loaddelay");
@@ -1052,6 +1064,13 @@
         <body>
           this.loading=true;
           this._redrawTimer.cancel();
+          this._loadTimer.cancel();
+          if (this.previews.loadRefresh)
+          {
+            this._loadTimer.initWithCallback(this, 
+                                             this.previews.loadRefreshRate, 
+                                             Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+          }
         </body>
       </method>
       
@@ -1342,6 +1361,11 @@
           if (timer==this._redrawTimer)
           {
             this.loading=false;
+            this.update();
+            this.redraw();
+          }
+          else if (timer==this._loadTimer)
+          {
             this.update();
             this.redraw();
           }

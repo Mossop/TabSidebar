@@ -44,11 +44,37 @@
 
 var preview = {
 
+init: function()
+{
+	preview.refreshChanged();
+	preview.loadRefreshChanged();
+	preview.toggleAdvanced();
+},
+
 refreshChanged: function()
 {
 	var refresh = document.getElementById("autorefresh");
 	var box = document.getElementById("ratebox");
 	box.disabled=!refresh.value;
+},
+
+loadRefreshChanged: function()
+{
+	var refresh = document.getElementById("loadrefresh");
+	var box = document.getElementById("loadratebox");
+	box.disabled=!refresh.value;
+},
+
+toggleAdvanced: function()
+{
+	var advanced = document.getElementById("showadvanced");
+	var adv = document.getElementsByAttribute("class","advanced");
+	for (var i=0; i<adv.length; i++)
+	{
+		adv[i].hidden=!advanced.value;
+	}
 }
 
 }
+
+window.addEventListener("load",preview.init,false);

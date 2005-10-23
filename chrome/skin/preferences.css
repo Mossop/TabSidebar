@@ -7,6 +7,10 @@ prefwindow {
 	-moz-box-flex: 1;
 }
 
-#ratebox {
-   width: 5em;
+.advanced {
+  margin-top: 10px;
+}
+
+textbox {
+  width: 5em;
 }
