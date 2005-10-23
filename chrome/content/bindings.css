@@ -1,9 +1,9 @@
 tabpreview {
-  -moz-binding: url('chrome://tabsidebar/content/bindings.xml#tabpreview');
+  -moz-binding: url('chrome://tabsidebar/content/tabpreview.xml#tabpreview');
 }
 
 tabpreviews {
-  -moz-binding: url('chrome://tabsidebar/content/bindings.xml#tabpreviews');
+  -moz-binding: url('chrome://tabsidebar/content/tabpreviews.xml#tabpreviews');
 }
 
 tabpreviews {
@@ -31,4 +31,14 @@ tabpreview {
 
 tabpreview[security="none"] toolbarbutton[anonid="security"] {
   display: none;
+}
+
+tabpreviews[hide~="uri"] label[anonid="uri"],
+tabpreviews[hide~="title"] label[anonid="title"],
+tabpreviews[hide~="preview"] canvas[anonid="canvas"],
+tabpreviews[hide~="security"] toolbarbutton[anonid="security"],
+tabpreviews[hide~="throbber"] image[anonid="loading"],
+tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"],
+tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
+    display: none;
 }

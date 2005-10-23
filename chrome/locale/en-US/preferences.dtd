@@ -11,7 +11,10 @@
 <!ENTITY paneDisplay.title              "Display">
 <!ENTITY paneDisplay.description        "This section allows you to customise what is displayed for each tab in the sidebar.">
 
-<!ENTITY paneDisplay.content.buttons		"Display tab buttons">
+<!ENTITY paneDisplay.content.reload 		"Display reload button">
+<!ENTITY paneDisplay.content.throbber		"Display loading throbber">
+<!ENTITY paneDisplay.content.security		"Display security icon">
+<!ENTITY paneDisplay.content.close  		"Display close button">
 <!ENTITY paneDisplay.content.preview		"Display previews">
 <!ENTITY paneDisplay.content.title   		"Display tab title">
 <!ENTITY paneDisplay.content.uri    		"Display tab URL">

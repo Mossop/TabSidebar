@@ -69,8 +69,14 @@
   <prefpane id="paneDisplay" label="&paneDisplay.title;">
   
     <preferences>
-      <preference type="bool" id="content.buttons"
-                 name="tabsidebar.content.buttons"/>
+      <preference type="bool" id="content.reload"
+                 name="tabsidebar.content.reload"/>
+      <preference type="bool" id="content.throbber"
+                 name="tabsidebar.content.throbber"/>
+      <preference type="bool" id="content.security"
+                 name="tabsidebar.content.security"/>
+      <preference type="bool" id="content.close"
+                 name="tabsidebar.content.close"/>
       <preference type="bool" id="content.preview"
                  name="tabsidebar.content.preview"/>
       <preference type="bool" id="content.title"
@@ -82,7 +88,10 @@
     <vbox>
       <description>&paneDisplay.description;</description>
     
-      <checkbox preference="content.buttons" label="&paneDisplay.content.buttons;"/>
+      <checkbox preference="content.reload" label="&paneDisplay.content.reload;"/>
+      <checkbox preference="content.throbber" label="&paneDisplay.content.throbber;"/>
+      <checkbox preference="content.security" label="&paneDisplay.content.security;"/>
+      <checkbox preference="content.close" label="&paneDisplay.content.close;"/>
       <checkbox preference="content.preview" label="&paneDisplay.content.preview;"/>
       <checkbox preference="content.title" label="&paneDisplay.content.title;"/>
       <checkbox preference="content.uri" label="&paneDisplay.content.uri;"/>
