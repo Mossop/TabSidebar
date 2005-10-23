@@ -206,14 +206,6 @@
         <body>
         <![CDATA[
           var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
-          if (this.previews.showPreview)
-          {
-            canvas.style.display=null;
-          }
-          else
-          {
-            canvas.style.display="none";
-          }
           canvas.setAttribute("width",this.previews.previewWidth);
           canvas.setAttribute("height",this.previews.previewHeight);
           canvas.style.width=this.previews.previewWidth+"px";
@@ -392,7 +384,6 @@
           }
           catch (e)
           {
-            canvas.style.display="none";
             return;
           }
           var win = this._browser.contentWindow;

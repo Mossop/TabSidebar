@@ -131,11 +131,6 @@
                                                 this.refreshRate,
                                                 Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
           }
-          var menu = document.getAnonymousElementByAttribute(this,"id","refreshPreview");
-          menu.disabled=!this.showPreview;
-          menu = document.getAnonymousElementByAttribute(this,"id","refreshPreviews");
-          menu.disabled=!this.showPreview;
-
           this.updateContent();        
         </body>
       </method>
@@ -534,7 +529,12 @@
       <method name="updateContent">
         <body>
         <![CDATA[
-          var hide = "";
+          var canvasWasHidden=false;
+          var hide = this.getAttribute("hide");
+          if (hide.indexOf("preview")>=0)
+            canvasWasHidden=true;
+          
+          hide = "";
           if (!this.showThrobber)
             hide+=" throbber";
           if (!this.showReload)
@@ -555,7 +555,16 @@
           
           this.setAttribute("hide",hide);
       
-        	this.onResize();
+          var state = this.showPreview ? "false" : "true";
+          var menu = document.getAnonymousElementByAttribute(this,"id","refreshPreview");
+          menu.setAttribute("disabled",state);
+          menu = document.getAnonymousElementByAttribute(this,"id","refreshPreviews");
+          menu.setAttribute("disabled",state);
+
+        	if (!this.onResize() && canvasWasHidden && this.showPreview)
+        	{
+        	  this.redraw();
+        	}
         ]]>
         </body>
       </method>
@@ -846,10 +855,6 @@
           switch (data)
           {
             case "content.preview":
-              var menu = document.getAnonymousElementByAttribute(this,"id","refreshPreview");
-              menu.disabled=!this.showPreview;
-              menu = document.getAnonymousElementByAttribute(this,"id","refreshPreviews");
-              menu.disabled=!this.showPreview;
             case "content.close":
             case "content.security":
             case "content.reload":
