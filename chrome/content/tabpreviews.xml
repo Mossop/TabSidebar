@@ -616,6 +616,51 @@
       
       <!-- Start of DnD implementation -->
 
+      <field name="_lastDrop"/>
+      
+      <method name="_drawDropIndicator">
+        <parameter name="position"/>
+        <body>
+          var nextNode = this.previews[position];
+          var drop = null;
+          if (nextNode)
+          {
+            drop = nextNode.previousSibling;
+          }
+          else
+          {
+            drop = this.previews[this.previews.length-1].nextSibling;
+          }
+          if (drop!=this._lastDrop)
+          {
+            if (this._lastDrop)
+              this._lastDrop.removeAttribute("selected");
+            drop.setAttribute("selected","true");
+            this._lastDrop=drop;
+          }
+        </body>
+      </method>
+      
+      <method name="getNewPosition">
+        <parameter name="aEvent"/>
+        <body>
+        <![CDATA[
+          var diff = 0;
+          var previews = this.previews;
+          for (var i=0; i<previews.length; i++)
+          {
+            var bo = previews[i].boxObject;
+            if ((bo.y+(bo.height/2))>aEvent.clientY)
+            {
+              return i-diff;
+              break;
+            }
+          }
+          return previews.length-diff;
+        ]]>
+        </body>
+      </method>
+      
       <method name="onDragStart">
         <parameter name="aEvent"/>
         <parameter name="aXferData"/>
@@ -651,28 +696,19 @@
           if (aDragSession.canDrop && aDragSession.sourceNode &&
              (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
           {
-            try
+            var newpos = this.getNewPosition(aEvent);
+            this._drawDropIndicator(newpos);
+          }
+          else
+          {
+            if (aEvent.target.localName=="tabpreview")
             {
-              var newpos = this.getNewPosition(aEvent,aDragSession.sourceNode);
-              var nextNode = this.previews[newpos];
-              var drop = null;
-              if (nextNode)
-              {
-                drop = nextNode.previousSibling;
-              }
-              else
-              {
-                drop = this.previews[this.previews.length-1].nextSibling;
-              }
-              if (!drop.hasAttribute("selected"))
-              {
-                this.onDragExit(aEvent,aDragSession);
-                drop.setAttribute("selected","true");
-              }
+              // TODO highlight the potential drop tabpreview
             }
-            catch (e)
+            else
             {
-              dump(e+"\n");
+              var newpos = this.getNewPosition(aEvent);
+              this._drawDropIndicator(newpos);
             }
           }
         ]]>
@@ -697,21 +733,17 @@
             {
               preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
             }
-            var newIndex = this.getNewPosition(aEvent, preview);
+            var newIndex = this.getNewPosition(aEvent);
             var previews = this.previews;
-            for (var i=0; i<previews.length; i++)
-            {
-              if (previews[i]==preview)
-                break;
-            }
-            if (i<=newIndex)
-            {
+            var oldIndex = preview.tab._tPos;
+            
+            if (newIndex>oldIndex)
               newIndex--;
-            }
-            if (newIndex>=0)
-            {
-              this.tabbrowser.moveTabTo(preview.tab, newIndex);
-            }
+              
+            if (newIndex==oldIndex)
+              return;
+
+            this.tabbrowser.moveTabTo(preview.tab, newIndex);
           }
           else
           {
@@ -740,7 +772,13 @@
             if (aEvent.target.localName != "tabpreview")
             {
               // We're adding a new tab.
-              this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
+              var newIndex = this.getNewPosition(aEvent);
+              var move = (newIndex!=this.previews.length)
+
+              var newtab = this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
+              
+              if (move)
+                this.tabbrowser.moveTabTo(newtab, newIndex);
             }
             else
             {
@@ -761,10 +799,10 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          var drops = this.getElementsByTagName("box");
-          for (var i = 0; i<drops.length; i++)
+          if (this._lastDrop)
           {
-            drops[i].removeAttribute("selected");
+            this._lastDrop.removeAttribute("selected");
+            this._lastDrop=null;
           }
         ]]>
         </body>
@@ -782,27 +820,6 @@
         </body>
       </method>
 
-      <method name="getNewPosition">
-        <parameter name="aEvent"/>
-        <parameter name="current"/>
-        <body>
-        <![CDATA[
-          var diff = 0;
-          var previews = this.previews;
-          for (var i=0; i<previews.length; i++)
-          {
-            var bo = previews[i].boxObject;
-            if ((bo.y+(bo.height/2))>aEvent.clientY)
-            {
-              return i-diff;
-              break;
-            }
-          }
-          return previews.length-diff;
-        ]]>
-        </body>
-      </method>
-      
       <!-- Start of nsITimerCallback implementation -->
 
       <method name="notify">
