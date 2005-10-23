@@ -39,13 +39,13 @@ tabpreview label {
 }
 
 tabpreview image[anonid="loading"] {
-  list-style-image: url("chrome://global/skin/throbber/Throbber-small.gif");
+  list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
   padding: 3px;
 }
 
 tabpreview toolbarbutton[anonid="reload"] {
-  list-style-image: url("chrome://browser/skin/Toolbar-small.png");
+  list-style-image: url("chrome://tabsidebar/skin/Toolbar-small.png");
   -moz-appearance: none;
   -moz-image-region: rect(0px, 64px, 16px, 48px);
   border: none !important;
@@ -64,7 +64,7 @@ tabpreview toolbarbutton[anonid="reload"]:hover:active {
 }
 
 tabpreview toolbarbutton[anonid="close"] {
-  list-style-image: url("chrome://global/skin/icons/close.png");
+  list-style-image: url("chrome://tabsidebar/skin/close.png");
   -moz-appearance: none;
   -moz-image-region: rect(0px, 16px, 16px, 0px);
   border: none !important;
@@ -83,17 +83,17 @@ tabpreview toolbarbutton[anonid="close"]:hover:active {
 }
 
 tabpreview toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://browser/skin/Secure.png");
+  list-style-image: url("chrome://tabsidebar/skin/Secure.png");
   -moz-appearance: none;
   border: none !important;
 }
 
 tabpreview[security="high"] toolbarbutton[anonid="security"],
 tabpreview[security="low"] toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://browser/skin/Secure.png");
+  list-style-image: url("chrome://tabsidebar/skin/Secure.png");
 }
 
 	
 tabpreview[security="broken"] toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://browser/skin/Security-broken.png");
+  list-style-image: url("chrome://tabsidebar/skin/Security-broken.png");
 }

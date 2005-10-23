@@ -86,7 +86,7 @@ init: function()
   {
   	sidebar.hidden=true;
   	var tabbrowser = window.parent.document.getElementById("content");
-  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
+  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-strip");
   	tabstrip.hidden=true;
   }
 },
@@ -98,7 +98,7 @@ destroy: function()
 	if (sidebar.hidden)
 	{
   	var tabbrowser = window.parent.document.getElementById("content");
-  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
+  	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-strip");
   	tabstrip.hidden=false;
 	}
 },
