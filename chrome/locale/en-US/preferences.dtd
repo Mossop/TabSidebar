@@ -1,5 +1,13 @@
 <!ENTITY tabsidebar.options.title       "Tab Sidebar Options">
 
+<!ENTITY tabsidebar.reopen              "(will take effect the next time the sidebar is opened)">
+
+<!ENTITY paneGeneral.title              "General">
+<!ENTITY paneGeneral.description        "This section provides general options to control the behaviour of the sidebar.
+                                         Most of these options will not take effect until the sidebar is next opened.">
+
+<!ENTITY paneGeneral.hidetabs           "Hide the tab bar when the sidebar is open">
+
 <!ENTITY paneDisplay.title              "Display">
 <!ENTITY paneDisplay.description        "This section allows you to customise what is displayed for each tab in the sidebar.">
 

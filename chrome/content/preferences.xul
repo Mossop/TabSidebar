@@ -51,6 +51,21 @@
             title="&tabsidebar.options.title;"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
+  <prefpane id="paneGeneral" label="&paneGeneral.title;">
+  
+    <preferences>
+      <preference type="bool" id="hidetabs"
+                 name="tabsidebar.hidetabs"/>
+    </preferences>
+
+    <vbox>
+      <description>&paneGeneral.description;</description>
+    
+      <checkbox preference="hidetabs" label="&paneGeneral.hidetabs;"/>
+    </vbox>
+
+  </prefpane>
+  
   <prefpane id="paneDisplay" label="&paneDisplay.title;">
   
     <preferences>

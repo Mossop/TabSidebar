@@ -95,9 +95,17 @@
         var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                               .getService(Components.interfaces.nsIPrefBranchInternal);
         prefs.addObserver("tabsidebar.", this, false);
-        this.observe(prefs,"","tabsidebar.drawscrolled");
-        this.observe(prefs,"","tabsidebar.refreshrate");
-        this.observe(prefs,"","tabsidebar.autorefresh");
+        
+        if (this.autoRefresh)
+        {
+          this._refreshTimer.initWithCallback(this, 
+                                              this.refreshRate,
+                                              Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
+        }
+        var menu = document.getAnonymousElementByAttribute(this,"id","refreshPreview");
+        menu.disabled=!this.showPreview;
+        menu = document.getAnonymousElementByAttribute(this,"id","refreshPreviews");
+        menu.disabled=!this.showPreview;
 
       	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","box");
       	drop.className="dropindicator";
@@ -220,7 +228,7 @@
       <property name="showPreview">
         <getter>
         <![CDATA[
-          return (this.previewWidth!=0 && this.previewHeight!=0 && this.preferences.getBoolPref("content.preview"));
+          return (this.previewWidth>0 && this.previewHeight>0 && this.preferences.getBoolPref("content.preview"));
         ]]>
         </getter>
       </property>
@@ -294,78 +302,28 @@
         </setter>
       </property>
       
-      <field name="_autoRefresh">false</field>
       <property name="autoRefresh">
         <getter>
-          return this._autoRefresh;
+          return this.preferences.getBoolPref("autorefresh");
         </getter>
-        <setter>
-          if (val==this._autoRefresh)
-          {
-            return val;
-          }
-          this._autoRefresh=val;
-          if (val)
-          {
-            this._refreshTimer.cancel();
-          }
-          else
-          {
-            this._refreshTimer.initWithCallback(this, this.refreshRate, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
-          }
-          return val;
-        </setter>
       </property>
       
-      <field name="_refreshRate">120</field>
       <property name="refreshRate">
         <getter>
-          return this._refreshRate*1000;
+          return Math.max(5,this.preferences.getIntPref("refreshrate"))*1000;
         </getter>
-        <setter>
-          if (this._refreshRate==val)
-          {
-            return val;
-          }
-          this._refreshRate=val;
-          if (this.autoRefresh)
-          {
-            this._refreshTimer.cancel();
-            this._refreshTimer.initWithCallback(this, val, Components.interfaces.nsITimer. TYPE_REPEATING_SLACK);
-          }
-          return val;
-        </setter>
       </property>
       
-      <field name="_loadDelay">500</field>
       <property name="loadDelay">
         <getter>
-          return this._loadDelay;
+          return this.preferences.getIntPref("loaddelay");
         </getter>
-        <setter>
-          if (this._loadDelay==val)
-          {
-            return val;
-          }
-          this._loadDelay=val;
-          return val;
-        </setter>
       </property>
       
-      <field name="_drawScrolled">true</field>
       <property name="drawScrolled">
         <getter>
-          return this._drawScrolled;
+          return this.preferences.getBoolPref("drawscrolled");
         </getter>
-        <setter>
-          if (val==this._drawScrolled)
-          {
-            return val;
-          }
-          this._drawScrolled=val;
-          this.redraw();
-          return val;
-        </setter>
       </property>
       
       <!-- Methods -->
@@ -789,24 +747,30 @@
         <body>
         <![CDATA[
           data=data.substring(11);
-          if (data.substring(0,8)=="content.")
-          {
-            this.updateContent();
-            return;
-          }
           switch (data)
           {
-            case "refreshrate":
-              this.refreshRate=this.preferences.getIntPref(data);
+            case "content.preview":
+              var menu = document.getAnonymousElementByAttribute(this,"id","refreshPreview");
+              menu.disabled=!this.showPreview;
+              menu = document.getAnonymousElementByAttribute(this,"id","refreshPreviews");
+              menu.disabled=!this.showPreview;
+            case "content.buttons":
+            case "content.title":
+            case "content.uri":
+              this.updateContent();
               break;
+            case "refreshrate":
             case "autorefresh":
-              this.autoRefresh=this.preferences.getBoolPref(data);
+              this._refreshTimer.cancel();
+              if (this.autoRefresh)
+              {
+                this._refreshTimer.initWithCallback(this, 
+                                                    this.refreshRate,
+                                                    Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
+              }
               break;
             case "drawscrolled":
-              this.drawScrolled=this.preferences.getBoolPref(data);
-              break;
-            case "loaddelay":
-              this.loadDelay=this.preferences.getIntPref(data);
+              this.redraw();
               break;
             case "previewWidth":
               if (this.preferences.prefHasUserValue(data))
@@ -1035,6 +999,10 @@
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
       
+      <field name="_loadTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      
       <field name="_browser"></field>
       <property name="browser">
         <getter>
@@ -1089,7 +1057,18 @@
       
       <method name="_loadComplete">
         <body>
-          this._redrawTimer.initWithCallback(this, this.previews.loadDelay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._loadTimer.cancel();
+          var delay = this.previews.loadDelay;
+          if (delay==0)
+          {
+            this.loading=false;
+            this.update();
+            this.redraw();
+          }
+          else
+          {
+            this._redrawTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          }
         </body>
       </method>
       

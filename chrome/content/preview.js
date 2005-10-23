@@ -46,7 +46,6 @@ var preview = {
 
 refreshChanged: function()
 {
-	dump("here");
 	var refresh = document.getElementById("autorefresh");
 	var box = document.getElementById("ratebox");
 	box.disabled=!refresh.value;
