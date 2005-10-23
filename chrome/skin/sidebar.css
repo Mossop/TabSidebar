@@ -1,15 +1,27 @@
 page {
    background-color: threedface;
 }
-  
+
 tabpreviews scrollbox[anonid="scrollbox"] {
-  padding-top: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   padding-left: 10px;
   padding-right: 10px;
 }
-  
+
+tabpreviews .dropindicator {
+   height: 0px;
+   border: 1px solid transparent;
+}
+
+tabpreviews .dropindicator[selected="true"] {
+   height: 0px;
+   border: 1px solid black;
+}
+
 tabpreview {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
+  margin-top: 4px;
   padding: 5px;
   border: 1px grey solid;
   -moz-border-radius: 8px;

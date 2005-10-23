@@ -55,6 +55,8 @@
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
 	<script type="application/x-javascript" src="sidebar.js"/>
+  <script src="chrome://global/content/nsDragAndDrop.js"/>
+  <script src="chrome://global/content/nsTransferable.js"/>
 
   <tabpreviews id="previews">
   </tabpreviews>

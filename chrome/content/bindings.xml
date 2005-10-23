@@ -74,7 +74,11 @@
         </xul:popup>
       </xul:popupset>
       
-      <xul:scrollbox context="tabpreviews_context" allowevents="true" anonid="scrollbox" align="stretch" orient="vertical">
+      <xul:scrollbox context="tabpreviews_context" allowevents="true" anonid="scrollbox" align="stretch" orient="vertical"
+                     ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
+                     ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
+                     ondragdrop="nsDragAndDrop.drop(event, this.parentNode); event.stopPropagation();"
+                     ondragexit="nsDragAndDrop.dragExit(event, this.parentNode); event.stopPropagation();">
         <children/>
       </xul:scrollbox>
     </content>
@@ -95,6 +99,10 @@
         this.observe(prefs,"","tabsidebar.refreshrate");
         this.observe(prefs,"","tabsidebar.autorefresh");
 
+      	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","box");
+      	drop.className="dropindicator";
+        this.previewContainer.appendChild(drop);
+        
         var browsers = this.tabbrowser.browsers;
         for (var i=0; i<browsers.length; i++)
         {
@@ -403,6 +411,8 @@
         <body>
         <![CDATA[
         	var preview = document.createElement("tabpreview");
+        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","box");
+        	drop.className="dropindicator";
         	var id=browser.parentNode.id;
         	if (id)
         	{
@@ -416,15 +426,18 @@
         		if (next)
         		{
           		this.previewContainer.insertBefore(preview,next);
+          		this.previewContainer.insertBefore(drop,next);
           	}
           	else
           	{
               this.previewContainer.appendChild(preview);
+              this.previewContainer.appendChild(drop);
           	}
         	}
         	else
         	{
         		this.previewContainer.appendChild(preview);
+        		this.previewContainer.appendChild(drop);
         	}
         	preview.init();
         	preview.browser=browser;
@@ -443,7 +456,9 @@
         <body>
         	var preview = this.getPreviewForBrowser(browser);
         	preview.browser=null;
+        	var drop = preview.nextSibling;
         	preview.parentNode.removeChild(preview);
+        	drop.parentNode.removeChild(drop);
         	this.onResize();
         </body>
       </method>
@@ -454,7 +469,7 @@
           var preview = this.getPreviewForBrowser(browser);
           if (preview)
           {
-            preview.parentNode.removeChild(preview);
+            this.removePreview(browser);
             this.addPreview(browser);
           }
         </body>
@@ -562,7 +577,196 @@
         </body>
       </method>
       
-      <!--  Start of nsITimerCallback implementation -->
+      <!-- Start of DnD implementation -->
+
+      <method name="onDragStart">
+        <parameter name="aEvent"/>
+        <parameter name="aXferData"/>
+        <parameter name="aDragAction"/>
+        <body>
+        <![CDATA[
+          if (aEvent.target.localName=="tabpreview")
+          {
+            aXferData.data = new TransferData();
+            
+            var URI = aEvent.target._browser.currentURI;
+            if (URI)
+            {
+              aXferData.data.addDataForFlavour("text/unicode", URI.spec);
+              aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.contentTitle);
+              aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.contentTitle + '</a>');
+            }
+            else
+            {
+              aXferData.data.addDataForFlavour("text/unicode", "about:blank");
+            }
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="onDragOver">
+        <parameter name="aEvent"/>
+        <parameter name="aFlavour"/>
+        <parameter name="aDragSession"/>
+        <body>
+        <![CDATA[
+          if (aDragSession.canDrop && aDragSession.sourceNode &&
+             (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
+          {
+            try
+            {
+              var newpos = this.getNewPosition(aEvent,aDragSession.sourceNode);
+              var nextNode = this.previews[newpos];
+              var drop = null;
+              if (nextNode)
+              {
+                drop = nextNode.previousSibling;
+              }
+              else
+              {
+                drop = this.previews[this.previews.length-1].nextSibling;
+              }
+              if (!drop.hasAttribute("selected"))
+              {
+                this.onDragExit(aEvent,aDragSession);
+                drop.setAttribute("selected","true");
+              }
+            }
+            catch (e)
+            {
+              dump(e+"\n");
+            }
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="onDrop">
+        <parameter name="aEvent"/>
+        <parameter name="aXferData"/>
+        <parameter name="aDragSession"/>
+        <body>
+        <![CDATA[
+          if (aDragSession.sourceNode && 
+             (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
+          {
+            var preview = null
+            if (aDragSession.sourceNode.parentNode == this)
+            {
+              preview = aDragSession.sourceNode;              
+            }
+            else
+            {
+              preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
+            }
+            var newIndex = this.getNewPosition(aEvent, preview);
+            var previews = this.previews;
+            for (var i=0; i<previews.length; i++)
+            {
+              if (previews[i]==preview)
+                break;
+            }
+            if (i<=newIndex)
+            {
+              newIndex--;
+            }
+            if (newIndex>=0)
+            {
+              this.tabbrowser.moveTabTo(preview.tab, newIndex);
+            }
+          }
+          else
+          {
+            var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
+
+            // valid urls don't contain spaces ' '; if we have a space it isn't a valid url.
+            // Also disallow dropping javascript: or data: urls--bail out
+            if (!url || !url.length || url.indexOf(" ", 0) != -1 ||
+                /^\s*(javascript|data):/.test(url))
+              return;
+
+            this.tabbrowser.dragDropSecurityCheck(aEvent, aDragSession, url);
+
+            var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                                  .getService(Components.interfaces.nsIPrefService);
+            var bgLoad = true;
+            try
+            {
+              bgLoad = prefs.getBoolPref("browser.tabs.loadInBackground");
+            }
+            catch (e) { }
+
+            if (aEvent.shiftKey)
+              bgLoad = !bgLoad;
+
+            if (aEvent.target.localName != "tabpreview")
+            {
+              // We're adding a new tab.
+              this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
+            }
+            else
+            {
+              // Load in an existing tab.
+              var preview = aEvent.target;
+              preview.browser.loadURI(url);
+
+              if (this.tabbrowser.selectedTab != preview.tab && !bgLoad)
+                this.tabbrowser.selectedTab = preview.tab;
+            }
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="onDragExit">
+        <parameter name="aEvent"/>
+        <parameter name="aDragSession"/>
+        <body>
+        <![CDATA[
+          var drops = this.getElementsByTagName("box");
+          for (var i = 0; i<drops.length; i++)
+          {
+            drops[i].removeAttribute("selected");
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="getSupportedFlavours">
+        <body>
+        <![CDATA[
+          var flavourSet = new FlavourSet();
+          flavourSet.appendFlavour("text/x-moz-url");
+          flavourSet.appendFlavour("text/unicode");
+          flavourSet.appendFlavour("application/x-moz-file", "nsIFile");
+          return flavourSet;
+        ]]>
+        </body>
+      </method>
+
+      <method name="getNewPosition">
+        <parameter name="aEvent"/>
+        <parameter name="current"/>
+        <body>
+        <![CDATA[
+          var diff = 0;
+          var previews = this.previews;
+          for (var i=0; i<previews.length; i++)
+          {
+            var bo = previews[i].boxObject;
+            if ((bo.y+(bo.height/2))>aEvent.clientY)
+            {
+              return i-diff;
+              break;
+            }
+          }
+          return previews.length-diff;
+        ]]>
+        </body>
+      </method>
+      
+      <!-- Start of nsITimerCallback implementation -->
 
       <method name="notify">
         <parameter name="timer"/>
@@ -682,7 +886,7 @@
       
       <handler event="dblclick">
       <![CDATA[
-        if (event.originalTarget==this && event.button==0)
+        if (event.originalTarget.parentNode.parentNode==this)
         {
           var newTab = this.tabbrowser.addTab("about:blank");
           this.tabbrowser.selectedTab=newTab;
@@ -1188,26 +1392,11 @@
         }
         else if (event.originalTarget.getAttribute("anonid")=="security")
         {
-          if (event.button==0)
+          if (tabbrowser.selectedTab!=this.tab)
           {
-            var args = {doc: this._browser.contentDocument, initialTab: "securityTab"};
-            var url = this._browser.contentDocument.location;
-  
-            var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-            var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-            var windows = windowManagerInterface.getEnumerator("Browser:page-info");
-  
-            // Check for windows matching the url
-            while (windows.hasMoreElements()) {
-              var currentWindow = windows.getNext();
-              if (currentWindow.document.firstChild.getAttribute("relatedUrl") == url) {
-                currentWindow.focus();
-                return;
-              }
-            }
-  
-            window.parent.openDialog("chrome://browser/content/pageInfo.xul", "_blank", "chrome,dialog=no", args);
+            tabbrowser.selectedTab=this.tab;
           }
+          window.parent.displaySecurityInfo();
         }
         else
         {
