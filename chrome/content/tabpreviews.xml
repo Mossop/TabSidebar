@@ -56,7 +56,7 @@
       <xul:popupset>
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">
           <xul:label value="Title"/>
-          <xul:label value="URI"/>
+          <xul:label style="display: none" value="URI"/>
         </xul:tooltip>
         <xul:popup id="tabpreview_context">
           <xul:menuitem id="selectTab" label="&tabsidebar.select.tooltip;"/>
@@ -103,8 +103,9 @@
       
       <method name="_initTree">
         <body>
-        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","box");
-        	drop.className="dropindicator";
+        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+        	drop.className="dropindicator groove";
+        	drop.setAttribute("orient","horizontal");
           this.previewContainer.appendChild(drop);
         </body>
       </method>
@@ -116,7 +117,6 @@
             var state = this.preferences.getBoolPref("content.buttons");
             this.preferences.setBoolPref("content.reload",state);
             this.preferences.setBoolPref("content.throbber",state);
-            this.preferences.setBoolPref("content.security",state);
             this.preferences.setBoolPref("content.close",state);
             this.preferences.clearUserPref("content.buttons");
           }
@@ -427,8 +427,9 @@
         <body>
         <![CDATA[
         	var preview = document.createElement("tabpreview");
-        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","box");
-        	drop.className="dropindicator";
+        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+        	drop.className="dropindicator groove";
+        	drop.setAttribute("orient","horizontal");
         	var id=browser.parentNode.id;
         	if (id)
         	{
@@ -597,7 +598,8 @@
             if (previews[i]._browser)
             {
               var preview = previews[i];
-              var computed = window.getComputedStyle(preview,null);
+              var container = document.getAnonymousElementByAttribute(preview,"anonid","canvas_container");
+              var computed = window.getComputedStyle(container,null);
               newWidth = parseInt(computed.width);
               if (newWidth<0)
               {

@@ -18,11 +18,15 @@ tabpreviews scrollbox[anonid="scrollbox"] {
 }
 
 tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
-  display: none;
+  visibility: hidden;
+}
+  
+tabpreviews[hide~="throbber"] tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
+  visibility: visible;
 }
   
 tabpreview[loading="false"] image[anonid="loading"] {
-  display: none;
+  visibility: hidden;
 }
 
 tabpreview {
@@ -30,7 +34,7 @@ tabpreview {
 }
 
 tabpreview[security="none"] toolbarbutton[anonid="security"] {
-  display: none;
+  visibility: hidden;
 }
 
 tabpreviews[hide~="uri"] label[anonid="uri"],
@@ -40,5 +44,24 @@ tabpreviews[hide~="security"] toolbarbutton[anonid="security"],
 tabpreviews[hide~="throbber"] image[anonid="loading"],
 tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"],
 tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
-    display: none;
+  visibility: hidden !important;
+}
+
+tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] image[anonid="loading"],
+tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="reload"],
+tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="close"] {
+  display: none;
+}
+
+tabpreviews[hide~="reload"][hide~="title"][hide~="throbber"][hide~="close"] hbox[anonid="topbox"] {
+  display: none;
+}
+
+tabpreviews[hide~="uri"] vbox[anonid="bottombox"] {
+  display: none;
+}
+
+tabpreviews[hide~="security"] vbox[anonid="leftstrip"],
+tabpreviews[hide~="security"] vbox[anonid="rightstrip"] {
+  display: none;
 }

@@ -14,4 +14,4 @@ pref("tabsidebar.content.reload", true);
 pref("tabsidebar.content.throbber", true);
 pref("tabsidebar.content.preview", true);
 pref("tabsidebar.content.title", true);
-pref("tabsidebar.content.uri", true);
+pref("tabsidebar.content.uri", false);

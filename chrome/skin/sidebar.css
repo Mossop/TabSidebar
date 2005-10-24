@@ -3,42 +3,52 @@ page {
 }
 
 tabpreviews scrollbox[anonid="scrollbox"] {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-tabpreviews .dropindicator {
-   height: 0px;
-   border: 1px solid transparent;
+  padding-top: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 0;
 }
 
 tabpreviews .dropindicator[droptarget="true"] {
-  height: 0px;
   border: 1px solid black;
 }
 
 tabpreviews tabpreview[droptarget="true"] {
-  background-color: #ea90ec !important;
+  border: 1px solid black !important;
 }
 
 tabpreview {
-  margin-bottom: 4px;
-  margin-top: 4px;
-  padding: 5px;
-  border: 1px grey solid;
-  -moz-border-radius: 8px;
+  padding: 3px;
+  border: 1px transparent solid;
 }
 
-tabpreview[selected="true"] {
-  border-color: black;
+tabpreviews tabpreview[selected="true"] {
+  border-top-color: threedshadow;
+  border-right-color: threedhighlight;
+  border-bottom-color: threedhighlight;
+  border-left-color: threedshadow;
   background-color: #c1d2ee !important;
 }
 
 tabpreview:hover {
-  border-color: black;
+  border-top-color: threedhighlight;
+  border-right-color: threedshadow;
+  border-bottom-color: threedshadow;
+  border-left-color: threedhighlight;
   background-color: #e0e8f6;
+}
+
+tabpreview .toolbarbutton-icon {
+  margin: 0px;
+}
+  
+tabpreview toolbarbutton {
+  padding-left: 0;
+  padding-bottom: 2px;
+}
+  
+tabpreview vbox.sidestrip {
+  width: 19px;
 }
 
 tabpreview canvas {
@@ -57,7 +67,10 @@ tabpreview label {
 tabpreview image[anonid="loading"] {
   list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
-  padding: 3px;
+  padding-top: 3px;
+  padding-left: 0px;
+  padding-right: 3px;
+  padding-bottom: 2px;
 }
 
 tabpreview toolbarbutton[anonid="reload"] {

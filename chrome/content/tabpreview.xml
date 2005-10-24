@@ -53,21 +53,26 @@
   <binding id="tabpreview" name="tabpreview">
 
     <content context="tabpreview_context" orient="vertical" align="stretch" selected="false" loading="false" security="none">
-      <xul:stack>
-        <xhtml:canvas anonid="canvas" tooltip="tabpreview_tooltip"/>
-        <xul:vbox pack="start">
-          <xul:hbox align="center" anonid="buttonstrip">
-            <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
-            <xul:image anonid="loading"/>
-            <xul:toolbarbutton anonid="security"/>
-            <xul:spacer flex="1"/>
-            <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
-          </xul:hbox>
+      <xul:hbox align="center" anonid="topbox">
+        <xul:stack>
+          <xul:image anonid="loading"/>
+          <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+        </xul:stack>
+        <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end" style="text-align: center"/>
+        <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
+      </xul:hbox>
+      <xul:hbox align="stretch">
+        <xul:vbox anonid="leftstrip" class="sidestrip" pack="start">
         </xul:vbox>
-      </xul:stack>
-      <xul:vbox align="center" tooltip="tabpreview_tooltip">
-        <xul:label anonid="title" crop="end"/>
-        <xul:label anonid="uri" crop="end"/>
+        <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
+          <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
+        </xul:box>
+        <xul:vbox anonid="rightstrip" class="sidestrip" pack="start">
+          <xul:toolbarbutton anonid="security"/>
+        </xul:vbox>
+      </xul:hbox>
+      <xul:vbox tooltip="tabpreview_tooltip" align="stretch" anonid="bottombox">
+        <xul:label anonid="uri" crop="end" style="text-align: center"/>
       </xul:vbox>
     </content>
 
@@ -208,7 +213,7 @@
           var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
           canvas.setAttribute("width",this.previews.previewWidth);
           canvas.setAttribute("height",this.previews.previewHeight);
-          canvas.style.width=this.previews.previewWidth+"px";
+          //canvas.style.width=this.previews.previewWidth+"px";
           canvas.style.height=this.previews.previewHeight+"px";
         ]]>
         </body>
@@ -217,6 +222,8 @@
       <method name="_loadStarted">
         <body>
           this.loading=true;
+          var reload = document.getAnonymousElementByAttribute(this,"anonid","reload");
+          reload.disabled=true;
           this._redrawTimer.cancel();
           this._loadTimer.cancel();
           if (this.previews.loadRefresh)
