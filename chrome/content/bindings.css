@@ -17,43 +17,52 @@ tabpreviews scrollbox[anonid="scrollbox"] {
   overflow-y: scroll;
 }
 
-tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
-  visibility: hidden;
-}
-  
-tabpreviews[hide~="throbber"] tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
-  visibility: visible;
-}
-  
-tabpreview[loading="false"] image[anonid="loading"] {
-  visibility: hidden;
-}
-
 tabpreview {
   -moz-box-align: center;
 }
 
-tabpreview[security="none"] toolbarbutton[anonid="security"] {
+tabpreview[security="none"] image[anonid="security"] {
   visibility: hidden;
 }
 
 tabpreviews[hide~="uri"] label[anonid="uri"],
 tabpreviews[hide~="title"] label[anonid="title"],
 tabpreviews[hide~="preview"] canvas[anonid="canvas"],
-tabpreviews[hide~="security"] toolbarbutton[anonid="security"],
-tabpreviews[hide~="throbber"] image[anonid="loading"],
-tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"],
+tabpreviews[hide~="security"] image[anonid="security"],
 tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
   visibility: hidden !important;
 }
 
-tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] image[anonid="loading"],
-tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="reload"],
-tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="close"] {
+tabpreview[loading="false"] image[anonid="loading"] {
   display: none;
 }
 
-tabpreviews[hide~="reload"][hide~="title"][hide~="throbber"][hide~="close"] hbox[anonid="topbox"] {
+tabpreviews[hide~="throbber"] image[anonid="loading"] {
+  display: none;
+}
+
+tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"] {
+  visibility: hidden;
+}
+
+tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
+  display: none;
+}
+
+tabpreviews[hide~="throbber"] toolbarbutton[anonid="reload"] {
+  display: -moz-box !important;
+}
+
+tabpreviews[hide~="throbber"][hide~="reload"] toolbarbutton[anonid="reload"] {
+  visibility: hidden;
+}
+
+tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="reload"],
+tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="close"] {
+  display: none !important;
+}
+
+tabpreviews[hide~="throbber"][hide~="reload"][hide~="title"][hide~="close"] hbox[anonid="topbox"] {
   display: none;
 }
 

@@ -54,21 +54,19 @@
 
     <content context="tabpreview_context" orient="vertical" align="stretch" selected="false" loading="false" security="none">
       <xul:hbox align="center" anonid="topbox">
-        <xul:stack>
-          <xul:image anonid="loading"/>
-          <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
-        </xul:stack>
+        <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+        <xul:image anonid="loading"/>
         <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end" style="text-align: center"/>
         <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
       </xul:hbox>
       <xul:hbox align="stretch">
-        <xul:vbox anonid="leftstrip" class="sidestrip" pack="start">
+        <xul:vbox anonid="leftstrip" class="sidestrip" pack="end">
         </xul:vbox>
         <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
           <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
         </xul:box>
-        <xul:vbox anonid="rightstrip" class="sidestrip" pack="start">
-          <xul:toolbarbutton anonid="security"/>
+        <xul:vbox anonid="rightstrip" class="sidestrip" pack="end">
+          <xul:image anonid="security"/>
         </xul:vbox>
       </xul:hbox>
       <xul:vbox tooltip="tabpreview_tooltip" align="stretch" anonid="bottombox">
