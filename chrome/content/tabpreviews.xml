@@ -107,7 +107,7 @@
       
       <method name="_initTree">
         <body>
-        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+        	var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
         	drop.className="dropindicator groove";
         	drop.setAttribute("orient","horizontal");
           this.previewContainer.appendChild(drop);
@@ -238,13 +238,13 @@
       <field name="tabbrowser">window.parent.document.getElementById("content")</field>
       <field name="previewContainer">this</field>
       <field name="scrollBoxObject">
-        document.getAnonymousElementByAttribute(this,"anonid","scrollbox")
-                .boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+        this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","scrollbox")
+                          .boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
       </field>
       
       <property name="previews">
         <getter>
-          return document.getElementsByTagName("tabpreview");
+          return this.ownerDocument.getElementsByTagName("tabpreview");
         </getter>
       </property>
       
@@ -394,7 +394,7 @@
         <parameter name="browser"/>
         <body>
         <![CDATA[
-          var preview = document.getElementById(browser.parentNode.id);
+          var preview = this.ownerDocument.getElementById(browser.parentNode.id);
         	if (preview)
         	{
         		return preview;
@@ -430,8 +430,8 @@
         <parameter name="browser"/>
         <body>
         <![CDATA[
-        	var preview = document.createElement("tabpreview");
-        	var drop = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+        	var preview = this.ownerDocument.createElement("tabpreview");
+        	var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
         	drop.className="dropindicator groove";
         	drop.setAttribute("orient","horizontal");
         	var id=browser.parentNode.id;
@@ -561,9 +561,9 @@
           this.setAttribute("hide",hide);
       
           var state = this.showPreview ? "false" : "true";
-          var menu = document.getAnonymousElementByAttribute(this,"id","refreshPreview");
+          var menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreview");
           menu.setAttribute("disabled",state);
-          menu = document.getAnonymousElementByAttribute(this,"id","refreshPreviews");
+          menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreviews");
           menu.setAttribute("disabled",state);
 
         	if (!this.onResize() && canvasWasHidden && this.showPreview)
@@ -602,7 +602,7 @@
             if (previews[i]._browser)
             {
               var preview = previews[i];
-              var container = document.getAnonymousElementByAttribute(preview,"anonid","canvas_container");
+              var container = this.ownerDocument.getAnonymousElementByAttribute(preview,"anonid","canvas_container");
               var computed = window.getComputedStyle(container,null);
               newWidth = parseInt(computed.width);
               if (newWidth<0)
@@ -923,23 +923,23 @@
       
       <handler event="command">
       <![CDATA[
-        if (document.popupNode && document.popupNode.localName=="tabpreview")
+        if (this.ownerDocument.popupNode && this.ownerDocument.popupNode.localName=="tabpreview")
         {
           if (event.originalTarget.id=="selectTab")
           {
-            this.tabbrowser.selectedTab=document.popupNode.tab;
+            this.tabbrowser.selectedTab=this.ownerDocument.popupNode.tab;
           }
           else if (event.originalTarget.id=="reloadTab")
           {
-            this.tabbrowser.reloadTab(document.popupNode.tab);
+            this.tabbrowser.reloadTab(this.ownerDocument.popupNode.tab);
           }
           else if (event.originalTarget.id=="refreshPreview")
           {
-            document.popupNode.redraw();
+            this.ownerDocument.popupNode.redraw();
           }
           else if (event.originalTarget.id=="closeTab")
           {
-            this.tabbrowser.removeTab(document.popupNode.tab);
+            this.tabbrowser.removeTab(this.ownerDocument.popupNode.tab);
           }
         }
         if (event.originalTarget.id=="options")
@@ -982,7 +982,7 @@
       <handler event="popupshowing">
         if (event.originalTarget.id=="tabpreview_tooltip")
         {
-          var preview = document.tooltipNode;
+          var preview = this.ownerDocument.tooltipNode;
           while (preview.localName!="tabpreview")
           {
             preview=preview.parentNode;

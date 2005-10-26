@@ -124,7 +124,7 @@
       <method name="eventFilter">
         <parameter name="event"/>
         <body>
-          var previews = document.getElementsByTagName("tabpreviews")[0];
+          var previews = this.ownerDocument.getElementsByTagName("tabpreviews")[0];
           if (event.type=="DOMTitleChanged")
           {
             var preview = previews.getPreviewForBrowser(event.currentTarget);
@@ -212,7 +212,7 @@
       <method name="_resize">
         <body>
         <![CDATA[
-          var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           canvas.setAttribute("width",this.previews.previewWidth);
           canvas.setAttribute("height",this.previews.previewHeight);
           //canvas.style.width=this.previews.previewWidth+"px";
@@ -224,7 +224,7 @@
       <method name="_loadStarted">
         <body>
           this.loading=true;
-          var reload = document.getAnonymousElementByAttribute(this,"anonid","reload");
+          var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
           reload.disabled=true;
           this._redrawTimer.cancel();
           this._loadTimer.cancel();
@@ -276,7 +276,7 @@
               break;
           }
           
-          var icon = document.getAnonymousElementByAttribute(this,"anonid","security");
+          var icon = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","security");
           if (this._browser.securityUI)
           {
             icon.setAttribute("tooltiptext",this._browser.securityUI.tooltipText);
@@ -371,13 +371,13 @@
       <method name="update">
         <body>
           var uri = this.uri;
-          var el = document.getAnonymousElementByAttribute(this,"anonid","uri");
+          var el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","uri");
           if (el)
             el.value=uri;
-          el = document.getAnonymousElementByAttribute(this,"anonid","title");
+          el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","title");
           if (el)
             el.value=this.title;
-          var reload = document.getAnonymousElementByAttribute(this,"anonid","reload");
+          var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
           reload.disabled=(uri=="about:blank" || uri=="");
         </body>
       </method>
@@ -388,7 +388,7 @@
           {
             return;
           }
-          var canvas = document.getAnonymousElementByAttribute(this,"anonid","canvas");
+          var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           var ctx = null;
           try
           {

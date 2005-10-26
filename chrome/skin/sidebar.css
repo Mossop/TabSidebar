@@ -23,18 +23,18 @@ tabpreview {
 }
 
 tabpreviews tabpreview[selected="true"] {
-  border-top-color: threedshadow;
-  border-right-color: threedhighlight;
-  border-bottom-color: threedhighlight;
-  border-left-color: threedshadow;
-  background-color: threedlightshadow;
+  border-top-color: threeddarkshadow;
+  border-right-color: threedlightshadow;
+  border-bottom-color: threedlightshadow;
+  border-left-color: threeddarkshadow;
+  background-color: threedhighlight;
 }
 
 tabpreview:hover {
-  border-top-color: threedhighlight;
-  border-right-color: threedshadow;
-  border-bottom-color: threedshadow;
-  border-left-color: threedhighlight;
+  border-top-color: threedlightshadow;
+  border-right-color: threeddarkshadow;
+  border-bottom-color: threeddarkshadow;
+  border-left-color: threedlightshadow;
 }
 
 tabpreview .toolbarbutton-icon {
