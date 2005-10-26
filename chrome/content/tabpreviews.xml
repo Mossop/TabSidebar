@@ -52,6 +52,10 @@
 
   <binding id="tabpreviews" name="tabpreviews" extends="chrome://global/content/bindings/scrollbox.xml#scrollbox">
 
+    <resources>
+      <stylesheet src="chrome://tabsidebar/content/tabpreviews.css"/>
+    </resources>
+    
     <content hide="">
       <xul:popupset>
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">

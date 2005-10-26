@@ -1,7 +1,7 @@
 #tabsidebar-button {
-	list-style-image: url("chrome://tabsidebar/skin/icon.png");
+	list-style-image: url("chrome://tabsidebar/skin/toolbar.png");
 }
 
 toolbar[iconsize="small"] #tabsidebar-button {
-	list-style-image: url("chrome://tabsidebar/skin/icon-small.png");
+	list-style-image: url("chrome://tabsidebar/skin/toolbar-small.png");
 }

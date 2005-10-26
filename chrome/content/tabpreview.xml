@@ -52,6 +52,10 @@
 
   <binding id="tabpreview" name="tabpreview">
 
+    <resources>
+      <stylesheet src="chrome://tabsidebar/content/tabpreviews.css"/>
+    </resources>
+    
     <content context="tabpreview_context" orient="vertical" align="stretch" selected="false" loading="false" security="none">
       <xul:hbox align="center" anonid="topbox">
         <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
