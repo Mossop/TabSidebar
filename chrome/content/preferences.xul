@@ -78,7 +78,7 @@
       <preference type="bool" id="content.close"
                  name="tabsidebar.content.close"/>
       <preference type="bool" id="content.preview"
-                 name="tabsidebar.content.preview"/>
+                 name="tabsidebar.content.preview" onchange="preview.showPreviewChanged()"/>
       <preference type="bool" id="content.title"
                  name="tabsidebar.content.title"/>
       <preference type="bool" id="content.uri" 

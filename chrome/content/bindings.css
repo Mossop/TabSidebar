@@ -27,10 +27,13 @@ tabpreview[security="none"] image[anonid="security"] {
 
 tabpreviews[hide~="uri"] label[anonid="uri"],
 tabpreviews[hide~="title"] label[anonid="title"],
-tabpreviews[hide~="preview"] canvas[anonid="canvas"],
 tabpreviews[hide~="security"] image[anonid="security"],
 tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
   visibility: hidden !important;
+}
+
+tabpreviews[hide~="preview"] canvas[anonid="canvas"] {
+  display: none;
 }
 
 tabpreview[loading="false"] image[anonid="loading"] {

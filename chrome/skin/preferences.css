@@ -14,3 +14,15 @@ prefwindow {
 textbox {
   width: 5em;
 }
+
+radio[pane=paneGeneral] {
+  list-style-image: url("chrome://tabsidebar/skin/icon.png");
+}
+
+radio[pane=paneDisplay] {
+  list-style-image: url("chrome://tabsidebar/skin/icon.png");
+}
+
+radio[pane=panePreviews] {
+  list-style-image: url("chrome://tabsidebar/skin/icon.png");
+}
