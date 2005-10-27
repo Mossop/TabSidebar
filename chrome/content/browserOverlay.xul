@@ -50,7 +50,7 @@
   <broadcasterset id="mainBroadcasterSet">
     <broadcaster id="viewTabSidebar"
           autoCheck="false" 
-          label="&tabsidebar.title;"
+          label="&tabsidebar.menu.label;"
           type="checkbox"
           group="sidebar"
           sidebarurl="chrome://tabsidebar/content/sidebar.xul"
@@ -65,7 +65,11 @@
   </toolbarpalette>
 
   <menupopup id="viewSidebarMenu">
-    <menuitem observes="viewTabSidebar"/>
+    <menuitem acceltext="Ctrl+Shift+T" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
   </menupopup>
 
+  <keyset>
+    <key observes="viewTabSidebar" key="t" modifiers="control shift"/>
+  </keyset>
+  
 </overlay>

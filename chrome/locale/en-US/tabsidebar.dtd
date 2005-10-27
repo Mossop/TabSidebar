@@ -1,5 +1,6 @@
 <!ENTITY tabsidebar.title            "Tab Sidebar">
 <!ENTITY tabsidebar.menu.label       "Tab Sidebar">
+<!ENTITY tabsidebar.menu.accesskey   "T">
 <!ENTITY tabsidebar.opensidebar      "Open Tab Sidebar">
 
 <!ENTITY tabsidebar.select.tooltip   "Switch to tab">

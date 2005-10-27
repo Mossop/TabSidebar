@@ -15,14 +15,22 @@ textbox {
   width: 5em;
 }
 
+radio {
+  list-style-image: url("chrome://tabsidebar/skin/preferences.png");
+}
+
 radio[pane=paneGeneral] {
-  list-style-image: url("chrome://tabsidebar/skin/icon.png");
+  -moz-image-region: rect(0px, 32px, 32px, 0px);
 }
 
 radio[pane=paneDisplay] {
-  list-style-image: url("chrome://tabsidebar/skin/icon.png");
+  -moz-image-region: rect(0px, 64px, 32px, 32px);
 }
 
 radio[pane=panePreviews] {
-  list-style-image: url("chrome://tabsidebar/skin/icon.png");
+  -moz-image-region: rect(0px, 96px, 32px, 64px);
+}
+
+radio[pane=panePreviews][disabled=true] {
+  -moz-image-region: rect(32px, 96px, 64px, 64px);
 }
