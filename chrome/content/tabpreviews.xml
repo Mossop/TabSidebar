@@ -660,12 +660,15 @@
         <parameter name="aEvent"/>
         <body>
         <![CDATA[
+          var y = {};
+          this.scrollBoxObject.getPosition({}, y);
+          var ypos = aEvent.clientY+y.value;
           var diff = 0;
           var previews = this.previews;
           for (var i=0; i<previews.length; i++)
           {
             var bo = previews[i].boxObject;
-            if ((bo.y+(bo.height/2))>aEvent.clientY)
+            if ((bo.y+(bo.height/2))>ypos)
             {
               return i-diff;
               break;
@@ -708,6 +711,7 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
+          dump("here!!");
           if (!aDragSession.canDrop)
             return;
             

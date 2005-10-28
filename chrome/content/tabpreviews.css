@@ -14,16 +14,16 @@ tabpreview {
 }
 
 tabpreview[security="none"] image[anonid="security"] {
-  visibility: hidden;
+  display: none;
 }
 
 tabpreviews[hide~="uri"] label[anonid="uri"],
 tabpreviews[hide~="title"] label[anonid="title"],
-tabpreviews[hide~="security"] image[anonid="security"],
 tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
   visibility: hidden !important;
 }
 
+tabpreviews[hide~="security"] image[anonid="security"],
 tabpreviews[hide~="preview"] canvas[anonid="canvas"] {
   display: none;
 }
