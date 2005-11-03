@@ -42,7 +42,10 @@
    - $Revision$
    -->
 
-<!DOCTYPE bindings SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+<!DOCTYPE bindings [
+<!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+%tabSidebarDTD;
+]>
 
 <bindings id="TabSidebarBindings2"
           xmlns="http://www.mozilla.org/xbl"
@@ -56,7 +59,7 @@
       <stylesheet src="chrome://tabsidebar/content/tabpreviews.css"/>
     </resources>
     
-    <content context="tabpreview_context" orient="vertical" align="stretch" selected="false" loading="false" security="none">
+    <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
       <xul:hbox align="center" anonid="topbox">
         <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
         <xul:image anonid="loading"/>
@@ -330,21 +333,19 @@
       
       <property name="title">
         <getter>
-        <![CDATA[
           if (!this._browser)
           {
             return "";
           }
           var title = this._browser.contentTitle;
-          if (title && title.length>0)
+          if (title &amp;&amp; title.length&gt;0)
           {
             return title;
           }
           else
           {
-            return "(Untitled)";
+            return "&tabsidebar.untitled;";
           }
-        ]]>
         </getter>
       </property>
 

@@ -6,6 +6,8 @@ tabpreviews {
 
 tabpreviews scrollbox[anonid="scrollbox"] {
   -moz-box-flex: 1;
+  -moz-box-align: stretch;
+  -moz-box-orient: horizontal;
   overflow-y: scroll;
 }
 

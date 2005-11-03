@@ -9,12 +9,23 @@ tabpreviews scrollbox[anonid="scrollbox"] {
   padding-bottom: 0;
 }
 
-tabpreviews .dropindicator[droptarget="true"] {
-  border: 1px solid black;
+.tab-drop-indicator-bar {
+  display:none;
+  width: 9px;
+  margin-left: -9px;
+  position: relative;
 }
 
-tabpreviews tabpreview[droptarget="true"] {
-  border: 1px solid black !important;
+.tab-drop-indicator {
+  height: 9px;
+  width: 9px;
+  margin-right: -12px;
+  position: relative;
+  background: url('chrome://tabsidebar/skin/dropIndicator.png') 50% 50% no-repeat;
+}
+
+.tab-drop-indicator-bar[dragging="true"] {
+  display: -moz-box;
 }
 
 tabpreview {

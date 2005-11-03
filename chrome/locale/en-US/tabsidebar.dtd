@@ -1,12 +1,20 @@
-<!ENTITY tabsidebar.title            "&tabsidebar.brand;">
-<!ENTITY tabsidebar.menu.label       "&tabsidebar.brand;">
-<!ENTITY tabsidebar.menu.accesskey   "T">
-<!ENTITY tabsidebar.opensidebar      "Open &tabsidebar.brand;">
+<!ENTITY tabsidebar.title             "&tabsidebar.brand;">
+<!ENTITY tabsidebar.menu.label        "&tabsidebar.brand;">
+<!ENTITY tabsidebar.menu.accesskey    "T">
+<!ENTITY tabsidebar.opensidebar       "Open &tabsidebar.brand;">
 
-<!ENTITY tabsidebar.select.tooltip   "Switch to tab">
-<!ENTITY tabsidebar.reload.tooltip   "Reload tab">
-<!ENTITY tabsidebar.close.tooltip    "Close tab">
+<!ENTITY tabsidebar.untitled          "(Untitled)">
 
-<!ENTITY tabsidebar.refresh.label    "Refresh preview">
-<!ENTITY tabsidebar.refreshall.label "Refresh all previews">
-<!ENTITY tabsidebar.options.label    "Options">
+<!ENTITY tabsidebar.newtab.label      "New Tab">
+<!ENTITY tabsidebar.reload.label      "Reload Tab">
+<!ENTITY tabsidebar.reloadall.label   "Reload All Tabs">
+<!ENTITY tabsidebar.closeother.label  "Close Other Tabs">
+<!ENTITY tabsidebar.bookmark.label    "Bookmark This Tab">
+<!ENTITY tabsidebar.bookmarkall.label "Bookmark All Tabs">
+<!ENTITY tabsidebar.refresh.label     "Refresh preview">
+<!ENTITY tabsidebar.refreshall.label  "Refresh all previews">
+<!ENTITY tabsidebar.options.label     "Options">
+<!ENTITY tabsidebar.close.label       "Close tab">
+
+<!ENTITY tabsidebar.reload.tooltip    "&tabsidebar.reload.label;">
+<!ENTITY tabsidebar.close.tooltip     "&tabsidebar.close.label;">

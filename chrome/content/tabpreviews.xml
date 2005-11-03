@@ -42,7 +42,10 @@
    - $Revision$
    -->
 
-<!DOCTYPE bindings SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+<!DOCTYPE bindings [
+<!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+%tabSidebarDTD;
+]>
 
 <bindings id="TabSidebarBindings"
           xmlns="http://www.mozilla.org/xbl"
@@ -58,32 +61,46 @@
     
     <content hide="">
       <xul:popupset>
+      
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">
           <xul:label value="Title"/>
           <xul:label style="display: none" value="URI"/>
         </xul:tooltip>
+        
         <xul:popup id="tabpreview_context">
-          <xul:menuitem id="selectTab" label="&tabsidebar.select.tooltip;"/>
-          <xul:menuitem id="reloadTab" label="&tabsidebar.reload.tooltip;"/>
-          <xul:menuitem id="closeTab" label="&tabsidebar.close.tooltip;"/>
+          <xul:menuitem id="newTab" label="&tabsidebar.newtab.label;"/>
+          <xul:menuseparator/>
+          <xul:menuitem id="reloadTab" label="&tabsidebar.reload.label;"/>
+          <xul:menuitem id="reloadAllTabs" label="&tabsidebar.reloadall.label;"/>
+          <xul:menuitem id="closeOtherTabs" label="&tabsidebar.closeother.label;"/>
+          <xul:menuseparator hidden="true"/>
+          <xul:menuitem id="bookmarkTab" hidden="true" label="&tabsidebar.bookmark.label;"/>
+          <xul:menuitem id="bookmarkAllTabs" hidden="true" label="&tabsidebar.bookmarkall.label;"/>
           <xul:menuseparator/>
           <xul:menuitem id="refreshPreview" label="&tabsidebar.refresh.label;"/>
+          <xul:menuitem id="refreshAllPreviews" label="&tabsidebar.refreshall.label;"/>
           <xul:menuseparator/>
           <xul:menuitem id="options" label="&tabsidebar.options.label;"/>
-        </xul:popup>
-        <xul:popup id="tabpreviews_context">
-          <xul:menuitem id="refreshPreviews" label="&tabsidebar.refreshall.label;"/>
           <xul:menuseparator/>
-          <xul:menuitem id="options" label="&tabsidebar.options.label;"/>
+          <xul:menuitem id="closeTab" label="&tabsidebar.close.label;"/>
         </xul:popup>
+        
       </xul:popupset>
       
-      <xul:scrollbox context="tabpreviews_context" allowevents="true" anonid="scrollbox" align="stretch" orient="vertical"
+      <xul:scrollbox context="tabpreview_context" allowevents="true" anonid="scrollbox"
                      ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
                      ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
                      ondragdrop="nsDragAndDrop.drop(event, this.parentNode); event.stopPropagation();"
                      ondragexit="nsDragAndDrop.dragExit(event, this.parentNode); event.stopPropagation();">
-        <children/>
+        
+        <xul:vbox class="tab-drop-indicator-bar">
+          <xul:hbox class="tab-drop-indicator"/>
+        </xul:vbox>          
+
+        <xul:vbox align="stretch" flex="1">
+          <children/>
+        </xul:vbox>
+
       </xul:scrollbox>
     </content>
     
@@ -241,6 +258,8 @@
         this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","scrollbox")
                           .boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
       </field>
+      <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1].firstChild</field>
+      <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
       
       <property name="previews">
         <getter>
@@ -564,7 +583,7 @@
           var state = this.showPreview ? "false" : "true";
           var menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreview");
           menu.setAttribute("disabled",state);
-          menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreviews");
+          menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshAllPreviews");
           menu.setAttribute("disabled",state);
 
         	if (!this.onResize() && canvasWasHidden && this.showPreview)
@@ -635,30 +654,24 @@
       <field name="_lastDrop"/>
       
       <method name="_drawDropIndicator">
-        <parameter name="position"/>
+        <parameter name="drop"/>
         <body>
-          var nextNode = this.previews[position];
-          var drop = null;
-          if (nextNode)
-          {
-            drop = nextNode.previousSibling;
-          }
-          else
-          {
-            drop = this.previews[this.previews.length-1].nextSibling;
-          }
           if (drop!=this._lastDrop)
           {
-            if (this._lastDrop)
-              this._lastDrop.removeAttribute("droptarget");
-            drop.setAttribute("droptarget","true");
+            var pos = drop.boxObject.y+(drop.boxObject.height/2);
+            this.dragDropIndicator.style.marginTop = pos + "px";
+            if (!this._lastDrop)
+            {
+              this.dragDropBar.setAttribute("dragging","true");
+            }
             this._lastDrop=drop;
           }
         </body>
       </method>
       
-      <method name="getNewPosition">
+      <method name="getDropElement">
         <parameter name="aEvent"/>
+        <parameter name="external"/>
         <body>
         <![CDATA[
           var y = {};
@@ -669,13 +682,26 @@
           for (var i=0; i<previews.length; i++)
           {
             var bo = previews[i].boxObject;
-            if ((bo.y+(bo.height/2))>ypos)
+            if (external)
             {
-              return i-diff;
-              break;
+              if (bo.y>ypos)
+              {
+                return previews[i].previousSibling;
+              }
+              else if ((bo.y+bo.height)>=ypos)
+              {
+                return previews[i];
+              }
+            }
+            else
+            {
+              if ((bo.y+(bo.height/2))>ypos)
+              {
+                return previews[i].previousSibling;
+              }
             }
           }
-          return previews.length-diff;
+          return previews[previews.length-1].nextSibling;
         ]]>
         </body>
       </method>
@@ -686,21 +712,28 @@
         <parameter name="aDragAction"/>
         <body>
         <![CDATA[
-          if (aEvent.target.localName=="tabpreview")
+          try
           {
-            aXferData.data = new TransferData();
-            
-            var URI = aEvent.target._browser.currentURI;
-            if (URI)
+            if (aEvent.target.localName=="tabpreview")
             {
-              aXferData.data.addDataForFlavour("text/unicode", URI.spec);
-              aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.contentTitle);
-              aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.contentTitle + '</a>');
+              aXferData.data = new TransferData();
+              
+              var URI = aEvent.target._browser.currentURI;
+              if (URI)
+              {
+                aXferData.data.addDataForFlavour("text/unicode", URI.spec);
+                aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.contentTitle);
+                aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.contentTitle + '</a>');
+              }
+              else
+              {
+                aXferData.data.addDataForFlavour("text/unicode", "about:blank");
+              }
             }
-            else
-            {
-              aXferData.data.addDataForFlavour("text/unicode", "about:blank");
-            }
+          }
+          catch (e)
+          {
+            dump(e);
           }
         ]]>
         </body>
@@ -712,43 +745,51 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          dump("At "+y.value+" "+aEvent.clientY+"\n");
-          if (y.value>0 && aEvent.clientY<10)
+          try
           {
-            dump("Scroll up!\n");
-            this.scrollBoxObject.scrollByLine(-3);
-          }
-
-          if (!aDragSession.canDrop)
-            return;
-            
-          if (aDragSession.sourceNode &&
-             (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
-          {
-            var newpos = this.getNewPosition(aEvent);
-            this._drawDropIndicator(newpos);
-          }
-          else
-          {
-            if (aEvent.target.localName=="tabpreview")
+            var y = {};
+            this.scrollBoxObject.getPosition({}, y);
+            dump("At "+y.value+" "+aEvent.clientY+"\n");
+            if (y.value>0 && aEvent.clientY<10)
             {
-              if (aEvent.target!=this._lastDrop)
+              dump("Scroll up!\n");
+              this.scrollBoxObject.scrollByLine(-3);
+              try
               {
-                if (this._lastDrop)
-                {
-                  this._lastDrop.removeAttribute("droptarget");
-                }
-                aEvent.target.setAttribute("droptarget","true");
-                this._lastDrop=aEvent.target;
+              this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","scrollbox")
+                                .boxObject.layoutManager.layout();
               }
+              catch (e)
+              {
+                dump(e+"\n");
+              }
+            }
+  
+            if (!aDragSession.canDrop)
+              return;
+              
+            if (aDragSession.sourceNode &&
+               (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
+            {
+              var newpos = this.getDropElement(aEvent,false);
+              this._drawDropIndicator(newpos);
             }
             else
             {
-              var newpos = this.getNewPosition(aEvent);
-              this._drawDropIndicator(newpos);
+              if (aEvent.target.localName=="tabpreview")
+              {
+                this._drawDropIndicator(aEvent.target);
+              }
+              else
+              {
+                var newpos = this.getDropElement(aEvent,true);
+                this._drawDropIndicator(newpos);
+              }
             }
+          }
+          catch (e)
+          {
+            dump(e);
           }
         ]]>
         </body>
@@ -760,74 +801,96 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          if (aDragSession.sourceNode && 
-             (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
+          try
           {
-            var preview = null
-            if (aDragSession.sourceNode.parentNode == this)
+            if (aDragSession.sourceNode && 
+               (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
             {
-              preview = aDragSession.sourceNode;              
+              var preview = null
+              if (aDragSession.sourceNode.parentNode == this)
+              {
+                preview = aDragSession.sourceNode;              
+              }
+              else
+              {
+                preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
+              }
+              
+              var newIndex = this.previews.length;
+              var target = this.getDropElement(aEvent,false);
+              if (target.nextSibling)
+              {
+                target = target.nextSibling;
+                newIndex = target.tab._tPos;
+              }
+              
+              var previews = this.previews;
+              var oldIndex = preview.tab._tPos;
+              
+              if (newIndex>oldIndex)
+                newIndex--;
+                
+              if (newIndex==oldIndex)
+                return;
+  
+              this.tabbrowser.moveTabTo(preview.tab, newIndex);
             }
             else
             {
-              preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
+              var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
+  
+              // valid urls don't contain spaces ' '; if we have a space it isn't a valid url.
+              // Also disallow dropping javascript: or data: urls--bail out
+              if (!url || !url.length || url.indexOf(" ", 0) != -1 ||
+                  /^\s*(javascript|data):/.test(url))
+                return;
+  
+              this.tabbrowser.dragDropSecurityCheck(aEvent, aDragSession, url);
+  
+              var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                                    .getService(Components.interfaces.nsIPrefService);
+              var bgLoad = true;
+              try
+              {
+                bgLoad = prefs.getBoolPref("browser.tabs.loadInBackground");
+              }
+              catch (e) { }
+  
+              if (aEvent.shiftKey)
+                bgLoad = !bgLoad;
+  
+              if (aEvent.target.localName != "tabpreview")
+              {
+                // We're adding a new tab.
+                var move = false;
+                var newIndex = this.previews.length;
+                var target = this.getDropElement(aEvent,false);
+                if (target.nextSibling)
+                {
+                  target = target.nextSibling;
+                  newIndex = target.tab._tPos;
+                  move = true;
+                }
+  
+                var newtab = this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
+                
+                if (move)
+                  this.tabbrowser.moveTabTo(newtab, newIndex);
+              }
+              else
+              {
+                // Load in an existing tab.
+                var preview = aEvent.target;
+                preview.browser.loadURI(url);
+  
+                if (this.tabbrowser.selectedTab != preview.tab && !bgLoad)
+                  this.tabbrowser.selectedTab = preview.tab;
+              }
             }
-            var newIndex = this.getNewPosition(aEvent);
-            var previews = this.previews;
-            var oldIndex = preview.tab._tPos;
-            
-            if (newIndex>oldIndex)
-              newIndex--;
-              
-            if (newIndex==oldIndex)
-              return;
-
-            this.tabbrowser.moveTabTo(preview.tab, newIndex);
           }
-          else
+          catch (e)
           {
-            var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
-
-            // valid urls don't contain spaces ' '; if we have a space it isn't a valid url.
-            // Also disallow dropping javascript: or data: urls--bail out
-            if (!url || !url.length || url.indexOf(" ", 0) != -1 ||
-                /^\s*(javascript|data):/.test(url))
-              return;
-
-            this.tabbrowser.dragDropSecurityCheck(aEvent, aDragSession, url);
-
-            var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                                  .getService(Components.interfaces.nsIPrefService);
-            var bgLoad = true;
-            try
-            {
-              bgLoad = prefs.getBoolPref("browser.tabs.loadInBackground");
-            }
-            catch (e) { }
-
-            if (aEvent.shiftKey)
-              bgLoad = !bgLoad;
-
-            if (aEvent.target.localName != "tabpreview")
-            {
-              // We're adding a new tab.
-              var newIndex = this.getNewPosition(aEvent);
-              var move = (newIndex!=this.previews.length)
-
-              var newtab = this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
-              
-              if (move)
-                this.tabbrowser.moveTabTo(newtab, newIndex);
-            }
-            else
-            {
-              // Load in an existing tab.
-              var preview = aEvent.target;
-              preview.browser.loadURI(url);
-
-              if (this.tabbrowser.selectedTab != preview.tab && !bgLoad)
-                this.tabbrowser.selectedTab = preview.tab;
-            }
+            dump(e);
           }
         ]]>
         </body>
@@ -838,10 +901,17 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          if (this._lastDrop)
+          try
           {
-            this._lastDrop.removeAttribute("droptarget");
-            this._lastDrop=null;
+            if (this._lastDrop)
+            {
+              this._lastDrop=null;
+              this.dragDropBar.removeAttribute("dragging");
+            }
+          }
+          catch (e)
+          {
+            dump(e);
           }
         ]]>
         </body>
@@ -938,17 +1008,36 @@
       <![CDATA[
         if (this.ownerDocument.popupNode && this.ownerDocument.popupNode.localName=="tabpreview")
         {
-          if (event.originalTarget.id=="selectTab")
+          if (event.originalTarget.id=="newTab")
           {
-            this.tabbrowser.selectedTab=this.ownerDocument.popupNode.tab;
+            var newTab = this.tabbrowser.addTab("about:blank");
+            this.tabbrowser.selectedTab=newTab;
           }
           else if (event.originalTarget.id=="reloadTab")
           {
             this.tabbrowser.reloadTab(this.ownerDocument.popupNode.tab);
           }
+          else if (event.originalTarget.id=="reloadAllTabs")
+          {
+            this.tabbrowser.reloadAllTabs();
+          }
+          else if (event.originalTarget.id=="closeOtherTabs")
+          {
+            this.tabbrowser.removeAllTabsBut(this.ownerDocument.popupNode.tab);
+          }
+          else if (event.originalTarget.id=="bookmarkTab")
+          {
+          }
+          else if (event.originalTarget.id=="bookmarkAllTabs")
+          {
+          }
           else if (event.originalTarget.id=="refreshPreview")
           {
             this.ownerDocument.popupNode.redraw();
+          }
+          else if (event.originalTarget.id=="refreshAllPreviews")
+          {
+            this.redraw();
           }
           else if (event.originalTarget.id=="closeTab")
           {
@@ -975,16 +1064,12 @@
                               "Preferences", features);
         	}
         }
-        else if (event.originalTarget.id=="refreshPreviews")
-        {
-          this.redraw();
-        }
       ]]>
       </handler>
       
       <handler event="dblclick">
       <![CDATA[
-        if (event.originalTarget.parentNode.parentNode==this)
+        if (event.button==0 && event.originalTarget.parentNode.parentNode==this)
         {
           var newTab = this.tabbrowser.addTab("about:blank");
           this.tabbrowser.selectedTab=newTab;
@@ -993,6 +1078,7 @@
       </handler>
       
       <handler event="popupshowing">
+      <![CDATA[
         if (event.originalTarget.id=="tabpreview_tooltip")
         {
           var preview = this.ownerDocument.tooltipNode;
@@ -1003,6 +1089,27 @@
           event.originalTarget.childNodes[0].value=preview.title;
           event.originalTarget.childNodes[1].value=preview.uri;
         }
+        else if (event.originalTarget.id=="tabpreview_context")
+        {
+          var preview = this.ownerDocument.popupNode;
+          while (preview && preview.localName!="tabpreview")
+          {
+            preview=preview.parentNode;
+          }
+          
+          var state = !preview ? "true" : "false";
+          
+          this.ownerDocument.getAnonymousElementByAttribute(this,"id","reloadTab").setAttribute("disabled",state);
+          this.ownerDocument.getAnonymousElementByAttribute(this,"id","closeOtherTabs").setAttribute("disabled",state);
+          this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkTab").setAttribute("disabled",state);
+          this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreview").setAttribute("disabled",state);
+          this.ownerDocument.getAnonymousElementByAttribute(this,"id","closeTab").setAttribute("disabled",state);
+
+          state = (this.previews.length<=1) ? "true" : "false";
+
+          this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkAllTabs").setAttribute("disabled",state);
+        }
+      ]]>
       </handler>
 
     </handlers>
