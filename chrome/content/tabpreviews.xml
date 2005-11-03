@@ -749,20 +749,11 @@
           {
             var y = {};
             this.scrollBoxObject.getPosition({}, y);
-            dump("At "+y.value+" "+aEvent.clientY+"\n");
+            //dump("At "+y.value+" "+aEvent.clientY+"\n");
             if (y.value>0 && aEvent.clientY<10)
             {
-              dump("Scroll up!\n");
+              //dump("Scroll up!\n");
               this.scrollBoxObject.scrollByLine(-3);
-              try
-              {
-              this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","scrollbox")
-                                .boxObject.layoutManager.layout();
-              }
-              catch (e)
-              {
-                dump(e+"\n");
-              }
             }
   
             if (!aDragSession.canDrop)
@@ -903,7 +894,7 @@
         <![CDATA[
           try
           {
-            if (this._lastDrop)
+            if (!aEvent.relatedTarget && this._lastDrop)
             {
               this._lastDrop=null;
               this.dragDropBar.removeAttribute("dragging");
