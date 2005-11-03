@@ -41,6 +41,10 @@ tabpreviews tabpreview[selected="true"] {
   background-color: threedhighlight;
 }
 
+tabpreviews tabpreview[selected="true"] label[anonid="title"] {
+   font-weight: bold;
+}
+
 tabpreview:hover {
   border-top-color: threedlightshadow;
   border-right-color: threeddarkshadow;
@@ -73,10 +77,24 @@ tabpreview label {
   font: message-box;
 }
 
+tabpreview hbox[anonid="topbox"] {
+  padding-bottom: 3px;
+}
+
+tabpreview hbox[anonid="bottombox"] {
+  padding-top: 3px;
+}
+
 tabpreview image[anonid="loading"] {
   list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
-  padding: 3px;
+  margin-right: 2px;
+}
+
+tabpreview image[anonid="favicon"] {
+  list-style-image: url(chrome://global/skin/icons/folder-item.png);
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  margin-right: 2px;
 }
 
 tabpreview toolbarbutton[anonid="reload"] {
@@ -84,10 +102,11 @@ tabpreview toolbarbutton[anonid="reload"] {
   -moz-appearance: none;
   -moz-image-region: rect(0px, 16px, 16px, 0px);
   border: none !important;
+  padding: 1px;
 }
 
 tabpreview toolbarbutton[anonid="reload"] image {
-  margin-right: 0px;
+  margin: 0px;
 }
 
 tabpreview toolbarbutton[anonid="reload"][disabled="true"],
@@ -96,7 +115,6 @@ tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover:active {
   -moz-image-region: rect(32px, 16px, 48px, 0px);
 }
 
-tabpreview toolbarbutton[anonid="reload"]:hover,
 tabpreview toolbarbutton[anonid="reload"]:hover:active {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
@@ -106,10 +124,11 @@ tabpreview toolbarbutton[anonid="close"] {
   -moz-appearance: none;
   -moz-image-region: rect(0px, 16px, 16px, 0px);
   border: none !important;
+  padding: 0px;
 }
 
 tabpreview toolbarbutton[anonid="close"] image {
-   margin-right: 0px;
+   margin: 0px;
 }
 
 tabpreview toolbarbutton[anonid="close"]:hover {

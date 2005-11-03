@@ -78,6 +78,8 @@
     <preferences>
       <preference type="bool" id="content.reload"
                  name="tabsidebar.content.reload"/>
+      <preference type="bool" id="content.favicon"
+                 name="tabsidebar.content.favicon"/>
       <preference type="bool" id="content.throbber"
                  name="tabsidebar.content.throbber"/>
       <preference type="bool" id="content.security"
@@ -95,6 +97,7 @@
     <vbox>
       <description>&paneDisplay.description;</description>
     
+      <checkbox preference="content.favicon" label="&paneDisplay.content.favicon;"/>
       <checkbox preference="content.reload" label="&paneDisplay.content.reload;"/>
       <checkbox preference="content.throbber" label="&paneDisplay.content.throbber;"/>
       <checkbox preference="content.security" label="&paneDisplay.content.security;"/>

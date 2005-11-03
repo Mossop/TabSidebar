@@ -61,23 +61,29 @@
     
     <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
       <xul:hbox align="center" anonid="topbox">
-        <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
-        <xul:image anonid="loading"/>
-        <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end" style="text-align: center"/>
+        <xul:image anonid="favicon" tooltip="tabpreview_tooltip"/>
+        <xul:image anonid="loading" tooltip="tabpreview_tooltip"/>
+        <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
         <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
       </xul:hbox>
-      <xul:hbox align="stretch">
-        <xul:vbox anonid="leftstrip" class="sidestrip" pack="end">
-        </xul:vbox>
+      <xul:stack>
         <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
           <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
         </xul:box>
-        <xul:vbox anonid="rightstrip" class="sidestrip" pack="end">
-          <xul:image anonid="security"/>
-        </xul:vbox>
-      </xul:hbox>
+        <xul:hbox>
+          <xul:vbox anonid="leftstrip" class="sidestrip">
+            <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
+            <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+          </xul:vbox>
+          <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
+          <xul:vbox anonid="rightstrip" class="sidestrip">
+            <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
+            <xul:image anonid="security"/>
+          </xul:vbox>
+        </xul:hbox>
+      </xul:stack>
       <xul:vbox tooltip="tabpreview_tooltip" align="stretch" anonid="bottombox">
-        <xul:label anonid="uri" crop="end" style="text-align: center"/>
+        <xul:label anonid="uri" crop="end"/>
       </xul:vbox>
     </content>
 
@@ -227,8 +233,8 @@
       <method name="_loadStarted">
         <body>
           this.loading=true;
-          var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
-          reload.disabled=true;
+          //var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
+          //reload.disabled=true;
           this._redrawTimer.cancel();
           this._loadTimer.cancel();
           if (this.previews.loadRefresh)
@@ -367,6 +373,16 @@
         </getter>
       </property>
 
+      <property name="icon">
+        <getter>
+          if (!this._browser)
+          {
+            return null;
+          }
+          return this._browser.mIconURL;
+        </getter>
+      </property>
+
       <!-- Methods -->
       
       <method name="update">
@@ -375,9 +391,15 @@
           var el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","uri");
           if (el)
             el.value=uri;
+
           el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","title");
           if (el)
             el.value=this.title;
+
+          el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","favicon");
+          if (el)
+            el.src=this.icon;
+          
           var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
           reload.disabled=(uri=="about:blank" || uri=="");
         </body>

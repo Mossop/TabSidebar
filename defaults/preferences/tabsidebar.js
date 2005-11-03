@@ -8,9 +8,10 @@ pref("tabsidebar.loadrefreshrate", 1000);
 pref("tabsidebar.loadrefresh", false);
 pref("tabsidebar.showadvanced", false);
 
+pref("tabsidebar.content.favicon", true);
 pref("tabsidebar.content.security", true);
-pref("tabsidebar.content.close", true);
-pref("tabsidebar.content.reload", true);
+pref("tabsidebar.content.close", false);
+pref("tabsidebar.content.reload", false);
 pref("tabsidebar.content.throbber", true);
 pref("tabsidebar.content.preview", true);
 pref("tabsidebar.content.title", true);

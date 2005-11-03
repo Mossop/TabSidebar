@@ -282,6 +282,12 @@
         </getter>
       </property>
       
+      <property name="showFavicon">
+        <getter>
+          return this.preferences.getBoolPref("content.favicon");
+        </getter>
+      </property>
+      
       <property name="showThrobber">
         <getter>
           return this.preferences.getBoolPref("content.throbber");
@@ -562,6 +568,8 @@
           hide = "";
           if (!this.showThrobber)
             hide+=" throbber";
+          if (!this.showFavicon)
+            hide+=" favicon";
           if (!this.showReload)
             hide+=" reload";
           if (!this.showClose)
@@ -658,13 +666,23 @@
         <body>
           if (drop!=this._lastDrop)
           {
-            var pos = drop.boxObject.y+(drop.boxObject.height/2);
+            var pos = drop.boxObject.y+(drop.boxObject.height/2)-5;
             this.dragDropIndicator.style.marginTop = pos + "px";
             if (!this._lastDrop)
             {
               this.dragDropBar.setAttribute("dragging","true");
             }
             this._lastDrop=drop;
+          }
+        </body>
+      </method>
+      
+      <method name="_hideDropIndicator">
+        <body>
+          if (this._lastDrop)
+          {
+            this._lastDrop=null;
+            this.dragDropBar.setAttribute("dragging","false");
           }
         </body>
       </method>
@@ -757,7 +775,10 @@
             }
   
             if (!aDragSession.canDrop)
+            {
+              this._hideDropIndicator();
               return;
+            }
               
             if (aDragSession.sourceNode &&
                (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
@@ -896,8 +917,7 @@
           {
             if (!aEvent.relatedTarget && this._lastDrop)
             {
-              this._lastDrop=null;
-              this.dragDropBar.removeAttribute("dragging");
+              this._hideDropIndicator();
             }
           }
           catch (e)
@@ -945,6 +965,7 @@
           data=data.substring(11);
           switch (data)
           {
+            case "content.favicon":
             case "content.preview":
             case "content.close":
             case "content.security":

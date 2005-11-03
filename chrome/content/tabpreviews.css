@@ -20,54 +20,35 @@ tabpreview[security="none"] image[anonid="security"] {
 }
 
 tabpreviews[hide~="uri"] label[anonid="uri"],
-tabpreviews[hide~="title"] label[anonid="title"],
-tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
+tabpreviews[hide~="title"] label[anonid="title"] {
   visibility: hidden !important;
 }
 
 tabpreviews[hide~="security"] image[anonid="security"],
-tabpreviews[hide~="preview"] canvas[anonid="canvas"] {
-  display: none;
+tabpreviews[hide~="preview"] canvas[anonid="canvas"],
+tabpreviews[hide~="throbber"] image[anonid="loading"],
+tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"],
+tabpreviews[hide~="favicon"] image[anonid="favicon"],
+tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
+  display: none !important;
 }
 
 tabpreview[loading="false"] image[anonid="loading"] {
   display: none;
 }
 
-tabpreviews[hide~="throbber"] image[anonid="loading"] {
+tabpreview[loading="true"] image[anonid="favicon"] {
   display: none;
 }
 
-tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"] {
-  visibility: hidden;
+tabpreviews[hide~="throbber"] tabpreview[loading="true"] image[anonid="favicon"] {
+  display: -moz-box;
 }
 
-tabpreview[loading="true"] toolbarbutton[anonid="reload"] {
-  display: none;
-}
-
-tabpreviews[hide~="throbber"] toolbarbutton[anonid="reload"] {
-  display: -moz-box !important;
-}
-
-tabpreviews[hide~="throbber"][hide~="reload"] toolbarbutton[anonid="reload"] {
-  visibility: hidden;
-}
-
-tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="reload"],
-tabpreviews[hide~="throbber"][hide~="reload"][hide~="close"] toolbarbutton[anonid="close"] {
-  display: none !important;
-}
-
-tabpreviews[hide~="throbber"][hide~="reload"][hide~="title"][hide~="close"] hbox[anonid="topbox"] {
+tabpreviews[hide~="throbber"][hide~="favicon"][hide~="title"][hide~="close"] hbox[anonid="topbox"] {
   display: none;
 }
 
 tabpreviews[hide~="uri"] vbox[anonid="bottombox"] {
-  display: none;
-}
-
-tabpreviews[hide~="security"] vbox[anonid="leftstrip"],
-tabpreviews[hide~="security"] vbox[anonid="rightstrip"] {
   display: none;
 }
