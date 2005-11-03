@@ -1,4 +1,4 @@
-<!ENTITY tabsidebar.options.title       "Tab Sidebar Options">
+<!ENTITY tabsidebar.options.title       "&tabsidebar.brand; Options">
 
 <!ENTITY tabsidebar.advanced            "These options are provided for advanced users, changing them may make your browser unstable.">
 

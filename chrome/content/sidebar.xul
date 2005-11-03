@@ -46,7 +46,12 @@
 <?xml-stylesheet href="chrome://tabsidebar/content/bindings.css" type="text/css"?>
 <?xml-stylesheet href="chrome://tabsidebar/skin/sidebar.css" type="text/css"?>
 
-<!DOCTYPE page SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+<!DOCTYPE page [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+<!ENTITY % localeDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+%brandDTD;
+%localeDTD;
+]>
 
 <page
     id="tab-sidebar"

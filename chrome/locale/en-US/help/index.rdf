@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+%brandDTD;
+]>
+
+<rdf:RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:nc="http://home.netscape.com/NC-rdf#">
+
+  <rdf:Description rdf:about="urn:root">
+    <nc:subheadings>
+      <rdf:Seq>
+        <!-- These nodes are used for searching purposes. -->
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+</rdf:RDF>

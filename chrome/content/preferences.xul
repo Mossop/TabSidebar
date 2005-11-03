@@ -45,13 +45,19 @@
 <?xml-stylesheet href="chrome://global/skin/global.css"?>
 <?xml-stylesheet href="chrome://tabsidebar/skin/preferences.css"?>
 
-<!DOCTYPE prefwindow SYSTEM "chrome://tabsidebar/locale/preferences.dtd">
+<!DOCTYPE overlay [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+<!ENTITY % localeDTD SYSTEM "chrome://tabsidebar/locale/preferences.dtd">
+%brandDTD;
+%localeDTD;
+]>
 
 <prefwindow id="TabSidebarOptions" windowtype="TabSidebar:Options"
             title="&tabsidebar.options.title;"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
-  <prefpane id="paneGeneral" label="&paneGeneral.title;">
+  <prefpane id="paneGeneral" label="&paneGeneral.title;"
+            helpTopic="options-general" helpURI="chrome://tabsidebar/locale/help/help.rdf">
   
     <preferences>
       <preference type="bool" id="hidetabs"
@@ -66,7 +72,8 @@
 
   </prefpane>
   
-  <prefpane id="paneDisplay" label="&paneDisplay.title;">
+  <prefpane id="paneDisplay" label="&paneDisplay.title;"
+            helpTopic="options-display" helpURI="chrome://tabsidebar/locale/help/help.rdf">
   
     <preferences>
       <preference type="bool" id="content.reload"
@@ -101,7 +108,8 @@
   
   <script src="chrome://tabsidebar/content/preview.js" type="application/x-javascript"/>
   
-  <prefpane id="panePreviews" label="&panePreviews.title;">
+  <prefpane id="panePreviews" label="&panePreviews.title;"
+            helpTopic="options-previews" helpURI="chrome://tabsidebar/locale/help/help.rdf">
 
     <preferences>
       <preference type="bool" id="drawscrolled"

@@ -406,13 +406,14 @@
         		var preview = previews[i];
         		if (preview.browser==browser)
         		{
-        		if (id)
-        		{
-        		  preview.id=id;
-        		}
+          		if (id)
+          		{
+          		  preview.id=id;
+          		}
         		  return preview;
         		}
         	}
+        	return null;
         ]]>
         </body>
       </method>
@@ -711,7 +712,15 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          dump("here!!");
+          var y = {};
+          this.scrollBoxObject.getPosition({}, y);
+          dump("At "+y.value+" "+aEvent.clientY+"\n");
+          if (y.value>0 && aEvent.clientY<10)
+          {
+            dump("Scroll up!\n");
+            this.scrollBoxObject.scrollByLine(-3);
+          }
+
           if (!aDragSession.canDrop)
             return;
             

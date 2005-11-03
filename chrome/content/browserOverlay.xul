@@ -42,7 +42,12 @@
    - $Revision$
    -->
 
-<!DOCTYPE overlay SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+<!DOCTYPE overlay [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+<!ENTITY % localeDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd">
+%brandDTD;
+%localeDTD;
+]>
 
 <overlay id="TabSidebarOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

@@ -101,5 +101,5 @@ destroy: function()
   	var tabstrip = window.parent.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
   	tabstrip.collapsed=false;
 	}
-},
+}
 }
