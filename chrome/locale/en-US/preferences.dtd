@@ -17,7 +17,7 @@
 <!ENTITY paneDisplay.content.close  		"Display close button">
 <!ENTITY paneDisplay.content.preview		"Display previews">
 <!ENTITY paneDisplay.content.title   		"Display tab title">
-<!ENTITY paneDisplay.content.uri    		"Display tab URL">
+<!ENTITY paneDisplay.content.uri    		"Display tab address">
 
 <!ENTITY panePreviews.title             "Previews">
 <!ENTITY panePreviews.description       "You can customise when previews are refreshed and what part of the browser window gets drawn.">

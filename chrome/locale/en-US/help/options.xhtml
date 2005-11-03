@@ -2,7 +2,9 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
   <!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd" >
+  <!ENTITY % prefsDTD SYSTEM "chrome://tabsidebar/locale/preferences.dtd" >
   %brandDTD;
+  %prefsDTD;
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -14,7 +16,6 @@
 <body>
 
 <h1>&tabsidebar.brand; Options</h1>
-
 <p>This document explains all of the options available in the
    options window of &tabsidebar.brand;.</p>
 
@@ -27,8 +28,60 @@
 </div>
 
 <h2 id="general_options">General Options</h2>
+
+<p><em>&paneGeneral.hidetabs;:</em><br/>
+   This option allows you to hide the browser's main tab bar when the tab sidebar is open. The tab bar
+   will be made visible again when you close the tab sidebar.</p>
+
 <h2 id="display_options">Display Options</h2>
+<p>The display options control what information is displayed for each tab in the sidebar.
+   The following options are available:</p>
+
+<p><em>&paneDisplay.content.reload;:</em><br/>
+   Displays a reload button that when clicked reloads the tab.</p>
+
+<p><em>&paneDisplay.content.throbber;:</em><br/>
+   Shows the loading throbber when the tab is currently loading.</p>
+
+<p><em>&paneDisplay.content.security;:</em><br/>
+   If the tab is displaying a secure site then this option will display an indication of the security level.</p>
+
+<p><em>&paneDisplay.content.close;:</em><br/>
+   Displays a button letting you close the tab quickly.</p>
+
+<p><em>&paneDisplay.content.preview;:</em><br/>
+   Displays a thumbnail preview of the website displayed in the tab.</p>
+
+<p><em>&paneDisplay.content.title;:</em><br/>
+   Shows the title of the website displayed in the tab.</p>
+
+<p><em>&paneDisplay.content.uri;:</em><br/>
+   Shows the address of the address of the website displayed in the tab.</p>
+
 <h2 id="previews_options">Preview Options</h2>
+
+<p><em>&panePreviews.drawscrolled;:</em><br/>
+   When a web page has been scrolled down, this option will control whether the preview drawn is taken from what
+   is seen in the browser window (the scrolled view) or from the area at the very start of the webpage.</p>
+   
+<p><em>Continually refresh the preview this often:</em><br/>
+   For pages that continually change it may be desirable to have the preview redraw continually. This option
+   allows you to do this and lets you specify how often (in seconds) to draw the preview. The minimum time is
+   every 5 seconds.</p>
+
+<p><em>&panePreviews.showadvanced;:</em><br/>
+   Selecting this option will display some more advanced options that most casual users should not change.</p>
+
+<p><em>Refresh the preview during page load:</em><br/>
+   If you have a fast computer you might want to have the page previews redraw during the page load.
+   This option will let you enable this feature and specify how often (in milliseconds) to draw the preview.
+   The minimum time is every 100 milliseconds. Note that this will slow down the loading of webpages and will
+   have no effect on some websites.</p>
+   
+<p><em>&panePreviews.loaddelay;:</em><br/>
+   After a website has been loaded there is a slight delay before the preview is drawn to allow the page to
+   complete drawing. This delay is initially set at 500 milliseconds but you may tweak it here if you wish.
+   Setting the delay too low can cause unfinished pages to be displayed in the preview.</p>
 
 <div class="contentsBox"><em>21 October 2005</em></div>
 
