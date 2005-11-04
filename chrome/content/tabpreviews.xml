@@ -1018,45 +1018,42 @@
       
       <handler event="command">
       <![CDATA[
-        if (this.ownerDocument.popupNode && this.ownerDocument.popupNode.localName=="tabpreview")
+        if (event.originalTarget.id=="newTab")
         {
-          if (event.originalTarget.id=="newTab")
-          {
-            var newTab = this.tabbrowser.addTab("about:blank");
-            this.tabbrowser.selectedTab=newTab;
-          }
-          else if (event.originalTarget.id=="reloadTab")
-          {
-            this.tabbrowser.reloadTab(this.ownerDocument.popupNode.tab);
-          }
-          else if (event.originalTarget.id=="reloadAllTabs")
-          {
-            this.tabbrowser.reloadAllTabs();
-          }
-          else if (event.originalTarget.id=="closeOtherTabs")
-          {
-            this.tabbrowser.removeAllTabsBut(this.ownerDocument.popupNode.tab);
-          }
-          else if (event.originalTarget.id=="bookmarkTab")
-          {
-          }
-          else if (event.originalTarget.id=="bookmarkAllTabs")
-          {
-          }
-          else if (event.originalTarget.id=="refreshPreview")
-          {
-            this.ownerDocument.popupNode.redraw();
-          }
-          else if (event.originalTarget.id=="refreshAllPreviews")
-          {
-            this.redraw();
-          }
-          else if (event.originalTarget.id=="closeTab")
-          {
-            this.tabbrowser.removeTab(this.ownerDocument.popupNode.tab);
-          }
+          var newTab = this.tabbrowser.addTab("about:blank");
+          this.tabbrowser.selectedTab=newTab;
         }
-        if (event.originalTarget.id=="options")
+        else if (event.originalTarget.id=="reloadTab")
+        {
+          this.tabbrowser.reloadTab(this.ownerDocument.popupNode.tab);
+        }
+        else if (event.originalTarget.id=="reloadAllTabs")
+        {
+          this.tabbrowser.reloadAllTabs();
+        }
+        else if (event.originalTarget.id=="closeOtherTabs")
+        {
+          this.tabbrowser.removeAllTabsBut(this.ownerDocument.popupNode.tab);
+        }
+        else if (event.originalTarget.id=="bookmarkTab")
+        {
+        }
+        else if (event.originalTarget.id=="bookmarkAllTabs")
+        {
+        }
+        else if (event.originalTarget.id=="refreshPreview")
+        {
+          this.ownerDocument.popupNode.redraw();
+        }
+        else if (event.originalTarget.id=="refreshAllPreviews")
+        {
+          this.redraw();
+        }
+        else if (event.originalTarget.id=="closeTab")
+        {
+          this.tabbrowser.removeTab(this.ownerDocument.popupNode.tab);
+        }
+        else if (event.originalTarget.id=="options")
         {
           var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                                 .getService(Components.interfaces.nsIPrefService);
