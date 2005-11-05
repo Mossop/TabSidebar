@@ -785,7 +785,26 @@
                (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
             {
               var newpos = this.getDropElement(aEvent,false);
-              this._drawDropIndicator(newpos);
+
+              var preview = null;
+              if (aDragSession.sourceNode.parentNode == this)
+              {
+                preview = aDragSession.sourceNode;              
+              }
+              else
+              {
+                preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
+              }
+              
+              if (newpos == preview.previousSibling || newpos == preview.nextSibling)
+              {
+                aDragSession.canDrop=false;
+                this._hideDropIndicator();
+              }
+              else
+              {
+                this._drawDropIndicator(newpos);
+              }
             }
             else
             {
