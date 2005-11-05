@@ -732,7 +732,8 @@
         <![CDATA[
           try
           {
-            if (aEvent.target.localName=="tabpreview")
+            if (aEvent.target.localName == "tabpreview" &&
+                aEvent.originalTarget.localName != "toolbarbutton")
             {
               aXferData.data = new TransferData();
               

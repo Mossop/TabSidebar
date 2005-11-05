@@ -129,6 +129,10 @@ tabpreview toolbarbutton[anonid="close"] {
   padding: 0px;
 }
 
+tabpreview[selected="false"] toolbarbutton[anonid="close"] {
+  -moz-image-region: rect(0px, 64px, 16px, 48px);
+}
+
 tabpreview toolbarbutton[anonid="close"] image {
    margin: 0px;
 }
