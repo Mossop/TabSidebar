@@ -1,7 +1,7 @@
 tabpreview {
-  -moz-binding: url('chrome://tabsidebar/content/tabpreview.xml#tabpreview');
+  -moz-binding: url('chrome://tabsidebar/content/widgets/tabpreview.xml#tabpreview');
 }
 
 tabpreviews {
-  -moz-binding: url('chrome://tabsidebar/content/tabpreviews.xml#tabpreviews');
+  -moz-binding: url('chrome://tabsidebar/content/widgets/tabpreviews.xml#tabpreviews');
 }

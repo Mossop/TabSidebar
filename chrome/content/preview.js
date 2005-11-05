@@ -52,6 +52,17 @@ init: function()
 	preview.toggleAdvanced();
 },
 
+setSubPrefState: function(id,state)
+{
+	var box = document.getElementById(id);
+	box = box.firstChild;
+	while (box)
+	{
+		box.disabled=!state;
+		box=box.nextSibling;
+	}
+},
+
 showPreviewChanged: function()
 {
 	var pref = document.getElementById("content.preview");
@@ -62,15 +73,13 @@ showPreviewChanged: function()
 refreshChanged: function()
 {
 	var refresh = document.getElementById("autorefresh");
-	var box = document.getElementById("ratebox");
-	box.disabled=!refresh.value;
+	preview.setSubPrefState("ratebox",refresh.value);
 },
 
 loadRefreshChanged: function()
 {
 	var refresh = document.getElementById("loadrefresh");
-	var box = document.getElementById("loadratebox");
-	box.disabled=!refresh.value;
+	preview.setSubPrefState("loadratebox",refresh.value);
 },
 
 toggleAdvanced: function()

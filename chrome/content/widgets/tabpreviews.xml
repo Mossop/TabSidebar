@@ -56,7 +56,7 @@
   <binding id="tabpreviews" name="tabpreviews" extends="chrome://global/content/bindings/scrollbox.xml#scrollbox">
 
     <resources>
-      <stylesheet src="chrome://tabsidebar/content/tabpreviews.css"/>
+      <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
     <content hide="">
@@ -68,21 +68,21 @@
         </xul:tooltip>
         
         <xul:popup id="tabpreview_context">
-          <xul:menuitem id="newTab" label="&tabsidebar.newtab.label;"/>
+          <xul:menuitem id="newTab" accesskey="&tabsidebar.newtab.accesskey;" label="&tabsidebar.newtab.label;"/>
           <xul:menuseparator/>
-          <xul:menuitem id="reloadTab" label="&tabsidebar.reload.label;"/>
-          <xul:menuitem id="reloadAllTabs" label="&tabsidebar.reloadall.label;"/>
-          <xul:menuitem id="closeOtherTabs" label="&tabsidebar.closeother.label;"/>
+          <xul:menuitem id="reloadTab" accesskey="&tabsidebar.reload.accesskey;" label="&tabsidebar.reload.label;"/>
+          <xul:menuitem id="reloadAllTabs" accesskey="&tabsidebar.reloadall.accesskey;" label="&tabsidebar.reloadall.label;"/>
+          <xul:menuitem id="closeOtherTabs" accesskey="&tabsidebar.closeother.accesskey;" label="&tabsidebar.closeother.label;"/>
           <xul:menuseparator hidden="true"/>
-          <xul:menuitem id="bookmarkTab" hidden="true" label="&tabsidebar.bookmark.label;"/>
-          <xul:menuitem id="bookmarkAllTabs" hidden="true" label="&tabsidebar.bookmarkall.label;"/>
+          <xul:menuitem id="bookmarkTab" accesskey="&tabsidebar.bookmark.accesskey;" hidden="true" label="&tabsidebar.bookmark.label;"/>
+          <xul:menuitem id="bookmarkAllTabs" accesskey="&tabsidebar.bookmarkall.accesskey;" hidden="true" label="&tabsidebar.bookmarkall.label;"/>
           <xul:menuseparator/>
-          <xul:menuitem id="refreshPreview" label="&tabsidebar.refresh.label;"/>
-          <xul:menuitem id="refreshAllPreviews" label="&tabsidebar.refreshall.label;"/>
+          <xul:menuitem id="refreshPreview" accesskey="&tabsidebar.refresh.accesskey;" label="&tabsidebar.refresh.label;"/>
+          <xul:menuitem id="refreshAllPreviews" accesskey="&tabsidebar.refreshall.accesskey;" label="&tabsidebar.refreshall.label;"/>
           <xul:menuseparator/>
-          <xul:menuitem id="options" label="&tabsidebar.options.label;"/>
+          <xul:menuitem id="options" accesskey="&tabsidebar.options.accesskey;" label="&tabsidebar.options.label;"/>
           <xul:menuseparator/>
-          <xul:menuitem id="closeTab" label="&tabsidebar.close.label;"/>
+          <xul:menuitem id="closeTab" accesskey="&tabsidebar.close.accesskey;" label="&tabsidebar.close.label;"/>
         </xul:popup>
         
       </xul:popupset>

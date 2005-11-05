@@ -53,7 +53,7 @@
 ]>
 
 <prefwindow id="TabSidebarOptions" windowtype="TabSidebar:Options"
-            title="&tabsidebar.options.title;"
+            title="&tabsidebar.options.title;" style="&tabsidebar.options.style;"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
   <prefpane id="paneGeneral" label="&paneGeneral.title;"
@@ -67,7 +67,7 @@
     <vbox>
       <description>&paneGeneral.description;</description>
     
-      <checkbox preference="hidetabs" label="&paneGeneral.hidetabs;"/>
+      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>
     </vbox>
 
   </prefpane>
@@ -97,14 +97,22 @@
     <vbox>
       <description>&paneDisplay.description;</description>
     
-      <checkbox preference="content.favicon" label="&paneDisplay.content.favicon;"/>
-      <checkbox preference="content.reload" label="&paneDisplay.content.reload;"/>
-      <checkbox preference="content.throbber" label="&paneDisplay.content.throbber;"/>
-      <checkbox preference="content.security" label="&paneDisplay.content.security;"/>
-      <checkbox preference="content.close" label="&paneDisplay.content.close;"/>
-      <checkbox preference="content.preview" label="&paneDisplay.content.preview;"/>
-      <checkbox preference="content.title" label="&paneDisplay.content.title;"/>
-      <checkbox preference="content.uri" label="&paneDisplay.content.uri;"/>
+      <checkbox preference="content.favicon"  accesskey="&paneDisplay.content.favicon.accesskey;"
+                                              label="&paneDisplay.content.favicon.label;"/>
+      <checkbox preference="content.reload"   accesskey="&paneDisplay.content.reload.accesskey;"
+                                              label="&paneDisplay.content.reload.label;"/>
+      <checkbox preference="content.throbber" accesskey="&paneDisplay.content.throbber.accesskey;"
+                                              label="&paneDisplay.content.throbber.label;"/>
+      <checkbox preference="content.security" accesskey="&paneDisplay.content.security.accesskey;"
+                                              label="&paneDisplay.content.security.label;"/>
+      <checkbox preference="content.close"    accesskey="&paneDisplay.content.close.accesskey;"
+                                              label="&paneDisplay.content.close.label;"/>
+      <checkbox preference="content.preview"  accesskey="&paneDisplay.content.preview.accesskey;"
+                                              label="&paneDisplay.content.preview.label;"/>
+      <checkbox preference="content.title"    accesskey="&paneDisplay.content.title.accesskey;"
+                                              label="&paneDisplay.content.title.label;"/>
+      <checkbox preference="content.uri"      accesskey="&paneDisplay.content.uri.accesskey;"
+                                              label="&paneDisplay.content.uri.label;"/>
     </vbox>
 
   </prefpane>
@@ -134,23 +142,28 @@
     <vbox>
       <description>&panePreviews.description;</description>
       
-      <checkbox preference="drawscrolled" label="&panePreviews.drawscrolled;"/>
-      <hbox>
-        <checkbox preference="autorefresh" flex="1" label="&panePreviews.autorefresh;"/>
-        <textbox id="ratebox" preference="refreshrate"/>
+      <checkbox preference="drawscrolled" accesskey="&panePreviews.drawscrolled.accesskey;" label="&panePreviews.drawscrolled.label;"/>
+      <checkbox preference="autorefresh" flex="1" accesskey="&panePreviews.autorefresh.accesskey;" label="&panePreviews.autorefresh.label;"/>
+      <hbox id="ratebox" class="subprefs">
+        <label accesskey="&panePreviews.refreshrate.accesskey;" value="&panePreviews.refreshrate.label;"
+               control="refreshratebox"/>
+        <textbox id="refreshratebox" preference="refreshrate"/>
       </hbox>
-      <checkbox preference="showadvanced" label="&panePreviews.showadvanced;"/>
+      <checkbox preference="showadvanced" accesskey="&panePreviews.showadvanced.accesskey;" label="&panePreviews.showadvanced.label;"/>
     </vbox>
     
     <vbox class="advanced">
       <description>&tabsidebar.advanced;</description>
-      <hbox>
-        <checkbox preference="loadrefresh" flex="1" label="&panePreviews.loadrefresh;"/>
-        <textbox id="loadratebox" preference="loadrefreshrate"/>
+      <checkbox preference="loadrefresh" flex="1" accesskey="&panePreviews.loadrefresh.accesskey;" label="&panePreviews.loadrefresh.label;"/>
+      <hbox id="loadratebox" class="subprefs">
+        <label accesskey="&panePreviews.loadrefreshrate.accesskey;" value="&panePreviews.loadrefreshrate.label;"
+               control="loadrefreshratebox"/>
+        <textbox id="loadrefreshratebox" preference="loadrefreshrate"/>
       </hbox>
       <hbox align="center">
-        <label flex="1" value="&panePreviews.loaddelay;"/>
-        <textbox preference="loaddelay"/>
+        <label flex="1" accesskey="&panePreviews.loaddelay.accesskey;" value="&panePreviews.loaddelay.label;"
+               control="loaddelaybox"/>
+        <textbox id="loaddelaybox" preference="loaddelay"/>
       </hbox>
     </vbox>
     

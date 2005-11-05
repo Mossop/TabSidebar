@@ -1,6 +1,5 @@
-prefwindow {
-  width: 35em;
-  height: 30em;
+subpane {
+  -moz-binding: url('chrome://tabsidebar/content/widgets/subpane.xml#subpane');
 }
 
 .content-box {
@@ -13,6 +12,18 @@ prefwindow {
 
 textbox {
   width: 5em;
+}
+
+hbox {
+  -moz-box-align: center;
+}
+
+hbox label {
+  -moz-box-flex: 1;
+}
+
+.subprefs {
+  padding-left: 20px;
 }
 
 radio {

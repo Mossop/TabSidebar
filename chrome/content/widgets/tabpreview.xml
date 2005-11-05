@@ -56,7 +56,7 @@
   <binding id="tabpreview" name="tabpreview">
 
     <resources>
-      <stylesheet src="chrome://tabsidebar/content/tabpreviews.css"/>
+      <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
     <content orient="vertical" align="stretch" selected="false" loading="false" security="none">

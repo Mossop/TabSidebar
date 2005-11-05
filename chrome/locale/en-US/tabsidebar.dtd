@@ -1,20 +1,30 @@
-<!ENTITY tabsidebar.title             "&tabsidebar.brand;">
-<!ENTITY tabsidebar.menu.label        "&tabsidebar.brand;">
-<!ENTITY tabsidebar.menu.accesskey    "T">
-<!ENTITY tabsidebar.opensidebar       "Open &tabsidebar.brand;">
+<!ENTITY tabsidebar.title                 "&tabsidebar.brand;">
+<!ENTITY tabsidebar.menu.label            "&tabsidebar.brand;">
+<!ENTITY tabsidebar.menu.accesskey        "T">
+<!ENTITY tabsidebar.opensidebar           "Open &tabsidebar.brand;">
 
-<!ENTITY tabsidebar.untitled          "(Untitled)">
+<!ENTITY tabsidebar.untitled              "(Untitled)">
 
-<!ENTITY tabsidebar.newtab.label      "New Tab">
-<!ENTITY tabsidebar.reload.label      "Reload Tab">
-<!ENTITY tabsidebar.reloadall.label   "Reload All Tabs">
-<!ENTITY tabsidebar.closeother.label  "Close Other Tabs">
-<!ENTITY tabsidebar.bookmark.label    "Bookmark This Tab">
-<!ENTITY tabsidebar.bookmarkall.label "Bookmark All Tabs">
-<!ENTITY tabsidebar.refresh.label     "Refresh preview">
-<!ENTITY tabsidebar.refreshall.label  "Refresh all previews">
-<!ENTITY tabsidebar.options.label     "Options">
-<!ENTITY tabsidebar.close.label       "Close tab">
+<!ENTITY tabsidebar.newtab.label          "New Tab">
+<!ENTITY tabsidebar.newtab.accesskey      "n">
+<!ENTITY tabsidebar.reload.label          "Reload Tab">
+<!ENTITY tabsidebar.reload.accesskey      "r">
+<!ENTITY tabsidebar.reloadall.label       "Reload All Tabs">
+<!ENTITY tabsidebar.reloadall.accesskey   "A">
+<!ENTITY tabsidebar.closeother.label      "Close Other Tabs">
+<!ENTITY tabsidebar.closeother.accesskey  "o">
+<!ENTITY tabsidebar.bookmark.label        "Bookmark This Tab">
+<!ENTITY tabsidebar.bookmark.accesskey    "b">
+<!ENTITY tabsidebar.bookmarkall.label     "Bookmark All Tabs">
+<!ENTITY tabsidebar.bookmarkall.accesskey "t">
+<!ENTITY tabsidebar.refresh.label         "Refresh preview">
+<!ENTITY tabsidebar.refresh.accesskey     "f">
+<!ENTITY tabsidebar.refreshall.label      "Refresh all previews">
+<!ENTITY tabsidebar.refreshall.accesskey  "l">
+<!ENTITY tabsidebar.options.label         "Options">
+<!ENTITY tabsidebar.options.accesskey     "p">
+<!ENTITY tabsidebar.close.label           "Close tab">
+<!ENTITY tabsidebar.close.accesskey       "c">
 
-<!ENTITY tabsidebar.reload.tooltip    "&tabsidebar.reload.label;">
-<!ENTITY tabsidebar.close.tooltip     "&tabsidebar.close.label;">
+<!ENTITY tabsidebar.reload.tooltip        "&tabsidebar.reload.label;">
+<!ENTITY tabsidebar.close.tooltip         "&tabsidebar.close.label;">
