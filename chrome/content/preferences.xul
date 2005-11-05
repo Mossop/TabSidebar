@@ -126,17 +126,17 @@
       <preference type="bool" id="drawscrolled"
                  name="tabsidebar.drawscrolled"/>
       <preference type="bool"  id="autorefresh"
-                 name="tabsidebar.autorefresh" onchange="preview.refreshChanged()"/>
+                 name="tabsidebar.autorefresh"/>
       <preference type="int"  id="refreshrate"
                  name="tabsidebar.refreshrate"/>
       <preference type="bool"  id="loadrefresh"
-                 name="tabsidebar.loadrefresh" onchange="preview.loadRefreshChanged()"/>
+                 name="tabsidebar.loadrefresh"/>
       <preference type="int"  id="loadrefreshrate"
                  name="tabsidebar.loadrefreshrate"/>
       <preference type="int"  id="loaddelay"
                  name="tabsidebar.loaddelay"/>
       <preference type="bool"  id="showadvanced"
-                 name="tabsidebar.showadvanced" onchange="preview.toggleAdvanced()"/>
+                 name="tabsidebar.showadvanced"/>
     </preferences>
     
     <vbox>
@@ -144,28 +144,30 @@
       
       <checkbox preference="drawscrolled" accesskey="&panePreviews.drawscrolled.accesskey;" label="&panePreviews.drawscrolled.label;"/>
       <checkbox preference="autorefresh" flex="1" accesskey="&panePreviews.autorefresh.accesskey;" label="&panePreviews.autorefresh.label;"/>
-      <hbox id="ratebox" class="subprefs">
+      
+      <subpane preference="autorefresh" action="disable" orient="horizontal">
         <label accesskey="&panePreviews.refreshrate.accesskey;" value="&panePreviews.refreshrate.label;"
                control="refreshratebox"/>
         <textbox id="refreshratebox" preference="refreshrate"/>
-      </hbox>
+      </subpane>
+      
       <checkbox preference="showadvanced" accesskey="&panePreviews.showadvanced.accesskey;" label="&panePreviews.showadvanced.label;"/>
     </vbox>
     
-    <vbox class="advanced">
+    <subpane preference="showadvanced" action="hide">
       <description>&tabsidebar.advanced;</description>
       <checkbox preference="loadrefresh" flex="1" accesskey="&panePreviews.loadrefresh.accesskey;" label="&panePreviews.loadrefresh.label;"/>
-      <hbox id="loadratebox" class="subprefs">
+      <subpane preference="loadrefresh" orient="horizontal" action="disable">
         <label accesskey="&panePreviews.loadrefreshrate.accesskey;" value="&panePreviews.loadrefreshrate.label;"
                control="loadrefreshratebox"/>
         <textbox id="loadrefreshratebox" preference="loadrefreshrate"/>
-      </hbox>
+      </subpane>
       <hbox align="center">
         <label flex="1" accesskey="&panePreviews.loaddelay.accesskey;" value="&panePreviews.loaddelay.label;"
                control="loaddelaybox"/>
         <textbox id="loaddelaybox" preference="loaddelay"/>
       </hbox>
-    </vbox>
+    </subpane>
     
   </prefpane>
 

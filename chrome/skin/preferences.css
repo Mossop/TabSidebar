@@ -22,8 +22,20 @@ hbox label {
   -moz-box-flex: 1;
 }
 
-.subprefs {
+subpane {
   padding-left: 20px;
+}
+
+subpane[preference="showadvanced"] {
+  padding-left: 0px;
+}
+
+subpane[orient="horizontal"] {
+  -moz-box-align: center;
+}
+
+subpane[orient="horizontal"] label {
+  -moz-box-flex: 1;
 }
 
 radio {

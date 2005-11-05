@@ -48,7 +48,7 @@
 
   <binding id="subpane" name="subpane">
 
-    <content>
+    <content preference-editable="true" orient="vertical">
     </content>
 
     <implementation>
@@ -75,15 +75,23 @@
       
       <property name="_invert">
         <getter>
+        <![CDATA[
+          var invert = false;
+          
           if (this.action == "hide")
           {
-            return true;
+            invert=true;
           }
           else if (this.action == "disable")
           {
-            return true;
+            invert=true;
           }
-          return false;
+          
+          if (this.hasAttribute("invert") && this.getAttribute("invert") == "true")
+            invert=!invert;
+            
+          return invert;
+        ]]>
         </getter>
       </property>
       
@@ -91,10 +99,11 @@
       <property name="value">
         <setter>
           if (val == this._value)
-            return;
+            return val;
+
             
           this._value = val;
-          this._updateElements();
+          this._updateElements(val);
           
           return val;
         </setter>
@@ -109,22 +118,30 @@
         <body>
           var attribute = this._attribute;
           state = this._invert ? !state : state;
+          dump(state+"\n");
 
           if (attribute in element) 
-            element[attribute] = value;
+            element[attribute] = state;
           else
-            element.setAttribute(attribute, value);
+            element.setAttribute(attribute, state);
         </body>
       </method>
       
       <method name="_updateElements">
         <parameter name="state"/>
         <body>
-          var element = this.firstChild;
-          while (element)
+          if (this.action=="hide")
           {
-            this._setElementState(element,state);
-            element = element.nextSibling;
+            this.hidden = this._invert ? !state : state;
+          }
+          else
+          {
+            var element = this.firstChild;
+            while (element)
+            {
+              this._setElementState(element,state);
+              element = element.nextSibling;
+            }
           }
         </body>
       </method>

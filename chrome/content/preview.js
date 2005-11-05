@@ -47,20 +47,6 @@ var preview = {
 init: function()
 {
 	preview.showPreviewChanged();
-	preview.refreshChanged();
-	preview.loadRefreshChanged();
-	preview.toggleAdvanced();
-},
-
-setSubPrefState: function(id,state)
-{
-	var box = document.getElementById(id);
-	box = box.firstChild;
-	while (box)
-	{
-		box.disabled=!state;
-		box=box.nextSibling;
-	}
 },
 
 showPreviewChanged: function()
@@ -69,29 +55,6 @@ showPreviewChanged: function()
 	var selector = document.documentElement._selector.getElementsByAttribute("pane","panePreviews")[0];
 	selector.disabled=!pref.value;
 },
-
-refreshChanged: function()
-{
-	var refresh = document.getElementById("autorefresh");
-	preview.setSubPrefState("ratebox",refresh.value);
-},
-
-loadRefreshChanged: function()
-{
-	var refresh = document.getElementById("loadrefresh");
-	preview.setSubPrefState("loadratebox",refresh.value);
-},
-
-toggleAdvanced: function()
-{
-	var advanced = document.getElementById("showadvanced");
-	var adv = document.getElementsByAttribute("class","advanced");
-	for (var i=0; i<adv.length; i++)
-	{
-		adv[i].hidden=!advanced.value;
-	}
-}
-
 }
 
 window.addEventListener("load",preview.init,false);
