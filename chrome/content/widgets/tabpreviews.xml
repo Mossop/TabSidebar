@@ -107,7 +107,15 @@
     <implementation implements="nsITimerCallback,nsIObserver">
     
       <constructor>
-      <![CDATA[        
+      <![CDATA[
+        var topwin = window;
+        while (topwin.parent && topwin.parent != topwin)
+        {
+          topwin=topwin.parent;
+        }
+        this.window = topwin;
+        this.tabbrowser = topwin.document.getElementById("content");
+        
         this._initTree();
         this._migrateOldSettings();
         this._initSettings();
@@ -252,7 +260,8 @@
                   .getService(Components.interfaces.nsIPrefService)
                   .getBranch("tabsidebar.");
       </field>
-      <field name="tabbrowser">window.parent.document.getElementById("content")</field>
+      <field name="tabbrowser"/>
+      <field name="window"/>
       <field name="previewContainer">this</field>
       <field name="scrollBoxObject">
         this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","scrollbox")
@@ -377,6 +386,21 @@
         </setter>
       </property>
       
+      <field name="_suppressSizing">false</field>
+      <property name="suppressSizing">
+        <getter>
+          return this._suppressSizing;
+        </getter>
+        <setter>
+          if (this._suppressSizing != val)
+          {
+            this._suppressSizing = val;
+            this.onResize();
+          }
+          return val;
+        </setter>
+      </property>
+
       <property name="autoRefresh">
         <getter>
           return this.preferences.getBoolPref("autorefresh");
@@ -613,14 +637,16 @@
         ]]>
         </body>
       </method>
-
+      
       <method name="onResize">
         <body>
         <![CDATA[
-          if (this.customSize)
-          {
+          if (this.suppressSizing)
             return false;
-          }
+            
+          if (this.customSize)
+            return false;
+            
           var newWidth=0;
           var newHeight=0;
           var previews = this.previews;

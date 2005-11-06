@@ -1,7 +1,9 @@
-#tabsidebar-button {
-	list-style-image: url("chrome://tabsidebar/skin/toolbar.png");
+#tabsidebar-hovercapture {
+  width: 5px;
+  background: url('chrome://tabsidebar/skin/sidebar-open.png') 50% 50%;
 }
 
-toolbar[iconsize="small"] #tabsidebar-button {
-	list-style-image: url("chrome://tabsidebar/skin/toolbar-small.png");
+#tabsidebar-clickcapture {
+  width: 5px;
+  background: url('chrome://tabsidebar/skin/sidebar-close.png') 50% 50%;
 }

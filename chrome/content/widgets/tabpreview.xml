@@ -559,7 +559,7 @@
           {
             tabbrowser.selectedTab=this.tab;
           }
-          window.parent.displaySecurityInfo();
+          this.previews.window.displaySecurityInfo();
         }
         else
         {

@@ -49,6 +49,8 @@
 %localeDTD;
 ]>
 
+<?xml-stylesheet href="chrome://tabsidebar/skin/browser.css" type="text/css"?>
+
 <overlay id="TabSidebarOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <!-- Sidebar -->
@@ -70,11 +72,16 @@
   </toolbarpalette>
 
   <menupopup id="viewSidebarMenu">
-    <menuitem acceltext="Ctrl+Shift+T" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
+    <menuitem image="chrome://tabsidebar/skin/toolbar-small.png" acceltext="Ctrl+Shift+T" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
   </menupopup>
 
   <keyset>
     <key observes="viewTabSidebar" key="t" modifiers="control shift"/>
   </keyset>
+  
+  <hbox id="browser">
+    <box id="tabsidebar-clickcapture" insertbefore="sidebar-box" hidden="true"/>
+    <box id="tabsidebar-hovercapture" insertafter="sidebar-box" hidden="true"/>
+  </hbox>
   
 </overlay>

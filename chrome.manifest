@@ -6,4 +6,5 @@ locale			tabsidebar					en-US														file:chrome/locale/en-US/
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/browser.css
-style 			chrome://global/content/customizeToolbar.xul 				chrome://tabsidebar/skin/browser.css
+style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/toolbar.css
+style 			chrome://global/content/customizeToolbar.xul 				chrome://tabsidebar/skin/toolbar.css

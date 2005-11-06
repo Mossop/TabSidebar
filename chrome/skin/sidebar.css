@@ -10,9 +10,8 @@ tabpreviews scrollbox[anonid="scrollbox"] {
 }
 
 .tab-drop-indicator-bar {
-  display:none;
-  width: 9px;
-  margin-left: -9px;
+  display: none;
+  width: 0px;
   position: relative;
 }
 
@@ -25,7 +24,7 @@ tabpreviews scrollbox[anonid="scrollbox"] {
 }
 
 .tab-drop-indicator-bar[dragging="true"] {
-  display: -moz-box;
+  display: -moz-box
 }
 
 tabpreview {

@@ -118,7 +118,6 @@
         <body>
           var attribute = this._attribute;
           state = this._invert ? !state : state;
-          dump(state+"\n");
 
           if (attribute in element) 
             element[attribute] = state;
