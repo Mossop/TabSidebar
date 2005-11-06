@@ -271,18 +271,18 @@ openPreferences: function()
 
 showTabbar: function()
 {
-	if (!sidebar.hidden)
+	if (sidebar.hidden)
 	{
 	 	var tabbrowser = sidebar.topwindow.document.getElementById("content");
 	 	var tabstrip = sidebar.topwindow.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
 	 	tabstrip.collapsed=false;
-	 	sidebar.hidden=true;
+	 	sidebar.hidden=false;
 	}
 },
 
 hideTabbar: function()
 {
-	if (sidebar.hidden)
+	if (!sidebar.hidden)
 	{
 	  var tabbrowser = sidebar.topwindow.document.getElementById("content");
 	  var tabstrip = sidebar.topwindow.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
@@ -335,6 +335,23 @@ changeMode: function()
 	}
 },
 
+observe: function (aSubject, aTopic, aPrefName)
+{
+	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService)
+                        .getBranch("tabsidebar.");
+  if (prefs.getBoolPref("hidetabs"))
+  {
+  	sidebar.hideTabbar();
+  }
+  else
+  {
+  	sidebar.showTabbar();
+  }
+  sidebar.mode=prefs.getIntPref("displaymode");
+  sidebar.changeMode();
+},
+
 init: function()
 {
 	var topwin = window;
@@ -382,6 +399,9 @@ init: function()
 			sidebar.actualRelease();
 			break;
   }
+  
+	prefs = prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+  prefs.addObserver("",sidebar,false);
 },
  
 destroy: function()
@@ -423,5 +443,11 @@ destroy: function()
 	if (sidebar.slideTimer)
 		window.clearTimeout(sidebar.slideTimer);
 	sidebar.slideRate=0;
+
+	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService)
+                        .getBranch("tabsidebar.")
+                        .QueryInterface(Components.interfaces.nsIPrefBranch2);
+  prefs.removeObserver("",sidebar);
 }
 }
