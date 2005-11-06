@@ -50,6 +50,8 @@ var previews = null;
 
 var sidebar = {
 
+prefs: null,
+
 mode: MODE_NORMAL,
 hidden: false,
 topwindow: null,
@@ -377,12 +379,10 @@ changeMode: function(newmode)
 
 observe: function (aSubject, aTopic, aPrefName)
 {
+	//dump("pref change\n");
 	try
 	{
-		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-	                        .getService(Components.interfaces.nsIPrefService)
-	                        .getBranch("tabsidebar.");
-	  if (prefs.getBoolPref("hidetabs"))
+	  if (sidebar.prefs.getBoolPref("hidetabs"))
 	  {
 	  	sidebar.hideTabbar();
 	  }
@@ -390,7 +390,7 @@ observe: function (aSubject, aTopic, aPrefName)
 	  {
 	  	sidebar.showTabbar();
 	  }
-	  sidebar.changeMode(prefs.getIntPref("display.mode"));
+	  sidebar.changeMode(sidebar.prefs.getIntPref("display.mode"));
 	}
 	catch (e)
 	{
@@ -413,22 +413,22 @@ init: function()
 	previews = document.getElementById("previews");
 	topwin.addEventListener("resize",sidebar.onResize,false);
 	
-	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+	sidebar.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
                         .getBranch("tabsidebar.");
-  if (prefs.getBoolPref("hidetabs"))
+  if (sidebar.prefs.getBoolPref("hidetabs"))
   {
   	sidebar.hideTabbar();
   }
   
-  sidebar.captureTime=prefs.getIntPref("display.capturedelay");
-  sidebar.releaseTime=prefs.getIntPref("display.releasedelay");
-  sidebar.slideTime=prefs.getIntPref("display.time");
-  sidebar.slideRefresh=Math.min(10,prefs.getIntPref("display.speed"));
+  sidebar.captureTime=sidebar.prefs.getIntPref("display.capturedelay");
+  sidebar.releaseTime=sidebar.prefs.getIntPref("display.releasedelay");
+  sidebar.slideTime=sidebar.prefs.getIntPref("display.time");
+  sidebar.slideRefresh=Math.min(10,sidebar.prefs.getIntPref("display.speed"));
   
-  sidebar.changeMode(prefs.getIntPref("display.mode"));
+  sidebar.changeMode(sidebar.prefs.getIntPref("display.mode"));
   
-	prefs = prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+	var prefs = sidebar.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
   prefs.addObserver("",sidebar,false);
 },
  
@@ -442,10 +442,7 @@ destroy: function()
 	
 	sidebar.changeMode(MODE_NORMAL);
 
-	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService)
-                        .getBranch("tabsidebar.")
-                        .QueryInterface(Components.interfaces.nsIPrefBranch2);
+	var prefs = sidebar.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
   prefs.removeObserver("",sidebar);
 }
 }
