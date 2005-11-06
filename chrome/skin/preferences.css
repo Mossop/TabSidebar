@@ -38,7 +38,7 @@ subpane[orient="horizontal"] label {
   -moz-box-flex: 1;
 }
 
-radio {
+radiogroup.paneSelector radio {
   list-style-image: url("chrome://tabsidebar/skin/preferences.png");
 }
 

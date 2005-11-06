@@ -63,7 +63,8 @@ releaseDelay: null,
 slideTimer: null,
 slideRate: 0,
 
-delay: 100,
+captureTime: 100,
+releaseTime: 100,
 slideTime: 0,
 slideRefresh: 100,
 currentPos: 0,
@@ -131,7 +132,7 @@ onCapture: function(event)
 		}
 		else if (sidebar.slideRate == 0 && !sidebar.isOpen())
 		{
-			sidebar.captureDelay = window.setTimeout(sidebar.actualCapture,sidebar.delay);
+			sidebar.captureDelay = window.setTimeout(sidebar.actualCapture,sidebar.captureTime);
 		}
 	}
 },
@@ -170,7 +171,7 @@ onRelease: function(event)
 		}
 		else if (sidebar.slideRate == 0 && sidebar.isOpen())
 		{
-			sidebar.releaseDelay = window.setTimeout(sidebar.actualRelease,sidebar.delay);
+			sidebar.releaseDelay = window.setTimeout(sidebar.actualRelease,sidebar.releaseTime);
 		}
 	}
 },
@@ -291,11 +292,38 @@ hideTabbar: function()
   }
 },
 
-changeMode: function()
+changeMode: function(newmode)
 {
+	if (newmode == sidebar.mode)
+		return;
+
 	switch (sidebar.mode)
 	{
 		case MODE_NORMAL:
+			break;
+		case MODE_CLICKOPEN:
+			sidebar.hoverCapture.removeEventListener("click",sidebar.actualCapture,false);
+			sidebar.clickCapture.removeEventListener("click",sidebar.actualRelease,false);
+			break;
+		case MODE_AUTOHIDE:
+			sidebar.hoverCapture.removeEventListener("mouseover",sidebar.onCapture,false);
+			sidebar.splitter.removeEventListener("mouseover",sidebar.onCapture,false);
+			sidebar.sidebar.removeEventListener("mouseover",sidebar.onCapture,false);
+			sidebar.hoverCapture.removeEventListener("mouseout",sidebar.onRelease,false);
+			sidebar.splitter.removeEventListener("mouseout",sidebar.onRelease,false);
+			sidebar.sidebar.removeEventListener("mouseout",sidebar.onRelease,false);
+			break;
+	}
+	
+
+	switch (newmode)
+	{
+		case MODE_NORMAL:
+			sidebar.clickCapture.hidden=true;
+			sidebar.hoverCapture.hidden=true;
+			sidebar.splitter.hidden=sidebar.sidebar.hidden;
+			sidebar.sidebar.style.marginLeft=null;
+
 			if (sidebar.captureDelay)
 				window.clearTimeout(sidebar.captureDelay);
 			if (sidebar.releaseDelay)
@@ -303,13 +331,11 @@ changeMode: function()
 			if (sidebar.slideTimer)
 				window.clearTimeout(sidebar.slideTimer);
 			sidebar.slideRate=0;
-
-			sidebar.hoverCapture.hidden=true;
-			sidebar.clickCapture.hidden=true;
-			sidebar.splitter.hidden=false;
-			sidebar.sidebar.style.marginLeft=null;
 			break;
 		case MODE_CLICKOPEN:
+			sidebar.hoverCapture.addEventListener("click",sidebar.actualCapture,false);
+			sidebar.clickCapture.addEventListener("click",sidebar.actualRelease,false);
+			
 			if (sidebar.isOpen())
 			{
 				sidebar.clickCapture.hidden=false;
@@ -317,39 +343,59 @@ changeMode: function()
 			}
 			else if (sidebar.isClosed())
 			{
-				sidebar.hoverCapture.hidden=false;
 				sidebar.clickCapture.hidden=true;
+				sidebar.hoverCapture.hidden=false;
 			}
 			break;
 		case MODE_AUTOHIDE:
+			sidebar.hoverCapture.addEventListener("mouseover",sidebar.onCapture,false);
+			sidebar.splitter.addEventListener("mouseover",sidebar.onCapture,false);
+			sidebar.sidebar.addEventListener("mouseover",sidebar.onCapture,false);
+			sidebar.hoverCapture.addEventListener("mouseout",sidebar.onRelease,false);
+			sidebar.splitter.addEventListener("mouseout",sidebar.onRelease,false);
+			sidebar.sidebar.addEventListener("mouseout",sidebar.onRelease,false);
+
 			sidebar.clickCapture.hidden=true;
 			if (sidebar.isOpen())
 			{
 				sidebar.hoverCapture.hidden=true;
+				sidebar.onRelease();
 			}
 			else if (sidebar.isClosed())
 			{
 				sidebar.hoverCapture.hidden=false;
 			}
+			else
+			{
+				sidebar.onRelease();
+			}
 			break;
 	}
+	
+	sidebar.mode=newmode;
 },
 
 observe: function (aSubject, aTopic, aPrefName)
 {
-	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService)
-                        .getBranch("tabsidebar.");
-  if (prefs.getBoolPref("hidetabs"))
-  {
-  	sidebar.hideTabbar();
-  }
-  else
-  {
-  	sidebar.showTabbar();
-  }
-  sidebar.mode=prefs.getIntPref("displaymode");
-  sidebar.changeMode();
+	try
+	{
+		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+	                        .getService(Components.interfaces.nsIPrefService)
+	                        .getBranch("tabsidebar.");
+	  if (prefs.getBoolPref("hidetabs"))
+	  {
+	  	sidebar.hideTabbar();
+	  }
+	  else
+	  {
+	  	sidebar.showTabbar();
+	  }
+	  sidebar.changeMode(prefs.getIntPref("display.mode"));
+	}
+	catch (e)
+	{
+		dump(e);
+	}
 },
 
 init: function()
@@ -375,30 +421,12 @@ init: function()
   	sidebar.hideTabbar();
   }
   
-  sidebar.delay=prefs.getIntPref("display.checkdelay");
+  sidebar.captureTime=prefs.getIntPref("display.capturedelay");
+  sidebar.releaseTime=prefs.getIntPref("display.releasedelay");
   sidebar.slideTime=prefs.getIntPref("display.time");
   sidebar.slideRefresh=Math.min(10,prefs.getIntPref("display.speed"));
   
-  sidebar.mode=prefs.getIntPref("displaymode");
-  switch (sidebar.mode)
-  {
-		case MODE_NORMAL:
-			break;
-		case MODE_CLICKOPEN:
-			sidebar.hoverCapture.addEventListener("click",sidebar.actualCapture,false);
-			sidebar.clickCapture.addEventListener("click",sidebar.actualRelease,false);
-			sidebar.clickCapture.hidden=false;
-			break;
-		case MODE_AUTOHIDE:
-			sidebar.hoverCapture.addEventListener("mouseover",sidebar.onCapture,false);
-			sidebar.splitter.addEventListener("mouseover",sidebar.onCapture,false);
-			sidebar.sidebar.addEventListener("mouseover",sidebar.onCapture,false);
-			sidebar.hoverCapture.addEventListener("mouseout",sidebar.onRelease,false);
-			sidebar.splitter.addEventListener("mouseout",sidebar.onRelease,false);
-			sidebar.sidebar.addEventListener("mouseout",sidebar.onRelease,false);
-			sidebar.actualRelease();
-			break;
-  }
+  sidebar.changeMode(prefs.getIntPref("display.mode"));
   
 	prefs = prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
   prefs.addObserver("",sidebar,false);
@@ -412,37 +440,7 @@ destroy: function()
 	
 	sidebar.showTabbar();
 	
-	switch (sidebar.mode)
-	{
-		case MODE_NORMAL:
-			break;
-			sidebar.hoverCapture.removeEventListener("click",sidebar.actualCapture,false);
-			sidebar.clickCapture.removeEventListener("click",sidebar.actualRelease,false);
-		case MODE_CLICKOPEN:
-			sidebar.hoverCapture.addEventListener("click",sidebar.actualCapture,false);
-			sidebar.clickCapture.addEventListener("click",sidebar.actualRelease,false);
-			break;
-		case MODE_AUTOHIDE:
-			sidebar.hoverCapture.removeEventListener("mouseover",sidebar.onCapture,false);
-			sidebar.splitter.removeEventListener("mouseover",sidebar.onCapture,false);
-			sidebar.sidebar.removeEventListener("mouseover",sidebar.onCapture,false);
-			sidebar.hoverCapture.removeEventListener("mouseout",sidebar.onRelease,false);
-			sidebar.splitter.removeEventListener("mouseout",sidebar.onRelease,false);
-			sidebar.sidebar.removeEventListener("mouseout",sidebar.onRelease,false);
-			break;
-	}
-
-	sidebar.clickCapture.hidden=true;
-	sidebar.hoverCapture.hidden=true;
-	sidebar.sidebar.style.marginLeft=null;
-
-	if (sidebar.captureDelay)
-		window.clearTimeout(sidebar.captureDelay);
-	if (sidebar.releaseDelay)
-		window.clearTimeout(sidebar.releaseDelay);
-	if (sidebar.slideTimer)
-		window.clearTimeout(sidebar.slideTimer);
-	sidebar.slideRate=0;
+	sidebar.changeMode(MODE_NORMAL);
 
 	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)

@@ -29,50 +29,65 @@
 
 <h2 id="general_options">General Options</h2>
 
-<p><em>&paneGeneral.hidetabs;:</em><br/>
+<p><em>&paneGeneral.hidetabs.label;:</em><br/>
    This option allows you to hide the browser's main tab bar when the tab sidebar is open. The tab bar
    will be made visible again when you close the tab sidebar.</p>
 
+<h3>Hide Mode</h3>
+
+<p>The &tabsidebar.brand; can automatically hide from the window when you do not need it. You may choose one
+   of the following modes to configure this:</p>
+
+<p><em>&paneGeneral.mode.normal.label;:</em><br/>
+   In this mode the sidebar never hides. This is the default and is how most normal sidebars display.</p>
+   
+<p><em>&paneGeneral.mode.click.label;:</em><br/>
+   This mode provides a slim click panel on the left of the window. Clicking this will open and close the sidebar.</p>
+   
+<p><em>&paneGeneral.mode.auto.label;:</em><br/>
+   The final mode allows the sidebar to autmoatically hide. Simply move your mouse over the hover panel on the left of
+   the window and hte sidebar will appear. Move your mouse away from the sidebar and it will disappear again.</p>
+   
 <h2 id="display_options">Display Options</h2>
 <p>The display options control what information is displayed for each tab in the sidebar.
    The following options are available:</p>
 
-<p><em>&paneDisplay.content.favicon;:</em><br/>
+<p><em>&paneDisplay.content.favicon.label;:</em><br/>
    This option controls the display of the website's icon in the display.</p>
 
-<p><em>&paneDisplay.content.reload;:</em><br/>
+<p><em>&paneDisplay.content.reload.label;:</em><br/>
    Displays a reload button that when clicked reloads the tab.</p>
 
-<p><em>&paneDisplay.content.throbber;:</em><br/>
+<p><em>&paneDisplay.content.throbber.label;:</em><br/>
    Shows the loading throbber when the tab is currently loading.</p>
 
-<p><em>&paneDisplay.content.security;:</em><br/>
+<p><em>&paneDisplay.content.security.label;:</em><br/>
    If the tab is displaying a secure site then this option will display an indication of the security level.</p>
 
-<p><em>&paneDisplay.content.close;:</em><br/>
+<p><em>&paneDisplay.content.close.label;:</em><br/>
    Displays a button letting you close the tab quickly.</p>
 
-<p><em>&paneDisplay.content.preview;:</em><br/>
+<p><em>&paneDisplay.content.preview.label;:</em><br/>
    Displays a thumbnail preview of the website displayed in the tab.</p>
 
-<p><em>&paneDisplay.content.title;:</em><br/>
+<p><em>&paneDisplay.content.title.label;:</em><br/>
    Shows the title of the website displayed in the tab.</p>
 
-<p><em>&paneDisplay.content.uri;:</em><br/>
+<p><em>&paneDisplay.content.uri.label;:</em><br/>
    Shows the address of the address of the website displayed in the tab.</p>
 
 <h2 id="previews_options">Preview Options</h2>
 
-<p><em>&panePreviews.drawscrolled;:</em><br/>
+<p><em>&panePreviews.drawscrolled.label;:</em><br/>
    When a web page has been scrolled down, this option will control whether the preview drawn is taken from what
    is seen in the browser window (the scrolled view) or from the area at the very start of the webpage.</p>
    
-<p><em>Continually refresh the preview this often:</em><br/>
+<p><em>&panePreviews.autorefresh.label;:</em><br/>
    For pages that continually change it may be desirable to have the preview redraw continually. This option
    allows you to do this and lets you specify how often (in seconds) to draw the preview. The minimum time is
    every 5 seconds.</p>
 
-<p><em>&panePreviews.showadvanced;:</em><br/>
+<p><em>&panePreviews.showadvanced.label;:</em><br/>
    Selecting this option will display some more advanced options that most casual users should not change.</p>
 
 <p><em>Refresh the preview during page load:</em><br/>
@@ -81,7 +96,7 @@
    The minimum time is every 100 milliseconds. Note that this will slow down the loading of webpages and will
    have no effect on some websites.</p>
    
-<p><em>&panePreviews.loaddelay;:</em><br/>
+<p><em>&panePreviews.loaddelay.label;:</em><br/>
    After a website has been loaded there is a slight delay before the preview is drawn to allow the page to
    complete drawing. This delay is initially set at 500 milliseconds but you may tweak it here if you wish.
    Setting the delay too low can cause unfinished pages to be displayed in the preview.</p>
