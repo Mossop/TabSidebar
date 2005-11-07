@@ -210,6 +210,8 @@ fullyCaptured: function()
 		sidebar.clickCapture.hidden=false;
 
 	previews.suppressSizing=false;
+	
+	sidebar.prefs.setIntPref("display.state",1);
 },
 
 startRelease: function()
@@ -225,6 +227,19 @@ startRelease: function()
 fullyReleased: function()
 {
 	sidebar.hoverCapture.hidden=false;
+	sidebar.prefs.setIntPref("display.state",0);
+},
+
+onClickOpen: function(event)
+{
+	if (event.button == 0)
+		sidebar.actualCapture();
+},
+
+onClickClosed: function(event)
+{
+	if (event.button == 0)
+		sidebar.actualRelease();
 },
 
 isOpen: function()
@@ -304,8 +319,8 @@ changeMode: function(newmode)
 		case MODE_NORMAL:
 			break;
 		case MODE_CLICKOPEN:
-			sidebar.hoverCapture.removeEventListener("click",sidebar.actualCapture,false);
-			sidebar.clickCapture.removeEventListener("click",sidebar.actualRelease,false);
+			sidebar.hoverCapture.removeEventListener("click",sidebar.onClickOpen,false);
+			sidebar.clickCapture.removeEventListener("click",sidebar.onClickClosed,false);
 			break;
 		case MODE_AUTOHIDE:
 			sidebar.hoverCapture.removeEventListener("mouseover",sidebar.onCapture,false);
@@ -335,8 +350,8 @@ changeMode: function(newmode)
 			sidebar.slideRate=0;
 			break;
 		case MODE_CLICKOPEN:
-			sidebar.hoverCapture.addEventListener("click",sidebar.actualCapture,false);
-			sidebar.clickCapture.addEventListener("click",sidebar.actualRelease,false);
+			sidebar.hoverCapture.addEventListener("click",sidebar.onClickOpen,false);
+			sidebar.clickCapture.addEventListener("click",sidebar.onClickClosed,false);
 			
 			if (sidebar.isOpen())
 			{
@@ -369,7 +384,7 @@ changeMode: function(newmode)
 			}
 			else
 			{
-				sidebar.onRelease();
+				sidebar.actualRelease();
 			}
 			break;
 	}
@@ -427,6 +442,11 @@ init: function()
   sidebar.slideRefresh=Math.min(10,sidebar.prefs.getIntPref("display.speed"));
   
   sidebar.changeMode(sidebar.prefs.getIntPref("display.mode"));
+  
+  if (sidebar.mode == MODE_CLICKOPEN && sidebar.prefs.getIntPref("display.state") == 0)
+  {
+  	sidebar.actualRelease();
+  }
   
 	var prefs = sidebar.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
   prefs.addObserver("",sidebar,false);

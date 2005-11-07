@@ -1,9 +1,13 @@
 #tabsidebar-hovercapture {
   width: 5px;
-  background: url('chrome://tabsidebar/skin/sidebar-open.png') 50% 50%;
+  min-width: 5px;
+  max-width: 5px;
+  background: url('chrome://tabsidebar/skin/sidebar-open.png') 50% 50% repeat-y;
 }
 
 #tabsidebar-clickcapture {
   width: 5px;
-  background: url('chrome://tabsidebar/skin/sidebar-close.png') 50% 50%;
+  min-width: 5px;
+  max-width: 5px;
+  background: url('chrome://tabsidebar/skin/sidebar-close.png') 50% 50% repeat-y;
 }

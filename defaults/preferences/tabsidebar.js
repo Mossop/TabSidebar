@@ -13,6 +13,7 @@ pref("tabsidebar.display.capturedelay", 100);
 pref("tabsidebar.display.releasedelay", 500);
 pref("tabsidebar.display.time", 0);
 pref("tabsidebar.display.speed", 100);
+pref("tabsidebar.display.state", 1);
 
 pref("tabsidebar.content.favicon", true);
 pref("tabsidebar.content.security", true);

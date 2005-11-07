@@ -22,8 +22,8 @@
     <nc:subheadings>
       <rdf:Seq>
         <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Displaying &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
-        <rdf:li><rdf:Description ID="usage-tabs" nc:name="Manipulating tabs" nc:link="using.xhtml#usage_tabs"/></rdf:li>
-        <rdf:li><rdf:Description ID="usage-options" nc:name="Changing options" nc:link="using.xhtml#usage_options"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-previews" nc:name="Using Previews" nc:link="using.xhtml#usage_previews"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-tabs" nc:name="Manipulating Tabs" nc:link="using.xhtml#usage_tabs"/></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
@@ -31,9 +31,10 @@
   <rdf:Description about="#options">
     <nc:subheadings>
       <rdf:Seq>
-        <rdf:li><rdf:Description ID="options-general" nc:name="General" nc:link="options.xhtml#general_options"/></rdf:li>
-        <rdf:li><rdf:Description ID="options-display" nc:name="Display" nc:link="options.xhtml#display_options"/></rdf:li>
-        <rdf:li><rdf:Description ID="options-previews" nc:name="Previews" nc:link="options.xhtml#previews_options"/></rdf:li>
+        <rdf:li><rdf:Description ID="options-showing" nc:name="Displaying Options" nc:link="options.xhtml#options"/></rdf:li>
+        <rdf:li><rdf:Description ID="options-general" nc:name="General Settings" nc:link="options.xhtml#general_options"/></rdf:li>
+        <rdf:li><rdf:Description ID="options-display" nc:name="Display Settings" nc:link="options.xhtml#display_options"/></rdf:li>
+        <rdf:li><rdf:Description ID="options-previews" nc:name="Previews Settings" nc:link="options.xhtml#previews_options"/></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>

@@ -50,6 +50,7 @@
 				<exclude name="*.xpi"/>
 				<exclude name="build.xml"/>
 				<exclude name=".*"/>
+				<exclude name="**/*.pspimage"/>
 			</fileset>
 		</zip>
 	</target>

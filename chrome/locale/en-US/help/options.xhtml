@@ -3,8 +3,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
   <!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd" >
   <!ENTITY % prefsDTD SYSTEM "chrome://tabsidebar/locale/preferences.dtd" >
+  <!ENTITY % menusDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+  <!ENTITY % platformDTD SYSTEM "chrome://browser/locale/help/platformStrings.dtd" >
   %brandDTD;
   %prefsDTD;
+  %platformDTD;
+  %menusDTD;
 ]>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,13 +25,21 @@
 
 <div class="contentsBox">In this section:
   <ul>
-    <li><a href="#general_options">General Options</a></li>
-    <li><a href="#display_options">Display Options</a></li>
-    <li><a href="#previews_options">Preview Options</a></li>
+    <li><a href="#options">Displaying Options</a></li>
+    <li><a href="#general_options">General Settings</a></li>
+    <li><a href="#display_options">Display Settings</a></li>
+    <li><a href="#previews_options">Preview Settings</a></li>
   </ul>
 </div>
 
-<h2 id="general_options">General Options</h2>
+<h2 id="options">Displaying Options</h2>
+
+<p>There are two ways to display the options for &tabsidebar.brand;. Firstly you can view them from the extension
+   manager. Do this by going to <span class="menuPath">Tools &gt; Extensions</span>. Then select &tabsidebar.brand; and
+   click the <span class="menuPath">Options</span> button. Secondly you can just <span class="noMac">right-click</span>
+   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&tabsidebar.options.label;</span>.</p>
+
+<h2 id="general_options">General Settings</h2>
 
 <p><em>&paneGeneral.hidetabs.label;:</em><br/>
    This option allows you to hide the browser's main tab bar when the tab sidebar is open. The tab bar
@@ -48,7 +60,7 @@
    The final mode allows the sidebar to autmoatically hide. Simply move your mouse over the hover panel on the left of
    the window and hte sidebar will appear. Move your mouse away from the sidebar and it will disappear again.</p>
    
-<h2 id="display_options">Display Options</h2>
+<h2 id="display_options">Display Settings</h2>
 <p>The display options control what information is displayed for each tab in the sidebar.
    The following options are available:</p>
 
@@ -76,7 +88,7 @@
 <p><em>&paneDisplay.content.uri.label;:</em><br/>
    Shows the address of the address of the website displayed in the tab.</p>
 
-<h2 id="previews_options">Preview Options</h2>
+<h2 id="previews_options">Preview Settings</h2>
 
 <p><em>&panePreviews.drawscrolled.label;:</em><br/>
    When a web page has been scrolled down, this option will control whether the preview drawn is taken from what
