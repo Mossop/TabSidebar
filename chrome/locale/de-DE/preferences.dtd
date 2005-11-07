@@ -1,0 +1,60 @@
+<!ENTITY tabsidebar.options.title                "&tabsidebar.brand; - Enstellungen">
+<!ENTITY tabsidebar.options.style                "width: 40em; height: 35em;">
+
+<!ENTITY tabsidebar.advanced                     "Die folgenden Einstellungen richten sich an erfahrene Benutzer, 
+				 																          da durch Änderungen der Browser instabil werden kann. 
+																				          Die Angaben erfolgen in Millisekunden.">
+
+<!ENTITY paneGeneral.title                       "Allgemein">
+<!ENTITY paneGeneral.description                 "Allgemeine Einstellungsmöglichkeiten zum Verhalten der Sidebar.">
+
+<!ENTITY paneGeneral.hidetabs.label              "Bei geöffneter Sidebar die Tab-Leiste verstecken">
+<!ENTITY paneGeneral.hidetabs.accesskey          "">
+
+<!ENTITY paneGeneral.mode.description            "The &tabsidebar.brand; can be made to quickly hide itself when you don't need it.">
+
+<!ENTITY paneGeneral.mode.normal.label           "Never hide the sidebar.">
+<!ENTITY paneGeneral.mode.normal.accesskey       "N">
+<!ENTITY paneGeneral.mode.click.label            "Click the panel to show and hide the sidebar.">
+<!ENTITY paneGeneral.mode.click.accesskey        "C">
+<!ENTITY paneGeneral.mode.auto.label             "Automatically show and hide the sidebar.">
+<!ENTITY paneGeneral.mode.auto.accesskey         "A">
+
+<!ENTITY paneDisplay.title                       "Anzeige">
+<!ENTITY paneDisplay.description                 "Anpassungsmöglichkeiten für die Anzeige der Tab-Vorschau in der Sidebar.">
+
+<!ENTITY paneDisplay.content.favicon.label       "Display site icon.">
+<!ENTITY paneDisplay.content.favicon.accesskey   "i">
+<!ENTITY paneDisplay.content.reload.label        "&quot;Neu laden&quot;-Schaltfläche anzeigen">
+<!ENTITY paneDisplay.content.reload.accesskey    "">
+<!ENTITY paneDisplay.content.throbber.label      "Ladeanimation (Throbber) anzeigen">
+<!ENTITY paneDisplay.content.throbber.accesskey  "">
+<!ENTITY paneDisplay.content.security.label      "Symbol für sichere Verbindung anzeigen">
+<!ENTITY paneDisplay.content.security.accesskey  "">
+<!ENTITY paneDisplay.content.close.label         "&quot;Tab schließen&quot;-Schaltfläche anzeigen">
+<!ENTITY paneDisplay.content.close.accesskey     "">
+<!ENTITY paneDisplay.content.preview.label       "Vorschaubilder anzeigen">
+<!ENTITY paneDisplay.content.preview.accesskey   "">
+<!ENTITY paneDisplay.content.title.label   		   "Tab-Titel anzeigen">
+<!ENTITY paneDisplay.content.title.accesskey     "">
+<!ENTITY paneDisplay.content.uri.label           "Tab-URL anzeigen">
+<!ENTITY paneDisplay.content.uri.accesskey       "a">
+
+<!ENTITY panePreviews.title                      "Vorschau">
+<!ENTITY panePreviews.description                "Anpassungen für das Aktualisierungsverhalten der Vorschaubilder und den darzustellenden Inhalt.">
+
+<!ENTITY panePreviews.drawscrolled.label         "Aktuelle Scroll-Position des Browser-Fensters wiedergeben.">
+<!ENTITY panePreviews.drawscrolled.accesskey     "">
+<!ENTITY panePreviews.autorefresh.label          "Aktualisierungsintervall für Vorschaubilder (Sekunden):">
+<!ENTITY panePreviews.autorefresh.accesskey      "">
+<!ENTITY panePreviews.refreshrate.label          "Refresh rate (in seconds):">
+<!ENTITY panePreviews.refreshrate.accesskey      "s">
+<!ENTITY panePreviews.showadvanced.label         "Erweiterte Einstellungen anzeigen">
+<!ENTITY panePreviews.showadvanced.accesskey     "">
+
+<!ENTITY panePreviews.loadrefresh.label          "Vorschau während des Ladens der Seite aktualisieren:">
+<!ENTITY panePreviews.loadrefresh.accesskey      "">
+<!ENTITY panePreviews.loadrefreshrate.label      "Refresh rate (in milliseconds):">
+<!ENTITY panePreviews.loadrefreshrate.accesskey  "m">
+<!ENTITY panePreviews.loaddelay.label            "Verzögerung vor dem endgültigen Neuaufbau der Vorschau:">
+<!ENTITY panePreviews.loaddelay.accesskey        "">

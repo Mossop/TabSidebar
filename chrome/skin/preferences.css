@@ -6,10 +6,6 @@ subpane {
 	-moz-box-flex: 1;
 }
 
-.advanced {
-  margin-top: 10px;
-}
-
 textbox {
   width: 5em;
 }

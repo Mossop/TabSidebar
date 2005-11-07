@@ -43,7 +43,9 @@
    -->
 
 <!DOCTYPE bindings [
+<!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
 <!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+%tabbrowserDTD;
 %tabSidebarDTD;
 ]>
 
@@ -74,8 +76,8 @@
           <xul:menuitem id="reloadAllTabs" accesskey="&tabsidebar.reloadall.accesskey;" label="&tabsidebar.reloadall.label;"/>
           <xul:menuitem id="closeOtherTabs" accesskey="&tabsidebar.closeother.accesskey;" label="&tabsidebar.closeother.label;"/>
           <xul:menuseparator hidden="true"/>
-          <xul:menuitem id="bookmarkTab" accesskey="&tabsidebar.bookmark.accesskey;" hidden="true" label="&tabsidebar.bookmark.label;"/>
-          <xul:menuitem id="bookmarkAllTabs" accesskey="&tabsidebar.bookmarkall.accesskey;" hidden="true" label="&tabsidebar.bookmarkall.label;"/>
+          <xul:menuitem id="bookmarkTab" accesskey="" hidden="true" label=""/>
+          <xul:menuitem id="bookmarkAllTabs" accesskey="" hidden="true" label=""/>
           <xul:menuseparator/>
           <xul:menuitem id="refreshPreview" accesskey="&tabsidebar.refresh.accesskey;" label="&tabsidebar.refresh.label;"/>
           <xul:menuitem id="refreshAllPreviews" accesskey="&tabsidebar.refreshall.accesskey;" label="&tabsidebar.refreshall.label;"/>
@@ -116,6 +118,7 @@
         this.window = topwin;
         this.tabbrowser = topwin.document.getElementById("content");
         
+        this._loadLocale();
         this._initTree();
         this._migrateOldSettings();
         this._initSettings();
@@ -129,6 +132,20 @@
         this._initEvents();
       ]]>
       </constructor>
+      
+      <method name="_loadLocale">
+        <body>
+          var sbs = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                              .getService(Components.interfaces.nsIStringBundleService);
+          var bundle = sbs.createBundle("chrome://browser/locale/browser.properties");
+          var item = this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkTab");
+          item.label = bundle.GetStringFromName("bookmarkCurTab_label");
+          item.setAttribute("accesskey",bundle.GetStringFromName("bookmarkCurTab_accesskey"));
+          item = this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkAllTabs");
+          item.label = bundle.GetStringFromName("bookmarkAllTabs_label");
+          item.setAttribute("accesskey",bundle.GetStringFromName("bookmarkAllTabs_accesskey"));
+        </body>
+      </method>
       
       <method name="_initTree">
         <body>

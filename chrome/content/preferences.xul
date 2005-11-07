@@ -69,9 +69,15 @@
     <vbox>
       <description>&paneGeneral.description;</description>
     
+      <separator class="thin"/>
+      
       <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>
-        
-      <description style="margin-top: 1em;">&paneGeneral.mode.description;</description>
+      
+      <separator class="thin"/>
+      
+      <description>&paneGeneral.mode.description;</description>
+      
+      <separator class="thin"/>
       
       <radiogroup preference="display.mode">
         <radio value="0" label="&paneGeneral.mode.normal.label;"
@@ -111,6 +117,8 @@
     <vbox>
       <description>&paneDisplay.description;</description>
     
+      <separator class="thin"/>
+      
       <checkbox preference="content.favicon"  accesskey="&paneDisplay.content.favicon.accesskey;"
                                               label="&paneDisplay.content.favicon.label;"/>
       <checkbox preference="content.reload"   accesskey="&paneDisplay.content.reload.accesskey;"
@@ -156,6 +164,8 @@
     <vbox>
       <description>&panePreviews.description;</description>
       
+      <separator class="thin"/>
+      
       <checkbox preference="drawscrolled" accesskey="&panePreviews.drawscrolled.accesskey;" label="&panePreviews.drawscrolled.label;"/>
       <checkbox preference="autorefresh" flex="1" accesskey="&panePreviews.autorefresh.accesskey;" label="&panePreviews.autorefresh.label;"/>
       
@@ -165,11 +175,17 @@
         <textbox id="refreshratebox" preference="refreshrate"/>
       </subpane>
       
+      <separator class="thin"/>
+      
       <checkbox preference="showadvanced" accesskey="&panePreviews.showadvanced.accesskey;" label="&panePreviews.showadvanced.label;"/>
     </vbox>
     
+    <separator class="thin"/>
+      
     <subpane preference="showadvanced" action="hide" style="margin-top: 1em;">
       <description>&tabsidebar.advanced;</description>
+      <separator class="thin"/>
+      
       <checkbox preference="loadrefresh" flex="1" accesskey="&panePreviews.loadrefresh.accesskey;" label="&panePreviews.loadrefresh.label;"/>
       <subpane preference="loadrefresh" orient="horizontal" action="disable">
         <label accesskey="&panePreviews.loadrefreshrate.accesskey;" value="&panePreviews.loadrefreshrate.label;"

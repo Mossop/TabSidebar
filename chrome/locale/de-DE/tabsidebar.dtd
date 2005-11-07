@@ -1,7 +1,7 @@
 <!ENTITY tabsidebar.title                 "&tabsidebar.brand;">
 <!ENTITY tabsidebar.menu.label            "&tabsidebar.brand;">
 <!ENTITY tabsidebar.menu.accesskey        "T">
-<!ENTITY tabsidebar.opensidebar           "Open &tabsidebar.brand;">
+<!ENTITY tabsidebar.opensidebar           "&tabsidebar.brand; öffnen">
 
 <!ENTITY tabsidebar.untitled              "&untitledTab;">
 
@@ -16,12 +16,12 @@
 <!ENTITY tabsidebar.close.label           "&closeTab.label;">
 <!ENTITY tabsidebar.close.accesskey       "&closeTab.accesskey;">
 
-<!ENTITY tabsidebar.refresh.label         "Refresh preview">
-<!ENTITY tabsidebar.refresh.accesskey     "f">
-<!ENTITY tabsidebar.refreshall.label      "Refresh all previews">
-<!ENTITY tabsidebar.refreshall.accesskey  "l">
-<!ENTITY tabsidebar.options.label         "Options">
-<!ENTITY tabsidebar.options.accesskey     "p">
+<!ENTITY tabsidebar.refresh.label         "Vorschaubild aktualisieren">
+<!ENTITY tabsidebar.refresh.accesskey     "">
+<!ENTITY tabsidebar.refreshall.label      "Alle Vorschaubilder aktualisieren">
+<!ENTITY tabsidebar.refreshall.accesskey  "">
+<!ENTITY tabsidebar.options.label         "Einstellungen...">
+<!ENTITY tabsidebar.options.accesskey     "">
 
 <!ENTITY tabsidebar.reload.tooltip        "&tabsidebar.reload.label;">
 <!ENTITY tabsidebar.close.tooltip         "&tabsidebar.close.label;">
