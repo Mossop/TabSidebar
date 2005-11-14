@@ -61,7 +61,7 @@
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
-    <content hide="">
+    <content hide="" orient="horizontal" align="stretch" flex="1">
       <xul:popupset>
       
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">
@@ -89,19 +89,19 @@
         
       </xul:popupset>
       
+      <xul:vbox class="tab-drop-indicator-bar">
+        <xul:hbox class="tab-drop-indicator"/>
+      </xul:vbox>          
+
       <xul:scrollbox context="tabpreview_context" allowevents="true" anonid="scrollbox"
                      ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
                      ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
                      ondragdrop="nsDragAndDrop.drop(event, this.parentNode); event.stopPropagation();"
-                     ondragexit="nsDragAndDrop.dragExit(event, this.parentNode); event.stopPropagation();">
+                     ondragexit="nsDragAndDrop.dragExit(event, this.parentNode); event.stopPropagation();"
+                     align="stretch" orient="vertical" flex="1">
         
-        <xul:vbox class="tab-drop-indicator-bar">
-          <xul:hbox class="tab-drop-indicator"/>
-        </xul:vbox>          
 
-        <xul:vbox align="stretch" flex="1">
-          <children/>
-        </xul:vbox>
+        <children/>
 
       </xul:scrollbox>
     </content>
@@ -280,11 +280,9 @@
       <field name="tabbrowser"/>
       <field name="window"/>
       <field name="previewContainer">this</field>
-      <field name="scrollBoxObject">
-        this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","scrollbox")
-                          .boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
-      </field>
-      <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1].firstChild</field>
+      <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[2]</field>
+      <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
+      <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
       
       <property name="previews">
@@ -709,7 +707,10 @@
         <body>
           if (drop!=this._lastDrop)
           {
+            var y = {};
+            this.scrollBoxObject.getPosition({}, y);
             var pos = drop.boxObject.y+(drop.boxObject.height/2)-5;
+            pos = pos - y.value;
             this.dragDropIndicator.style.marginTop = pos + "px";
             if (!this._lastDrop)
             {
@@ -784,8 +785,8 @@
               if (URI)
               {
                 aXferData.data.addDataForFlavour("text/unicode", URI.spec);
-                aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.contentTitle);
-                aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.contentTitle + '</a>');
+                aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.title);
+                aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.title + '</a>');
               }
               else
               {
@@ -811,11 +812,21 @@
           {
             var y = {};
             this.scrollBoxObject.getPosition({}, y);
-            //dump("At "+y.value+" "+aEvent.clientY+"\n");
+
             if (y.value>0 && aEvent.clientY<10)
             {
-              //dump("Scroll up!\n");
               this.scrollBoxObject.scrollByLine(-3);
+              this._hideDropIndicator();
+              return;
+            }
+            
+            var bottom = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.height-this.scrollBox.boxObject.height;
+            
+            if ((this.scrollBox.boxObject.height-aEvent.clientY)<10 && y.value<bottom)
+            {
+              this.scrollBoxObject.scrollByLine(3);
+              this._hideDropIndicator();
+              return;
             }
   
             if (!aDragSession.canDrop)
@@ -864,7 +875,7 @@
           }
           catch (e)
           {
-            dump(e);
+            dump(e+"\n");
           }
         ]]>
         </body>
