@@ -815,7 +815,7 @@
 
             if (y.value>0 && aEvent.clientY<10)
             {
-              this.scrollBoxObject.scrollByLine(-3);
+              this.scrollBoxObject.scrollBy(0,-20);
               this._hideDropIndicator();
               return;
             }
@@ -824,7 +824,7 @@
             
             if ((this.scrollBox.boxObject.height-aEvent.clientY)<10 && y.value<bottom)
             {
-              this.scrollBoxObject.scrollByLine(3);
+              this.scrollBoxObject.scrollBy(0,20);
               this._hideDropIndicator();
               return;
             }
