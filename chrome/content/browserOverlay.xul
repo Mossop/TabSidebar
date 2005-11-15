@@ -72,7 +72,7 @@
   </toolbarpalette>
 
   <menupopup id="viewSidebarMenu">
-    <menuitem image="chrome://tabsidebar/skin/toolbar-small.png" acceltext="Ctrl+Shift+T" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
+    <menuitem image="chrome://tabsidebar/skin/toolbar-small.png" acceltext="Ctrl+Alt+P" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
   </menupopup>
 
   <keyset>

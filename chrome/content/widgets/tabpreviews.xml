@@ -1083,7 +1083,7 @@
       
       <handler event="dblclick">
       <![CDATA[
-        if (event.button==0 && event.originalTarget.parentNode.parentNode==this)
+        if (event.button==0 && (event.target.localName=="separator" || event.target == this))
         {
           var newTab = this.tabbrowser.addTab("about:blank");
           this.tabbrowser.selectedTab=newTab;
