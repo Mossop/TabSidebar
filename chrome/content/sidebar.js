@@ -413,12 +413,60 @@ observe: function (aSubject, aTopic, aPrefName)
 	}
 },
 
+showOptions: function()
+{
+  var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService);
+  var instantApply = prefs.getBoolPref("browser.preferences.instantApply", false);
+  var features = "chrome,titlebar,toolbar,centerscreen" + (instantApply ? ",dialog=no" : ",modal");
+
+  var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                     .getService(Components.interfaces.nsIWindowMediator);
+  var win = wm.getMostRecentWindow("TabSidebar:Options");
+  if (win)
+  {
+    win.focus();
+  }
+  else
+  {
+    window.openDialog("chrome://tabsidebar/content/preferences.xul",
+                      "Preferences", features);
+	}
+},
+
+showHelp: function()
+{
+	help.openHelp();
+},
+
 init: function()
 {
 	var topwin = window;
 	while (topwin.parent && topwin != topwin.parent)
 		topwin=topwin.parent;
 	sidebar.topwindow=topwin;
+	
+	var pos = topwin.document.getElementById("sidebar-throbber");
+	var optionsBtn = topwin.document.createElement("toolbarbutton");
+	var helpBtn = topwin.document.createElement("toolbarbutton");
+	
+	optionsBtn.id = "tabsidebar-options";
+	helpBtn.id = "tabsidebar-help";
+	
+	if (pos.nextSibling)
+	{
+		pos=pos.nextSibling;
+		pos.parentNode.insertBefore(optionsBtn,pos);
+		pos.parentNode.insertBefore(helpBtn,pos);
+	}
+	else
+	{
+		pos.parentNode.appendChild(optionsBtn);
+		pos.parentNode.appendChild(helpBtn);
+	}
+	
+	optionsBtn.addEventListener("command",sidebar.showOptions,false);
+	helpBtn.addEventListener("command",sidebar.showHelp,false);
 	
 	sidebar.sidebar=topwin.document.getElementById("sidebar-box");
 	sidebar.hoverCapture=topwin.document.getElementById("tabsidebar-hovercapture");
@@ -456,6 +504,11 @@ destroy: function()
 {
 	var topwin = sidebar.topwindow;
 
+	var button = topwin.document.getElementById("tabsidebar-options");
+	button.parentNode.removeChild(button);
+	button = topwin.document.getElementById("tabsidebar-help");
+	button.parentNode.removeChild(button);
+	
 	topwin.removeEventListener("resize",sidebar.onResize,false);
 	
 	sidebar.showTabbar();

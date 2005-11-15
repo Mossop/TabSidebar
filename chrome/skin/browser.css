@@ -11,3 +11,21 @@
   max-width: 5px;
   background: url('chrome://tabsidebar/skin/sidebar-close.png') 50% 50% repeat-y;
 }
+
+#tabsidebar-options {
+  list-style-image: url("chrome://tabsidebar/skin/options.png");
+}
+
+#tabsidebar-options image {
+  padding: 0;
+  margin: 0;
+}
+
+#tabsidebar-help {
+  list-style-image: url("chrome://tabsidebar/skin/help.png");
+}
+
+#tabsidebar-help image {
+  padding: 0;
+  margin: 0;
+}

@@ -69,31 +69,13 @@
           <xul:label style="display: none" value="URI"/>
         </xul:tooltip>
         
-        <xul:popup id="tabpreview_context">
-          <xul:menuitem id="newTab" accesskey="&tabsidebar.newtab.accesskey;" label="&tabsidebar.newtab.label;"/>
-          <xul:menuseparator/>
-          <xul:menuitem id="reloadTab" accesskey="&tabsidebar.reload.accesskey;" label="&tabsidebar.reload.label;"/>
-          <xul:menuitem id="reloadAllTabs" accesskey="&tabsidebar.reloadall.accesskey;" label="&tabsidebar.reloadall.label;"/>
-          <xul:menuitem id="closeOtherTabs" accesskey="&tabsidebar.closeother.accesskey;" label="&tabsidebar.closeother.label;"/>
-          <xul:menuseparator hidden="true"/>
-          <xul:menuitem id="bookmarkTab" accesskey="" hidden="true" label=""/>
-          <xul:menuitem id="bookmarkAllTabs" accesskey="" hidden="true" label=""/>
-          <xul:menuseparator/>
-          <xul:menuitem id="refreshPreview" accesskey="&tabsidebar.refresh.accesskey;" label="&tabsidebar.refresh.label;"/>
-          <xul:menuitem id="refreshAllPreviews" accesskey="&tabsidebar.refreshall.accesskey;" label="&tabsidebar.refreshall.label;"/>
-          <xul:menuseparator/>
-          <xul:menuitem id="options" accesskey="&tabsidebar.options.accesskey;" label="&tabsidebar.options.label;"/>
-          <xul:menuseparator/>
-          <xul:menuitem id="closeTab" accesskey="&tabsidebar.close.accesskey;" label="&tabsidebar.close.label;"/>
-        </xul:popup>
-        
       </xul:popupset>
       
       <xul:vbox class="tab-drop-indicator-bar">
         <xul:hbox class="tab-drop-indicator"/>
       </xul:vbox>          
 
-      <xul:scrollbox context="tabpreview_context" allowevents="true" anonid="scrollbox"
+      <xul:scrollbox allowevents="true" anonid="scrollbox"
                      ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
                      ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
                      ondragdrop="nsDragAndDrop.drop(event, this.parentNode); event.stopPropagation();"
@@ -138,12 +120,6 @@
           var sbs = Components.classes["@mozilla.org/intl/stringbundle;1"]
                               .getService(Components.interfaces.nsIStringBundleService);
           var bundle = sbs.createBundle("chrome://browser/locale/browser.properties");
-          var item = this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkTab");
-          item.label = bundle.GetStringFromName("bookmarkCurTab_label");
-          item.setAttribute("accesskey",bundle.GetStringFromName("bookmarkCurTab_accesskey"));
-          item = this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkAllTabs");
-          item.label = bundle.GetStringFromName("bookmarkAllTabs_label");
-          item.setAttribute("accesskey",bundle.GetStringFromName("bookmarkAllTabs_accesskey"));
         </body>
       </method>
       
@@ -626,12 +602,6 @@
             hide=hide.substring(1);
           
           this.setAttribute("hide",hide);
-      
-          var state = this.showPreview ? "false" : "true";
-          var menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreview");
-          menu.setAttribute("disabled",state);
-          menu = this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshAllPreviews");
-          menu.setAttribute("disabled",state);
 
         	if (!this.onResize() && canvasWasHidden && this.showPreview)
         	{
@@ -1090,64 +1060,25 @@
     
     <handlers>
       
-      <handler event="command">
-      <![CDATA[
-        if (event.originalTarget.id=="newTab")
+      <handler event="click">
+        if (event.button == 2)
         {
-          var newTab = this.tabbrowser.addTab("about:blank");
-          this.tabbrowser.selectedTab=newTab;
-        }
-        else if (event.originalTarget.id=="reloadTab")
-        {
-          this.tabbrowser.reloadTab(this.ownerDocument.popupNode.tab);
-        }
-        else if (event.originalTarget.id=="reloadAllTabs")
-        {
-          this.tabbrowser.reloadAllTabs();
-        }
-        else if (event.originalTarget.id=="closeOtherTabs")
-        {
-          this.tabbrowser.removeAllTabsBut(this.ownerDocument.popupNode.tab);
-        }
-        else if (event.originalTarget.id=="bookmarkTab")
-        {
-        }
-        else if (event.originalTarget.id=="bookmarkAllTabs")
-        {
-        }
-        else if (event.originalTarget.id=="refreshPreview")
-        {
-          this.ownerDocument.popupNode.redraw();
-        }
-        else if (event.originalTarget.id=="refreshAllPreviews")
-        {
-          this.redraw();
-        }
-        else if (event.originalTarget.id=="closeTab")
-        {
-          this.tabbrowser.removeTab(this.ownerDocument.popupNode.tab);
-        }
-        else if (event.originalTarget.id=="options")
-        {
-          var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                                .getService(Components.interfaces.nsIPrefService);
-          var instantApply = prefs.getBoolPref("browser.preferences.instantApply", false);
-          var features = "chrome,titlebar,toolbar,centerscreen" + (instantApply ? ",dialog=no" : ",modal");
-        
-          var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                             .getService(Components.interfaces.nsIWindowMediator);
-          var win = wm.getMostRecentWindow("TabSidebar:Options");
-          if (win)
+          var x = this.boxObject.screenX-this.window.document.documentElement.boxObject.screenX+event.clientX;
+          var y = this.boxObject.screenY-this.window.document.documentElement.boxObject.screenY+event.clientY;
+
+          var tab = null;
+          if (event.target.localName == "tabpreview")
           {
-            win.focus();
+            tab = event.target.tab;
           }
           else
           {
-            window.openDialog("chrome://tabsidebar/content/preferences.xul",
-                              "Preferences", features);
-        	}
+            tab = this._selected.tab;
+          }
+          this.tabbrowser.ownerDocument.popupNode = tab;
+          var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
+          context.showPopup(tab,x,y,"context");
         }
-      ]]>
       </handler>
       
       <handler event="dblclick">
