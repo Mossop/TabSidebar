@@ -1,6 +1,5 @@
 page {
-  background-color: ThreeDFace;
-  color: MenuText;
+  background-color: -moz-dialog;
 }
 
 tabpreviews scrollbox[anonid="scrollbox"] {
@@ -30,15 +29,15 @@ tabpreviews scrollbox[anonid="scrollbox"] {
 
 tabpreview {
   padding: 3px;
-  border: 1px ThreeDFace solid;
-  background-color: ThreeDFace;
+  border: 1px -moz-dialog solid;
+  background-color: -moz-dialog;
 }
 
 tabpreviews tabpreview[selected="true"] {
-  border-top-color:    ThreeDDarkShadow;
-  border-right-color:  ThreeDLightShadow;
-  border-bottom-color: ThreeDLightShadow;
-  border-left-color:   ThreeDDarkShadow;
+  border-top-color:    ThreeDShadow;
+  border-right-color:  ThreeDHighlight;
+  border-bottom-color: ThreeDHighlight;
+  border-left-color:   ThreeDShadow;
   background-color:    ThreeDHighlight;
 }
 
@@ -47,10 +46,10 @@ tabpreviews tabpreview[selected="true"] label[anonid="title"] {
 }
 
 tabpreview:hover {
-  border-top-color:    ThreeDLightShadow;
-  border-right-color:  ThreeDDarkShadow;
-  border-bottom-color: ThreeDDarkShadow;
-  border-left-color:   ThreeDLightShadow;
+  border-top-color:    ThreeDHighlight;
+  border-right-color:  ThreeDShadow;
+  border-bottom-color: ThreeDShadow;
+  border-left-color:   ThreeDHighlight;
 }
 
 tabpreview .toolbarbutton-icon {

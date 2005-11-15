@@ -54,7 +54,7 @@ showPreviewChanged: function()
 	var pref = document.getElementById("content.preview");
 	var selector = document.documentElement._selector.getElementsByAttribute("pane","panePreviews")[0];
 	selector.disabled=!pref.value;
-},
+}
 }
 
 window.addEventListener("load",preview.init,false);
