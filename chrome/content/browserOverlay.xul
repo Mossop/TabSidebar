@@ -75,8 +75,8 @@
     <menuitem image="chrome://tabsidebar/skin/toolbar-small.png" acceltext="Ctrl+Alt+P" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
   </menupopup>
 
-  <keyset>
-    <key observes="viewTabSidebar" key="p" modifiers="accel alt"/>
+  <keyset id="mainKeyset">
+    <key id="tabsidebar-key" key="p" modifiers="accel,alt" observes="viewTabSidebar"/>
   </keyset>
   
   <hbox id="browser">

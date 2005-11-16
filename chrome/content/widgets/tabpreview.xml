@@ -66,7 +66,7 @@
         <xul:image anonid="favicon" tooltip="tabpreview_tooltip"/>
         <xul:image anonid="loading" tooltip="tabpreview_tooltip"/>
         <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
-        <xul:toolbarbutton anonid="close" tooltiptext="&tabsidebar.close.tooltip;"/>
+        <xul:toolbarbutton anonid="close" tooltiptext="&closeTab.label;"/>
       </xul:hbox>
       <xul:stack>
         <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
@@ -75,7 +75,7 @@
         <xul:hbox>
           <xul:vbox anonid="leftstrip" class="sidestrip">
             <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
-            <xul:toolbarbutton anonid="reload" tooltiptext="&tabsidebar.reload.tooltip;"/>
+            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;"/>
           </xul:vbox>
           <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
           <xul:vbox anonid="rightstrip" class="sidestrip">
@@ -352,7 +352,7 @@
           }
           else
           {
-            return "&tabsidebar.untitled;";
+            return "&untitledTab;";
           }
         </getter>
       </property>

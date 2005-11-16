@@ -446,9 +446,16 @@ init: function()
 		topwin=topwin.parent;
 	sidebar.topwindow=topwin;
 	
+  var sbs = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                      .getService(Components.interfaces.nsIStringBundleService);
+  var bundle = sbs.createBundle("chrome://tabsidebar/locale/tabsidebar.properties");
+
 	var pos = topwin.document.getElementById("sidebar-throbber");
 	var optionsBtn = topwin.document.createElement("toolbarbutton");
 	var helpBtn = topwin.document.createElement("toolbarbutton");
+	
+	optionsBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.options.tooltip"));
+	helpBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.help.tooltip"));
 	
 	optionsBtn.id = "tabsidebar-options";
 	helpBtn.id = "tabsidebar-help";

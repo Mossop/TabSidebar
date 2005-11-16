@@ -104,7 +104,7 @@ tabpreview image[anonid="favicon"] {
 tabpreview toolbarbutton[anonid="reload"] {
   list-style-image: url("chrome://tabsidebar/skin/Reload-small.png");
   -moz-appearance: none;
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  -moz-image-region: rect(0px, 14px, 14px, 0px);
   border: none !important;
   padding: 1px;
 }
@@ -116,11 +116,11 @@ tabpreview toolbarbutton[anonid="reload"] image {
 tabpreview toolbarbutton[anonid="reload"][disabled="true"],
 tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover,
 tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover:active {
-  -moz-image-region: rect(32px, 16px, 48px, 0px);
+  -moz-image-region: rect(28px, 14px, 42px, 0px);
 }
 
 tabpreview toolbarbutton[anonid="reload"]:hover:active {
-  -moz-image-region: rect(16px, 16px, 32px, 0px);
+  -moz-image-region: rect(14px, 14px, 28px, 0px);
 }
 
 tabpreview toolbarbutton[anonid="close"] {

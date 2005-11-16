@@ -3,25 +3,5 @@
 <!ENTITY tabsidebar.menu.accesskey        "T">
 <!ENTITY tabsidebar.opensidebar           "&tabsidebar.brand; öffnen">
 
-<!ENTITY tabsidebar.untitled              "&untitledTab;">
-
-<!ENTITY tabsidebar.newtab.label          "&newTab.label;">
-<!ENTITY tabsidebar.newtab.accesskey      "&newTab.accesskey;">
-<!ENTITY tabsidebar.reload.label          "&reloadTab.label;">
-<!ENTITY tabsidebar.reload.accesskey      "&reloadTab.accesskey;">
-<!ENTITY tabsidebar.reloadall.label       "&reloadAllTabs.label;">
-<!ENTITY tabsidebar.reloadall.accesskey   "&reloadAllTabs.accesskey;">
-<!ENTITY tabsidebar.closeother.label      "&closeOtherTabs.label;">
-<!ENTITY tabsidebar.closeother.accesskey  "&closeOtherTabs.accesskey;">
-<!ENTITY tabsidebar.close.label           "&closeTab.label;">
-<!ENTITY tabsidebar.close.accesskey       "&closeTab.accesskey;">
-
 <!ENTITY tabsidebar.refresh.label         "Vorschaubild aktualisieren">
-<!ENTITY tabsidebar.refresh.accesskey     "">
 <!ENTITY tabsidebar.refreshall.label      "Alle Vorschaubilder aktualisieren">
-<!ENTITY tabsidebar.refreshall.accesskey  "">
-<!ENTITY tabsidebar.options.label         "Einstellungen...">
-<!ENTITY tabsidebar.options.accesskey     "">
-
-<!ENTITY tabsidebar.reload.tooltip        "&tabsidebar.reload.label;">
-<!ENTITY tabsidebar.close.tooltip         "&tabsidebar.close.label;">
