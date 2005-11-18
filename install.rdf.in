@@ -4,8 +4,8 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>TabSidebar@blueprintit.co.uk</em:id>
-    <em:version>1.0b3</em:version>
+    <em:id>@id@</em:id>
+    <em:version>@version@</em:version>
     
     <!-- Firefox version --> 
     <em:targetApplication>
