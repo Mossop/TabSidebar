@@ -537,6 +537,33 @@
         </body>
       </method>
       
+      <method name="scrollToPreview">
+        <parameter name="preview"/>
+        <body>
+        <![CDATA[
+          var eltop = preview.previousSibling.boxObject.y;
+          var elbottom = preview.nextSibling.boxObject.y+preview.nextSibling.boxObject.height;
+          var y = {};
+          this.scrollBoxObject.getPosition({}, y);
+          var scrollTop = y.value;
+          var scrollHeight = this.scrollBox.boxObject.height;
+          if (scrollTop>eltop)
+          {
+            this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
+          }
+          else if ((scrollTop+scrollHeight)<elbottom)
+          {
+            var shift = elbottom-(scrollTop+scrollHeight);
+            if ((scrollTop+shift)>eltop)
+            {
+              shift=eltop-scrollTop;
+            }
+            this.scrollBoxObject.scrollBy(0,shift);
+          }
+        ]]>
+        </body>
+      </method>
+      
       <method name="selectPreview">
         <parameter name="browser"/>
         <body>
@@ -551,7 +578,7 @@
           	preview.setAttribute("selected","true");
           }
         	this._selected=preview;
-        	this.scrollBoxObject.ensureElementIsVisible(preview);
+        	this.scrollToPreview(preview);
         ]]>
         </body>
       </method>
