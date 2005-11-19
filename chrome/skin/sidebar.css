@@ -65,13 +65,18 @@ tabpreview vbox.sidestrip {
 }
 
 tabpreview canvas {
-  border: 1px ThreeDShadow solid;
-  opacity: 0.75;
+  border-style: solid;
+  border-width: 1px;
 }
 
 tabpreview:hover canvas, tabpreview[selected="true"] canvas {
-  border: 1px ThreeDDarkShadow solid;
-  opacity: 1;
+  border-color: ThreeDDarkShadow;
+  opacity: 0.9999;
+}
+
+tabpreview[selected="false"] canvas {
+  border-color: ThreeDShadow;
+  opacity: 0.75;
 }
 
 tabpreview label {
