@@ -27,6 +27,11 @@ tabpreviews scrollbox[anonid="scrollbox"] {
   display: -moz-box
 }
 
+separator {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 tabpreview {
   padding: 3px;
   border: 1px -moz-dialog solid;
