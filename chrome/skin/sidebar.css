@@ -73,7 +73,7 @@ tabpreview:hover box[anonid="canvas_container"], tabpreview[selected="true"] box
 }
 
 tabpreview:hover canvas, tabpreview[selected="true"] canvas {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 tabpreview[selected="false"] canvas {
