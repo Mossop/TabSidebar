@@ -66,7 +66,7 @@
         <xul:image anonid="favicon" tooltip="tabpreview_tooltip"/>
         <xul:image anonid="loading" tooltip="tabpreview_tooltip"/>
         <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
-        <xul:toolbarbutton anonid="close" tooltiptext="&closeTab.label;"/>
+        <xul:toolbarbutton anonid="close" tooltiptext="&closeTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.close();"/>
       </xul:hbox>
       <xul:stack>
         <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
@@ -75,12 +75,12 @@
         <xul:hbox>
           <xul:vbox anonid="leftstrip" class="sidestrip">
             <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
-            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;"/>
+            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
           </xul:vbox>
           <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
           <xul:vbox anonid="rightstrip" class="sidestrip">
             <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
-            <xul:image anonid="security"/>
+            <xul:image anonid="security" onmousedown="event.stopPropagation();" onclick="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
           </xul:vbox>
         </xul:hbox>
       </xul:stack>
@@ -387,6 +387,31 @@
 
       <!-- Methods -->
       
+      <method name="reload">
+        <body>
+          var tabbrowser = this.previews.tabbrowser;
+          tabbrowser.reloadTab(this.tab);
+        </body>
+      </method>
+
+      <method name="viewSecurity">
+        <body>
+          var tabbrowser = this.previews.tabbrowser;
+          if (tabbrowser.selectedTab!=this.tab)
+          {
+            tabbrowser.selectedTab=this.tab;
+          }
+          this.previews.window.displaySecurityInfo();
+        </body>
+      </method>
+
+      <method name="close">
+        <body>
+          var tabbrowser = this.previews.tabbrowser;
+          tabbrowser.removeTab(this.tab);
+        </body>
+      </method>
+
       <method name="update">
         <body>
           var uri = this.uri;
@@ -534,48 +559,27 @@
         ]]>
         </body>
       </method>
-
+      
     </implementation>
 
     <handlers>
-      <handler event="click">
+      <handler event="mousedown">
       <![CDATA[
         if (!this._browser)
         {
           return;
         }
         var tabbrowser = this.previews.tabbrowser;
-        if (event.originalTarget.getAttribute("anonid")=="reload")
+        if (event.button==1)
         {
-          if (event.button==0 && !event.originalTarget.disabled)
-            tabbrowser.reloadTab(this.tab);
+          tabbrowser.removeTab(this.tab);
         }
-        else if (event.originalTarget.getAttribute("anonid")=="close")
+        else if (event.button==2)
         {
-          if (event.button==0 && !event.originalTarget.disabled)
-            tabbrowser.removeTab(this.tab);
-        }
-        else if (event.originalTarget.getAttribute("anonid")=="security")
-        {
-          if (tabbrowser.selectedTab!=this.tab)
-          {
-            tabbrowser.selectedTab=this.tab;
-          }
-          this.previews.window.displaySecurityInfo();
         }
         else
         {
-          if (event.button==1)
-          {
-            tabbrowser.removeTab(this.tab);
-          }
-          else if (event.button==2)
-          {
-          }
-          else
-          {
-            tabbrowser.selectedTab=this.tab;
-          }
+          tabbrowser.selectedTab=this.tab;
         }
       ]]>
       </handler>
