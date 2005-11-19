@@ -579,7 +579,10 @@
         }
         else
         {
-          tabbrowser.selectedTab=this.tab;
+          if (tabbrowser.selectedTab != this.tab)
+            tabbrowser.selectedTab=this.tab;
+          else
+            this.previews.scrollToPreview(this);
         }
       ]]>
       </handler>
