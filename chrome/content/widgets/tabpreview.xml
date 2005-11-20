@@ -224,10 +224,10 @@
         <body>
         <![CDATA[
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
-          canvas.setAttribute("width",this.previews.previewWidth);
-          canvas.setAttribute("height",this.previews.previewHeight);
-          //canvas.style.width=this.previews.previewWidth+"px";
-          canvas.style.height=this.previews.previewHeight+"px";
+          canvas.setAttribute("width",this.previews.contentWidth);
+          canvas.setAttribute("height",this.previews.contentHeight);
+          //canvas.style.width=this.previews.displayWidth+"px";
+          canvas.style.height=this.previews.displayHeight+"px";
         ]]>
         </body>
       </method>
@@ -449,9 +449,9 @@
             return;
           }
           var win = this._browser.contentWindow;
-          ctx.clearRect(0, 0, this.previews.previewWidth, this.previews.previewHeight);
+          ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
           ctx.save();
-          ctx.scale(this.previews.previewWidth/win.innerWidth,this.previews.previewHeight/win.innerHeight);
+          ctx.scale(this.previews.contentWidth/win.innerWidth,this.previews.contentHeight/win.innerHeight);
           try
           {
             var top = 0;

@@ -320,57 +320,68 @@
         </getter>
       </property>
       
-      <field name="_customSize">false</field>
-      <property name="customSize">
+      <field name="_displayWidth">-1</field>
+      <property name="displayWidth">
         <getter>
-          return this._customSize;
-        </getter>
-        <setter>
-          if (this._customSize==val)
-          {
-            return val;
-          }
-          this._customSize=val;
-          if (!val)
-          {
-            onResize();
-          }
-          redraw();
-        </setter>
-      </property>
-      
-      <field name="_width">-1</field>
-      <property name="previewWidth">
-        <getter>
-          return this._width;
+          return this._displayWidth;
         </getter>
         <setter>
         <![CDATA[
-          if (val==this._width && this._customSize)
-          {
+          if (val==this._displayWidth)
             return val;
-          }
-          this._width=val;
-          this.customSize=true;
+
+          this._displayWidth=val;
           this._resize();
           return val;
         ]]>
         </setter>
       </property>
       
-      <field name="_height">-1</field>
-      <property name="previewHeight">
+      <field name="_displayHeight">-1</field>
+      <property name="displayHeight">
         <getter>
-          return this._height;
+          return this._displayHeight;
         </getter>
         <setter>
         <![CDATA[
-          if (val==this._height && this._customSize)
-          {
+          if (val==this._displayHeight)
             return val;
-          }
-          this._height=val;
-          this.customSize=true;
+
+          this._displayHeight=val;
+          this._resize();
+          return val;
+        ]]>
+        </setter>
+      </property>
+      
+      <field name="_contentWidth">-1</field>
+      <property name="contentWidth">
+        <getter>
+          return this._contentWidth;
+        </getter>
+        <setter>
+        <![CDATA[
+          if (val==this._contentWidth)
+            return val;
+
+          this._contentWidth=val;
+          this._resize();
+          return val;
+        ]]>
+        </setter>
+      </property>
+      
+      <field name="_contentHeight">-1</field>
+      <property name="contentHeight">
+        <getter>
+          return this._contentHeight;
+        </getter>
+        <setter>
+        <![CDATA[
+          if (val==this._contentHeight)
+            return val;
+
+          this._contentHeight=val;
           this._resize();
           return val;
         ]]>
@@ -661,6 +672,8 @@
             
           var newWidth=0;
           var newHeight=0;
+          var cHeight = 0;
+          var cWidth = 0;
           var previews = this.previews;
           
           for (var i=0; i<previews.length; i++)
@@ -678,6 +691,8 @@
               var bwidth = preview._browser.contentWindow.innerWidth;
               var bheight = preview._browser.contentWindow.innerHeight;
               newHeight = parseInt((bheight/bwidth)*newWidth);
+              cWidth = preview._browser.contentWindow.innerWidth;
+              cHeight = preview._browser.contentWindow.innerHeight;
 
               break;
             }
@@ -685,8 +700,10 @@
           
           if (this._width!=newWidth || this._height!=newHeight)
           {
-            this._width=newWidth;
-            this._height=newHeight;
+            this._contentWidth=newWidth;
+            this._contentHeight=newHeight;
+            this._displayWidth=newWidth;
+            this._displayHeight=newHeight;
           	this._resize();
           	return true;
           }
@@ -1104,6 +1121,7 @@
           }
           this.tabbrowser.ownerDocument.popupNode = tab;
           var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
+          context.collapsed=false;
           context.showPopup(tab,x,y,"context");
         }
       </handler>
@@ -1129,26 +1147,6 @@
           }
           event.originalTarget.childNodes[0].value=preview.title;
           event.originalTarget.childNodes[1].value=preview.uri;
-        }
-        else if (event.originalTarget.id=="tabpreview_context")
-        {
-          var preview = this.ownerDocument.popupNode;
-          while (preview && preview.localName!="tabpreview")
-          {
-            preview=preview.parentNode;
-          }
-          
-          var state = !preview ? "true" : "false";
-          
-          this.ownerDocument.getAnonymousElementByAttribute(this,"id","reloadTab").setAttribute("disabled",state);
-          this.ownerDocument.getAnonymousElementByAttribute(this,"id","closeOtherTabs").setAttribute("disabled",state);
-          this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkTab").setAttribute("disabled",state);
-          this.ownerDocument.getAnonymousElementByAttribute(this,"id","refreshPreview").setAttribute("disabled",state);
-          this.ownerDocument.getAnonymousElementByAttribute(this,"id","closeTab").setAttribute("disabled",state);
-
-          state = (this.previews.length<=1) ? "true" : "false";
-
-          this.ownerDocument.getAnonymousElementByAttribute(this,"id","bookmarkAllTabs").setAttribute("disabled",state);
         }
       ]]>
       </handler>

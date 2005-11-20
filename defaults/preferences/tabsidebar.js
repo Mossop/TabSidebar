@@ -6,13 +6,13 @@ pref("tabsidebar.hidetabs", false);
 pref("tabsidebar.display.mode", 0);
 
 pref("tabsidebar.showadvanced", false);
-pref("tabsidebar.loaddelay", 500);
+pref("tabsidebar.loaddelay", 200);
 pref("tabsidebar.loadrefreshrate", 1000);
 pref("tabsidebar.loadrefresh", false);
 pref("tabsidebar.display.capturedelay", 100);
 pref("tabsidebar.display.releasedelay", 500);
 pref("tabsidebar.display.time", 0);
-pref("tabsidebar.display.speed", 100);
+pref("tabsidebar.display.speed", 50);
 pref("tabsidebar.display.state", 1);
 
 pref("tabsidebar.content.favicon", true);
