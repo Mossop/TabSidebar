@@ -80,7 +80,7 @@
           <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
           <xul:vbox anonid="rightstrip" class="sidestrip">
             <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
-            <xul:image anonid="security" onmousedown="event.stopPropagation();" onclick="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
+            <xul:toolbarbutton anonid="security" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
           </xul:vbox>
         </xul:hbox>
       </xul:stack>
