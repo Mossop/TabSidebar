@@ -303,7 +303,7 @@
       <property name="showPreview">
         <getter>
         <![CDATA[
-          return (this.displayWidth!=0 && this.displayHeight!=0 && this.preferences.getBoolPref("content.preview"));
+          return this.preferences.getBoolPref("content.preview");
         ]]>
         </getter>
       </property>

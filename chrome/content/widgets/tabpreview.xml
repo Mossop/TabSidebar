@@ -223,14 +223,14 @@
       <method name="_resize">
         <body>
         <![CDATA[
-          if (!this.previews.showPreview)
+          if (!this.previews.showPreview || this.previews.displayHeight<=0 || this.previews.displayWidth<=0)
           {
             return;
           }
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           canvas.setAttribute("width",this.previews.contentWidth);
           canvas.setAttribute("height",this.previews.contentHeight);
-          //canvas.style.width=this.previews.displayWidth+"px";
+          //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
           canvas.style.height=this.previews.displayHeight+"px";
         ]]>
         </body>
@@ -405,7 +405,28 @@
           {
             tabbrowser.selectedTab=this.tab;
           }
-          this.previews.window.displaySecurityInfo();
+          
+          var extraArgument = {doc: null, initialTab: "securityTab"};
+          var inType = "Browser:page-info";
+          var relatedUrl = this.previews.window.content.document.location;
+          var windowUri = "chrome://browser/content/pageInfo.xul";
+          var features = "chrome,dialog=no";
+
+          var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
+          var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+          var windows = windowManagerInterface.getEnumerator(inType);
+
+          // Check for windows matching the url
+          while (windows.hasMoreElements()) {
+            var currentWindow = windows.getNext();
+            if (currentWindow.document.firstChild.getAttribute("relatedUrl") == relatedUrl) {
+              currentWindow.focus();
+              return;
+            }
+          }
+
+          // We didn't find a matching window, so open a new one.
+          this.previews.window.openDialog(windowUri, "_blank", features, extraArgument);
         </body>
       </method>
 
@@ -438,7 +459,8 @@
       
       <method name="redraw">
         <body>
-          if (!this._browser || !this.previews.showPreview)
+        <![CDATA[
+          if (!this._browser || !this.previews.showPreview || this.previews.displayHeight<=0 || this.previews.displayWidth<=0)
           {
             return;
           }
@@ -478,6 +500,7 @@
             dump(e);
           }
           ctx.restore();
+        ]]>
         </body>
       </method>
       
