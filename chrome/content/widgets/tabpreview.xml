@@ -223,6 +223,7 @@
       <method name="_resize">
         <body>
         <![CDATA[
+          dump("resize\n");
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           canvas.setAttribute("width",this.previews.contentWidth);
           canvas.setAttribute("height",this.previews.contentHeight);
@@ -434,10 +435,11 @@
       
       <method name="redraw">
         <body>
-          if (!this._browser || this._loading || !this.previews.showPreview)
+          if (!this._browser || !this.previews.showPreview)
           {
             return;
           }
+          dump("redraw\n");
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           var ctx = null;
           try
@@ -553,7 +555,7 @@
           }
           else if (timer==this._loadTimer)
           {
-            this.update();
+            //this.update();
             this.redraw();
           }
         ]]>

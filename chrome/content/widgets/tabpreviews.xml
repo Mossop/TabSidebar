@@ -514,7 +514,7 @@
         	}
         	preview.init();
         	preview.browser=browser;
-        	this.onResize();
+        	//this.onResize();
         	
         	if (this.tabbrowser.selectedBrowser==browser)
         	{
@@ -532,7 +532,7 @@
         	var drop = preview.nextSibling;
         	preview.parentNode.removeChild(preview);
         	drop.parentNode.removeChild(drop);
-        	this.onResize();
+        	//this.onResize();
         </body>
       </method>
       
@@ -641,9 +641,9 @@
           
           this.setAttribute("hide",hide);
 
-        	if (!this.onResize() && canvasWasHidden && this.showPreview)
+        	if (canvasWasHidden && this.showPreview)
         	{
-        	  this.redraw();
+        	  this._resize();
         	}
         ]]>
         </body>
@@ -698,7 +698,7 @@
             }
           }
           
-          if (this._width!=newWidth || this._height!=newHeight)
+          if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
           {
             this._contentWidth=newWidth;
             this._contentHeight=newHeight;
