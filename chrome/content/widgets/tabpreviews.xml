@@ -1117,7 +1117,6 @@
           }
           this.tabbrowser.ownerDocument.popupNode = tab;
           var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
-          context.collapsed=false;
           context.showPopup(tab,x,y,"context");
         }
       </handler>
