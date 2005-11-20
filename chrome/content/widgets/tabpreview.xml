@@ -223,7 +223,7 @@
       <method name="_resize">
         <body>
         <![CDATA[
-          if (!this._browser || !this.previews.showPreview)
+          if (!this.previews.showPreview)
           {
             return;
           }
