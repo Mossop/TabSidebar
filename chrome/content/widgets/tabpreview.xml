@@ -406,27 +406,7 @@
             tabbrowser.selectedTab=this.tab;
           }
           
-          var extraArgument = {doc: null, initialTab: "securityTab"};
-          var inType = "Browser:page-info";
-          var relatedUrl = this.previews.window.content.document.location;
-          var windowUri = "chrome://browser/content/pageInfo.xul";
-          var features = "chrome,dialog=no";
-
-          var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-          var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-          var windows = windowManagerInterface.getEnumerator(inType);
-
-          // Check for windows matching the url
-          while (windows.hasMoreElements()) {
-            var currentWindow = windows.getNext();
-            if (currentWindow.document.firstChild.getAttribute("relatedUrl") == relatedUrl) {
-              currentWindow.focus();
-              return;
-            }
-          }
-
-          // We didn't find a matching window, so open a new one.
-          this.previews.window.openDialog(windowUri, "_blank", features, extraArgument);
+          this.previews.window.setTimeout(this.previews.window.displaySecurityInfo,10);
         </body>
       </method>
 
