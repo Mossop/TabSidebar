@@ -223,7 +223,10 @@
       <method name="_resize">
         <body>
         <![CDATA[
-          dump("resize\n");
+          if (!this._browser || !this.previews.showPreview)
+          {
+            return;
+          }
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           canvas.setAttribute("width",this.previews.contentWidth);
           canvas.setAttribute("height",this.previews.contentHeight);
@@ -439,7 +442,6 @@
           {
             return;
           }
-          dump("redraw\n");
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           var ctx = null;
           try

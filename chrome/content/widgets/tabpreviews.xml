@@ -303,7 +303,7 @@
       <property name="showPreview">
         <getter>
         <![CDATA[
-          return (this.previewWidth!=0 && this.previewHeight!=0 && this.preferences.getBoolPref("content.preview"));
+          return (this.displayWidth!=0 && this.displayHeight!=0 && this.preferences.getBoolPref("content.preview"));
         ]]>
         </getter>
       </property>
@@ -548,16 +548,24 @@
         </body>
       </method>
       
-      <method name="scrollToPreview">
-        <parameter name="preview"/>
+      <method name="ensureElementsAreVisible">
+        <parameter name="first"/>
+        <parameter name="last"/>
         <body>
         <![CDATA[
-          var eltop = preview.previousSibling.boxObject.y;
-          var elbottom = preview.nextSibling.boxObject.y+preview.nextSibling.boxObject.height;
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
           var scrollTop = y.value;
           var scrollHeight = this.scrollBox.boxObject.height;
+
+          var eltop = first.boxObject.y;
+          var style = window.getComputedStyle(first,null);
+          eltop-=parseInt(style.marginTop);
+          
+          var elbottom = last.boxObject.y+last.boxObject.height;
+          style = window.getComputedStyle(last,null);
+          elbottom+=parseInt(style.marginTop);
+
           if (scrollTop>eltop)
           {
             this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
@@ -572,6 +580,13 @@
             this.scrollBoxObject.scrollBy(0,shift);
           }
         ]]>
+        </body>
+      </method>
+      
+      <method name="scrollToPreview">
+        <parameter name="preview"/>
+        <body>
+          this.ensureElementsAreVisible(preview.previousSibling,preview.nextSibling);
         </body>
       </method>
       
@@ -721,6 +736,7 @@
         <body>
           if (drop!=this._lastDrop)
           {
+            this.ensureElementsAreVisible(drop,drop);
             var y = {};
             this.scrollBoxObject.getPosition({}, y);
             var pos = drop.boxObject.y+(drop.boxObject.height/2)-5;
@@ -1075,26 +1091,6 @@
               break;
             case "drawscrolled":
               this.redraw();
-              break;
-            case "previewWidth":
-              if (this.preferences.prefHasUserValue(data))
-              {
-                this.previewWidth=this.preferences.getIntPref(data);
-              }
-              else
-              {
-                this.customSize=false;
-              }
-              break;
-            case "previewHeight":
-              if (this.preferences.prefHasUserValue(data))
-              {
-                this.previewHeight=this.preferences.getIntPref(data);
-              }
-              else
-              {
-                this.customSize=false;
-              }
               break;
           }
         ]]>
