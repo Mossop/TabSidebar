@@ -397,7 +397,7 @@
           if (this._suppressSizing != val)
           {
             this._suppressSizing = val;
-            this.onResize();
+            this.browserResized(this._selected._browser.contentWindow.innerWidth,this._selected._browser.contentWindow.innerHeight);
           }
           return val;
         </setter>
@@ -514,7 +514,6 @@
         	}
         	preview.init();
         	preview.browser=browser;
-        	//this.onResize();
         	
         	if (this.tabbrowser.selectedBrowser==browser)
         	{
@@ -532,7 +531,6 @@
         	var drop = preview.nextSibling;
         	preview.parentNode.removeChild(preview);
         	drop.parentNode.removeChild(drop);
-        	//this.onResize();
         </body>
       </method>
       
@@ -676,43 +674,26 @@
         </body>
       </method>
       
-      <method name="onResize">
+      <method name="browserResized">
+        <parameter name="width"/>
+        <parameter name="height"/>
         <body>
         <![CDATA[
           if (this.suppressSizing)
             return false;
-            
-          if (this.customSize)
-            return false;
-            
+
           var newWidth=0;
           var newHeight=0;
-          var cHeight = 0;
-          var cWidth = 0;
-          var previews = this.previews;
-          
-          for (var i=0; i<previews.length; i++)
-          {
-            if (previews[i]._browser)
-            {
-              var preview = previews[i];
-              var container = this.ownerDocument.getAnonymousElementByAttribute(preview,"anonid","canvas_container");
-              var computed = window.getComputedStyle(container,null);
-              newWidth = parseInt(computed.width);
-              if (newWidth<0)
-              {
-                newWidth=0;
-              }
-              var bwidth = preview._browser.contentWindow.innerWidth;
-              var bheight = preview._browser.contentWindow.innerHeight;
-              newHeight = parseInt((bheight/bwidth)*newWidth);
-              cWidth = preview._browser.contentWindow.innerWidth;
-              cHeight = preview._browser.contentWindow.innerHeight;
 
-              break;
-            }
+          var container = this.ownerDocument.getAnonymousElementByAttribute(this.previews[0],"anonid","canvas_container");
+          var computed = window.getComputedStyle(container,null);
+          newWidth = parseInt(computed.width);
+          if (newWidth<0)
+          {
+            newWidth=0;
           }
-          
+          newHeight = parseInt((height/width)*newWidth);
+
           if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
           {
             this._contentWidth=newWidth;

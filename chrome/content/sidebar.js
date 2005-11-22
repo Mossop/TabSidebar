@@ -260,11 +260,6 @@ isClosed: function()
 	return (!sidebar.isOpen() && (sidebar.slideTimer == null));
 },
 
-onResize: function(event)
-{
-	previews.onResize();
-},
-
 openPreferences: function()
 {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -481,7 +476,6 @@ init: function()
 	sidebar.splitter=topwin.document.getElementById("sidebar-splitter");
 
 	previews = document.getElementById("previews");
-	topwin.addEventListener("resize",sidebar.onResize,false);
 	
 	sidebar.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
@@ -515,9 +509,7 @@ destroy: function()
 	button.parentNode.removeChild(button);
 	button = topwin.document.getElementById("tabsidebar-help");
 	button.parentNode.removeChild(button);
-	
-	topwin.removeEventListener("resize",sidebar.onResize,false);
-	
+		
 	sidebar.showTabbar();
 	
 	sidebar.changeMode(MODE_NORMAL);

@@ -118,7 +118,8 @@
             var self = this;
             this._eventListener = function(event) { self.eventFilter(event); };
           }
-          this._browser.addEventListener("DOMTitleChanged", this._eventListener,false);
+          this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
+          this._browser.addEventListener("resize", this._eventListener, false);
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
@@ -129,6 +130,7 @@
         <body>
           this._browser.webProgress.removeProgressListener(this._progressListener);
           this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
+          this._browser.removeEventListener("resize",this._eventListener,false);
         </body>
       </method>
       
@@ -140,6 +142,11 @@
           {
             var preview = previews.getPreviewForBrowser(event.currentTarget);
             preview.update();
+          }
+          else if (event.type=="resize")
+          {
+            this._browserWidth = this._browser.contentWindow.innerWidth;
+            this.previews.browserResized(this._browser.contentWindow.innerWidth,this._browser.contentWindow.innerHeight);
           }
         </body>
       </method>
@@ -187,6 +194,8 @@
 
       <!-- Internal fields and methods -->
       
+      <field name="_browserWidth">-1</field>
+      
       <field name="_redrawTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -213,6 +222,7 @@
             {
               this._setSecurity(val.securityUI.state);
             }
+            this._browserWidth = this._browser.contentWindow.innerWidth;
           }
           this.update();
           this.redraw();
@@ -455,15 +465,16 @@
             return;
           }
           var win = this._browser.contentWindow;
+          var width = this._browserWidth;
+          var scaling = this.previews.contentWidth/width;
+          var height = Math.round(this.previews.contentHeight/scaling);
           ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
           ctx.save();
-          ctx.scale(this.previews.contentWidth/win.innerWidth,this.previews.contentHeight/win.innerHeight);
+          ctx.scale(scaling,this.previews.contentHeight/height);
           try
           {
             var top = 0;
             var left = 0;
-            var height = win.innerHeight;
-            var width = win.innerWidth;
             if (this.previews.drawScrolled)
             {
               top=win.scrollY;
