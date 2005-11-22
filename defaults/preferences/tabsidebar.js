@@ -6,7 +6,7 @@ pref("tabsidebar.hidetabs", false);
 pref("tabsidebar.display.mode", 0);
 
 pref("tabsidebar.showadvanced", false);
-pref("tabsidebar.loaddelay", 200);
+pref("tabsidebar.loaddelay", 100);
 pref("tabsidebar.loadrefreshrate", 1000);
 pref("tabsidebar.loadrefresh", false);
 pref("tabsidebar.display.capturedelay", 100);

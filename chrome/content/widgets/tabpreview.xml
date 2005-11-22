@@ -137,6 +137,7 @@
       <method name="eventFilter">
         <parameter name="event"/>
         <body>
+        <![CDATA[
           var previews = this.ownerDocument.getElementsByTagName("tabpreviews")[0];
           if (event.type=="DOMTitleChanged")
           {
@@ -145,9 +146,14 @@
           }
           else if (event.type=="resize")
           {
+            var shouldRedraw = this._browserWidth != this._browser.contentWindow.innerWidth || this._browserHeight != this._browser.contentWindow.innerHeight;
+            
             this._browserWidth = this._browser.contentWindow.innerWidth;
-            this.previews.browserResized(this._browser.contentWindow.innerWidth,this._browser.contentWindow.innerHeight);
+            this._browserHeight = this._browser.contentWindow.innerHeight;
+            if (!this.previews.browserResized(this._browserWidth,this._browserHeight) && shouldRedraw)
+              this.redraw();
           }
+        ]]>
         </body>
       </method>
       
@@ -195,6 +201,7 @@
       <!-- Internal fields and methods -->
       
       <field name="_browserWidth">-1</field>
+      <field name="_browserHeight">-1</field>
       
       <field name="_redrawTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
@@ -223,6 +230,7 @@
               this._setSecurity(val.securityUI.state);
             }
             this._browserWidth = this._browser.contentWindow.innerWidth;
+            this._browserHeight = this._browser.contentWindow.innerWidth;
           }
           this.update();
           this.redraw();
