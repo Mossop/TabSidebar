@@ -80,7 +80,7 @@ init: function()
 {
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
-                        .getBranch("tabsidebar.");
+                        .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
 
 	var sidebarBox = document.getElementById("sidebar-box");
 
@@ -94,8 +94,7 @@ init: function()
 	this.onClickOpenEvent = function (event) { self.onClickOpen(event); };
 	this.onClickClosedEvent = function (event) { self.onClickClosed(event); };
 	
-	var prefs = this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-  prefs.addObserver("",this,false);
+  this.prefs.addObserver("",this,false);
 
   this.captureTime=this.prefs.getIntPref("display.capturedelay");
   this.releaseTime=this.prefs.getIntPref("display.releasedelay");
@@ -105,7 +104,7 @@ init: function()
 
 load: function()
 {
-	dump("load\n");
+	//dump("load\n");
 	this.loaded=true;
 	this.sidebar=document.getElementById("sidebar-box");
 	this.hoverCapture=document.getElementById("tabsidebar-hovercapture");
@@ -120,14 +119,14 @@ load: function()
 
 destroy: function(event)
 {
-	dump("destroy\n");
+	//dump("destroy\n");
 	try
 	{
-		var prefs = this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-	  prefs.removeObserver("",sidebar);
+	  this.prefs.removeObserver("",this);
 	}
 	catch (e)
 	{
+		dump(e+"\n");
 	}
 },
 
