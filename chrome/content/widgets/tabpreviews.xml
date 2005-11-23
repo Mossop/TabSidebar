@@ -195,12 +195,12 @@
         <body>
           if (event.type=="DOMNodeInserted")
           {
-        		if (event.relatedNode==previews.tabbrowser.mPanelContainer)
+        		if (event.relatedNode==this.tabbrowser.mPanelContainer)
         		{
           		var browser = event.target.childNodes[1];
           		this.addPreview(browser);
         		}
-        		else if (event.relatedNode==previews.tabbrowser.tabContainer)
+        		else if (event.relatedNode==this.tabbrowser.tabContainer)
         		{
         		  var browser = event.target.linkedBrowser;
         		  if (browser)
@@ -211,7 +211,7 @@
           }
           else if (event.type=="DOMNodeRemoved")
           {
-        		if (event.relatedNode==previews.tabbrowser.mPanelContainer)
+        		if (event.relatedNode==this.tabbrowser.mPanelContainer)
         		{
           		var browser = event.target.childNodes[1];
           		this.removePreview(browser);
