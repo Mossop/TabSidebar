@@ -150,8 +150,11 @@
             
             this._browserWidth = this._browser.contentWindow.innerWidth;
             this._browserHeight = this._browser.contentWindow.innerHeight;
-            if (!this.previews.browserResized(this._browserWidth,this._browserHeight) && shouldRedraw)
+            if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight) && shouldRedraw)
+            {
+              this._resize();
               this.redraw();
+            }
           }
         ]]>
         </body>
@@ -217,6 +220,7 @@
           return this._browser;
         </getter>
         <setter>
+        <![CDATA[
           if (this._browser)
           {
             this._removeListeners();
@@ -229,12 +233,19 @@
             {
               this._setSecurity(val.securityUI.state);
             }
+            var shouldResize = this._browserWidth != this._browser.contentWindow.innerWidth || this._browserHeight != this._browser.contentWindow.innerHeight;
+            
             this._browserWidth = this._browser.contentWindow.innerWidth;
-            this._browserHeight = this._browser.contentWindow.innerWidth;
+            this._browserHeight = this._browser.contentWindow.innerHeight;
+            if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight) && shouldResize)
+            {
+              this._resize();
+            }
           }
           this.update();
           this.redraw();
           return val;
+        ]]>
         </setter>
       </property>
 
@@ -246,8 +257,8 @@
             return;
           }
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
-          canvas.setAttribute("width",this.previews.contentWidth);
-          canvas.setAttribute("height",this.previews.contentHeight);
+          canvas.width=this.previews.contentWidth;
+          canvas.height=this.previews.contentHeight;
           //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
           canvas.style.height=this.previews.displayHeight+"px";
         ]]>

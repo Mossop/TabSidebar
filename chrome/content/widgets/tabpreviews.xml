@@ -513,12 +513,11 @@
         		this.previewContainer.appendChild(drop);
         	}
         	preview.init();
-        	preview.browser=browser;
-        	
         	if (this.tabbrowser.selectedBrowser==browser)
         	{
         	  this.selectPreview(browser);
         	}
+        	preview.browser=browser;
         ]]>
         </body>
       </method>
@@ -675,6 +674,7 @@
       </method>
       
       <method name="browserResized">
+        <parameter name="preview"/>
         <parameter name="width"/>
         <parameter name="height"/>
         <body>
@@ -682,28 +682,35 @@
           if (this.suppressSizing)
             return true;
 
-          var newWidth=0;
-          var newHeight=0;
-
-          var container = this.ownerDocument.getAnonymousElementByAttribute(this.previews[0],"anonid","canvas_container");
-          var computed = window.getComputedStyle(container,null);
-          newWidth = parseInt(computed.width);
-          if (newWidth<0)
+          if (this._selected == preview)
           {
-            newWidth=0;
+            var newWidth=0;
+            var newHeight=0;
+  
+            var container = this.ownerDocument.getAnonymousElementByAttribute(this.previews[0],"anonid","canvas_container");
+            var computed = window.getComputedStyle(container,null);
+            newWidth = parseInt(computed.width);
+            if (newWidth<0)
+            {
+              newWidth=0;
+            }
+            newHeight = parseInt((height/width)*newWidth);
+  
+            if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
+            {
+              this._contentWidth=newWidth;
+              this._contentHeight=newHeight;
+              this._displayWidth=newWidth;
+              this._displayHeight=newHeight;
+            	this._resize();
+            	return true;
+            }
+            return false;
           }
-          newHeight = parseInt((height/width)*newWidth);
-
-          if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
+          else
           {
-            this._contentWidth=newWidth;
-            this._contentHeight=newHeight;
-            this._displayWidth=newWidth;
-            this._displayHeight=newHeight;
-          	this._resize();
-          	return true;
+            return false;
           }
-          return false;
         ]]>
         </body>
       </method>

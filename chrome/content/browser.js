@@ -105,7 +105,7 @@ init: function()
 
 load: function()
 {
-	//dump("load\n");
+	dump("load\n");
 	this.loaded=true;
 	this.sidebar=document.getElementById("sidebar-box");
 	this.hoverCapture=document.getElementById("tabsidebar-hovercapture");
