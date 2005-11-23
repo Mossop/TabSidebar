@@ -680,7 +680,7 @@
         <body>
         <![CDATA[
           if (this.suppressSizing)
-            return false;
+            return true;
 
           var newWidth=0;
           var newHeight=0;

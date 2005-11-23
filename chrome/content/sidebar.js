@@ -282,28 +282,6 @@ openPreferences: function()
 	}
 },
 
-showTabbar: function()
-{
-	if (sidebar.hidden)
-	{
-	 	var tabbrowser = sidebar.topwindow.document.getElementById("content");
-	 	var tabstrip = sidebar.topwindow.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
-	 	tabstrip.collapsed=false;
-	 	sidebar.hidden=false;
-	}
-},
-
-hideTabbar: function()
-{
-	if (!sidebar.hidden)
-	{
-	  var tabbrowser = sidebar.topwindow.document.getElementById("content");
-	  var tabstrip = sidebar.topwindow.document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
-	  tabstrip.collapsed=true;
-	  sidebar.hidden=true;
-  }
-},
-
 changeMode: function(newmode)
 {
 	if (newmode == sidebar.mode)
@@ -392,14 +370,6 @@ observe: function (aSubject, aTopic, aPrefName)
 	//dump("pref change\n");
 	try
 	{
-	  if (sidebar.prefs.getBoolPref("hidetabs"))
-	  {
-	  	sidebar.hideTabbar();
-	  }
-	  else
-	  {
-	  	sidebar.showTabbar();
-	  }
 	  sidebar.changeMode(sidebar.prefs.getIntPref("display.mode"));
 	}
 	catch (e)
@@ -480,10 +450,6 @@ init: function()
 	sidebar.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
                         .getBranch("tabsidebar.");
-  if (sidebar.prefs.getBoolPref("hidetabs"))
-  {
-  	sidebar.hideTabbar();
-  }
   
   sidebar.captureTime=sidebar.prefs.getIntPref("display.capturedelay");
   sidebar.releaseTime=sidebar.prefs.getIntPref("display.releasedelay");
@@ -510,8 +476,6 @@ destroy: function()
 	button = topwin.document.getElementById("tabsidebar-help");
 	button.parentNode.removeChild(button);
 		
-	sidebar.showTabbar();
-	
 	sidebar.changeMode(MODE_NORMAL);
 
 	var prefs = sidebar.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);

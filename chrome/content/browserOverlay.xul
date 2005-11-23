@@ -82,6 +82,7 @@
   <hbox id="browser">
     <box id="tabsidebar-clickcapture" insertbefore="sidebar-box" hidden="true"/>
     <box id="tabsidebar-hovercapture" insertafter="sidebar-box" hidden="true"/>
+    <script src="chrome://tabsidebar/content/browser.js" insertafter="appcontent"/>
   </hbox>
   
 </overlay>
