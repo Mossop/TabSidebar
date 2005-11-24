@@ -2,7 +2,7 @@ page {
   background-color: -moz-dialog;
 }
 
-tabpreviews scrollbox[anonid="scrollbox"] {
+scrollbox[anonid="scrollbox"] {
   padding: 0px 2px 0px 2px;
 }
 
@@ -25,7 +25,7 @@ tabpreviews scrollbox[anonid="scrollbox"] {
 }
 
 separator {
-  margin: 4px 0px 4px 0px;
+  margin: 4px 0px 4px 0px !important;
 }
 
 tabpreview {
@@ -34,29 +34,29 @@ tabpreview {
   background-color: -moz-dialog;
 }
 
-tabpreviews tabpreview[selected="true"] {
+tabpreview[selected="true"] {
   border-color: ThreeDShadow ThreeDHighlight ThreeDHighlight ThreeDShadow;
   background-color: ThreeDHighlight;
 }
 
-tabpreviews tabpreview[selected="true"] label[anonid="title"] {
+tabpreview[selected="true"] label[anonid="title"] {
    font-weight: bold;
 }
 
-tabpreview:hover {
+tabpreview[selected="false"]:hover {
   border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
 }
 
-tabpreview .toolbarbutton-icon {
+.toolbarbutton-icon {
   margin: 0px;
 }
   
-tabpreview vbox.sidestrip {
+.sidestrip {
   width: 20px;
   padding: 2px;
 }
 
-tabpreview box[anonid="canvas_container"] {
+box[anonid="canvas_container"] {
   border: 1px solid ThreeDShadow;
 }
 
@@ -77,21 +77,21 @@ tabpreview label {
   font: message-box;
 }
 
-tabpreview hbox[anonid="topbox"] {
+hbox[anonid="topbox"] {
   padding-bottom: 3px;
 }
 
-tabpreview hbox[anonid="bottombox"] {
+hbox[anonid="bottombox"] {
   padding-top: 3px;
 }
 
-tabpreview image[anonid="loading"] {
+image[anonid="loading"] {
   list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
   margin-right: 2px;
 }
 
-tabpreview image[anonid="favicon"] {
+image[anonid="favicon"] {
   list-style-image: url(chrome://global/skin/icons/folder-item.png);
   -moz-image-region: rect(0px, 16px, 16px, 0px);
   margin-right: 2px;
@@ -101,17 +101,17 @@ tabpreview image[anonid="favicon"] {
 }
 
 /* opacity:1 for favicon,security,reload when selected or hovered */
-tabpreviews tabpreview[selected="true"] image[anonid="favicon"],
-tabpreviews tabpreview[selected="true"] toolbarbutton[anonid="security"],
-tabpreviews tabpreview[selected="true"] toolbarbutton[anonid="reload"],
-tabpreviews tabpreview:hover image[anonid="favicon"],
-tabpreviews tabpreview:hover toolbarbutton[anonid="security"],
-tabpreviews tabpreview:hover toolbarbutton[anonid="reload"] {
+tabpreview[selected="true"] image[anonid="favicon"],
+tabpreview[selected="true"] toolbarbutton[anonid="security"],
+tabpreview[selected="true"] toolbarbutton[anonid="reload"],
+tabpreview:hover image[anonid="favicon"],
+tabpreview:hover toolbarbutton[anonid="security"],
+tabpreview:hover toolbarbutton[anonid="reload"] {
    opacity: 1;
 }
 
 
-tabpreview toolbarbutton[anonid="reload"] {
+toolbarbutton[anonid="reload"] {
   list-style-image: url("chrome://tabsidebar/skin/Reload-small.png");
   -moz-appearance: none;
   -moz-image-region: rect(0px, 14px, 14px, 0px);
@@ -121,21 +121,21 @@ tabpreview toolbarbutton[anonid="reload"] {
   opacity: 0.7;
 }
 
-tabpreview toolbarbutton[anonid="reload"] image {
+toolbarbutton[anonid="reload"] image {
   margin: 0px;
 }
 
-tabpreview toolbarbutton[anonid="reload"][disabled="true"],
-tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover,
-tabpreview toolbarbutton[anonid="reload"][disabled="true"]:hover:active {
+toolbarbutton[anonid="reload"][disabled="true"],
+toolbarbutton[anonid="reload"][disabled="true"]:hover,
+toolbarbutton[anonid="reload"][disabled="true"]:hover:active {
   -moz-image-region: rect(28px, 14px, 42px, 0px);
 }
 
-tabpreview toolbarbutton[anonid="reload"]:hover:active {
+toolbarbutton[anonid="reload"]:hover:active {
   -moz-image-region: rect(14px, 14px, 28px, 0px);
 }
 
-tabpreview toolbarbutton[anonid="close"] {
+toolbarbutton[anonid="close"] {
   list-style-image: url("chrome://tabsidebar/skin/close.png");
   -moz-appearance: none;
   -moz-image-region: rect(0px, 16px, 16px, 0px);
@@ -147,19 +147,19 @@ tabpreview[selected="false"] toolbarbutton[anonid="close"] {
   -moz-image-region: rect(0px, 64px, 16px, 48px);
 }
 
-tabpreview toolbarbutton[anonid="close"] image {
+toolbarbutton[anonid="close"] image {
    margin: 0px;
 }
 
-tabpreview toolbarbutton[anonid="close"]:hover {
+toolbarbutton[anonid="close"]:hover {
   -moz-image-region: rect(0px, 32px, 16px, 16px);
 }
 
-tabpreview toolbarbutton[anonid="close"]:hover:active {
+toolbarbutton[anonid="close"]:hover:active {
   -moz-image-region: rect(0px, 48px, 16px, 32px);
 }
 
-tabpreview toolbarbutton[anonid="security"] {
+toolbarbutton[anonid="security"] {
   list-style-image: url("chrome://tabsidebar/skin/Secure.png");
   -moz-appearance: none;
   border: none !important;
