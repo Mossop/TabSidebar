@@ -145,8 +145,8 @@
             helpTopic="options-previews" helpURI="chrome://tabsidebar/locale/help/help.rdf">
 
     <preferences>
-      <preference type="bool" id="drawscrolled"
-                 name="tabsidebar.drawscrolled"/>
+      <!-- <preference type="bool" id="drawscrolled"
+                 name="tabsidebar.drawscrolled"/> -->
       <preference type="bool"  id="autorefresh"
                  name="tabsidebar.autorefresh"/>
       <preference type="int"  id="refreshrate"
@@ -166,7 +166,7 @@
       
       <separator class="thin"/>
       
-      <checkbox preference="drawscrolled" accesskey="&panePreviews.drawscrolled.accesskey;" label="&panePreviews.drawscrolled.label;"/>
+      <!-- <checkbox preference="drawscrolled" accesskey="&panePreviews.drawscrolled.accesskey;" label="&panePreviews.drawscrolled.label;"/> -->
       <checkbox preference="autorefresh" flex="1" accesskey="&panePreviews.autorefresh.accesskey;" label="&panePreviews.autorefresh.label;"/>
       
       <subpane preference="autorefresh" action="disable" orient="horizontal">

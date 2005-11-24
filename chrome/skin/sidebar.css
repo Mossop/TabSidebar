@@ -152,7 +152,7 @@ toolbarbutton[anonid="close"] image {
    margin: 0px;
 }
 
-toolbarbutton[anonid="close"]:hover {
+tabpreview toolbarbutton[anonid="close"]:hover {
   -moz-image-region: rect(0px, 32px, 16px, 16px);
 }
 
