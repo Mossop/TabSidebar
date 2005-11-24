@@ -557,11 +557,11 @@
 
           var eltop = first.boxObject.y;
           var style = window.getComputedStyle(first,null);
-          eltop-=parseInt(style.marginTop);
+          eltop-=parseInt(style.marginTop)+parseInt(style.borderTopWidth);
           
           var elbottom = last.boxObject.y+last.boxObject.height;
           style = window.getComputedStyle(last,null);
-          elbottom+=parseInt(style.marginTop);
+          elbottom+=parseInt(style.marginBottom)+parseInt(style.borderBottomWidth);
 
           if (scrollTop>eltop)
           {

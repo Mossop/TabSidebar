@@ -40,7 +40,7 @@ tabpreview[selected="true"] {
 }
 
 tabpreview[selected="true"] label[anonid="title"] {
-   font-weight: bold;
+  font-weight: bold;
 }
 
 tabpreview[selected="false"]:hover {
@@ -60,11 +60,13 @@ box[anonid="canvas_container"] {
   border: 1px solid ThreeDShadow;
 }
 
-tabpreview:hover box[anonid="canvas_container"], tabpreview[selected="true"] box[anonid="canvas_container"] {
+tabpreview:hover box[anonid="canvas_container"],
+tabpreview[selected="true"] box[anonid="canvas_container"] {
   border-color: ThreeDDarkShadow;
 }
 
-tabpreview:hover canvas, tabpreview[selected="true"] canvas {
+tabpreview:hover canvas, 
+tabpreview[selected="true"] canvas {
   opacity: 1 !important;
 }
 
@@ -109,7 +111,6 @@ tabpreview:hover toolbarbutton[anonid="security"],
 tabpreview:hover toolbarbutton[anonid="reload"] {
    opacity: 1;
 }
-
 
 toolbarbutton[anonid="reload"] {
   list-style-image: url("chrome://tabsidebar/skin/Reload-small.png");
