@@ -442,7 +442,14 @@
       <method name="close">
         <body>
           var tabbrowser = this.previews.tabbrowser;
-          tabbrowser.removeTab(this.tab);
+          if (this.previews.previews.length == 1)
+          {
+            tabbrowser.loadURI("about:blank");
+          }
+          else
+          {
+            tabbrowser.removeTab(this.tab);
+          }
         </body>
       </method>
 
