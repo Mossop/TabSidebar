@@ -33,3 +33,8 @@
 tabbrowser menupopup[anonid="tabContextMenu"] {
   visibility: visible !important;
 }
+
+window[chromehidden~="extrachrome"] #tabsidebar-clickcapture,
+window[chromehidden~="extrachrome"] #tabsidebar-hovercapture {
+  display: none;
+}
