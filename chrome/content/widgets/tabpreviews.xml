@@ -92,6 +92,7 @@
     
       <constructor>
       <![CDATA[
+        this.style.visibility="hidden";
         var topwin = window;
         while (topwin.parent && topwin.parent != topwin)
         {
@@ -104,11 +105,20 @@
         this._initTree();
         this._migrateOldSettings();
         this._initSettings();
+
+        this._logMessage("Tab Sidebar Startup");
         
         var browsers = this.tabbrowser.browsers;
         for (var i=0; i<browsers.length; i++)
         {
           this.addPreview(browsers[i]);
+        }
+        
+        if (this.displayHeight<=0)
+        {
+          this._resizeTimer.initWithCallback(this, 
+                                             5,
+                                             Components.interfaces.nsITimer.TYPE_ONE_SHOT)
         }
         
         this._initEvents();
@@ -141,19 +151,43 @@
             this.preferences.setBoolPref("content.throbber",state);
             this.preferences.setBoolPref("content.close",state);
             this.preferences.clearUserPref("content.buttons");
+            this.preferences.clearUserPref("drawscrolled");
           }
         </body>
       </method>
 
       <method name="_initSettings">
         <body>
+          try
+          {
+            this._enableLogging = this.preferences.getBoolPref("enablelogging");
+          }
+          catch (e)
+          {
+          }
+
+          this._showFavicon = this.preferences.getBoolPref("content.favicon");
+          this._showPreview = this.preferences.getBoolPref("content.preview");
+          this._showClose = this.preferences.getBoolPref("content.close");
+          this._showSecurity = this.preferences.getBoolPref("content.security");
+          this._showReload = this.preferences.getBoolPref("content.reload");
+          this._showThrobber = this.preferences.getBoolPref("content.throbber");
+          this._showTitle = this.preferences.getBoolPref("content.title");
+          this._showURI = this.preferences.getBoolPref("content.uri");
+
+          this._drawScrolled = true; //this.preferences.getBoolPref("drawscrolled");
+          this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
+          this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
+          this._loadDelay = this.preferences.getIntPref("loaddelay");
+          
+          this.updateContent();        
+
           if (this.autoRefresh)
           {
             this._refreshTimer.initWithCallback(this, 
                                                 this.refreshRate,
                                                 Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
           }
-          this.updateContent();        
         </body>
       </method>
       
@@ -274,16 +308,78 @@
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
 
+      <field name="_resizeTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+
       <method name="_resize">
         <body>
         <![CDATA[
         	var previews = this.previews;
+        	if (previews.length>0)
+            this._logMessage("Resizing to "+this.displayWidth+"x"+this.displayHeight);
         	for (var i=0; i<previews.length; i++)
         	{
         		previews[i]._resize();
         	}
         	this.redraw();
         ]]>
+        </body>
+      </method>
+      
+      <method name="_logMessage">
+        <parameter name="message"/>
+        <body>
+          if (this._enableLogging)
+          {
+            Components.classes['@mozilla.org/consoleservice;1']
+                      .getService(Components.interfaces.nsIConsoleService)
+                      .logStringMessage("Tab Sidebar: "+message);
+          }
+        </body>
+      </method>
+      
+      <method name="_logWarning">
+        <parameter name="message"/>
+        <body>
+          if (this._enableLogging)
+          {
+            var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
+            
+            msg.init("Tab Sidebar: "+message,
+                     "chrome://tabsidebar/content/widgets/tabpreviews.xml",
+                     "",
+                     0,
+                     0,
+                     Components.interfaces.nsIScriptError.warningFlag,
+                     "XUL JavaScript");
+            
+            var console = Components.classes["@mozilla.org/consoleservice;1"]
+                                    .getService(Components.interfaces.nsIConsoleService);
+            console.logMessage(msg);
+          }
+        </body>
+      </method>
+      
+      <method name="_logError">
+        <parameter name="message"/>
+        <body>
+          if (this._enableLogging)
+          {
+            var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
+            
+            msg.init("Tab Sidebar: "+message,
+                     "chrome://tabsidebar/content/widgets/tabpreviews.xml",
+                     "",
+                     0,
+                     0,
+                     Components.interfaces.nsIScriptError.errorFlag,
+                     "XUL JavaScript");
+            
+            var console = Components.classes["@mozilla.org/consoleservice;1"]
+                                    .getService(Components.interfaces.nsIConsoleService);
+            console.logMessage(msg);
+          }
         </body>
       </method>
 
@@ -311,123 +407,44 @@
       <!-- Attribute based properties -->
       <!-- Configuration options -->
 
-      <property name="showReload">
-        <getter>
-          return this.preferences.getBoolPref("content.reload");
-        </getter>
-      </property>
+      <field name="_enableLogging">false</field>
+      <property name="enableLogging" onget="return this._enableLogging;"/>
       
-      <property name="showClose">
-        <getter>
-          return this.preferences.getBoolPref("content.close");
-        </getter>
-      </property>
+      <field name="_showReload"/>
+      <property name="showReload" onget="return this._showReload;"/>
+            
+      <field name="_showClose"/>
+      <property name="showClose" onget="return this._showClose;"/>
       
-      <property name="showFavicon">
-        <getter>
-          return this.preferences.getBoolPref("content.favicon");
-        </getter>
-      </property>
+      <field name="_showFavicon"/>
+      <property name="showFavicon" onget="return this._showFavicon;"/>
       
-      <property name="showThrobber">
-        <getter>
-          return this.preferences.getBoolPref("content.throbber");
-        </getter>
-      </property>
+      <field name="_showThrobber"/>
+      <property name="showThrobber" onget="return this._showThrobber;"/>
       
-      <property name="showSecurity">
-        <getter>
-          return this.preferences.getBoolPref("content.security");
-        </getter>
-      </property>
+      <field name="_showSecurity"/>
+      <property name="showSecurity" onget="return this._showSecurity;"/>
       
-      <property name="showPreview">
-        <getter>
-        <![CDATA[
-          return this.preferences.getBoolPref("content.preview");
-        ]]>
-        </getter>
-      </property>
+      <field name="_showPreview"/>
+      <property name="showPreview" onget="return this._showPreview;"/>
       
-      <property name="showTitle">
-        <getter>
-          return this.preferences.getBoolPref("content.title");
-        </getter>
-      </property>
+      <field name="_showTitle"/>
+      <property name="showTitle" onget="return this._showTitle;"/>
       
-      <property name="showURI">
-        <getter>
-          return this.preferences.getBoolPref("content.uri");
-        </getter>
-      </property>
+      <field name="_showURI"/>
+      <property name="showURI" onget="return this._showURI;"/>
       
       <field name="_displayWidth">-1</field>
-      <property name="displayWidth">
-        <getter>
-          return this._displayWidth;
-        </getter>
-        <setter>
-        <![CDATA[
-          if (val==this._displayWidth)
-            return val;
-
-          this._displayWidth=val;
-          this._resize();
-          return val;
-        ]]>
-        </setter>
-      </property>
+      <property name="displayWidth" onget="return this._displayWidth;"/>
       
       <field name="_displayHeight">-1</field>
-      <property name="displayHeight">
-        <getter>
-          return this._displayHeight;
-        </getter>
-        <setter>
-        <![CDATA[
-          if (val==this._displayHeight)
-            return val;
-
-          this._displayHeight=val;
-          this._resize();
-          return val;
-        ]]>
-        </setter>
-      </property>
+      <property name="displayHeight" onget="return this._displayHeight;"/>
       
       <field name="_contentWidth">-1</field>
-      <property name="contentWidth">
-        <getter>
-          return this._contentWidth;
-        </getter>
-        <setter>
-        <![CDATA[
-          if (val==this._contentWidth)
-            return val;
-
-          this._contentWidth=val;
-          this._resize();
-          return val;
-        ]]>
-        </setter>
-      </property>
+      <property name="contentWidth" onget="return this._contentWidth;"/>
       
       <field name="_contentHeight">-1</field>
-      <property name="contentHeight">
-        <getter>
-          return this._contentHeight;
-        </getter>
-        <setter>
-        <![CDATA[
-          if (val==this._contentHeight)
-            return val;
-
-          this._contentHeight=val;
-          this._resize();
-          return val;
-        ]]>
-        </setter>
-      </property>
+      <property name="contentHeight" onget="return this._contentHeight;"/>
       
       <field name="_suppressSizing">false</field>
       <property name="suppressSizing">
@@ -456,27 +473,23 @@
         </getter>
       </property>
       
-      <property name="loadRefresh">
-        <getter>
-          return this.preferences.getBoolPref("loadrefresh");
-        </getter>
-      </property>
+      <field name="_loadRefresh"/>
+      <property name="loadRefresh" onget="return this._loadRefresh;"/>
       
+      <field name="_loadRefreshRate"/>
       <property name="loadRefreshRate">
         <getter>
-          return Math.max(100,this.preferences.getIntPref("loadrefreshrate"));
+          return Math.max(100,this._loadRefreshRate);
         </getter>
       </property>
       
-      <property name="loadDelay">
-        <getter>
-          return this.preferences.getIntPref("loaddelay");
-        </getter>
-      </property>
+      <field name="_loadDelay"/>
+      <property name="loadDelay" onget="return this._loadDelay;"/>
       
+      <field name="_drawScrolled"/>
       <property name="drawScrolled">
         <getter>
-          //return this.preferences.getBoolPref("drawscrolled");
+          //return this._drawScrolled;
           return true; /* bug 36 */
         </getter>
       </property>
@@ -734,7 +747,16 @@
             newWidth = parseInt(computed.width);
             if (newWidth<0)
             {
-              newWidth=0;
+              this._logError("Invalid canvas width ("+newWidth+")");
+              return false;
+            }
+            else if (newWidth==0)
+            {
+              this._logWarning("Zero canvas width");
+            }
+            else
+            {
+              this.style.visibility=null;
             }
             newHeight = parseInt((height/width)*newWidth);
   
@@ -1084,6 +1106,17 @@
           {
             this.redraw();
           }
+          else if (timer==this._resizeTimer)
+          {
+            this._logWarning("Attempting to find proper size");
+            this.browserResized(this._selected,this._selected._browserWidth,this._selected._browserHeight);
+            if (this.displayHeight<=0)
+            {
+              this._resizeTimer.initWithCallback(this, 
+                                                 5,
+                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT)
+            }
+          }
         ]]>
         </body>
       </method>
@@ -1100,14 +1133,49 @@
           switch (data)
           {
             case "content.favicon":
-            case "content.preview":
-            case "content.close":
-            case "content.security":
-            case "content.reload":
-            case "content.throbber":
-            case "content.title":
-            case "content.uri":
+              this._showFavicon = this.preferences.getBoolPref(data);
               this.updateContent();
+              break;
+            case "content.preview":
+              this._showPreview = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.close":
+              this._showClose = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.security":
+              this._showSecurity = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.reload":
+              this._showReload = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.throbber":
+              this._showThrobber = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.title":
+              this._showTitle = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.uri":
+              this._showURI = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+              
+            case "enablelogging":
+              this._enableLogging = this.preferences.getBoolPref(data);
+              break;
+            case "loadrefresh":
+              this._loadRefresh = this.preferences.getBoolPref(data);
+              break;
+            case "loadrefreshrate":
+              this._loadRefreshRate = this.preferences.getIntPref(data);
+              break;
+            case "loaddelay":
+              this._loadDelay = this.preferences.getIntPref(data);
               break;
             case "refreshrate":
             case "autorefresh":
@@ -1120,6 +1188,7 @@
               }
               break;
             case "drawscrolled":
+              this._drawScrolled = this.preferences.getBoolPref(data);
               this.redraw();
               break;
           }
