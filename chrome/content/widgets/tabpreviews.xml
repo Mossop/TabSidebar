@@ -114,12 +114,9 @@
           this.addPreview(browsers[i]);
         }
         
-        if (this.displayHeight<=0)
-        {
-          this._resizeTimer.initWithCallback(this, 
-                                             5,
-                                             Components.interfaces.nsITimer.TYPE_ONE_SHOT)
-        }
+        this._resizeTimer.initWithCallback(this, 
+                                           5,
+                                           Components.interfaces.nsITimer.TYPE_ONE_SHOT)
         
         this._initEvents();
       ]]>
@@ -723,10 +720,6 @@
               this._displayWidth=newWidth;
               this._displayHeight=newHeight;
             	this._resize();
-              if (newWidth>0)
-              {
-                this.style.visibility=null;
-              }
             	return true;
             }
             return false;
@@ -1066,15 +1059,19 @@
           {
             this.redraw();
           }
-          else if (timer==this._resizeTimer && this.displayHeight<=0)
+          else if (timer==this._resizeTimer)
           {
-            this._logWarning("Attempting to find proper size");
-            this._selected._updateSize();
             if (this.displayHeight<=0)
             {
+              this._logWarning("Attempting to find proper size");
+              this._selected._updateSize();
               this._resizeTimer.initWithCallback(this, 
                                                  5,
                                                  Components.interfaces.nsITimer.TYPE_ONE_SHOT)
+            }
+            else
+            {
+              this.style.visibility=null;
             }
           }
         ]]>
