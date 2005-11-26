@@ -1,7 +1,4 @@
-tabpreviews {
-}
-
-tabpreviews scrollbox[anonid="scrollbox"] {
+scrollbox[anonid="scrollbox"] {
   overflow-y: scroll;
 }
 

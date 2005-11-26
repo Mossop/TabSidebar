@@ -135,7 +135,7 @@ sidebarInitialise: function()
 {
 	if (!this.loaded)
 		return;
-		
+
   if (this.prefs.getBoolPref("hidetabs"))
   {
   	this.hideTabbar();
@@ -421,7 +421,6 @@ changeMode: function(newmode)
 			this.sidebar.addEventListener("mouseout",this.onReleaseEvent,false);
 
 			this.clickCapture.hidden=true;
-			
 			this.splitter.hidden=true;
 
 			if (this.captureDelay)

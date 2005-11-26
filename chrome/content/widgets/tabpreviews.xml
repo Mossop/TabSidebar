@@ -205,7 +205,6 @@
         	container.addEventListener("select", this._eventListener, false);
         	container.addEventListener("DOMNodeInserted", this._eventListener, false);
         	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
-        	this.tabbrowser.addProgressListener(this._progressListener);
         </body>
       </method>
       
@@ -215,7 +214,6 @@
       	container.removeEventListener("select", this._eventListener, false);
       	container.removeEventListener("DOMNodeInserted", this._eventListener, false);
       	container.removeEventListener("DOMNodeRemoved", this._eventListener, false);
-        this.tabbrowser.removeProgressListener(this._progressListener);
 
         var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                               .getService(Components.interfaces.nsIPrefBranchInternal);
@@ -224,45 +222,6 @@
       
       <!-- Event handling gubbins -->
 
-      <field name="_progressListener">({
-          tabpreviews: this,
-
-          onLinkIconAvailable : function(browser)
-          {
-            dump("linkIconAvailable\n");
-          },
-          
-          onProgressChange : function (aWebProgress, aRequest,
-                                       aCurSelfProgress, aMaxSelfProgress,
-                                       aCurTotalProgress, aMaxTotalProgress)
-          {
-          },
-
-          onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
-          {
-          },
-
-          onLocationChange : function(aWebProgress, aRequest, aLocation)
-          {
-          },
-
-          onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage)
-          {
-          },
-
-          onSecurityChange : function(aWebProgress, aRequest, aState)
-          {
-          },
-
-          QueryInterface : function(aIID)
-          {
-            if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-                aIID.equals(Components.interfaces.nsISupports))
-              return this;
-            throw Components.results.NS_NOINTERFACE;
-          }
-        });</field>
       <field name="_eventListener"/>
 
       <method name="eventFilter">
@@ -1107,7 +1066,7 @@
           {
             this.redraw();
           }
-          else if (timer==this._resizeTimer)
+          else if (timer==this._resizeTimer && this.displayHeight<=0)
           {
             this._logWarning("Attempting to find proper size");
             this._selected._updateSize();

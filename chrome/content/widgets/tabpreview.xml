@@ -61,7 +61,7 @@
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
-    <content orient="vertical" align="stretch" selected="false" loading="false" security="none">
+    <content orient="vertical" align="stretch" loading="false" selected="false" security="none">
       <xul:hbox align="center" anonid="topbox">
         <xul:image anonid="favicon" tooltip="tabpreview_tooltip"/>
         <xul:image anonid="loading" tooltip="tabpreview_tooltip"/>
@@ -70,7 +70,7 @@
       </xul:hbox>
       <xul:stack>
         <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
-          <xhtml:canvas onresize="dump('hello');" flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
+          <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
         </xul:box>
         <xul:hbox>
           <xul:vbox anonid="leftstrip" class="sidestrip">
@@ -103,7 +103,8 @@
       
       <method name="init">
         <body>
-          this._resize();
+          if (this.previews.displayHeight>0)
+            this._resize();
         </body>
       </method>
       
@@ -216,7 +217,7 @@
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
             msg.init("Tab Sidebar: "+message,
-                     "chrome://tabsidebar/content/widgets/tabpreviews.xml",
+                     "chrome://tabsidebar/content/widgets/tabpreview.xml",
                      "",
                      0,
                      0,
@@ -238,7 +239,7 @@
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
             msg.init("Tab Sidebar: "+message,
-                     "chrome://tabsidebar/content/widgets/tabpreviews.xml",
+                     "chrome://tabsidebar/content/widgets/tabpreview.xml",
                      "",
                      0,
                      0,
@@ -274,7 +275,6 @@
           this._browserHeight = height;
           if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight) && shouldRedraw)
           {
-            this._resize();
             this.redraw();
           }
         ]]>
@@ -303,11 +303,22 @@
           this._browser=val;
           if (val)
           {
-            this._addListeners();
+            var tab = this.tab;
+            if (tab && tab.getAttribute("busy") == "true")
+            {
+              this.loading=true;
+            }
+            else
+            {
+              this.loading=false;
+            }
+
             if (this._browser.securityUI)
             {
-              this._setSecurity(val.securityUI.state);
+              this._setSecurity(this._browser.securityUI.state);
             }
+
+            this._addListeners();
             
             this._logMessage("Browser added");
             this._updateSize();
@@ -335,11 +346,24 @@
             return;
           }
           this._logMessage("resize");
+
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
+
           //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
           canvas.style.height=this.previews.displayHeight+"px";
-          canvas.width=this.previews.contentWidth;
-          canvas.height=this.previews.contentHeight;
+          canvas.style.minHeight=this.previews.displayHeight+"px";
+          canvas.style.maxHeight=this.previews.displayHeight+"px";
+          canvas.width = this.previews.contentWidth;
+          canvas.height = this.previews.contentHeight;
+          
+          try
+          {
+            canvas.getContext("2d");
+          }
+          catch (e)
+          {
+          }
+          }
         ]]>
         </body>
       </method>
@@ -554,9 +578,17 @@
       
       <method name="redraw">
         <body>
+          if (!this.loading)
+            this._redraw();
+        </body>
+      </method>
+      
+      <method name="_redraw">
+        <body>
         <![CDATA[
           if (!this._browser || !this.previews.showPreview || this.previews.displayHeight==0)
           {
+            this._logWarning("Cancelling redraw");
             return;
           }
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
@@ -599,7 +631,8 @@
           }
           catch (e)
           {
-            dump(e);
+            dump(e+"\n");
+            dump(win+" "+width+"x"+height+"\n");
           }
           ctx.restore();
         ]]>
@@ -678,12 +711,12 @@
           {
             this.loading=false;
             this.update();
-            this.redraw();
+            this._redraw();
           }
           else if (timer==this._loadTimer)
           {
             //this.update();
-            this.redraw();
+            this._redraw();
           }
         ]]>
         </body>
