@@ -323,15 +323,11 @@
             this._logWarning("Attempt to resize preview before size has been calculated");
             return;
           }
-          if (this.previews.displayHeight>0)
-          {
-            this.style.visibility=null;
-          }
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
-          canvas.width=this.previews.contentWidth;
-          canvas.height=this.previews.contentHeight;
           //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
           canvas.style.height=this.previews.displayHeight+"px";
+          canvas.width=this.previews.contentWidth;
+          canvas.height=this.previews.contentHeight;
         ]]>
         </body>
       </method>

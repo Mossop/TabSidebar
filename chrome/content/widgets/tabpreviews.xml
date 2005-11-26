@@ -754,10 +754,7 @@
             {
               this._logWarning("Zero canvas width");
             }
-            else
-            {
-              this.style.visibility=null;
-            }
+
             newHeight = parseInt((height/width)*newWidth);
   
             if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
@@ -767,6 +764,10 @@
               this._displayWidth=newWidth;
               this._displayHeight=newHeight;
             	this._resize();
+              if (newWidth>0)
+              {
+                this.style.visibility=null;
+              }
             	return true;
             }
             return false;
