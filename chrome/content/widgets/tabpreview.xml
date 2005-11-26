@@ -147,15 +147,7 @@
           else if (event.type=="resize")
           {
             this._logMessage("Browser resized");
-            var shouldRedraw = this._browserWidth != this._browser.contentWindow.innerWidth || this._browserHeight != this._browser.contentWindow.innerHeight;
-            
-            this._browserWidth = this._browser.contentWindow.innerWidth;
-            this._browserHeight = this._browser.contentWindow.innerHeight;
-            if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight) && shouldRedraw)
-            {
-              this._resize();
-              this.redraw();
-            }
+            this._updateSize();
           }
         ]]>
         </body>
@@ -263,6 +255,32 @@
       <field name="_browserWidth">-1</field>
       <field name="_browserHeight">-1</field>
       
+      <method name="_updateSize">
+        <body>
+        <![CDATA[
+          var width = this._browser.parentNode.boxObject.width;
+          var height = this._browser.parentNode.boxObject.height;
+          
+          var findbar = this._browser.ownerDocument.getElementById("FindToolbar");
+          if (!findbar.hidden)
+          {
+            height+=findbar.boxObject.height;
+          }
+          
+          this._logMessage("new size: "+width+"x"+height);
+          var shouldRedraw = this._browserWidth != width || this._browserHeight != height;
+          
+          this._browserWidth = width;
+          this._browserHeight = height;
+          if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight) && shouldRedraw)
+          {
+            this._resize();
+            this.redraw();
+          }
+        ]]>
+        </body>
+      </method>
+      
       <field name="_redrawTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -292,14 +310,7 @@
             }
             
             this._logMessage("Browser added");
-            
-            this._browserWidth = this._browser.contentWindow.innerWidth;
-            this._browserHeight = this._browser.contentWindow.innerHeight;
-            
-            if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight))
-            {
-              this.redraw();
-            }
+            this._updateSize();
           }
           else
           {
@@ -323,6 +334,7 @@
             this._logWarning("Attempt to resize preview before size has been calculated");
             return;
           }
+          this._logMessage("resize");
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
           //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
           canvas.style.height=this.previews.displayHeight+"px";
@@ -553,6 +565,7 @@
             this._logWarning("Attempt to redraw before resize");
             return;
           }
+          this._logMessage("redraw");
           var ctx = null;
           try
           {

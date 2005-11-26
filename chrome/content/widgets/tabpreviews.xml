@@ -1110,7 +1110,7 @@
           else if (timer==this._resizeTimer)
           {
             this._logWarning("Attempting to find proper size");
-            this.browserResized(this._selected,this._selected._browserWidth,this._selected._browserHeight);
+            this._selected._updateSize();
             if (this.displayHeight<=0)
             {
               this._resizeTimer.initWithCallback(this, 
