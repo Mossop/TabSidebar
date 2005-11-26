@@ -63,7 +63,7 @@
     
     <content orient="vertical" align="stretch" loading="false" selected="false" security="none">
       <xul:hbox align="center" anonid="topbox">
-        <xul:image anonid="favicon" tooltip="tabpreview_tooltip"/>
+        <xul:image validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
         <xul:image anonid="loading" tooltip="tabpreview_tooltip"/>
         <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
         <xul:toolbarbutton anonid="close" tooltiptext="&closeTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.close();"/>
@@ -306,7 +306,7 @@
             var tab = this.tab;
             if (tab && tab.getAttribute("busy") == "true")
             {
-              this.loading=true;
+              this._loadStarted();
             }
             else
             {
