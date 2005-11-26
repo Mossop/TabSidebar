@@ -61,7 +61,7 @@
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
-    <content hide="" orient="horizontal" align="stretch" flex="1">
+    <content hide="" style="visibility: hidden" orient="horizontal" align="stretch" flex="1">
       <xul:popupset>
       
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">
@@ -92,7 +92,6 @@
     
       <constructor>
       <![CDATA[
-        this.style.visibility="hidden";
         var topwin = window;
         while (topwin.parent && topwin.parent != topwin)
         {
@@ -178,13 +177,6 @@
           this._loadDelay = this.preferences.getIntPref("loaddelay");
           
           this.updateContent();        
-
-          if (this.autoRefresh)
-          {
-            this._refreshTimer.initWithCallback(this, 
-                                                this.refreshRate,
-                                                Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
-          }
         </body>
       </method>
       
@@ -259,7 +251,8 @@
       <!-- Internal fields and methods -->
 
       <field name="_selected"/>
-
+      <field name="_redrawPreview">0</field>
+      
       <field name="_refreshTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -529,6 +522,13 @@
         	  this.selectPreview(browser);
         	}
         	preview.browser=browser;
+
+          if (this.previews.length == 1 && this.autoRefresh)
+          {
+            this._refreshTimer.initWithCallback(this, 
+                                                this.refreshRate,
+                                                Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
+          }
         ]]>
         </body>
       </method>
@@ -541,6 +541,8 @@
         	var drop = preview.nextSibling;
         	preview.parentNode.removeChild(preview);
         	drop.parentNode.removeChild(drop);
+        	if (this.previews.length == 0)
+            this._refreshTimer.cancel();
         </body>
       </method>
       
@@ -1057,7 +1059,15 @@
         <![CDATA[
           if (timer==this._refreshTimer)
           {
-            this.redraw();
+            var pos = this._redrawPreview;
+            if (pos>=this.previews.length)
+              pos=0;
+            var preview = this.previews[pos];
+            preview.redraw();
+            this._redrawPreview=pos+1;
+            this._refreshTimer.initWithCallback(this,
+                                                this.refreshRate/this.previews.length,
+                                                Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
           else if (timer==this._resizeTimer)
           {
@@ -1067,7 +1077,7 @@
               this._selected._updateSize();
               this._resizeTimer.initWithCallback(this, 
                                                  5,
-                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT)
+                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT);
             }
             else
             {
@@ -1137,11 +1147,11 @@
             case "refreshrate":
             case "autorefresh":
               this._refreshTimer.cancel();
-              if (this.autoRefresh)
+              if (this.autoRefresh && this.previews.length>0)
               {
-                this._refreshTimer.initWithCallback(this, 
-                                                    this.refreshRate,
-                                                    Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
+                this._refreshTimer.initWithCallback(this,
+                                                    this.refreshRate/this.previews.length,
+                                                    Components.interfaces.nsITimer.TYPE_ONE_SHOT);
               }
               break;
             case "drawscrolled":

@@ -586,7 +586,7 @@
       <method name="_redraw">
         <body>
         <![CDATA[
-          if (!this._browser || !this.previews.showPreview || this.previews.displayHeight==0)
+          if (!this.previews.showPreview || this.previews.displayHeight==0)
           {
             this._logWarning("Cancelling redraw");
             return;
@@ -607,34 +607,37 @@
           {
             return;
           }
-          var win = this._browser.contentWindow;
-          var width = this._browserWidth;
-          var scaling = this.previews.contentWidth/width;
-          var height = Math.round(this.previews.contentHeight/scaling);
           ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
-          ctx.save();
-          ctx.scale(scaling,this.previews.contentHeight/height);
-          try
+          if (this._browser)
           {
-            var top = 0;
-            var left = 0;
-            if (this.previews.drawScrolled)
+            var win = this._browser.contentWindow;
+            var width = this._browserWidth;
+            var scaling = this.previews.contentWidth/width;
+            var height = Math.round(this.previews.contentHeight/scaling);
+            ctx.save();
+            ctx.scale(scaling,this.previews.contentHeight/height);
+            try
             {
-              top=win.scrollY;
-              left=win.scrollX;
+              var top = 0;
+              var left = 0;
+              if (this.previews.drawScrolled)
+              {
+                top=win.scrollY;
+                left=win.scrollX;
+              }
+              else
+              {
+                height=Math.max(height,win.scrollY+1);
+              }
+              ctx.drawWindow(win,left,top,width,height,"rgba(255,255,255,255)");
             }
-            else
+            catch (e)
             {
-              height=Math.max(height,win.scrollY+1);
+              dump(e+"\n");
+              dump(win+" "+width+"x"+height+"\n");
             }
-            ctx.drawWindow(win,left,top,width,height,"rgba(255,255,255,255)");
+            ctx.restore();
           }
-          catch (e)
-          {
-            dump(e+"\n");
-            dump(win+" "+width+"x"+height+"\n");
-          }
-          ctx.restore();
         ]]>
         </body>
       </method>
