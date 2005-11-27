@@ -72,17 +72,14 @@
         <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
           <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
         </xul:box>
-        <xul:hbox>
-          <xul:vbox anonid="leftstrip" class="sidestrip">
-            <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
+        <xul:vbox>
+          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
+          <xul:hbox class="bottomstrip">
             <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
-          </xul:vbox>
-          <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
-          <xul:vbox anonid="rightstrip" class="sidestrip">
             <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
             <xul:toolbarbutton anonid="security" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
-          </xul:vbox>
-        </xul:hbox>
+          </xul:hbox>
+        </xul:vbox>
       </xul:stack>
       <xul:vbox tooltip="tabpreview_tooltip" align="stretch" anonid="bottombox">
         <xul:label anonid="uri" crop="end"/>
@@ -132,7 +129,7 @@
       </field>
       
       <field name="reloadButton">
-        this._stack.lastChild.firstChild.lastChild;
+        this._stack.lastChild.lastChild.firstChild;
       </field>
       
       <field name="securityIcon">
