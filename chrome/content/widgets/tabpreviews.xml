@@ -107,19 +107,27 @@
 
         this._logMessage("Tab Sidebar Startup");
         
-        var browsers = this.tabbrowser.browsers;
-        for (var i=0; i<browsers.length; i++)
-        {
-          this.addPreview(browsers[i]);
-        }
-        
-        this._resizeTimer.initWithCallback(this, 
-                                           5,
-                                           Components.interfaces.nsITimer.TYPE_ONE_SHOT)
-        
         this._initEvents();
       ]]>
       </constructor>
+      
+      <method name="_load">
+        <body>
+        <![CDATA[
+          this._logMessage("Tab Sidebar Load");
+          
+          var browsers = this.tabbrowser.browsers;
+          for (var i=0; i<browsers.length; i++)
+          {
+            this.addPreview(browsers[i]);
+          }
+          
+          this._resizeTimer.initWithCallback(this, 
+                                             5,
+                                             Components.interfaces.nsITimer.TYPE_ONE_SHOT)
+        ]]>
+        </body>
+      </method>
       
       <method name="_loadLocale">
         <body>
@@ -187,13 +195,15 @@
           prefs.addObserver("tabsidebar.", this, false);
         
         	var self=this;
-        	this._eventListener = function(event) { self.eventFilter(event); };
+        	this._eventListener = function(event) { self._eventFilter(event); };
         	
         	this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
         	var container = this.tabbrowser.mPanelContainer;
         	container.addEventListener("select", this._eventListener, false);
         	container.addEventListener("DOMNodeInserted", this._eventListener, false);
         	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
+        	
+        	window.addEventListener("load", function(event) { self._load(); }, false);
         </body>
       </method>
       
@@ -213,7 +223,7 @@
 
       <field name="_eventListener"/>
 
-      <method name="eventFilter">
+      <method name="_eventFilter">
         <parameter name="event"/>
         <body>
           if (event.type=="DOMNodeInserted")
