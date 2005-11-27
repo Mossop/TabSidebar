@@ -3,7 +3,6 @@ pref("tabsidebar.refreshrate", 120);
 pref("tabsidebar.autorefresh", true);
 //pref("tabsidebar.drawscrolled", true);
 pref("tabsidebar.hidetabs", false);
-pref("tabsidebar.display.mode", 0);
 
 pref("tabsidebar.showadvanced", false);
 pref("tabsidebar.loaddelay", 100);

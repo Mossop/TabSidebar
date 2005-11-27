@@ -1,17 +1,3 @@
-#tabsidebar-hovercapture {
-  width: 5px;
-  min-width: 5px;
-  max-width: 5px;
-  background: url('chrome://tabsidebar/skin/sidebar-open.png') 50% 50% repeat-y;
-}
-
-#tabsidebar-clickcapture {
-  width: 5px;
-  min-width: 5px;
-  max-width: 5px;
-  background: url('chrome://tabsidebar/skin/sidebar-close.png') 50% 50% repeat-y;
-}
-
 #tabsidebar-options {
   list-style-image: url("chrome://tabsidebar/skin/options.png");
 }
@@ -34,7 +20,6 @@ tabbrowser menupopup[anonid="tabContextMenu"] {
   visibility: visible !important;
 }
 
-window[chromehidden~="extrachrome"] #tabsidebar-clickcapture,
-window[chromehidden~="extrachrome"] #tabsidebar-hovercapture {
-  display: none;
+#sidebar-box[sidebarcommand="viewTabSidebar"] #sidebar {
+  background-color: -moz-dialog;
 }

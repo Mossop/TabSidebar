@@ -62,8 +62,6 @@
     <preferences>
       <preference type="bool" id="hidetabs"
                  name="tabsidebar.hidetabs"/>
-      <preference type="int" id="display.mode"
-                 name="tabsidebar.display.mode"/>
     </preferences>
 
     <vbox>
@@ -73,21 +71,6 @@
       
       <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>
       
-      <separator class="thin"/>
-      
-      <description>&paneGeneral.mode.description;</description>
-      
-      <separator class="thin"/>
-      
-      <radiogroup preference="display.mode">
-        <radio value="0" label="&paneGeneral.mode.normal.label;"
-                     accesskey="&paneGeneral.mode.normal.accesskey;"/>
-        <radio value="1" label="&paneGeneral.mode.click.label;"
-                     accesskey="&paneGeneral.mode.click.accesskey;"/>
-        <radio value="2" label="&paneGeneral.mode.auto.label;"
-                     accesskey="&paneGeneral.mode.auto.accesskey;"/>
-      </radiogroup>
-
     </vbox>
 
   </prefpane>
