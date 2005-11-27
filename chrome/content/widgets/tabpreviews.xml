@@ -496,7 +496,7 @@
         <parameter name="browser"/>
         <body>
         <![CDATA[
-        	var preview = this.ownerDocument.createElement("tabpreview");
+        	var preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreview");
         	var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
         	drop.className="dropindicator groove";
         	drop.setAttribute("orient","horizontal");
@@ -710,7 +710,7 @@
             var newWidth=0;
             var newHeight=0;
   
-            var container = this.ownerDocument.getAnonymousElementByAttribute(this.previews[0],"anonid","canvas_container");
+            var container = preview.canvas.parentNode;
             var computed = window.getComputedStyle(container,null);
             newWidth = parseInt(computed.width);
             if (newWidth<0)

@@ -47,16 +47,19 @@ var TabSidebarHandler = {
 // Variables
 prefs: null,
 hidden: false,
+doc: null,
 
 // Constructor and destructor
 init: function()
 {
+	this.doc = document;
+	
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
                         .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
 
-	var sidebarBox = document.getElementById("sidebar-box");
-	var sidebar = document.getElementById("sidebar");
+	var sidebarBox = this.doc.getElementById("sidebar-box");
+	var sidebar = this.doc.getElementById("sidebar");
 
 	var self=this;
 	sidebarBox.addEventListener("DOMAttrModified", function(event) { self.attributeListener(event); }, false);
@@ -67,7 +70,7 @@ init: function()
 
 sidebarLoad: function(event)
 {
-	var sidebar = document.getElementById("sidebar");
+	var sidebar = this.doc.getElementById("sidebar");
 	if (sidebar.contentDocument == event.target)
 	{
 		if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
@@ -93,7 +96,7 @@ sidebarDestroy: function()
 
 isOpen: function()
 {
-	var sidebarBox = document.getElementById("sidebar-box");
+	var sidebarBox = this.doc.getElementById("sidebar-box");
 	return sidebarBox.getAttribute("sidebarcommand") == "viewTabSidebar";
 },
 
@@ -101,8 +104,8 @@ showTabbar: function()
 {
 	if (this.hidden)
 	{
-	 	var tabbrowser = document.getElementById("content");
-	 	var tabstrip = document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
+	 	var tabbrowser = this.doc.getElementById("content");
+	 	var tabstrip = this.doc.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
 	 	tabstrip.collapsed=false;
 	 	this.hidden=false;
 	}
@@ -112,8 +115,8 @@ hideTabbar: function()
 {
 	if (!this.hidden)
 	{
-	  var tabbrowser = document.getElementById("content");
-	  var tabstrip = document.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
+	  var tabbrowser = this.doc.getElementById("content");
+	  var tabstrip = this.doc.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
 	  tabstrip.collapsed=true;
 	  this.hidden=true;
   }

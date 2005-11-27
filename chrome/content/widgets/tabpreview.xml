@@ -108,6 +108,40 @@
         </body>
       </method>
       
+      <!-- Quick access to anonymous nodes -->
+      
+      <field name="_topbox">
+        this.ownerDocument.getAnonymousNodes(this)[0]
+      </field>
+      
+      <field name="uriField">
+        this.ownerDocument.getAnonymousNodes(this)[2].firstChild;
+      </field>
+      
+      <field name="titleField">
+        this._topbox.childNodes[2];
+      </field>
+      
+      <field name="faviconIcon">
+        this._topbox.firstChild;
+      </field>
+      
+      <field name="_stack">
+        this.ownerDocument.getAnonymousNodes(this)[1]
+      </field>
+      
+      <field name="reloadButton">
+        this._stack.lastChild.firstChild.lastChild;
+      </field>
+      
+      <field name="securityIcon">
+        this._stack.lastChild.lastChild.lastChild;
+      </field>
+      
+      <field name="canvas">
+        this._stack.firstChild.firstChild;
+      </field>
+      
       <!-- Event handling gubbins -->
       
       <field name="_eventListener"/>
@@ -117,7 +151,7 @@
           if (!this._eventListener)
           {
             var self = this;
-            this._eventListener = function(event) { self.eventFilter(event); };
+            this._eventListener = function(event) { self._eventFilter(event); };
           }
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
@@ -135,15 +169,13 @@
         </body>
       </method>
       
-      <method name="eventFilter">
+      <method name="_eventFilter">
         <parameter name="event"/>
         <body>
         <![CDATA[
-          var previews = this.ownerDocument.getElementsByTagName("tabpreviews")[0];
           if (event.type=="DOMTitleChanged")
           {
-            var preview = previews.getPreviewForBrowser(event.currentTarget);
-            preview.update();
+            this.update();
           }
           else if (event.type=="resize")
           {
@@ -347,7 +379,7 @@
           }
           //this._logMessage("resize");
 
-          var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
+          var canvas = this.canvas;
 
           //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
           canvas.style.height=this.previews.displayHeight+"px";
@@ -371,8 +403,6 @@
       <method name="_loadStarted">
         <body>
           this.loading=true;
-          //var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
-          //reload.disabled=true;
           this._redrawTimer.cancel();
           this._loadTimer.cancel();
           if (this.previews.loadRefresh)
@@ -423,7 +453,7 @@
               break;
           }
           
-          var icon = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","security");
+          var icon = this.securityIcon;
           if (this._browser.securityUI)
           {
             icon.setAttribute("tooltiptext",this._browser.securityUI.tooltipText);
@@ -559,19 +589,19 @@
       <method name="update">
         <body>
           var uri = this.uri;
-          var el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","uri");
+          var el = this.uriField;
           if (el)
             el.value=uri;
 
-          el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","title");
+          el = this.titleField;
           if (el)
             el.value=this.title;
 
-          el = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","favicon");
+          el = this.faviconIcon;
           if (el)
             el.src=this.icon;
           
-          var reload = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","reload");
+          var reload = this.reloadButton;
           reload.disabled=(uri=="about:blank" || uri=="");
         </body>
       </method>
@@ -591,7 +621,12 @@
             this._logWarning("Cancelling redraw");
             return;
           }
-          var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
+          var canvas = this.canvas;
+          if (!canvas)
+          {
+            this._logError("Canvas doesnt exist.");
+            return;
+          }
           if (!canvas.hasAttribute("height"))
           {
             this._logWarning("Attempt to redraw before resize");
