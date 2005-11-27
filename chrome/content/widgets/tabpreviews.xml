@@ -121,10 +121,6 @@
           {
             this.addPreview(browsers[i]);
           }
-          
-          this._resizeTimer.initWithCallback(this, 
-                                             5,
-                                             Components.interfaces.nsITimer.TYPE_ONE_SHOT)
         ]]>
         </body>
       </method>
@@ -547,7 +543,6 @@
         <parameter name="browser"/>
         <body>
         	var preview = this.getPreviewForBrowser(browser);
-        	preview.browser=null;
         	var drop = preview.nextSibling;
         	preview.parentNode.removeChild(preview);
         	drop.parentNode.removeChild(drop);
@@ -716,6 +711,9 @@
             if (newWidth<0)
             {
               this._logError("Invalid canvas width ("+newWidth+")");
+              this._resizeTimer.initWithCallback(this, 
+                                                 5,
+                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT);
               return false;
             }
             else if (newWidth==0)
@@ -732,6 +730,7 @@
               this._displayWidth=newWidth;
               this._displayHeight=newHeight;
             	this._resize();
+              this.style.visibility=null;
             	return true;
             }
             return false;
@@ -1083,15 +1082,7 @@
           {
             if (this.displayHeight<=0)
             {
-              this._logWarning("Attempting to find proper size");
               this._selected._updateSize();
-              this._resizeTimer.initWithCallback(this, 
-                                                 5,
-                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-            }
-            else
-            {
-              this.style.visibility=null;
             }
           }
         ]]>

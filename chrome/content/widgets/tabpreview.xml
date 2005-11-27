@@ -98,6 +98,7 @@
         if (this._browser)
         {
           this._removeListeners();
+          this._browser=null;
         }
       </destructor>
       
