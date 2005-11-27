@@ -345,7 +345,7 @@
             this._logWarning("Attempt to resize preview before size has been calculated");
             return;
           }
-          this._logMessage("resize");
+          //this._logMessage("resize");
 
           var canvas = this.ownerDocument.getAnonymousElementByAttribute(this,"anonid","canvas");
 
@@ -597,7 +597,7 @@
             this._logWarning("Attempt to redraw before resize");
             return;
           }
-          this._logMessage("redraw");
+          //this._logMessage("redraw");
           var ctx = null;
           try
           {
