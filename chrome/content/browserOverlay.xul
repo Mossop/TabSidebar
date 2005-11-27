@@ -49,8 +49,6 @@
 %localeDTD;
 ]>
 
-<?xml-stylesheet href="chrome://tabsidebar/skin/browser.css" type="text/css"?>
-
 <overlay id="TabSidebarOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <!-- Sidebar -->

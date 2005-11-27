@@ -56,11 +56,25 @@ init: function()
                         .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
 
 	var sidebarBox = document.getElementById("sidebar-box");
+	var sidebar = document.getElementById("sidebar");
 
 	var self=this;
 	sidebarBox.addEventListener("DOMAttrModified", function(event) { self.attributeListener(event); }, false);
-
+	sidebar.addEventListener("load", function(event) { self.sidebarLoad(event); }, true);
+	
   this.prefs.addObserver("",this,false);
+},
+
+sidebarLoad: function(event)
+{
+	var sidebar = document.getElementById("sidebar");
+	if (sidebar.contentDocument == event.target)
+	{
+		if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
+		{
+			sidebar.contentDocument.documentElement.style.backgroundColor = "-moz-dialog";
+		}
+	}
 },
 
 // Sidebar opening and closing

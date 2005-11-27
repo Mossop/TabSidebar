@@ -21,5 +21,5 @@ tabbrowser menupopup[anonid="tabContextMenu"] {
 }
 
 #sidebar-box[sidebarcommand="viewTabSidebar"] #sidebar {
-  background-color: -moz-dialog;
+  background-color: -moz-dialog !important;
 }
