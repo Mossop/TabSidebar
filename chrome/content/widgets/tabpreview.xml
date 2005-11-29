@@ -80,9 +80,9 @@
           </xul:hbox>
           <xul:box tooltip="tabpreview_tooltip" flex="1"/>
           <xul:hbox pack="start" class="bottomstrip">
-            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
-            <xul:spacer flex="1"/>
             <xul:toolbarbutton anonid="stop" disabled="true" tooltiptext="&stopCmd.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
+            <xul:spacer flex="1"/>
+            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
           </xul:hbox>
         </xul:vbox>
       </xul:stack>
@@ -134,11 +134,11 @@
       </field>
       
       <field name="reloadButton">
-        this._stack.lastChild.lastChild.firstChild;
+        this._stack.lastChild.lastChild.lastChild;
       </field>
       
       <field name="stopButton">
-        this._stack.lastChild.lastChild.lastChild;
+        this._stack.lastChild.lastChild.firstChild;
       </field>
       
       <field name="securityIcon">

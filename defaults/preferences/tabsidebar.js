@@ -5,14 +5,9 @@ pref("tabsidebar.autorefresh", true);
 pref("tabsidebar.hidetabs", false);
 
 pref("tabsidebar.showadvanced", false);
-pref("tabsidebar.loaddelay", 100);
-pref("tabsidebar.loadrefreshrate", 1000);
-pref("tabsidebar.loadrefresh", false);
-pref("tabsidebar.display.capturedelay", 100);
-pref("tabsidebar.display.releasedelay", 500);
-pref("tabsidebar.display.time", 0);
-pref("tabsidebar.display.speed", 50);
-pref("tabsidebar.display.state", 1);
+pref("tabsidebar.loaddelay", 25);
+pref("tabsidebar.loadrefreshrate", 25);
+pref("tabsidebar.loadrefresh", true);
 
 pref("tabsidebar.content.favicon", true);
 pref("tabsidebar.content.security", true);
