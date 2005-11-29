@@ -108,9 +108,9 @@ tabpreview:hover toolbarbutton[anonid="reload"] {
 }
 
 toolbarbutton[anonid="reload"] {
-  list-style-image: url("chrome://tabsidebar/skin/Reload-small.png");
+  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
-  -moz-image-region: rect(0px, 14px, 14px, 0px);
+  -moz-image-region: rect(0px, 32px, 16px, 16px);
   border: none !important;
   padding: 1px;
   position: absolute; /* Required to avoid transparency issues - bug 5 */
@@ -121,18 +121,20 @@ toolbarbutton[anonid="reload"] image {
   margin: 0px;
 }
 
-toolbarbutton[anonid="reload"][disabled="true"],
-toolbarbutton[anonid="reload"][disabled="true"]:hover,
-toolbarbutton[anonid="reload"][disabled="true"]:hover:active {
-  -moz-image-region: rect(28px, 14px, 42px, 0px);
+toolbarbutton[anonid="reload"]:hover {
+  -moz-image-region: rect(16px, 32px, 32px, 16px);
 }
 
 toolbarbutton[anonid="reload"]:hover:active {
-  -moz-image-region: rect(14px, 14px, 28px, 0px);
+  -moz-image-region: rect(31px, 32px, 48px, 16px);
+}
+
+toolbarbutton[anonid="reload"][disabled="true"] {
+  -moz-image-region: rect(48px, 32px, 64px, 16px) !important;
 }
 
 toolbarbutton[anonid="close"] {
-  list-style-image: url("chrome://tabsidebar/skin/close.png");
+  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
   -moz-image-region: rect(0px, 16px, 16px, 0px);
   border: none !important;
@@ -140,7 +142,7 @@ toolbarbutton[anonid="close"] {
 }
 
 tabpreview[selected="false"] toolbarbutton[anonid="close"] {
-  -moz-image-region: rect(0px, 64px, 16px, 48px);
+  -moz-image-region: rect(48px, 16px, 64px, 0px);
 }
 
 toolbarbutton[anonid="close"] image {
@@ -148,15 +150,15 @@ toolbarbutton[anonid="close"] image {
 }
 
 tabpreview toolbarbutton[anonid="close"]:hover {
-  -moz-image-region: rect(0px, 32px, 16px, 16px);
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-toolbarbutton[anonid="close"]:hover:active {
-  -moz-image-region: rect(0px, 48px, 16px, 32px);
+tabpreview toolbarbutton[anonid="close"]:hover:active {
+  -moz-image-region: rect(32px, 16px, 48px, 0px) !important;
 }
 
 toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://tabsidebar/skin/Secure.png");
+  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
   border: none !important;
   padding: 1px;
@@ -164,17 +166,34 @@ toolbarbutton[anonid="security"] {
   opacity: 0.5;
 }
 
-tabpreview[security="high"] toolbarbutton[anonid="security"],
-tabpreview[security="low"] toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://tabsidebar/skin/Secure.png");
-}
-
 tabpreview[security="high"][selected="true"] ,
 tabpreview[security="low"][selected="true"] {
   background-color: #F5F6BE !important;
 }
 
+tabpreview[security="high"] toolbarbutton[anonid="security"],
+tabpreview[security="low"] toolbarbutton[anonid="security"] {
+  -moz-image-region: rect(0px, 48px, 16px, 32px);
+}
+
+tabpreview[security="high"] toolbarbutton[anonid="security"]:hover,
+tabpreview[security="low"] toolbarbutton[anonid="security"]:hover {
+  -moz-image-region: rect(16px, 48px, 32px, 32px);
+}
+
+tabpreview[security="high"] toolbarbutton[anonid="security"]:hover:active,
+tabpreview[security="low"] toolbarbutton[anonid="security"]:hover:active {
+  -moz-image-region: rect(32px, 48px, 48px, 32px);
+}
 
 tabpreview[security="broken"] toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://tabsidebar/skin/Security-broken.png");
+  -moz-image-region: rect(0px, 64px, 16px, 48px);
+}
+
+tabpreview[security="broken"] toolbarbutton[anonid="security"]:hover {
+  -moz-image-region: rect(16px, 64px, 32px, 48px);
+}
+
+tabpreview[security="broken"] toolbarbutton[anonid="security"]:hover:active {
+  -moz-image-region: rect(32px, 64px, 48px, 48px);
 }
