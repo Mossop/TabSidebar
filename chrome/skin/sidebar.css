@@ -94,17 +94,13 @@ image[anonid="favicon"] {
   margin-right: 2px;
   height: 16px;
   width: 16px;
-  opacity: 0.5;
 }
 
 /* opacity:1 for favicon,security,reload when selected or hovered */
-tabpreview[selected="true"] image[anonid="favicon"],
-tabpreview[selected="true"] toolbarbutton[anonid="security"],
-tabpreview[selected="true"] toolbarbutton[anonid="reload"],
-tabpreview:hover image[anonid="favicon"],
-tabpreview:hover toolbarbutton[anonid="security"],
-tabpreview:hover toolbarbutton[anonid="reload"] {
-   opacity: 1;
+tabpreview:not([selected="true"]):not(:hover) image[anonid="favicon"],
+tabpreview:not([selected="true"]):not(:hover) toolbarbutton[anonid="security"],
+tabpreview:not([selected="true"]):not(:hover) toolbarbutton[anonid="reload"] {
+   opacity: 0.6;
 }
 
 toolbarbutton[anonid="reload"] {
@@ -112,9 +108,8 @@ toolbarbutton[anonid="reload"] {
   -moz-appearance: none;
   -moz-image-region: rect(0px, 32px, 16px, 16px);
   border: none !important;
-  padding: 1px;
+  padding: 0px;
   position: absolute; /* Required to avoid transparency issues - bug 5 */
-  opacity: 0.7;
 }
 
 toolbarbutton[anonid="reload"] image {
@@ -126,7 +121,7 @@ toolbarbutton[anonid="reload"]:hover {
 }
 
 toolbarbutton[anonid="reload"]:hover:active {
-  -moz-image-region: rect(31px, 32px, 48px, 16px);
+  -moz-image-region: rect(32px, 32px, 48px, 16px);
 }
 
 toolbarbutton[anonid="reload"][disabled="true"] {
@@ -161,9 +156,8 @@ toolbarbutton[anonid="security"] {
   list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
   border: none !important;
-  padding: 1px;
+  padding: 0px;
   position: absolute; /* Required to avoid transparency issues - bug 5 */
-  opacity: 0.5;
 }
 
 tabpreview[security="high"][selected="true"] ,
