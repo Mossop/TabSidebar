@@ -171,6 +171,7 @@
           this._showClose = this.preferences.getBoolPref("content.close");
           this._showSecurity = this.preferences.getBoolPref("content.security");
           this._showReload = this.preferences.getBoolPref("content.reload");
+          this._showStop = this.preferences.getBoolPref("content.stop");
           this._showThrobber = this.preferences.getBoolPref("content.throbber");
           this._showTitle = this.preferences.getBoolPref("content.title");
           this._showURI = this.preferences.getBoolPref("content.uri");
@@ -367,6 +368,9 @@
       
       <field name="_showReload"/>
       <property name="showReload" onget="return this._showReload;"/>
+            
+      <field name="_showStop"/>
+      <property name="showStop" onget="return this._showStop;"/>
             
       <field name="_showClose"/>
       <property name="showClose" onget="return this._showClose;"/>
@@ -653,6 +657,8 @@
             hide+=" throbber";
           if (!this.showFavicon)
             hide+=" favicon";
+          if (!this.showStop)
+            hide+=" stop";
           if (!this.showReload)
             hide+=" reload";
           if (!this.showClose)
@@ -755,8 +761,13 @@
             this.ensureElementsAreVisible(drop,drop);
             var y = {};
             this.scrollBoxObject.getPosition({}, y);
-            var pos = drop.boxObject.y+(drop.boxObject.height/2)-5;
-            pos = pos - y.value;
+            var dropel = drop;
+            if (drop.localName == "tabpreview")
+            {
+              dropel = drop.canvas.parentNode;
+            }
+            var pos = dropel.boxObject.y+(dropel.boxObject.height/2);
+            pos = pos - y.value - 5;
             this.dragDropIndicator.style.marginTop = pos + "px";
             if (!this._lastDrop)
             {
@@ -1118,6 +1129,10 @@
               break;
             case "content.reload":
               this._showReload = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.stop":
+              this._showStop = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
             case "content.throbber":

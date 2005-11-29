@@ -19,6 +19,7 @@ tabpreviews[hide~="security"] image[anonid="security"],
 tabpreviews[hide~="preview"] box[anonid="canvas_container"],
 tabpreviews[hide~="throbber"] toolbarbutton[anonid="loading"],
 tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"],
+tabpreviews[hide~="stop"] toolbarbutton[anonid="stop"],
 tabpreviews[hide~="favicon"] image[anonid="favicon"],
 tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
   display: none !important;

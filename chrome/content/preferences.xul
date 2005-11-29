@@ -81,6 +81,8 @@
     <preferences>
       <preference type="bool" id="content.reload"
                  name="tabsidebar.content.reload"/>
+      <preference type="bool" id="content.stop"
+                 name="tabsidebar.content.stop"/>
       <preference type="bool" id="content.favicon"
                  name="tabsidebar.content.favicon"/>
       <preference type="bool" id="content.throbber"
@@ -106,6 +108,8 @@
                                               label="&paneDisplay.content.favicon.label;"/>
       <checkbox preference="content.reload"   accesskey="&paneDisplay.content.reload.accesskey;"
                                               label="&paneDisplay.content.reload.label;"/>
+      <checkbox preference="content.stop"     accesskey="&paneDisplay.content.stop.accesskey;"
+                                              label="&paneDisplay.content.stop.label;"/>
       <checkbox preference="content.throbber" accesskey="&paneDisplay.content.throbber.accesskey;"
                                               label="&paneDisplay.content.throbber.label;"/>
       <checkbox preference="content.security" accesskey="&paneDisplay.content.security.accesskey;"

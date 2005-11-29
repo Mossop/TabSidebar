@@ -9,15 +9,6 @@
 <!ENTITY paneGeneral.hidetabs.label              "Hide the tab bar when the sidebar is open.">
 <!ENTITY paneGeneral.hidetabs.accesskey          "H">
 
-<!ENTITY paneGeneral.mode.description            "The &tabsidebar.brand; can be made to quickly hide itself when you don't need it.">
-
-<!ENTITY paneGeneral.mode.normal.label           "Never hide the sidebar.">
-<!ENTITY paneGeneral.mode.normal.accesskey       "N">
-<!ENTITY paneGeneral.mode.click.label            "Click the panel to show and hide the sidebar.">
-<!ENTITY paneGeneral.mode.click.accesskey        "C">
-<!ENTITY paneGeneral.mode.auto.label             "Automatically show and hide the sidebar.">
-<!ENTITY paneGeneral.mode.auto.accesskey         "A">
-
 <!ENTITY paneDisplay.title                       "Display">
 <!ENTITY paneDisplay.description                 "This section allows you to customise what is displayed for each tab in the sidebar.">
 
@@ -25,10 +16,12 @@
 <!ENTITY paneDisplay.content.favicon.accesskey   "i">
 <!ENTITY paneDisplay.content.reload.label        "Display reload button.">
 <!ENTITY paneDisplay.content.reload.accesskey    "r">
+<!ENTITY paneDisplay.content.stop.label          "Display stop button.">
+<!ENTITY paneDisplay.content.stop.accesskey      "s">
 <!ENTITY paneDisplay.content.throbber.label      "Display loading throbber.">
 <!ENTITY paneDisplay.content.throbber.accesskey  "l">
 <!ENTITY paneDisplay.content.security.label      "Display security icon.">
-<!ENTITY paneDisplay.content.security.accesskey  "s">
+<!ENTITY paneDisplay.content.security.accesskey  "e">
 <!ENTITY paneDisplay.content.close.label         "Display close button.">
 <!ENTITY paneDisplay.content.close.accesskey     "c">
 <!ENTITY paneDisplay.content.preview.label       "Display previews.">

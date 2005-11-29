@@ -44,8 +44,10 @@
 
 <!DOCTYPE bindings [
 <!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
+<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
 <!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
 %tabbrowserDTD;
+%browserDTD;
 %tabSidebarDTD;
 ]>
 
@@ -79,6 +81,8 @@
           <xul:box tooltip="tabpreview_tooltip" flex="1"/>
           <xul:hbox pack="start" class="bottomstrip">
             <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
+            <xul:spacer flex="1"/>
+            <xul:toolbarbutton anonid="stop" disabled="true" tooltiptext="&stopCmd.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
           </xul:hbox>
         </xul:vbox>
       </xul:stack>
@@ -131,6 +135,10 @@
       
       <field name="reloadButton">
         this._stack.lastChild.lastChild.firstChild;
+      </field>
+      
+      <field name="stopButton">
+        this._stack.lastChild.lastChild.lastChild;
       </field>
       
       <field name="securityIcon">
@@ -410,11 +418,13 @@
                                              this.previews.loadRefreshRate, 
                                              Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
           }
+          this.stopButton.disabled=false;
         </body>
       </method>
       
       <method name="_loadComplete">
         <body>
+          this.stopButton.disabled=true;
           this._loadTimer.cancel();
           var delay = this.previews.loadDelay;
           if (delay==0)
@@ -554,8 +564,15 @@
       
       <method name="reload">
         <body>
-          var tabbrowser = this.previews.tabbrowser;
-          tabbrowser.reloadTab(this.tab);
+          if (this._browser)
+            this._browser.reload();
+        </body>
+      </method>
+
+      <method name="stop">
+        <body>
+          if (this._browser)
+            this._browser.stop();
         </body>
       </method>
 

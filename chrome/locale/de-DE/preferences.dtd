@@ -11,15 +11,6 @@
 <!ENTITY paneGeneral.hidetabs.label              "Bei geöffneter Sidebar die Tab-Leiste verstecken">
 <!ENTITY paneGeneral.hidetabs.accesskey          "">
 
-<!ENTITY paneGeneral.mode.description            "The &tabsidebar.brand; can be made to quickly hide itself when you don't need it.">
-
-<!ENTITY paneGeneral.mode.normal.label           "Never hide the sidebar.">
-<!ENTITY paneGeneral.mode.normal.accesskey       "N">
-<!ENTITY paneGeneral.mode.click.label            "Click the panel to show and hide the sidebar.">
-<!ENTITY paneGeneral.mode.click.accesskey        "C">
-<!ENTITY paneGeneral.mode.auto.label             "Automatically show and hide the sidebar.">
-<!ENTITY paneGeneral.mode.auto.accesskey         "A">
-
 <!ENTITY paneDisplay.title                       "Anzeige">
 <!ENTITY paneDisplay.description                 "Anpassungsmöglichkeiten für die Anzeige der Tab-Vorschau in der Sidebar.">
 
