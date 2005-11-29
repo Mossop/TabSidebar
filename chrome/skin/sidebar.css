@@ -169,7 +169,12 @@ tabpreview[security="low"] toolbarbutton[anonid="security"] {
   list-style-image: url("chrome://tabsidebar/skin/Secure.png");
 }
 
-    
+tabpreview[security="high"][selected="true"] ,
+tabpreview[security="low"][selected="true"] {
+  background-color: #F5F6BE !important;
+}
+
+
 tabpreview[security="broken"] toolbarbutton[anonid="security"] {
   list-style-image: url("chrome://tabsidebar/skin/Security-broken.png");
 }
