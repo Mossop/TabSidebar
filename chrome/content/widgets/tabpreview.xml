@@ -73,11 +73,12 @@
           <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
         </xul:box>
         <xul:vbox>
-          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
-          <xul:hbox class="bottomstrip">
-            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
-            <xul:spacer tooltip="tabpreview_tooltip" flex="1"/>
+          <xul:hbox pack="end" class="topstrip">
             <xul:toolbarbutton anonid="security" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
+          </xul:hbox>
+          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
+          <xul:hbox pack="start" class="bottomstrip">
+            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
           </xul:hbox>
         </xul:vbox>
       </xul:stack>
@@ -133,7 +134,7 @@
       </field>
       
       <field name="securityIcon">
-        this._stack.lastChild.lastChild.lastChild;
+        this._stack.lastChild.firstChild.lastChild;
       </field>
       
       <field name="canvas">
