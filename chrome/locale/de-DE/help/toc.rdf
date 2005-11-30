@@ -33,8 +33,6 @@
       <rdf:Seq>
         <rdf:li><rdf:Description ID="options-showing" nc:name="Displaying Options" nc:link="options.xhtml#options"/></rdf:li>
         <rdf:li><rdf:Description ID="options-general" nc:name="General Settings" nc:link="options.xhtml#general_options"/></rdf:li>
-        <rdf:li><rdf:Description ID="options-display" nc:name="Display Settings" nc:link="options.xhtml#display_options"/></rdf:li>
-        <rdf:li><rdf:Description ID="options-previews" nc:name="Previews Settings" nc:link="options.xhtml#previews_options"/></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>

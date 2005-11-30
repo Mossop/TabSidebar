@@ -65,8 +65,8 @@
       <xul:popupset>
       
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">
-          <xul:label value="Title"/>
-          <xul:label style="display: none" value="URI"/>
+          <xul:label class="tbs-tooltip-title" value="Title"/>
+          <xul:label class="tbs-tooltip-uri" value="URI"/>
         </xul:tooltip>
         
       </xul:popupset>
@@ -144,15 +144,6 @@
 
       <method name="_migrateOldSettings">
         <body>
-          if (this.preferences.prefHasUserValue("content.buttons"))
-          {
-            var state = this.preferences.getBoolPref("content.buttons");
-            this.preferences.setBoolPref("content.reload",state);
-            this.preferences.setBoolPref("content.throbber",state);
-            this.preferences.setBoolPref("content.close",state);
-            this.preferences.clearUserPref("content.buttons");
-            this.preferences.clearUserPref("drawscrolled");
-          }
         </body>
       </method>
 
@@ -166,11 +157,8 @@
           {
           }
 
-          this._showFavicon = this.preferences.getBoolPref("content.favicon");
-          this._showClose = this.preferences.getBoolPref("content.close");
           this._showReload = this.preferences.getBoolPref("content.reload");
           this._showStop = this.preferences.getBoolPref("content.stop");
-          this._showTitle = this.preferences.getBoolPref("content.title");
           this._showURI = this.preferences.getBoolPref("content.uri");
 
           this._drawScrolled = true; //this.preferences.getBoolPref("drawscrolled");
@@ -390,19 +378,19 @@
       <field name="_enableLogging">false</field>
       <property name="enableLogging" onget="return this._enableLogging;"/>
       
-      <field name="_showReload"/>
+      <field name="_showReload">true</field>
       <property name="showReload" onget="return this._showReload;"/>
             
-      <field name="_showStop"/>
+      <field name="_showStop">true</field>
       <property name="showStop" onget="return this._showStop;"/>
             
-      <field name="_showClose"/>
+      <field name="_showClose">true</field>
       <property name="showClose" onget="return this._showClose;"/>
       
-      <field name="_showFavicon"/>
+      <field name="_showFavicon">true</field>
       <property name="showFavicon" onget="return this._showFavicon;"/>
       
-      <field name="_showThrobber"/>
+      <field name="_showThrobber">true</field>
       <property name="showThrobber" onget="return this.showFavicon;"/>
       
       <field name="_showSecurity">true</field>
@@ -411,10 +399,10 @@
       <field name="_showPreview">true</field>
       <property name="showPreview" onget="return this._showPreview;"/>
       
-      <field name="_showTitle"/>
+      <field name="_showTitle">true</field>
       <property name="showTitle" onget="return this._showTitle;"/>
       
-      <field name="_showURI"/>
+      <field name="_showURI">false</field>
       <property name="showURI" onget="return this._showURI;"/>
       
       <field name="_displayWidth">-1</field>
@@ -678,24 +666,12 @@
             canvasWasHidden=true;
           
           hide = "";
-          if (!this.showThrobber)
-            hide+=" throbber";
-          if (!this.showFavicon)
-            hide+=" favicon";
           if (!this.showStop)
             hide+=" stop";
           if (!this.showReload)
             hide+=" reload";
-          if (!this.showClose)
-            hide+=" close";
-          if (!this.showPreview)
-            hide+=" preview";
-          if (!this.showTitle)
-            hide+=" title";
           if (!this.showURI)
             hide+=" uri";
-          if (!this.showSecurity)
-            hide+=" security";
           
           if (hide.length>0)
             hide=hide.substring(1);
@@ -1135,24 +1111,12 @@
         <![CDATA[
           switch (data)
           {
-            case "content.favicon":
-              this._showFavicon = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.close":
-              this._showClose = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
             case "content.reload":
               this._showReload = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
             case "content.stop":
               this._showStop = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.title":
-              this._showTitle = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
             case "content.uri":

@@ -69,31 +69,25 @@
                  name="tabsidebar.autorefresh"/>
       <preference type="int"  id="refreshrate"
                  name="tabsidebar.refreshrate"/>
-      <preference type="bool"  id="loadrefresh"
-                 name="tabsidebar.loadrefresh"/>
-      <preference type="int"  id="loadrefreshrate"
-                 name="tabsidebar.loadrefreshrate"/>
-      <preference type="int"  id="loaddelay"
-                 name="tabsidebar.loaddelay"/>
-      <preference type="bool"  id="showadvanced"
-                 name="tabsidebar.showadvanced"/>
+      <preference type="bool" id="content.reload"
+                 name="tabsidebar.content.reload" onchange="document.getElementById('content.stop').value=document.getElementById('content.reload').value;"/>
+      <preference type="bool" id="content.stop"
+                 name="tabsidebar.content.stop"/>
+      <preference type="bool" id="content.uri" 
+                 name="tabsidebar.content.uri"/>
     </preferences>
 
     <vbox>
-      <description>&paneGeneral.description;</description>
-    
-      <separator class="thin"/>
-      
-      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>
-      
+      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
     </vbox>
+
+    <separator class="thin"/>
 
     <vbox>
       <description>&panePreviews.description;</description>
       
       <separator class="thin"/>
       
-      <!-- <checkbox preference="drawscrolled" accesskey="&panePreviews.drawscrolled.accesskey;" label="&panePreviews.drawscrolled.label;"/> -->
       <checkbox preference="autorefresh" flex="1" accesskey="&panePreviews.autorefresh.accesskey;" label="&panePreviews.autorefresh.label;"/>
       
       <subpane preference="autorefresh" action="disable" orient="horizontal">
@@ -106,58 +100,15 @@
     
     <separator class="thin"/>
       
-    <subpane preference="showadvanced" action="hide" style="margin-top: 1em;">
-      <description>&tabsidebar.advanced;</description>
-      <separator class="thin"/>
-      
-      <checkbox preference="loadrefresh" flex="1" accesskey="&panePreviews.loadrefresh.accesskey;" label="&panePreviews.loadrefresh.label;"/>
-      <subpane preference="loadrefresh" orient="horizontal" action="disable">
-        <label accesskey="&panePreviews.loadrefreshrate.accesskey;" value="&panePreviews.loadrefreshrate.label;"
-               control="loadrefreshratebox"/>
-        <textbox id="loadrefreshratebox" preference="loadrefreshrate"/>
-      </subpane>
-      <hbox align="center">
-        <label flex="1" accesskey="&panePreviews.loaddelay.accesskey;" value="&panePreviews.loaddelay.label;"
-               control="loaddelaybox"/>
-        <textbox id="loaddelaybox" preference="loaddelay"/>
-      </hbox>
-    </subpane>
-
-  </prefpane>
-  
-  <prefpane id="paneDisplay" label="&paneDisplay.title;"
-            helpTopic="options-display" helpURI="chrome://tabsidebar/locale/help/help.rdf">
-  
-    <preferences>
-      <preference type="bool" id="content.reload"
-                 name="tabsidebar.content.reload" onchange="document.getElementById('content.stop').value=document.getElementById('content.reload').value;"/>
-      <preference type="bool" id="content.stop"
-                 name="tabsidebar.content.stop"/>
-      <preference type="bool" id="content.favicon"
-                 name="tabsidebar.content.favicon"/>
-      <preference type="bool" id="content.close"
-                 name="tabsidebar.content.close"/>
-      <preference type="bool" id="content.title"
-                 name="tabsidebar.content.title"/>
-      <preference type="bool" id="content.uri" 
-                 name="tabsidebar.content.uri"/>
-    </preferences>
-
     <vbox>
       <description>&paneDisplay.description;</description>
     
       <separator class="thin"/>
       
-      <checkbox preference="content.favicon"  accesskey="&paneDisplay.content.favicon.accesskey;"
-                                              label="&paneDisplay.content.favicon.label;"/>
-      <checkbox preference="content.close"    accesskey="&paneDisplay.content.close.accesskey;"
-                                              label="&paneDisplay.content.close.label;"/>
-      <checkbox preference="content.title"    accesskey="&paneDisplay.content.title.accesskey;"
-                                              label="&paneDisplay.content.title.label;"/>
-      <checkbox preference="content.uri"      accesskey="&paneDisplay.content.uri.accesskey;"
-                                              label="&paneDisplay.content.uri.label;"/>
       <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
                                               label="&paneDisplay.content.navigation.label;"/>
+      <checkbox preference="content.uri"      accesskey="&paneDisplay.content.uri.accesskey;"
+                                              label="&paneDisplay.content.uri.label;"/>
     </vbox>
 
   </prefpane>

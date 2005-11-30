@@ -31,10 +31,10 @@
         <li><Description nc:name="Hiding the main tab bar" nc:link="options.xhtml#general_options"/></li>
         <li><Description nc:name="Automatically hiding the sidebar" nc:link="options.xhtml#general_options"/></li>
 
-        <li><Description nc:name="Showing/Hiding icons" nc:link="options.xhtml#display_options"/></li>
-        <li><Description nc:name="Showing/Hiding buttons" nc:link="options.xhtml#display_options"/></li>
+        <li><Description nc:name="Showing/Hiding icons" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Showing/Hiding buttons" nc:link="options.xhtml#general_options"/></li>
 
-        <li><Description nc:name="Automatically refreshing previews" nc:link="options.xhtml#previews_options"/></li>
+        <li><Description nc:name="Automatically refreshing previews" nc:link="options.xhtml#general_options"/></li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
