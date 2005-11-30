@@ -407,7 +407,7 @@
       <field name="_showThrobber"/>
       <property name="showThrobber" onget="return this._showThrobber;"/>
       
-      <field name="_showSecurity" value="true"/>
+      <field name="_showSecurity">true</field>
       <property name="showSecurity" onget="return this._showSecurity;"/>
       
       <field name="_showPreview"/>
@@ -1135,7 +1135,6 @@
         <parameter name="data"/>
         <body>
         <![CDATA[
-          data=data.substring(11);
           switch (data)
           {
             case "content.favicon":
