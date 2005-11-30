@@ -62,13 +62,6 @@
     <preferences>
       <preference type="bool" id="hidetabs"
                  name="tabsidebar.hidetabs"/>
-
-      <!-- <preference type="bool" id="drawscrolled"
-                 name="tabsidebar.drawscrolled"/> -->
-      <preference type="bool"  id="autorefresh"
-                 name="tabsidebar.autorefresh"/>
-      <preference type="int"  id="refreshrate"
-                 name="tabsidebar.refreshrate"/>
       <preference type="bool" id="content.reload"
                  name="tabsidebar.content.reload" onchange="document.getElementById('content.stop').value=document.getElementById('content.reload').value;"/>
       <preference type="bool" id="content.stop"
@@ -79,36 +72,11 @@
 
     <vbox>
       <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
-    </vbox>
-
-    <separator class="thin"/>
-
-    <vbox>
-      <description>&panePreviews.description;</description>
-      
-      <separator class="thin"/>
-      
-      <checkbox preference="autorefresh" flex="1" accesskey="&panePreviews.autorefresh.accesskey;" label="&panePreviews.autorefresh.label;"/>
-      
-      <subpane preference="autorefresh" action="disable" orient="horizontal">
-        <label accesskey="&panePreviews.refreshrate.accesskey;" value="&panePreviews.refreshrate.label;"
-               control="refreshratebox"/>
-        <textbox id="refreshratebox" preference="refreshrate"/>
-      </subpane>
-      
-    </vbox>
-    
-    <separator class="thin"/>
-      
-    <vbox>
-      <description>&paneDisplay.description;</description>
     
       <separator class="thin"/>
       
       <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
                                               label="&paneDisplay.content.navigation.label;"/>
-      <checkbox preference="content.uri"      accesskey="&paneDisplay.content.uri.accesskey;"
-                                              label="&paneDisplay.content.uri.label;"/>
     </vbox>
 
   </prefpane>

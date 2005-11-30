@@ -6,16 +6,5 @@
 <!ENTITY paneGeneral.hidetabs.label               "Bei geöffneter Sidebar die Tab-Leiste verstecken">
 <!ENTITY paneGeneral.hidetabs.accesskey           "">
 
-<!ENTITY paneDisplay.description                  "Anpassungsmöglichkeiten für die Anzeige der Tab-Vorschau in der Sidebar.">
-
 <!ENTITY paneDisplay.content.navigation.label     "Display navigation buttons.">
 <!ENTITY paneDisplay.content.navigation.accesskey "n">
-<!ENTITY paneDisplay.content.uri.label            "Tab-URL anzeigen">
-<!ENTITY paneDisplay.content.uri.accesskey        "a">
-
-<!ENTITY panePreviews.description                 "Anpassungen für das Aktualisierungsverhalten der Vorschaubilder und den darzustellenden Inhalt.">
-
-<!ENTITY panePreviews.autorefresh.label           "Aktualisierungsintervall für Vorschaubilder (Sekunden):">
-<!ENTITY panePreviews.autorefresh.accesskey       "">
-<!ENTITY panePreviews.refreshrate.label           "Refresh rate (in seconds):">
-<!ENTITY panePreviews.refreshrate.accesskey       "s">

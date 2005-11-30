@@ -6,16 +6,5 @@
 <!ENTITY paneGeneral.hidetabs.label               "Hide the tab bar when the sidebar is open.">
 <!ENTITY paneGeneral.hidetabs.accesskey           "H">
 
-<!ENTITY paneDisplay.description                  "Customise what is displayed for each tab in the sidebar:">
-
 <!ENTITY paneDisplay.content.navigation.label     "Display navigation buttons.">
 <!ENTITY paneDisplay.content.navigation.accesskey "n">
-<!ENTITY paneDisplay.content.uri.label            "Display tab address.">
-<!ENTITY paneDisplay.content.uri.accesskey        "t">
-
-<!ENTITY panePreviews.description                 "Customise when previews are refreshed:">
-
-<!ENTITY panePreviews.autorefresh.label           "Continually refresh the preview.">
-<!ENTITY panePreviews.autorefresh.accesskey       "C">
-<!ENTITY panePreviews.refreshrate.label           "Refresh rate (in seconds):">
-<!ENTITY panePreviews.refreshrate.accesskey       "R">
