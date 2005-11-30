@@ -1,14 +1,82 @@
-scrollbox[anonid="scrollbox"] {
+/* Generic layout */
+.tbs-scrollbox {
   padding: 0px 2px 0px 2px;
 }
 
-.tab-drop-indicator-bar {
+separator {
+  margin: 4px 0px 4px 0px !important;
+}
+
+.tbs-tabpreview label {
+  margin: 2px;
+  font: message-box;
+}
+
+.tbs-topbox {
+  padding-bottom: 3px;
+}
+
+.tbs-bottombox {
+  padding-top: 3px;
+}
+
+/* Tab settings */
+.tbs-tabpreview {
+  padding: 3px;
+  border: 1px -moz-dialog solid;
+  background-color: -moz-dialog;
+}
+
+.tbs-tabpreview[selected="true"] {
+  border-color: ThreeDShadow ThreeDHighlight ThreeDHighlight ThreeDShadow;
+  background-color: ThreeDHighlight;
+}
+
+.tbs-tabpreview[selected="true"] .tbs-title {
+  font-weight: bold;
+}
+
+.tbs-tabpreview[selected="false"]:hover {
+  border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] ,
+.tbs-tabpreview[security="low"][selected="true"] {
+  background-color: #F5F6BE !important;
+}
+
+.tbs-topstrip,
+.tbs-bottomstrip {
+  padding: 2px;
+}
+
+/* Canvas style */
+.tbs-container {
+  border: 1px solid ThreeDShadow;
+}
+
+.tbs-tabpreview:hover .tbs-container,
+.tbs-tabpreview[selected="true"] .tbs-container {
+  border-color: ThreeDDarkShadow;
+}
+
+.tbs-tabpreview:hover .tbs-canvas, 
+.tbs-tabpreview[selected="true"] .tbs-canvas {
+  opacity: 1 !important;
+}
+
+.tbs-tabpreview[selected="false"] .tbs-canvas {
+  opacity: 0.4;
+}
+
+/* Drag and drop */
+.tbs-drop-indicator-bar {
   display: none;
   width: 0px;
   position: relative;
 }
 
-.tab-drop-indicator {
+.tbs-drop-indicator {
   height: 9px;
   width: 9px;
   margin-right: -15px;
@@ -16,80 +84,22 @@ scrollbox[anonid="scrollbox"] {
   background: url('chrome://tabsidebar/skin/dropIndicator.png') 50% 50% no-repeat;
 }
 
-.tab-drop-indicator-bar[dragging="true"] {
+.tbs-drop-indicator-bar[dragging="true"] {
   display: -moz-box
 }
 
-separator {
-  margin: 4px 0px 4px 0px !important;
-}
-
-tabpreview {
-  padding: 3px;
-  border: 1px -moz-dialog solid;
-  background-color: -moz-dialog;
-}
-
-tabpreview[selected="true"] {
-  border-color: ThreeDShadow ThreeDHighlight ThreeDHighlight ThreeDShadow;
-  background-color: ThreeDHighlight;
-}
-
-tabpreview[selected="true"] label[anonid="title"] {
-  font-weight: bold;
-}
-
-tabpreview[selected="false"]:hover {
-  border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
-}
-
+/* Toolbar like items */
 .toolbarbutton-icon {
   margin: 0px;
 }
   
-.topstrip,
-.bottomstrip {
-  padding: 2px;
-}
-
-box[anonid="canvas_container"] {
-  border: 1px solid ThreeDShadow;
-}
-
-tabpreview:hover box[anonid="canvas_container"],
-tabpreview[selected="true"] box[anonid="canvas_container"] {
-  border-color: ThreeDDarkShadow;
-}
-
-tabpreview:hover canvas, 
-tabpreview[selected="true"] canvas {
-  opacity: 1 !important;
-}
-
-tabpreview[selected="false"] canvas {
-  opacity: 0.4;
-}
-
-tabpreview label {
-  margin: 2px;
-  font: message-box;
-}
-
-hbox[anonid="topbox"] {
-  padding-bottom: 3px;
-}
-
-hbox[anonid="bottombox"] {
-  padding-top: 3px;
-}
-
-image[anonid="loading"] {
+.tbs-loading {
   list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
   margin-right: 2px;
 }
 
-image[anonid="favicon"] {
+.tbs-favicon {
   list-style-image: url(chrome://global/skin/icons/folder-item.png);
   -moz-image-region: rect(0px, 16px, 16px, 0px);
   margin-right: 2px;
@@ -98,120 +108,96 @@ image[anonid="favicon"] {
 }
 
 /* opacity:1 for favicon,security,reload when selected or hovered */
-tabpreview[selected="false"]:not(:hover) image[anonid="favicon"],
-tabpreview[selected="false"]:not(:hover) toolbarbutton[anonid="security"],
-tabpreview[selected="false"]:not(:hover) toolbarbutton[anonid="reload"],
-tabpreview[selected="false"]:not(:hover) toolbarbutton[anonid="stop"],
-tabpreview[selected="false"]:not(:hover) toolbarbutton[anonid="close"] {
+.tbs-tabpreview[selected="false"]:not(:hover) .tbs-favicon,
+.tbs-tabpreview[selected="false"]:not(:hover) .tbs-icon {
    opacity: 0.6;
 }
 
-toolbarbutton[anonid="stop"] {
+/* Defaults for all icons */
+.tbs-icon {
   list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
-  -moz-image-region: rect(0px, 80px, 16px, 64px);
   border: none !important;
   padding: 0px;
   position: absolute; /* Required to avoid transparency issues - bug 5 */
 }
 
-toolbarbutton[anonid="stop"] image {
-  margin: 0px;
+/* Stop button */
+.tbs-stop {
+  -moz-image-region: rect(0px, 80px, 16px, 64px);
 }
 
-toolbarbutton[anonid="stop"]:hover {
+.tbs-stop:hover {
   -moz-image-region: rect(16px, 80px, 32px, 64px);
 }
 
-toolbarbutton[anonid="stop"]:hover:active {
+.tbs-stop:hover:active {
   -moz-image-region: rect(32px, 80px, 48px, 64px);
 }
 
-toolbarbutton[anonid="stop"][disabled="true"] {
+.tbs-stop[disabled="true"] {
   -moz-image-region: rect(48px, 80px, 64px, 64px) !important;
 }
 
-toolbarbutton[anonid="reload"] {
-  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
-  -moz-appearance: none;
+/* Reload button */
+.tbs-reload {
   -moz-image-region: rect(0px, 32px, 16px, 16px);
-  border: none !important;
-  padding: 0px;
-  position: absolute; /* Required to avoid transparency issues - bug 5 */
 }
 
-toolbarbutton[anonid="reload"] image {
-  margin: 0px;
-}
-
-toolbarbutton[anonid="reload"]:hover {
+.tbs-reload:hover {
   -moz-image-region: rect(16px, 32px, 32px, 16px);
 }
 
-toolbarbutton[anonid="reload"]:hover:active {
+.tbs-reload:hover:active {
   -moz-image-region: rect(32px, 32px, 48px, 16px);
 }
 
-toolbarbutton[anonid="reload"][disabled="true"] {
+.tbs-reload[disabled="true"] {
   -moz-image-region: rect(48px, 32px, 64px, 16px) !important;
 }
 
-toolbarbutton[anonid="close"] {
-  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
-  -moz-appearance: none;
+/* Close button */
+.tbs-close {
   -moz-image-region: rect(0px, 16px, 16px, 0px);
-  border: none !important;
-  padding: 0px;
 }
 
-toolbarbutton[anonid="close"] image {
-   margin: 0px;
-}
-
-toolbarbutton[anonid="close"]:hover {
+.tbs-close:hover {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-toolbarbutton[anonid="close"]:hover:active {
+.tbs-close:hover:active {
   -moz-image-region: rect(32px, 16px, 48px, 0px) !important;
 }
 
-toolbarbutton[anonid="security"] {
-  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
-  -moz-appearance: none;
-  border: none !important;
-  padding: 0px;
-  position: absolute; /* Required to avoid transparency issues - bug 5 */
+/* Security button */
+.tbs-security[security="none"] {
+  visibility: hidden;
 }
 
-tabpreview[security="high"][selected="true"] ,
-tabpreview[security="low"][selected="true"] {
-  background-color: #F5F6BE !important;
-}
-
-tabpreview[security="high"] toolbarbutton[anonid="security"],
-tabpreview[security="low"] toolbarbutton[anonid="security"] {
+.tbs-tabpreview[security="high"] .tbs-security,
+.tbs-tabpreview[security="low"] .tbs-security {
   -moz-image-region: rect(0px, 48px, 16px, 32px);
 }
 
-tabpreview[security="high"] toolbarbutton[anonid="security"]:hover,
-tabpreview[security="low"] toolbarbutton[anonid="security"]:hover {
+.tbs-tabpreview[security="high"] .tbs-security:hover,
+.tbs-tabpreview[security="low"] .tbs-security:hover {
   -moz-image-region: rect(16px, 48px, 32px, 32px);
 }
 
-tabpreview[security="high"] toolbarbutton[anonid="security"]:hover:active,
-tabpreview[security="low"] toolbarbutton[anonid="security"]:hover:active {
+.tbs-tabpreview[security="high"] .tbs-security:hover:active,
+.tbs-tabpreview[security="low"] .tbs-security:hover:active {
   -moz-image-region: rect(32px, 48px, 48px, 32px);
 }
 
-tabpreview[security="broken"] toolbarbutton[anonid="security"] {
+/* Broken security */
+.tbs-tabpreview[security="broken"] .tbs-security {
   -moz-image-region: rect(0px, 64px, 16px, 48px);
 }
 
-tabpreview[security="broken"] toolbarbutton[anonid="security"]:hover {
+.tbs-tabpreview[security="broken"] .tbs-security:hover {
   -moz-image-region: rect(16px, 64px, 32px, 48px);
 }
 
-tabpreview[security="broken"] toolbarbutton[anonid="security"]:hover:active {
+.tbs-tabpreview[security="broken"] .tbs-security:hover:active {
   -moz-image-region: rect(32px, 64px, 48px, 48px);
 }

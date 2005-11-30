@@ -63,31 +63,31 @@
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
-    <content orient="vertical" align="stretch" loading="false" selected="false" security="none">
-      <xul:hbox align="center" anonid="topbox">
-        <xul:image validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
-        <xul:image anonid="loading" tooltip="tabpreview_tooltip"/>
-        <xul:label tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
-        <xul:toolbarbutton anonid="close" tooltiptext="&closeTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.close();"/>
+    <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" selected="false" security="none">
+      <xul:hbox class="tbs-topbox" align="center" anonid="topbox">
+        <xul:image class="tbs-favicon" validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
+        <xul:image class="tbs-loading" anonid="loading" tooltip="tabpreview_tooltip"/>
+        <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
+        <xul:toolbarbutton class="tbs-close tbs-icon" anonid="close" tooltiptext="&closeTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.close();"/>
       </xul:hbox>
       <xul:stack>
-        <xul:box tooltip="tabpreview_tooltip" flex="1" anonid="canvas_container">
-          <xhtml:canvas flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
+        <xul:box tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
+          <xhtml:canvas class="tbs-canvas" flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
         </xul:box>
         <xul:vbox>
-          <xul:hbox pack="end" class="topstrip">
-            <xul:toolbarbutton anonid="security" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
+          <xul:hbox pack="end" class="tbs-topstrip">
+            <xul:toolbarbutton class="tbs-security tbs-icon" anonid="security" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
           </xul:hbox>
           <xul:box tooltip="tabpreview_tooltip" flex="1"/>
-          <xul:hbox pack="start" class="bottomstrip">
-            <xul:toolbarbutton anonid="stop" disabled="true" tooltiptext="&stopCmd.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
+          <xul:hbox pack="start" class="tbs-bottomstrip">
+            <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopCmd.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
+            <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
           </xul:hbox>
         </xul:vbox>
       </xul:stack>
-      <xul:vbox tooltip="tabpreview_tooltip" align="stretch" anonid="bottombox">
-        <xul:label anonid="uri" crop="end"/>
+      <xul:vbox class="tbs-bottombox" tooltip="tabpreview_tooltip" align="stretch" anonid="bottombox">
+        <xul:label class="tbs-uri" anonid="uri" crop="end"/>
       </xul:vbox>
     </content>
 
@@ -97,6 +97,8 @@
       </constructor>
 
       <destructor>
+        this._redrawTimer.cancel();
+        this._loadTimer.cancel();
         if (this._browser)
         {
           this._removeListeners();

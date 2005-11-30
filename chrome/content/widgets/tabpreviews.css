@@ -1,46 +1,46 @@
-scrollbox[anonid="scrollbox"] {
+.tbs-scrollbox {
   overflow-y: scroll;
 }
 
-tabpreview {
+.tbs-tabpreview {
   -moz-box-align: center;
 }
 
-tabpreview[security="none"] toolbarbutton[anonid="security"] {
+.tbs-tabpreview[security="none"] .tbs-security {
   display: none;
 }
 
-tabpreviews[hide~="uri"] label[anonid="uri"],
-tabpreviews[hide~="title"] label[anonid="title"] {
+.tbs-tabpreviews[hide~="uri"] .tbs-uri,
+.tbs-tabpreviews[hide~="title"] .tbs-title {
   visibility: hidden !important;
 }
 
-tabpreviews[hide~="security"] image[anonid="security"],
-tabpreviews[hide~="preview"] box[anonid="canvas_container"],
-tabpreviews[hide~="throbber"] toolbarbutton[anonid="loading"],
-tabpreviews[hide~="reload"] toolbarbutton[anonid="reload"],
-tabpreviews[hide~="stop"] toolbarbutton[anonid="stop"],
-tabpreviews[hide~="favicon"] image[anonid="favicon"],
-tabpreviews[hide~="close"] toolbarbutton[anonid="close"] {
+.tbs-tabpreviews[hide~="security"] .tbs-security,
+.tbs-tabpreviews[hide~="preview"] .tbs-container,
+.tbs-tabpreviews[hide~="throbber"] .tbs-loading,
+.tbs-tabpreviews[hide~="reload"] .tbs-reload,
+.tbs-tabpreviews[hide~="stop"] .tbs-stop,
+.tbs-tabpreviews[hide~="favicon"] .tbs-favicon,
+.tbs-tabpreviews[hide~="close"] .tbs-close {
   display: none !important;
 }
 
-tabpreview[loading="false"] image[anonid="loading"] {
+.tbs-tabpreview[loading="false"] .tbs-loading {
   display: none;
 }
 
-tabpreview[loading="true"] image[anonid="favicon"] {
+.tbs-tabpreview[loading="true"] .tbs-favicon {
   display: none;
 }
 
-tabpreviews[hide~="throbber"] tabpreview[loading="true"] image[anonid="favicon"] {
+.tbs-tabpreviews[hide~="throbber"] .tbs-tabpreview[loading="true"] .tbs-favicon {
   display: -moz-box;
 }
 
-tabpreviews[hide~="throbber"][hide~="favicon"][hide~="title"][hide~="close"] hbox[anonid="topbox"] {
+.tbs-tabpreviews[hide~="throbber"][hide~="favicon"][hide~="title"][hide~="close"] .tbs-topbox {
   display: none;
 }
 
-tabpreviews[hide~="uri"] vbox[anonid="bottombox"] {
+.tbs-tabpreviews[hide~="uri"] .tbs-bottombox {
   display: none;
 }
