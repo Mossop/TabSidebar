@@ -82,29 +82,51 @@ init: function()
   var bundle = sbs.createBundle("chrome://tabsidebar/locale/tabsidebar.properties");
 
 	var pos = topwin.document.getElementById("sidebar-throbber");
-	var optionsBtn = topwin.document.createElement("toolbarbutton");
-	var helpBtn = topwin.document.createElement("toolbarbutton");
-	
-	optionsBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.options.tooltip"));
-	helpBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.help.tooltip"));
-	
-	optionsBtn.id = "tabsidebar-options";
-	helpBtn.id = "tabsidebar-help";
+	var header = pos.parentNode;
 	
 	if (pos.nextSibling)
 	{
 		pos=pos.nextSibling;
-		pos.parentNode.insertBefore(optionsBtn,pos);
-		pos.parentNode.insertBefore(helpBtn,pos);
 	}
 	else
 	{
-		pos.parentNode.appendChild(optionsBtn);
-		pos.parentNode.appendChild(helpBtn);
+		pos=null;
 	}
 	
-	optionsBtn.addEventListener("command",sidebar.showOptions,false);
-	helpBtn.addEventListener("command",sidebar.showHelp,false);
+  var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService).getBranch("tabsidebar.");
+                        
+  if (prefs.getBoolPref("showoptions"))
+  {
+		var optionsBtn = topwin.document.createElement("toolbarbutton");
+		optionsBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.options.tooltip"));
+		optionsBtn.id = "tabsidebar-options";
+		if (pos)
+		{
+			header.insertBefore(optionsBtn,pos);
+		}
+		else
+		{
+			header.appendChild(optionsBtn);
+		}
+		optionsBtn.addEventListener("command",sidebar.showOptions,false);
+	}
+	
+	if (prefs.getBoolPref("showhelp"))
+	{
+		var helpBtn = topwin.document.createElement("toolbarbutton");
+		helpBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.help.tooltip"));
+		helpBtn.id = "tabsidebar-help";
+		if (pos)
+		{
+			header.insertBefore(helpBtn,pos);
+		}
+		else
+		{
+			header.appendChild(helpBtn);
+		}
+		helpBtn.addEventListener("command",sidebar.showHelp,false);
+	}
 },
  
 destroy: function()
@@ -112,8 +134,10 @@ destroy: function()
 	var topwin = sidebar.topwindow;
 
 	var button = topwin.document.getElementById("tabsidebar-options");
-	button.parentNode.removeChild(button);
+	if (button)
+		button.parentNode.removeChild(button);
 	button = topwin.document.getElementById("tabsidebar-help");
-	button.parentNode.removeChild(button);
+	if (button)
+		button.parentNode.removeChild(button);
 }
 }

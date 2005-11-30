@@ -169,7 +169,6 @@
           this._showFavicon = this.preferences.getBoolPref("content.favicon");
           this._showPreview = this.preferences.getBoolPref("content.preview");
           this._showClose = this.preferences.getBoolPref("content.close");
-          this._showSecurity = this.preferences.getBoolPref("content.security");
           this._showReload = this.preferences.getBoolPref("content.reload");
           this._showStop = this.preferences.getBoolPref("content.stop");
           this._showThrobber = this.preferences.getBoolPref("content.throbber");
@@ -408,7 +407,7 @@
       <field name="_showThrobber"/>
       <property name="showThrobber" onget="return this._showThrobber;"/>
       
-      <field name="_showSecurity"/>
+      <field name="_showSecurity" value="true"/>
       <property name="showSecurity" onget="return this._showSecurity;"/>
       
       <field name="_showPreview"/>
@@ -1149,10 +1148,6 @@
               break;
             case "content.close":
               this._showClose = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.security":
-              this._showSecurity = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
             case "content.reload":
