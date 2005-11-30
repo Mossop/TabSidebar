@@ -97,14 +97,30 @@
       </constructor>
 
       <destructor>
-        this._redrawTimer.cancel();
-        this._loadTimer.cancel();
-        if (this._browser)
-        {
-          this._removeListeners();
-          this._browser=null;
-        }
+        if (this.previews)
+          this._logMessage("tabpreview destructor");
+        this._destroy();
       </destructor>
+      
+      <field name="_destroyed" value="false"/>
+      <method name="_destroy">
+        <body>
+          if (!this._destroyed)
+          {
+            if (this._browser)
+            {
+              this._removeListeners();
+              this._browser=null;
+            }
+            this._redrawTimer.cancel();
+            this._redrawTimer=null;
+            this._loadTimer.cancel();
+            this._loadTimer=null;
+            
+            this._destroyed=true;
+          }
+        </body>
+      </method>
       
       <method name="init">
         <body>
@@ -167,6 +183,8 @@
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
+          WP=null;
+          mask=null;
         </body>
       </method>
       

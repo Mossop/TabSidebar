@@ -111,11 +111,6 @@
       ]]>
       </constructor>
       
-      <destructor>
-        this._refreshTimer.cancel();
-        this._resizeTimer.cancel();
-      </destructor>
-      
       <method name="_load">
         <body>
         <![CDATA[
@@ -192,34 +187,61 @@
       
       <method name="_initEvents">
         <body>
-          var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                                .getService(Components.interfaces.nsIPrefBranchInternal);
-          prefs.addObserver("tabsidebar.", this, false);
-        
+          this.preferences.addObserver("", this, false);
+          
         	var self=this;
         	this._eventListener = function(event) { self._eventFilter(event); };
         	
         	this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
-        	var container = this.tabbrowser.mPanelContainer;
-        	container.addEventListener("select", this._eventListener, false);
-        	container.addEventListener("DOMNodeInserted", this._eventListener, false);
-        	container.addEventListener("DOMNodeRemoved", this._eventListener, false);
+        	this.tabbrowser.mPanelContainer.addEventListener("select", this._eventListener, false);
+        	this.tabbrowser.mPanelContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
+        	this.tabbrowser.mPanelContainer.addEventListener("DOMNodeRemoved", this._eventListener, false);
         	
         	window.addEventListener("load", function(event) { self._load(); }, false);
+        	window.addEventListener("unload", function(event) { self._destroy(); }, false);
         </body>
       </method>
       
       <destructor>
-      	this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
-      	var container = this.tabbrowser.mPanelContainer;
-      	container.removeEventListener("select", this._eventListener, false);
-      	container.removeEventListener("DOMNodeInserted", this._eventListener, false);
-      	container.removeEventListener("DOMNodeRemoved", this._eventListener, false);
-
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                              .getService(Components.interfaces.nsIPrefBranchInternal);
-        prefs.removeObserver("tabsidebar.", this);
+        this._logMessage("tabpreviews destructor");
+        this._destroy();
       </destructor>
+      
+      <field name="_destroyed" value="false"/>
+      <method name="_destroy">
+        <body>
+          if (!this._destroyed)
+          {
+            while (this.firstChild)
+            {
+              if (this.firstChild.localName == "tabpreview")
+              {
+                this.firstChild._destroy();
+              }
+              this.removeChild(this.firstChild);
+            }
+    
+          	this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
+          	var container = this.tabbrowser.mPanelContainer;
+          	container.removeEventListener("select", this._eventListener, false);
+          	container.removeEventListener("DOMNodeInserted", this._eventListener, false);
+          	container.removeEventListener("DOMNodeRemoved", this._eventListener, false);
+    
+            this.preferences.removeObserver("", this);
+            this.preferences=null;
+            
+            this.tabbrowser=null;
+            this.window=null;
+  
+            this._refreshTimer.cancel();
+            this._refreshTimer=null;
+            this._resizeTimer.cancel();
+            this._resizeTimer=null;
+
+            this._destroyed=true;
+          }
+        </body>
+      </method>
       
       <!-- Event handling gubbins -->
 
@@ -349,7 +371,7 @@
       <field name="preferences">
         Components.classes["@mozilla.org/preferences-service;1"]
                   .getService(Components.interfaces.nsIPrefService)
-                  .getBranch("tabsidebar.");
+                  .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranchInternal);
       </field>
       <field name="tabbrowser"/>
       <field name="window"/>
@@ -553,6 +575,7 @@
         <body>
         	var preview = this.getPreviewForBrowser(browser);
         	var drop = preview.nextSibling;
+        	preview._destroy();
         	preview.parentNode.removeChild(preview);
         	drop.parentNode.removeChild(drop);
         	if (this.previews.length == 0)
