@@ -167,11 +167,9 @@
           }
 
           this._showFavicon = this.preferences.getBoolPref("content.favicon");
-          this._showPreview = this.preferences.getBoolPref("content.preview");
           this._showClose = this.preferences.getBoolPref("content.close");
           this._showReload = this.preferences.getBoolPref("content.reload");
           this._showStop = this.preferences.getBoolPref("content.stop");
-          this._showThrobber = this.preferences.getBoolPref("content.throbber");
           this._showTitle = this.preferences.getBoolPref("content.title");
           this._showURI = this.preferences.getBoolPref("content.uri");
 
@@ -405,12 +403,12 @@
       <property name="showFavicon" onget="return this._showFavicon;"/>
       
       <field name="_showThrobber"/>
-      <property name="showThrobber" onget="return this._showThrobber;"/>
+      <property name="showThrobber" onget="return this.showFavicon;"/>
       
       <field name="_showSecurity">true</field>
       <property name="showSecurity" onget="return this._showSecurity;"/>
       
-      <field name="_showPreview"/>
+      <field name="_showPreview">true</field>
       <property name="showPreview" onget="return this._showPreview;"/>
       
       <field name="_showTitle"/>
@@ -1141,10 +1139,6 @@
               this._showFavicon = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
-            case "content.preview":
-              this._showPreview = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
             case "content.close":
               this._showClose = this.preferences.getBoolPref(data);
               this.updateContent();
@@ -1155,10 +1149,6 @@
               break;
             case "content.stop":
               this._showStop = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.throbber":
-              this._showThrobber = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
             case "content.title":
@@ -1191,10 +1181,6 @@
                                                     this.refreshRate/this.previews.length,
                                                     Components.interfaces.nsITimer.TYPE_ONE_SHOT);
               }
-              break;
-            case "drawscrolled":
-              this._drawScrolled = this.preferences.getBoolPref(data);
-              this.redraw();
               break;
           }
         ]]>

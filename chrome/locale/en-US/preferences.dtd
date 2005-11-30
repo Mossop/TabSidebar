@@ -1,51 +1,41 @@
-<!ENTITY tabsidebar.options.title                "&tabsidebar.brand; Options">
-<!ENTITY tabsidebar.options.style                "width: 40em; height: 35em;">
+<!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; Options">
+<!ENTITY tabsidebar.options.style                 "width: 40em; height: 35em;">
 
-<!ENTITY tabsidebar.advanced                     "These options are provided for advanced users, changing them may make your browser unstable.">
+<!ENTITY tabsidebar.advanced                      "These options are provided for advanced users, changing them may make your browser unstable.">
 
-<!ENTITY paneGeneral.title                       "General">
-<!ENTITY paneGeneral.description                 "This section provides general options to control the behaviour of the sidebar.">
+<!ENTITY paneGeneral.title                        "General">
+<!ENTITY paneGeneral.description                  "This section provides general options to control the behaviour of the sidebar.">
 
-<!ENTITY paneGeneral.hidetabs.label              "Hide the tab bar when the sidebar is open.">
-<!ENTITY paneGeneral.hidetabs.accesskey          "H">
+<!ENTITY paneGeneral.hidetabs.label               "Hide the tab bar when the sidebar is open.">
+<!ENTITY paneGeneral.hidetabs.accesskey           "H">
 
-<!ENTITY paneDisplay.title                       "Display">
-<!ENTITY paneDisplay.description                 "This section allows you to customise what is displayed for each tab in the sidebar.">
+<!ENTITY paneDisplay.title                        "Display">
+<!ENTITY paneDisplay.description                  "This section allows you to customise what is displayed for each tab in the sidebar.">
 
-<!ENTITY paneDisplay.content.favicon.label       "Display site icon.">
-<!ENTITY paneDisplay.content.favicon.accesskey   "i">
-<!ENTITY paneDisplay.content.reload.label        "Display reload button.">
-<!ENTITY paneDisplay.content.reload.accesskey    "r">
-<!ENTITY paneDisplay.content.stop.label          "Display stop button.">
-<!ENTITY paneDisplay.content.stop.accesskey      "s">
-<!ENTITY paneDisplay.content.throbber.label      "Display loading throbber.">
-<!ENTITY paneDisplay.content.throbber.accesskey  "l">
-<!ENTITY paneDisplay.content.security.label      "Display security icon.">
-<!ENTITY paneDisplay.content.security.accesskey  "e">
-<!ENTITY paneDisplay.content.close.label         "Display close button.">
-<!ENTITY paneDisplay.content.close.accesskey     "c">
-<!ENTITY paneDisplay.content.preview.label       "Display previews.">
-<!ENTITY paneDisplay.content.preview.accesskey   "p">
-<!ENTITY paneDisplay.content.title.label   		   "Display tab title.">
-<!ENTITY paneDisplay.content.title.accesskey     "t">
-<!ENTITY paneDisplay.content.uri.label           "Display tab address.">
-<!ENTITY paneDisplay.content.uri.accesskey       "a">
+<!ENTITY paneDisplay.content.favicon.label        "Display site icon.">
+<!ENTITY paneDisplay.content.favicon.accesskey    "i">
+<!ENTITY paneDisplay.content.navigation.label     "Display navigation buttons.">
+<!ENTITY paneDisplay.content.navigation.accesskey "n">
+<!ENTITY paneDisplay.content.close.label          "Display close button.">
+<!ENTITY paneDisplay.content.close.accesskey      "c">
+<!ENTITY paneDisplay.content.title.label   		    "Display tab title.">
+<!ENTITY paneDisplay.content.title.accesskey      "t">
+<!ENTITY paneDisplay.content.uri.label            "Display tab address.">
+<!ENTITY paneDisplay.content.uri.accesskey        "a">
 
-<!ENTITY panePreviews.title                      "Previews">
-<!ENTITY panePreviews.description                "You can customise when previews are refreshed and what part of the browser window gets drawn.">
+<!ENTITY panePreviews.title                       "Previews">
+<!ENTITY panePreviews.description                 "You can customise when previews are refreshed and what part of the browser window gets drawn.">
 
-<!ENTITY panePreviews.drawscrolled.label         "Draw the browser as it is currently scrolled.">
-<!ENTITY panePreviews.drawscrolled.accesskey     "D">
-<!ENTITY panePreviews.autorefresh.label          "Continually refresh the preview.">
-<!ENTITY panePreviews.autorefresh.accesskey      "C">
-<!ENTITY panePreviews.refreshrate.label          "Refresh rate (in seconds):">
-<!ENTITY panePreviews.refreshrate.accesskey      "s">
-<!ENTITY panePreviews.showadvanced.label         "Show advanced options.">
-<!ENTITY panePreviews.showadvanced.accesskey     "a">
+<!ENTITY panePreviews.drawscrolled.label          "Draw the browser as it is currently scrolled.">
+<!ENTITY panePreviews.drawscrolled.accesskey      "D">
+<!ENTITY panePreviews.autorefresh.label           "Continually refresh the preview.">
+<!ENTITY panePreviews.autorefresh.accesskey       "C">
+<!ENTITY panePreviews.refreshrate.label           "Refresh rate (in seconds):">
+<!ENTITY panePreviews.refreshrate.accesskey       "s">
 
-<!ENTITY panePreviews.loadrefresh.label          "Refresh the preview during page load.">
-<!ENTITY panePreviews.loadrefresh.accesskey      "R">
-<!ENTITY panePreviews.loadrefreshrate.label      "Refresh rate (in milliseconds):">
-<!ENTITY panePreviews.loadrefreshrate.accesskey  "m">
-<!ENTITY panePreviews.loaddelay.label            "Wait this many milliseconds to do a final redraw:">
-<!ENTITY panePreviews.loaddelay.accesskey        "W">
+<!ENTITY panePreviews.loadrefresh.label           "Refresh the preview during page load.">
+<!ENTITY panePreviews.loadrefresh.accesskey       "R">
+<!ENTITY panePreviews.loadrefreshrate.label       "Refresh rate (in milliseconds):">
+<!ENTITY panePreviews.loadrefreshrate.accesskey   "m">
+<!ENTITY panePreviews.loaddelay.label             "Wait this many milliseconds to do a final redraw:">
+<!ENTITY panePreviews.loaddelay.accesskey         "W">

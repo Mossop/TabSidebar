@@ -130,13 +130,11 @@
   
     <preferences>
       <preference type="bool" id="content.reload"
-                 name="tabsidebar.content.reload"/>
+                 name="tabsidebar.content.reload" onchange="document.getElementById('content.stop').value=document.getElementById('content.reload').value;"/>
       <preference type="bool" id="content.stop"
                  name="tabsidebar.content.stop"/>
       <preference type="bool" id="content.favicon"
                  name="tabsidebar.content.favicon"/>
-      <preference type="bool" id="content.throbber"
-                 name="tabsidebar.content.throbber"/>
       <preference type="bool" id="content.close"
                  name="tabsidebar.content.close"/>
       <preference type="bool" id="content.title"
@@ -152,18 +150,14 @@
       
       <checkbox preference="content.favicon"  accesskey="&paneDisplay.content.favicon.accesskey;"
                                               label="&paneDisplay.content.favicon.label;"/>
-      <checkbox preference="content.throbber" accesskey="&paneDisplay.content.throbber.accesskey;"
-                                              label="&paneDisplay.content.throbber.label;"/>
       <checkbox preference="content.close"    accesskey="&paneDisplay.content.close.accesskey;"
                                               label="&paneDisplay.content.close.label;"/>
       <checkbox preference="content.title"    accesskey="&paneDisplay.content.title.accesskey;"
                                               label="&paneDisplay.content.title.label;"/>
       <checkbox preference="content.uri"      accesskey="&paneDisplay.content.uri.accesskey;"
                                               label="&paneDisplay.content.uri.label;"/>
-      <checkbox preference="content.reload"   accesskey="&paneDisplay.content.reload.accesskey;"
-                                              label="&paneDisplay.content.reload.label;"/>
-      <checkbox preference="content.stop"     accesskey="&paneDisplay.content.stop.accesskey;"
-                                              label="&paneDisplay.content.stop.label;"/>
+      <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
+                                              label="&paneDisplay.content.navigation.label;"/>
     </vbox>
 
   </prefpane>
