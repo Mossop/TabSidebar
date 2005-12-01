@@ -10,6 +10,8 @@
   display: none;
 }
 
+.tbs-tabpreviews[hide~="forward"] .tbs-forward,
+.tbs-tabpreviews[hide~="back"] .tbs-back,
 .tbs-tabpreviews[hide~="reload"] .tbs-reload,
 .tbs-tabpreviews[hide~="stop"] .tbs-stop {
   display: none !important;

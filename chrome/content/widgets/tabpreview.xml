@@ -82,6 +82,10 @@
           <xul:hbox pack="start" class="tbs-bottomstrip">
             <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopCmd.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
             <xul:spacer flex="1"/>
+            <xul:toolbarbutton class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goBack();"/>
+            <xul:spacer flex="1"/>
+            <xul:toolbarbutton class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goForward();"/>
+            <xul:spacer flex="1"/>
             <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
           </xul:hbox>
         </xul:vbox>
@@ -91,7 +95,7 @@
       </xul:vbox>
     </content>
 
-    <implementation implements="nsIWebProgressListener,nsITimerCallback">
+    <implementation implements="nsIWebProgressListener,nsISHistoryListener,nsITimerCallback">
 
       <constructor>
       </constructor>
@@ -159,6 +163,14 @@
         this._stack.lastChild.lastChild.firstChild;
       </field>
       
+      <field name="backButton">
+        this.stopButton.nextSibling.nextSibling;
+      </field>
+      
+      <field name="forwardButton">
+        this.backButton.nextSibling.nextSibling;
+      </field>
+      
       <field name="securityIcon">
         this._stack.lastChild.firstChild.lastChild;
       </field>
@@ -183,6 +195,7 @@
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
+          //this._browser.sessionHistory.addSHistoryListener(this._historyListener);
           WP=null;
           mask=null;
         </body>
@@ -193,6 +206,7 @@
           this._browser.webProgress.removeProgressListener(this._progressListener);
           this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
           this._browser.removeEventListener("resize",this._eventListener,false);
+          //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
         </body>
       </method>
       
@@ -213,6 +227,48 @@
         </body>
       </method>
       
+      <field name="_historyListener">({
+          tabpreview: this,
+
+          OnHistoryGoBack : function(backURI)
+          {
+            return this.tabpreview.OnHistoryGoBack(backURI);
+          },
+
+          OnHistoryGoForward : function(forwardURI)
+          {
+            return this.tabpreview.OnHistoryGoForward(forwardURI);
+          },
+          
+          OnHistoryGotoIndex : function(index, gotoURI)
+          {
+            return this.tabpreview.OnHistoryGotoIndex(index,gotoURI);
+          },
+          
+          OnHistoryNewEntry : function(newURI)
+          {
+            this.tabpreview.OnHistoryNewEntry(newURI);
+          },
+          
+          OnHistoryPurge : function(numEntries)
+          {
+            return this.tabpreview.OnHistoryPurge(numEntries);
+          },
+          
+          OnHistoryReload : function(reloadURI, reloadFlags)
+          {
+            return this.tabpreview.OnHistoryReload(reloadURI, reloadFlags);
+          },
+
+          QueryInterface : function(aIID)
+          {
+            if (aIID.equals(Components.interfaces.nsISHistoryListener) ||
+                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                aIID.equals(Components.interfaces.nsISupports))
+              return this;
+            throw Components.results.NS_NOINTERFACE;
+          }
+        });</field>
       <field name="_progressListener">({
           tabpreview: this,
 
@@ -596,6 +652,20 @@
         </body>
       </method>
 
+      <method name="goBack">
+        <body>
+          if (this._browser)
+            this._browser.goBack();
+        </body>
+      </method>
+
+      <method name="goForward">
+        <body>
+          if (this._browser)
+            this._browser.goForward();
+        </body>
+      </method>
+
       <method name="viewSecurity">
         <body>
           var tabbrowser = this.previews.tabbrowser;
@@ -639,6 +709,23 @@
           
           var reload = this.reloadButton;
           reload.disabled=(uri=="about:blank" || uri=="");
+          this.historyChange();
+        </body>
+      </method>
+      
+      <method name="historyChange">
+        <body>
+          if (this._browser)
+          {
+            var session = this._browser.sessionHistory;
+            this.backButton.disabled=(session.index==0);
+            this.forwardButton.disabled=((session.index+1)==session.count);
+          }
+          else
+          {
+            this.backButton.disabled=true;
+            this.forwardButton.disabled=true;
+          }
         </body>
       </method>
       
@@ -710,6 +797,56 @@
             ctx.restore();
           }
         ]]>
+        </body>
+      </method>
+      
+      <!--  Start of nsISHistoryListener implementation -->
+      <method name="OnHistoryGoBack">
+        <parameter name="backURI"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryGoForward">
+        <parameter name="forwardURI"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryGotoIndex">
+        <parameter name="index"/>
+        <parameter name="gotoURI"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryNewEntry">
+        <parameter name="newURI"/>
+        <body>
+          this.historyChange();
+        </body>
+      </method>
+      
+      <method name="OnHistoryPurge">
+        <parameter name="numEntries"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryReload">
+        <parameter name="reloadURI"/>
+        <parameter name="reloadFlags"/>
+        <body>
+          this.historyChange();
+          return true;
         </body>
       </method>
       

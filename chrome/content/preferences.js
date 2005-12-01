@@ -42,19 +42,13 @@
  *
  */
 
-var preview = {
+var prefs = {
 
-init: function()
+updateNav: function()
 {
-	preview.showPreviewChanged();
-},
-
-showPreviewChanged: function()
-{
-	var pref = document.getElementById("content.preview");
-	var selector = document.documentElement._selector.getElementsByAttribute("pane","panePreviews")[0];
-	selector.disabled=!pref.value;
+	var value = document.getElementById('content.reload').value;
+	document.getElementById('content.stop').value=value;
+	document.getElementById('content.forward').value=value;
+	document.getElementById('content.back').value=value;
 }
 }
-
-window.addEventListener("load",preview.init,false);

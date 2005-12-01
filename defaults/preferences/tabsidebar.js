@@ -12,4 +12,6 @@ pref("tabsidebar.loadrefresh", true);
 
 pref("tabsidebar.content.reload", true);
 pref("tabsidebar.content.stop", true);
+pref("tabsidebar.content.forward", true);
+pref("tabsidebar.content.back", true);
 pref("tabsidebar.content.uri", false);
