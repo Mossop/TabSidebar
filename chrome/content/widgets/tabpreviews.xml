@@ -1199,8 +1199,7 @@
       <![CDATA[
         if (event.button==0 && (event.target.localName=="separator" || event.target == this))
         {
-          var newTab = this.tabbrowser.addTab("about:blank");
-          this.tabbrowser.selectedTab=newTab;
+          this.window.BrowserOpenTab();
         }
       ]]>
       </handler>
