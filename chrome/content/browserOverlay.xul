@@ -75,6 +75,7 @@
 
   <keyset id="mainKeyset">
     <key id="tabsidebar-key" key="t" modifiers="accel,shift" observes="viewTabSidebar"/>
+    <key id="tabsidebar-key2" key="e" modifiers="accel,shift" observes="viewTabSidebar"/>
   </keyset>
   
   <hbox id="browser">

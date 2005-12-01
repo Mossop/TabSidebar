@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+  <!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
   <!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd" >
   <!ENTITY % menusDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
   <!ENTITY % platformDTD SYSTEM "chrome://browser/locale/help/platformStrings.dtd" >
+  %tabbrowserDTD;
   %brandDTD;
   %menusDTD;
   %platformDTD;
@@ -32,14 +34,12 @@
 
 <p>In order to display the sidebar you should use the menu <span class="menuPath">View &gt; Sidebar &gt;
    &tabsidebar.menu.label;</span>. Alternatively you may quickly open and close the sidebar by using the key combination
-   &accelKey;+&shiftKey;+<kbd>T</kbd>.</p>
+   &accelKey;+&shiftKey;+<kbd>T</kbd> or &accelKey;+&shiftKey;+<kbd>E</kbd>.</p>
    
 <h2 id="usage_previews">Using Previews</h2>
 
 <p>Of course one of the big benefits to using &tabsidebar.brand; is the thumbnail previews to every tab you have open.
-   Previews are automatically redrawn automatically every time a page is loaded. You may also opt to have previews redrawn
-   continuously in order to keep the preview accurate on sites that use dynamic content. You can do this from the
-   <a href="options.xhtml#previews_options">preview options</a>.</p>
+   Previews are automatically redrawn automatically every time a page is loaded.</p>
 
 <h2 id="usage_tabs">Manipulating Tabs</h2>
 
@@ -49,25 +49,25 @@
 <p><em>Creating new tabs</em><br/>
    New tabs can be created in the sidebar in much the same way as in the main tab bar. Simply double clicking in an
    empty space of the sidebar will create a new tab. Alternatively <span class="noMac">right-click</span>
-   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&tabsidebar.newtab.label;</span>.
+   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&newTab.label;</span>.
    It is also possible to drag and drop a website address, or a bookmark onto any blank area of the sidebar to create a new
    tab and display that address.</p>
 
 <p><em>Closing tabs</em><br/>
    There are a few options for closing tabs. The quickest way is the same as the main tab bar, just middle-click on a tab
    in the sidebar to close it. Alternatively you can <span class="noMac">right-click</span>
-   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&tabsidebar.close.label;</span>.
+   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&closeTab.label;</span>.
    Finally if you have set up your <a href="options.xhtml#display_options">sidebar display options</a>
    to show a close button, then clicking on that will close the tab.</p>
    
 <p>The context menu also allows you to close all tabs except one. Just <span class="noMac">right-click</span>
-   <span class="mac">Press &ctrlKey;, click on</span> the tab to remain open and choose <span class="menuPath">&tabsidebar.closeother.label;</span>.</p>
+   <span class="mac">Press &ctrlKey;, click on</span> the tab to remain open and choose <span class="menuPath">&closeOtherTabs.label;</span>.</p>
    
 <p><em>Reloading tabs</em><br/>
    Like the main tab bar, &tabsidebar.brand; provides the ability to reload a single tab, or all tabs from the context menu.
    Simply <span class="noMac">right-click</span>
-   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&tabsidebar.reload.label;</span>
-   or <span class="menuPath">&tabsidebar.reloadall.label;</span>. You may also configure the sidebar to display a reload button
+   <span class="mac">Press &ctrlKey;, click on</span> the sidebar and select <span class="menuPath">&reloadTab.label;</span>
+   or <span class="menuPath">&reloadAllTabs.label;</span>. You may also configure the sidebar to display a reload button
    in each tab display so that you can reload a tab with a single click. You can enable this from the
    <a href="options.xhtml#display_options">display options</a>.</p>
 
