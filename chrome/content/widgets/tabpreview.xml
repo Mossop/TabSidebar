@@ -80,13 +80,13 @@
           </xul:hbox>
           <xul:box tooltip="tabpreview_tooltip" flex="1"/>
           <xul:hbox pack="start" class="tbs-bottomstrip">
-            <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopCmd.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
+            <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goBack();"/>
+            <xul:toolbarbutton class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="&backButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goBack();"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goForward();"/>
+            <xul:toolbarbutton class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="&forwardButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goForward();"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
+            <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload();"/>
           </xul:hbox>
         </xul:vbox>
       </xul:stack>
