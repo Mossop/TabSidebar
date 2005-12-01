@@ -43,8 +43,10 @@
    -->
 
 <!DOCTYPE bindings [
+<!ENTITY % bidiDTD SYSTEM "chrome://global/locale/global.dtd">
 <!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
 <!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+%bidiDTD;
 %tabbrowserDTD;
 %tabSidebarDTD;
 ]>
@@ -72,7 +74,7 @@
       </xul:popupset>
       
       <xul:vbox class="tbs-drop-indicator-bar">
-        <xul:hbox class="tbs-drop-indicator"/>
+        <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
       </xul:vbox>          
 
       <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"

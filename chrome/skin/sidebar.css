@@ -77,11 +77,16 @@ separator {
 }
 
 .tbs-drop-indicator {
-  height: 9px;
-  width: 9px;
-  margin-right: -15px;
+  height: 11px;
+  width: 11px;
+  -moz-margin-end: -15px;
   position: relative;
-  background: url('chrome://tabsidebar/skin/dropIndicator.png') 50% 50% no-repeat;
+  background: 50% 50% no-repeat;
+  background-image: url('chrome://tabsidebar/skin/dropIndicatorLTR.png');
+}
+
+.tbs-drop-indicator[chromedir="rtl"] {
+  background-image: url('chrome://tabsidebar/skin/dropIndicatorRTL.png');
 }
 
 .tbs-drop-indicator-bar[dragging="true"] {
@@ -96,13 +101,13 @@ separator {
 .tbs-loading {
   list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
-  margin-right: 2px;
+  -moz-margin-end: 2px;
 }
 
 .tbs-favicon {
   list-style-image: url(chrome://global/skin/icons/folder-item.png);
   -moz-image-region: rect(0px, 16px, 16px, 0px);
-  margin-right: 2px;
+  -moz-margin-end: 2px;
   height: 16px;
   width: 16px;
 }
@@ -139,6 +144,22 @@ separator {
   -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
 }
 
+.tbs-back[chromedir="rtl"] {
+  -moz-image-region: rect(0px, 112px, 16px, 96px);
+}
+
+.tbs-back[chromedir="rtl"]:hover {
+  -moz-image-region: rect(16px, 112px, 32px, 96px);
+}
+
+.tbs-back[chromedir="rtl"]:hover:active {
+  -moz-image-region: rect(32px, 112px, 48px, 96px);
+}
+
+.tbs-back[chromedir="rtl"][disabled="true"] {
+  -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
+}
+
 /* Forward button */
 .tbs-forward {
   -moz-image-region: rect(0px, 112px, 16px, 96px);
@@ -154,6 +175,22 @@ separator {
 
 .tbs-forward[disabled="true"] {
   -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
+}
+
+.tbs-forward[chromedir="rtl"] {
+  -moz-image-region: rect(0px, 96px, 16px, 80px);
+}
+
+.tbs-forward[chromedir="rtl"]:hover {
+  -moz-image-region: rect(16px, 96px, 32px, 80px);
+}
+
+.tbs-forward[chromedir="rtl"]:hover:active {
+  -moz-image-region: rect(32px, 96px, 48px, 80px);
+}
+
+.tbs-forward[chromedir="rtl"][disabled="true"] {
+  -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
 }
 
 /* Stop button */
