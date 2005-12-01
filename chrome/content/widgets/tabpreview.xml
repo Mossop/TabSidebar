@@ -718,10 +718,11 @@
       
       <method name="historyChange">
         <body>
+        <![CDATA[
           if (this._browser)
           {
             var session = this._browser.sessionHistory;
-            this.backButton.disabled=(session.index==0);
+            this.backButton.disabled=(session.index<=0);
             this.forwardButton.disabled=((session.index+1)==session.count);
           }
           else
@@ -729,6 +730,7 @@
             this.backButton.disabled=true;
             this.forwardButton.disabled=true;
           }
+        ]]>
         </body>
       </method>
       
@@ -935,10 +937,6 @@
             {
               this._redraw();
               this._invalid=false;
-            }
-            else
-            {
-              dump("Saved redraw\n");
             }
           }
         ]]>
