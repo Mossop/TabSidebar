@@ -53,3 +53,16 @@ radio[pane=panePreviews] {
 radio[pane=panePreviews][disabled=true] {
   -moz-image-region: rect(32px, 96px, 64px, 64px);
 }
+
+label.title {
+  font-weight: bold;
+  font-size: large;
+}
+
+label.version {
+  color: grey;
+}
+
+label.bold {
+  font-weight: bold;
+}

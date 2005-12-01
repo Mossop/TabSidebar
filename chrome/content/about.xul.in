@@ -67,11 +67,11 @@
       <vbox flex="1">
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
-          <label class="bold version" value="&dialog.version;"/><label class="version" flex="1" value="@version@"/>
+          <label class="bold version" value="&dialog.version; @version@"/>
         </hbox>
         <separator class="groove-thin"/>
         <hbox>
-          <label class="bold author" value="&dialog.author;"/><label class="author" flex="1" value="Mossop"/>
+          <label class="bold author" value="&dialog.author; Mossop"/>
         </hbox>
       </vbox>
     
@@ -96,7 +96,7 @@
       <separator class="thin"/>
   
       <vbox flex="1" style="overflow: auto">
-        <description>Peter Van Der Woude: Numerous UI contributions and suggestions.</description>
+        <description>Peter Van Der Woude: Extensive testing, suggestions andd contributions.</description>
         <description>ReinekeFux: German localisation.</description>
       </vbox>
       

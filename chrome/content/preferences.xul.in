@@ -76,14 +76,30 @@
                  name="tabsidebar.content.uri"/>
     </preferences>
 
-    <vbox>
-      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
+    <hbox align="start">
     
-      <separator class="thin"/>
+      <image src="chrome://tabsidebar/skin/logo.png"/>
       
-      <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
+      <vbox flex="1">
+      
+        <label class="title" value="&tabsidebar.brand;"/>
+        <hbox>
+          <label class="bold version" value="&tabsidebar.options.version; @version@"/>
+        </hbox>
+
+        <separator class="groove-thin"/>
+
+        <separator class="thin"/>
+        
+        <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
+      
+        <separator class="thin"/>
+        
+        <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
                                               label="&paneDisplay.content.navigation.label;"/>
-    </vbox>
+      </vbox>
+      
+    </hbox>
 
   </prefpane>
   

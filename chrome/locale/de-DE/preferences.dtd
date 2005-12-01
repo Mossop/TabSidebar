@@ -1,5 +1,6 @@
 <!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; - Enstellungen">
-<!ENTITY tabsidebar.options.style                 "width: 40em; height: 35em;">
+<!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.version               "Version: ">
 
 <!ENTITY paneGeneral.title                        "Allgemein">
 
