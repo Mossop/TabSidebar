@@ -84,9 +84,9 @@
           <xul:hbox pack="start" class="tbs-bottomstrip">
             <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="&backButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goBack();"/>
+            <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="&backButton.tooltip;" onmousedown="event.stopPropagation();" onclick="this.parentNode.parentNode.parentNode.parentNode.goBack(event);"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="&forwardButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.goForward();"/>
+            <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="&forwardButton.tooltip;" onmousedown="event.stopPropagation();" onclick="this.parentNode.parentNode.parentNode.parentNode.goForward(event);"/>
             <xul:spacer flex="1"/>
             <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
           </xul:hbox>
@@ -667,16 +667,60 @@
       </method>
 
       <method name="goBack">
+        <parameter name="event"/>
         <body>
           if (this._browser)
-            this._browser.goBack();
+          {
+            if (event)
+            {
+              var where = whereToOpenLink(event, false, false);
+              if (where == "current")
+              {
+                this._browser.goBack();
+              }
+              else
+              {
+                var sessionHistory = this._browser.sessionHistory;
+                var currentIndex = sessionHistory.index;
+                var entry = sessionHistory.getEntryAtIndex(currentIndex - 1, false);
+                var url = entry.URI.spec;
+                openUILinkIn(url, where);
+              }
+            }
+            else
+            {
+              this._browser.goBack();
+            }
+          }
         </body>
       </method>
 
       <method name="goForward">
+        <parameter name="event"/>
         <body>
           if (this._browser)
-            this._browser.goForward();
+          {
+            if (event)
+            {
+              var where = whereToOpenLink(event, false, false);
+              if (where == "current")
+              {
+                this._browser.goForward();
+              }
+              else
+              {
+                var sessionHistory = this._browser.sessionHistory;
+                var currentIndex = sessionHistory.index;
+                var entry = sessionHistory.getEntryAtIndex(currentIndex + 1, false);
+                var url = entry.URI.spec;
+                openUILinkIn(url, where);
+              }
+            }
+            else
+            {
+              this._browser.goForward();
+            }
+          }
         </body>
       </method>
 

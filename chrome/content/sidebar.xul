@@ -64,6 +64,7 @@
 	<script src="sidebar.js"/>
   <script src="chrome://global/content/nsDragAndDrop.js"/>
   <script src="chrome://global/content/nsTransferable.js"/>
+  <script src="chrome://browser/content/utilityOverlay.js"/>
 
   <tabpreviews id="previews">
   </tabpreviews>

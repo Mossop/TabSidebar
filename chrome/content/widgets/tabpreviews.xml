@@ -690,7 +690,7 @@
         <body>
         <![CDATA[
           if (this.suppressSizing)
-            return true;
+            return;
 
           if (this._selected == preview)
           {
@@ -706,7 +706,7 @@
               this._resizeTimer.initWithCallback(this, 
                                                  5,
                                                  Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-              return false;
+              return;
             }
             else if (newWidth==0)
             {
