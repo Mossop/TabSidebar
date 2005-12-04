@@ -84,9 +84,23 @@
           <xul:hbox pack="start" class="tbs-bottomstrip">
             <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="&backButton.tooltip;" onmousedown="event.stopPropagation();" onclick="this.parentNode.parentNode.parentNode.parentNode.goBack(event);"/>
+            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="&backButton.tooltip;"
+                               onmousedown="event.stopPropagation();"
+                               onclick="this.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
+                               oncommand="this.parentNode.parentNode.parentNode.parentNode.goBack(event);">
+              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.populateBackMenu(event);"
+                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.preventBubble()"
+                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"/>
+            </xul:toolbarbutton>
             <xul:spacer flex="1"/>
-            <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="&forwardButton.tooltip;" onmousedown="event.stopPropagation();" onclick="this.parentNode.parentNode.parentNode.parentNode.goForward(event);"/>
+            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="&forwardButton.tooltip;"
+                               onmousedown="event.stopPropagation();"
+                               onclick="this.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
+                               oncommand="this.parentNode.parentNode.parentNode.parentNode.goForward(event);">
+              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.populateForwardMenu(event);"
+                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.preventBubble()"
+                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"/>
+            </xul:toolbarbutton>
             <xul:spacer flex="1"/>
             <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
           </xul:hbox>
@@ -638,6 +652,26 @@
 
       <!-- Methods -->
       
+      <method name="checkMiddleClick">
+        <parameter name="node"/>
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          if (event.button == 1)
+          {
+            var func = new Function("event",node.getAttribute("oncommand"));
+            func.call(node,event);
+            if ("tagName" in node)
+            {
+              if (node.namespaceURI == "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+                  && (node.tagName == "menupopup" || node.tagName == "popup"))
+                node.hidePopup();
+            }
+          }
+        ]]>
+        </body>
+      </method>
+      
       <method name="reload">
         <parameter name="event"/>
         <body>
@@ -666,9 +700,37 @@
         </body>
       </method>
 
+      <method name="gotoHistoryIndex">
+        <parameter name="event"/>
+        <body>
+          var index = event.target.getAttribute("index");
+          if (!index)
+            return false;
+
+          var where = whereToOpenLink(event);
+
+          if (where == "current") {
+            // Normal click.  Go there in the current tab and update session history.
+            this._browser.gotoIndex(index);
+            return true;
+          }
+          else {
+            // Modified click.  Go there in a new tab/window.
+            // This code doesn't copy history or work well with framed pages.
+
+            var sessionHistory = this._browser.sessionHistory;
+            var entry = sessionHistory.getEntryAtIndex(index, false);
+            var url = entry.URI.spec;
+            openUILinkIn(url, where);
+            return true;
+          }
+        </body>
+      </method>
+      
       <method name="goBack">
         <parameter name="event"/>
         <body>
+        <![CDATA[
           if (this._browser)
           {
             if (event)
@@ -692,12 +754,47 @@
               this._browser.goBack();
             }
           }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="populateBackMenu">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          var menu = event.target;
+          
+          while (menu.firstChild)
+            menu.removeChild(menu.firstChild);
+
+          var sessionHistory = this._browser.sessionHistory;
+
+          var index = sessionHistory.index;
+          var entry;
+
+          var end = (index > 8) ? index - 8 : 0;
+          if ((index - 1) < end) return false;
+          for (var pos = index - 1; pos >= end; pos--)
+          {
+            entry = sessionHistory.getEntryAtIndex(pos, false);
+            if (entry)
+            {
+              var menuitem = document.createElement("menuitem");
+              menuitem.setAttribute("label", entry.title);
+              menuitem.setAttribute("index", pos);
+              menu.appendChild(menuitem);
+            }
+          }
+
+          return true;
+        ]]>
         </body>
       </method>
 
       <method name="goForward">
         <parameter name="event"/>
         <body>
+        <![CDATA[
           if (this._browser)
           {
             if (event)
@@ -721,6 +818,41 @@
               this._browser.goForward();
             }
           }
+        ]]>
+        </body>
+      </method>
+
+      <method name="populateForwardMenu">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          var menu = event.target;
+          
+          while (menu.firstChild)
+            menu.removeChild(menu.firstChild);
+
+          var sessionHistory = this._browser.sessionHistory;
+
+          var index = sessionHistory.index;
+          var count = sessionHistory.count;
+          var entry;
+
+          var end  = ((count-index) > 8) ? index + 8 : count - 1;
+          if ((index + 1) > end) return false;
+          for (var pos = index + 1; pos <= end; pos++)
+          {
+            entry = sessionHistory.getEntryAtIndex(pos, false);
+            if (entry)
+            {
+              var menuitem = document.createElement("menuitem");
+              menuitem.setAttribute("label", entry.title);
+              menuitem.setAttribute("index", pos);
+              menu.appendChild(menuitem);
+            }
+          }
+
+          return true;
+        ]]>
         </body>
       </method>
 

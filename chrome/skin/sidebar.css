@@ -119,7 +119,7 @@ separator {
 }
 
 /* Defaults for all icons */
-.tbs-icon {
+.tbs-icon, .toolbarbutton-menubutton-button {
   list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
   border: none !important;
@@ -129,67 +129,75 @@ separator {
 
 /* Back button */
 .tbs-back {
+  list-style-image: inherit;
+}
+
+.tbs-back .toolbarbutton-menubutton-button {
   -moz-image-region: rect(0px, 96px, 16px, 80px);
 }
 
-.tbs-back:hover {
+.tbs-back .toolbarbutton-menubutton-button:hover {
   -moz-image-region: rect(16px, 96px, 32px, 80px);
 }
 
-.tbs-back:hover:active {
+.tbs-back .toolbarbutton-menubutton-button:hover:active {
   -moz-image-region: rect(32px, 96px, 48px, 80px);
 }
 
-.tbs-back[disabled="true"] {
+.tbs-back[disabled="true"] .toolbarbutton-menubutton-button {
   -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
 }
 
-.tbs-back[chromedir="rtl"] {
+.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button {
   -moz-image-region: rect(0px, 112px, 16px, 96px);
 }
 
-.tbs-back[chromedir="rtl"]:hover {
+.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button:hover {
   -moz-image-region: rect(16px, 112px, 32px, 96px);
 }
 
-.tbs-back[chromedir="rtl"]:hover:active {
+.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button:hover:active {
   -moz-image-region: rect(32px, 112px, 48px, 96px);
 }
 
-.tbs-back[chromedir="rtl"][disabled="true"] {
+.tbs-back[chromedir="rtl"][disabled="true"] .toolbarbutton-menubutton-button {
   -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
 }
 
 /* Forward button */
 .tbs-forward {
+  list-style-image: inherit;
+}
+
+.tbs-forward .toolbarbutton-menubutton-button {
   -moz-image-region: rect(0px, 112px, 16px, 96px);
 }
 
-.tbs-forward:hover {
+.tbs-forward .toolbarbutton-menubutton-button:hover {
   -moz-image-region: rect(16px, 112px, 32px, 96px);
 }
 
-.tbs-forward:hover:active {
+.tbs-forward .toolbarbutton-menubutton-button:hover:active {
   -moz-image-region: rect(32px, 112px, 48px, 96px);
 }
 
-.tbs-forward[disabled="true"] {
+.tbs-forward[disabled="true"] .toolbarbutton-menubutton-button {
   -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
 }
 
-.tbs-forward[chromedir="rtl"] {
+.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button {
   -moz-image-region: rect(0px, 96px, 16px, 80px);
 }
 
-.tbs-forward[chromedir="rtl"]:hover {
+.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button:hover {
   -moz-image-region: rect(16px, 96px, 32px, 80px);
 }
 
-.tbs-forward[chromedir="rtl"]:hover:active {
+.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button:hover:active {
   -moz-image-region: rect(32px, 96px, 48px, 80px);
 }
 
-.tbs-forward[chromedir="rtl"][disabled="true"] {
+.tbs-forward[chromedir="rtl"][disabled="true"] .toolbarbutton-menubutton-button {
   -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
 }
 
