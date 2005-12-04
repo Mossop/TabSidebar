@@ -294,7 +294,6 @@
         	{
         		previews[i]._resize();
         	}
-        	this.redraw();
         ]]>
         </body>
       </method>
@@ -394,24 +393,6 @@
       <field name="_showBack">true</field>
       <property name="showBack" onget="return this._showBack;"/>
             
-      <field name="_showClose">true</field>
-      <property name="showClose" onget="return this._showClose;"/>
-      
-      <field name="_showFavicon">true</field>
-      <property name="showFavicon" onget="return this._showFavicon;"/>
-      
-      <field name="_showThrobber">true</field>
-      <property name="showThrobber" onget="return this.showFavicon;"/>
-      
-      <field name="_showSecurity">true</field>
-      <property name="showSecurity" onget="return this._showSecurity;"/>
-      
-      <field name="_showPreview">true</field>
-      <property name="showPreview" onget="return this._showPreview;"/>
-      
-      <field name="_showTitle">true</field>
-      <property name="showTitle" onget="return this._showTitle;"/>
-      
       <field name="_showURI">false</field>
       <property name="showURI" onget="return this._showURI;"/>
       
@@ -670,12 +651,7 @@
       <method name="updateContent">
         <body>
         <![CDATA[
-          var canvasWasHidden=false;
-          var hide = this.getAttribute("hide");
-          if (hide.indexOf("preview")>=0)
-            canvasWasHidden=true;
-          
-          hide = "";
+          var hide = "";
           if (!this.showStop)
             hide+=" stop";
           if (!this.showForward)
@@ -691,11 +667,6 @@
             hide=hide.substring(1);
           
           this.setAttribute("hide",hide);
-
-        	if (canvasWasHidden && this.showPreview)
-        	{
-        	  this._resize();
-        	}
         ]]>
         </body>
       </method>
