@@ -723,13 +723,7 @@
               this._displayHeight=newHeight;
             	this._resize();
               this.style.visibility=null;
-            	return true;
             }
-            return false;
-          }
-          else
-          {
-            return false;
           }
         ]]>
         </body>

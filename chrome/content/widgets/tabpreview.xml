@@ -392,7 +392,8 @@
           
           this._browserWidth = width;
           this._browserHeight = height;
-          if (!this.previews.browserResized(this,this._browserWidth,this._browserHeight) && shouldRedraw)
+          this.previews.browserResized(this,this._browserWidth,this._browserHeight);
+          if (shouldRedraw)
           {
             this.redraw();
           }
@@ -468,8 +469,6 @@
           canvas.style.height=this.previews.displayHeight+"px";
           canvas.style.minHeight=this.previews.displayHeight+"px";
           canvas.style.maxHeight=this.previews.displayHeight+"px";
-          canvas.width = this.previews.contentWidth;
-          canvas.height = this.previews.contentHeight;
           
           try
           {
@@ -767,12 +766,14 @@
             this._logError("Canvas doesnt exist.");
             return;
           }
-          if (!canvas.hasAttribute("height"))
+          if (!canvas.hasAttribute("style"))
           {
             this._logWarning("Attempt to redraw before resize");
             return;
           }
           //this._logMessage("redraw");
+          canvas.width = this.previews.contentWidth;
+          canvas.height = this.previews.contentHeight;
           var ctx = null;
           try
           {
