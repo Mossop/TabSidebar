@@ -96,7 +96,7 @@
       <separator class="thin"/>
   
       <vbox flex="1" style="overflow: auto">
-        <description>Peter Van Der Woude: Extensive testing, suggestions andd contributions.</description>
+        <description>Peter Van Der Woude: Extensive testing, suggestions and contributions.</description>
         <description>ReinekeFux: German localisation.</description>
       </vbox>
       

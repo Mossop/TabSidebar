@@ -237,7 +237,7 @@
           else if (event.type=="resize")
           {
             this._logMessage("Browser resized");
-            this._updateSize();
+            this._updateSize(false);
           }
         ]]>
         </body>
@@ -390,6 +390,7 @@
       <field name="_browserHeight">-1</field>
       
       <method name="_updateSize">
+        <parameter name="forceRedraw"/>
         <body>
         <![CDATA[
           var width = this._browser.parentNode.boxObject.width;
@@ -402,7 +403,7 @@
           }
           
           this._logMessage("new size: "+width+"x"+height);
-          var shouldRedraw = this._browserWidth != width || this._browserHeight != height;
+          var shouldRedraw = forceRedraw || this._browserWidth != width || this._browserHeight != height;
           
           this._browserWidth = width;
           this._browserHeight = height;
@@ -410,7 +411,9 @@
           if (shouldRedraw)
           {
             this.redraw();
+            return true;
           }
+          return false;
         ]]>
         </body>
       </method>
@@ -455,7 +458,7 @@
             this._addListeners();
             
             this._logMessage("Browser added");
-            this._updateSize();
+            this._updateSize(true);
           }
           else
           {
