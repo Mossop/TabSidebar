@@ -182,6 +182,8 @@
           this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
           this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
           this._loadDelay = this.preferences.getIntPref("loaddelay");
+          this._changeDelay = this.preferences.getIntPref("changedelay");
+          this._scrollDelay = this.preferences.getIntPref("scrolldelay");
           
           this.updateContent();        
         </body>
@@ -460,6 +462,12 @@
       
       <field name="_loadDelay"/>
       <property name="loadDelay" onget="return this._loadDelay;"/>
+      
+      <field name="_changeDelay"/>
+      <property name="changeDelay" onget="return this._changeDelay;"/>
+      
+      <field name="_scrollDelay"/>
+      <property name="scrollDelay" onget="return this._scrollDelay;"/>
       
       <field name="_drawScrolled"/>
       <property name="drawScrolled">
@@ -1135,6 +1143,12 @@
               break;
             case "loaddelay":
               this._loadDelay = this.preferences.getIntPref(data);
+              break;
+            case "scrolldelay":
+              this._scrollDelay = this.preferences.getIntPref(data);
+              break;
+            case "changedelay":
+              this._changeDelay = this.preferences.getIntPref(data);
               break;
             case "refreshrate":
             case "autorefresh":

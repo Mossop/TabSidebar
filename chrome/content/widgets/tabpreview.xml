@@ -129,6 +129,7 @@
           {
             if (this._browser)
             {
+              this._removeDocumentListeners(this._browser.contentWindow,this._browser.contentDocument);
               this._removeListeners();
               this._browser=null;
             }
@@ -208,6 +209,7 @@
           }
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
+          this._browser.addEventListener("scroll", this._eventListener, false);
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY | WP.NOTIFY_PROGRESS;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
@@ -222,7 +224,38 @@
           this._browser.webProgress.removeProgressListener(this._progressListener);
           this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
           this._browser.removeEventListener("resize",this._eventListener,false);
+          this._browser.removeEventListener("scroll",this._eventListener,false);
           //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
+        </body>
+      </method>
+      
+      <method name="_addDocumentListeners">
+        <body>
+          this._browser.contentDocument.addEventListener("DOMNodeInserted", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMNodeRemoved", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMNodeInsertedIntoDocument", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMAttrModified", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMCharacterDataModified", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMElementNameChanged", this._eventListener, false);
+          this._browser.contentDocument.addEventListener("DOMAttributeNameChanged", this._eventListener, false);
+          this._browser.contentWindow.addEventListener("unload", this._eventListener, false);
+        </body>
+      </method>
+      
+      <method name="_removeDocumentListeners">
+        <parameter name="win"/>
+        <parameter name="doc"/>
+        <body>
+          doc.removeEventListener("DOMNodeInserted", this._eventListener, false);
+          doc.removeEventListener("DOMNodeRemoved", this._eventListener, false);
+          doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, false);
+          doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, false);
+          doc.removeEventListener("DOMAttrModified", this._eventListener, false);
+          doc.removeEventListener("DOMCharacterDataModified", this._eventListener, false);
+          doc.removeEventListener("DOMElementNameChanged", this._eventListener, false);
+          doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, false);
+          win.removeEventListener("unload", this._eventListener, false);
         </body>
       </method>
       
@@ -238,6 +271,33 @@
           {
             this._logMessage("Browser resized");
             this._updateSize(false);
+          }
+          else if (event.type=="unload")
+          {
+            this._logMessage("Restarting timer");
+            this._logMessage("Received unload");
+            this._removeDocumentListeners(event.currentTarget,event.target);
+          }
+          else if (event.type=="scroll")
+          {
+            var delay = this.previews.scrollDelay;
+            this._redrawTimer.cancel();
+            this._redrawTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          }
+          else if (event.type.substring(0,3)=="DOM")
+          {
+            if ((event.type=="DOMAttrModified")&&(event.target.ownerDocument.documentElement==event.target))
+            {
+              if ((event.attrName=="curpos")
+                ||(event.attrName=="maxpos")
+                ||(event.attrName=="pageincrement"))
+              {
+                return;
+              }
+            }
+            var delay = this.previews.changeDelay;
+            this._redrawTimer.cancel();
+            this._redrawTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
         ]]>
         </body>
@@ -285,6 +345,7 @@
             throw Components.results.NS_NOINTERFACE;
           }
         });</field>
+      
       <field name="_progressListener">({
           tabpreview: this,
 
@@ -435,6 +496,7 @@
         <![CDATA[
           if (this._browser)
           {
+            this._removeDocumentListeners(this._browser.contentWindow,this._browser.contentDocument);
             this._removeListeners();
           }
           this._browser=val;
@@ -517,6 +579,7 @@
       
       <method name="_loadComplete">
         <body>
+          this._addDocumentListeners();
           this.stopButton.disabled=true;
           this._loadTimer.cancel();
           var delay = this.previews.loadDelay;
