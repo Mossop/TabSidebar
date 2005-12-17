@@ -118,8 +118,21 @@
         <![CDATA[
           this._logMessage("Tab Sidebar Load");
           
+          var selectedpos = -1;
           var browsers = this.tabbrowser.browsers;
           for (var i=0; i<browsers.length; i++)
+          {
+            if (this.tabbrowser.selectedBrowser==browsers[i])
+            {
+              selectedpos=i;
+              break;
+            }
+          }
+          for (var i=selectedpos; i>=0; i--)
+          {
+            this.addPreview(browsers[i]);
+          }
+          for (var i=selectedpos+1; i<browsers.length; i++)
           {
             this.addPreview(browsers[i]);
           }
