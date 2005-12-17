@@ -65,7 +65,7 @@
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
     
-    <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" selected="false" security="none">
+    <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
       <xul:hbox class="tbs-topbox" align="center" anonid="topbox">
         <xul:image class="tbs-favicon" validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
         <xul:image class="tbs-loading" anonid="loading" tooltip="tabpreview_tooltip"/>

@@ -9,7 +9,7 @@ separator {
 
 .tbs-tabpreview label {
   margin: 2px;
-  font: message-box;
+  font-family: message-box;
 }
 
 .tbs-topbox {
@@ -36,7 +36,7 @@ separator {
   font-weight: bold;
 }
 
-.tbs-tabpreview[selected="false"]:hover {
+.tbs-tabpreview:not([selected="true"]):hover {
   border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
 }
 
@@ -65,7 +65,7 @@ separator {
   opacity: 1 !important;
 }
 
-.tbs-tabpreview[selected="false"] .tbs-canvas {
+.tbs-tabpreview:not([selected="true"]) .tbs-canvas {
   opacity: 0.4;
 }
 
@@ -113,8 +113,8 @@ separator {
 }
 
 /* opacity:1 for favicon,security,reload when selected or hovered */
-.tbs-tabpreview[selected="false"]:not(:hover) .tbs-favicon,
-.tbs-tabpreview[selected="false"]:not(:hover) .tbs-icon {
+.tbs-tabpreview:not([selected="true"]):not(:hover) .tbs-favicon,
+.tbs-tabpreview:not([selected="true"]):not(:hover) .tbs-icon {
    opacity: 0.6;
 }
 
