@@ -149,7 +149,7 @@ observe: function (aSubject, aTopic, aPrefName)
 
 attributeListener: function(event)
 {
-	if (event.target.id=="sidebar-box")
+	if (event.eventPhase==Event.AT_TARGET)
 	{
 		if (event.attrName=="sidebarcommand")
 		{
