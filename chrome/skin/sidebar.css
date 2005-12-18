@@ -22,9 +22,13 @@ separator {
 
 /* Tab settings */
 .tbs-tabpreview {
-  padding: 3px;
+  padding: 1px;
   border: 1px -moz-dialog solid;
   background-color: -moz-dialog;
+}
+
+.tbs-tabmain {
+  padding: 1px;
 }
 
 .tbs-tabpreview[selected="true"] {

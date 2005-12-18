@@ -6,6 +6,18 @@
   -moz-box-align: center;
 }
 
+.tbs-tabpreview[selected="true"] {
+  -moz-user-focus: normal;
+}
+
+.tbs-tabpreview:focus > .tbs-tabmain {
+  border: 1px dotted black;
+}
+
+.tbs-tabpreview > .tbs-tabmain {
+  border: 1px solid transparent;
+}
+
 .tbs-tabpreview[security="none"] .tbs-security {
   display: none;
 }

@@ -577,17 +577,18 @@
         		this.previewContainer.appendChild(drop);
         	}
         	preview.init();
+
         	if (this.tabbrowser.selectedBrowser==browser)
         	{
         	  this.selectPreview(browser);
         	}
         	else if (tab && tab.hasAttribute("selected"))
         	{
-        	 preview.setAttribute("selected",tab.getAttribute("selected"));
+            preview.setAttribute("selected",tab.getAttribute("selected"));
         	}
         	
         	preview.browser=browser;
-
+        	
           if (this.previews.length == 1 && this.autoRefresh)
           {
             this._refreshTimer.initWithCallback(this, 
@@ -677,9 +678,9 @@
         	if (preview)
         	{
           	preview.setAttribute("selected","true");
+            this.scrollToPreview(preview);
           }
         	this._selected=preview;
-        	this.scrollToPreview(preview);
         ]]>
         </body>
       </method>
@@ -1227,9 +1228,24 @@
       <![CDATA[
         if (event.button==0 && (event.target.localName=="separator" || event.target == this))
         {
+          var focus = false;
+          if (document.commandDispatcher.focusedElement==this._selected)
+          {
+            focus=true;
+            this._selected.tab.focus();
+          }
           this.window.BrowserOpenTab();
+          if (focus)
+            this._selected.focus();
         }
       ]]>
+      </handler>
+      
+      <handler event="focus">
+        if (event.originalTarget.localName=='tabpreview')
+        {
+          //this.scrollToPreview(event.originalTarget);
+        }
       </handler>
       
       <handler event="popupshowing">
