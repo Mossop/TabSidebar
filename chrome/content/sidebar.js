@@ -94,7 +94,7 @@ init: function()
 	}
 	
   var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService).getBranch("tabsidebar.");
+                        .getService(Components.interfaces.nsIPrefService).getBranch("extensions.tabsidebar.");
                         
   if (prefs.getBoolPref("showoptions"))
   {

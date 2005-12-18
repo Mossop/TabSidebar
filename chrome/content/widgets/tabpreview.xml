@@ -713,7 +713,14 @@
           {
             return null;
           }
-          return this._browser.mIconURL;
+          if (Components.classes["@mozilla.org/browser/favicon-service;1"])
+          {
+            var favis = Components.classes["@mozilla.org/browser/favicon-service;1"]
+                                  .getService(Components.interfaces.nsIFaviconService);
+            return favis.getFaviconImageForPage(this._browser.currentURI).spec;
+          }
+          else
+            return this._browser.mIconURL;
         </getter>
       </property>
 

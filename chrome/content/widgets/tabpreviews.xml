@@ -159,6 +159,32 @@
 
       <method name="_migrateOldSettings">
         <body>
+        <![CDATA[
+          var oprefs = Components.classes["@mozilla.org/preferences-service;1"]
+                                 .getService(Components.interfaces.nsIPrefService)
+                                 .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch);
+          var list = oprefs.getChildList("",{});
+          for (var i=0; i<list.length; i++)
+          {
+            if (oprefs.prefHasUserValue(list[i]))
+            {
+              var type = oprefs.getPrefType(list[i]);
+              switch (type)
+              {
+                case Components.interfaces.nsIPrefBranch.PREF_STRING:
+                  this.preferences.setStringPref(list[i],oprefs.getStringPref(list[i]));
+                  break;
+                case Components.interfaces.nsIPrefBranch.PREF_INT:
+                  this.preferences.setIntPref(list[i],oprefs.getIntPref(list[i]));
+                  break;
+                case Components.interfaces.nsIPrefBranch.PREF_BOOL:
+                  this.preferences.setBoolPref(list[i],oprefs.getBoolPref(list[i]));
+                  break;
+              }
+              oprefs.clearUserPref(list[i]);
+            }
+          }
+        ]]>
         </body>
       </method>
 
@@ -374,7 +400,7 @@
       <field name="preferences">
         Components.classes["@mozilla.org/preferences-service;1"]
                   .getService(Components.interfaces.nsIPrefService)
-                  .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranchInternal);
+                  .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranchInternal);
       </field>
       <field name="tabbrowser"/>
       <field name="window"/>
@@ -555,6 +581,11 @@
         	{
         	  this.selectPreview(browser);
         	}
+        	else if (tab && tab.hasAttribute("selected"))
+        	{
+        	 preview.setAttribute("selected",tab.getAttribute("selected"));
+        	}
+        	
         	preview.browser=browser;
 
           if (this.previews.length == 1 && this.autoRefresh)

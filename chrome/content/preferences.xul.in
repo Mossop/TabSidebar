@@ -63,17 +63,17 @@
   
     <preferences>
       <preference type="bool" id="hidetabs"
-                 name="tabsidebar.hidetabs"/>
+      name="extensions.tabsidebar.hidetabs"/>
       <preference type="bool" id="content.reload"
-                 name="tabsidebar.content.reload" onchange="prefs.updateNav();"/>
+      name="extensions.tabsidebar.content.reload" onchange="prefs.updateNav();"/>
       <preference type="bool" id="content.stop"
-                 name="tabsidebar.content.stop"/>
+      name="extensions.tabsidebar.content.stop"/>
       <preference type="bool" id="content.forward"
-                 name="tabsidebar.content.forward"/>
+      name="extensions.tabsidebar.content.forward"/>
       <preference type="bool" id="content.back"
-                 name="tabsidebar.content.back"/>
+      name="extensions.tabsidebar.content.back"/>
       <preference type="bool" id="content.uri" 
-                 name="tabsidebar.content.uri"/>
+      name="extensions.tabsidebar.content.uri"/>
     </preferences>
 
     <hbox align="start">

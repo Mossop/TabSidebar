@@ -56,7 +56,7 @@ init: function()
 	
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
-                        .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
+                        .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
 
 	var sidebarBox = this.doc.getElementById("sidebar-box");
 	var sidebar = this.doc.getElementById("sidebar");
