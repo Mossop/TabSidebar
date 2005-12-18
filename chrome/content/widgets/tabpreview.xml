@@ -133,6 +133,10 @@
               this._removeListeners();
               this._browser=null;
             }
+            this._changeTimer.cancel();
+            this._changeTimer=null;
+            this._scrollTimer.cancel();
+            this._scrollTimer=null;
             this._redrawTimer.cancel();
             this._redrawTimer=null;
             this._loadTimer.cancel();
@@ -145,6 +149,8 @@
       
       <method name="init">
         <body>
+          this._changeTimer.delay=0;
+          this._scrollTimer.delay=0;
           if (!this._eventListener)
           {
             var self = this;
@@ -281,8 +287,8 @@
           else if (event.type=="scroll")
           {
             var delay = this.previews.scrollDelay;
-            this._redrawTimer.cancel();
-            this._redrawTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            this._scrollTimer.cancel();
+            this._scrollTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
           else if (event.type.substring(0,3)=="DOM")
           {
@@ -296,8 +302,8 @@
               }
             }
             var delay = this.previews.changeDelay;
-            this._redrawTimer.cancel();
-            this._redrawTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            this._changeTimer.cancel();
+            this._changeTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
         ]]>
         </body>
@@ -479,6 +485,14 @@
         </body>
       </method>
       
+      <field name="_changeTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      
+      <field name="_scrollTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      
       <field name="_redrawTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -566,7 +580,10 @@
         <body>
           this._invalid=true;
           this.loading=true;
-          this._redrawTimer.cancel();
+          this._changeTimer.cancel();
+          this._changeTimer.delay=-1;
+          this._scrollTimer.cancel();
+          this._scrollTimer.delay=-1;
           this._loadTimer.cancel();
           if (this.previews.loadRefresh)
           {
@@ -1193,7 +1210,7 @@
           if (timer==this._redrawTimer)
           {
             this.loading=false;
-            //this.update();
+            this.update();
             this._redraw();
           }
           else if (timer==this._loadTimer)
@@ -1204,6 +1221,18 @@
               this._redraw();
               this._invalid=false;
             }
+          }
+          else if (timer==this._changeTimer)
+          {
+            if (this._scrollTimer.delay==0)
+              this._redraw();
+            this._changeTimer.delay=0;
+          }
+          else if (timer==this._scrollTimer)
+          {
+            if (this._changeTimer.delay==0)
+              this._redraw();
+            this._scrollTimer.delay=0;
           }
         ]]>
         </body>
