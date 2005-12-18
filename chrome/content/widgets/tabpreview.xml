@@ -145,6 +145,11 @@
       
       <method name="init">
         <body>
+          if (!this._eventListener)
+          {
+            var self = this;
+            this._eventListener = function(event) { self._eventFilter(event); };
+          }
           if (this.previews.displayHeight>0)
             this._resize();
         </body>
@@ -202,11 +207,6 @@
       
       <method name="_addListeners">
         <body>
-          if (!this._eventListener)
-          {
-            var self = this;
-            this._eventListener = function(event) { self._eventFilter(event); };
-          }
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
           this._browser.addEventListener("scroll", this._eventListener, false);
@@ -509,6 +509,7 @@
             }
             else
             {
+              this._addDocumentListeners();
               this.loading=false;
             }
 
@@ -1185,7 +1186,7 @@
           if (timer==this._redrawTimer)
           {
             this.loading=false;
-            this.update();
+            //this.update();
             this._redraw();
           }
           else if (timer==this._loadTimer)
