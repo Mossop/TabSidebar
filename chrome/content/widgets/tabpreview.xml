@@ -151,8 +151,6 @@
       
       <method name="init">
         <body>
-          this._changeTimer.delay=0;
-          this._scrollTimer.delay=0;
           if (!this._eventListener)
           {
             var self = this;
@@ -289,7 +287,10 @@
           else if (event.type=="scroll")
           {
             var delay = this.previews.scrollDelay;
+            if (!this.selected)
+              delay = this.previews.unselectedScrollDelay;
             this._scrollTimer.cancel();
+            this._scrollTimed=true;
             this._scrollTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
           else if (event.type.substring(0,3)=="DOM")
@@ -304,7 +305,10 @@
               }
             }
             var delay = this.previews.changeDelay;
+            if (!this.selected)
+              delay = this.previews.unselectedChangeDelay;
             this._changeTimer.cancel();
+            this._changeTimed=true;
             this._changeTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
         ]]>
@@ -490,10 +494,12 @@
       <field name="_changeTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
+      <field name="_changeTimed">false</field>
       
       <field name="_scrollTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
+      <field name="_scrollTimed">false</field>
       
       <field name="_redrawTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
@@ -681,6 +687,27 @@
           else
           {
             this.setAttribute("loading","true");
+          }
+          return val;
+        ]]>
+        </setter>
+      </property>
+      
+      <property name="selected">
+        <getter>
+        <![CDATA[
+          return this.hasAttribute("selected") && (this.getAttribute("selected")=="true");
+        ]]>
+        </getter>
+        <setter>
+        <![CDATA[
+          if (!val)
+          {
+            this.setAttribute("selected","false");
+          }
+          else
+          {
+            this.setAttribute("selected","true");
           }
           return val;
         ]]>
@@ -1226,15 +1253,15 @@
           }
           else if (timer==this._changeTimer)
           {
-            if (this._scrollTimer.delay==0)
+            if (!this._scrollTimed)
               this._redraw();
-            this._changeTimer.delay=0;
+            this._changeTimed=false;
           }
           else if (timer==this._scrollTimer)
           {
-            if (this._changeTimer.delay==0)
+            if (!this._changeTimed)
               this._redraw();
-            this._scrollTimer.delay=0;
+            this._scrollTimed=false;
           }
         ]]>
         </body>
@@ -1262,7 +1289,7 @@
           if (tabbrowser.selectedTab != this.tab)
           {
             var focus = false;
-            if (document.commandDispatcher.focusedElement.parentNode==this.parentNode)
+            if (document.commandDispatcher.focusedElement && document.commandDispatcher.focusedElement.parentNode==this.parentNode)
             {
               focus=true;
               this.tab.focus();

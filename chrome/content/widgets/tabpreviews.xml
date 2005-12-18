@@ -209,7 +209,9 @@
           this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
           this._loadDelay = this.preferences.getIntPref("loaddelay");
           this._changeDelay = this.preferences.getIntPref("changedelay");
+          this._unselectedChangeDelay = this.preferences.getIntPref("unselectedchangedelay");
           this._scrollDelay = this.preferences.getIntPref("scrolldelay");
+          this._unselectedScrollDelay = this.preferences.getIntPref("unselectedscrolldelay");
           
           this.updateContent();        
         </body>
@@ -492,8 +494,14 @@
       <field name="_changeDelay"/>
       <property name="changeDelay" onget="return this._changeDelay;"/>
       
+      <field name="_unselectedChangeDelay"/>
+      <property name="unselectedChangeDelay" onget="return this._unselectedChangeDelay;"/>
+      
       <field name="_scrollDelay"/>
       <property name="scrollDelay" onget="return this._scrollDelay;"/>
+      
+      <field name="_unselectedScrollDelay"/>
+      <property name="unselectedScrollDelay" onget="return this._unselectedScrollDelay;"/>
       
       <field name="_drawScrolled"/>
       <property name="drawScrolled">
@@ -584,7 +592,7 @@
         	}
         	else if (tab && tab.hasAttribute("selected"))
         	{
-            preview.setAttribute("selected",tab.getAttribute("selected"));
+            preview.selected=(tab.getAttribute("selected")=="true");
         	}
         	
         	preview.browser=browser;
@@ -673,11 +681,11 @@
         	var preview = this.getPreviewForBrowser(browser);
         	if (this._selected)
         	{
-            this._selected.setAttribute("selected","false");
+            this._selected.selected=false;
         	}
         	if (preview)
         	{
-          	preview.setAttribute("selected","true");
+          	preview.selected=true;
             this.scrollToPreview(preview);
           }
         	this._selected=preview;
@@ -1179,8 +1187,14 @@
             case "scrolldelay":
               this._scrollDelay = this.preferences.getIntPref(data);
               break;
+            case "unselectedscrolldelay":
+              this._unselectedScrollDelay = this.preferences.getIntPref(data);
+              break;
             case "changedelay":
               this._changeDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedchangedelay":
+              this._unselectedChangeDelay = this.preferences.getIntPref(data);
               break;
             case "refreshrate":
             case "autorefresh":

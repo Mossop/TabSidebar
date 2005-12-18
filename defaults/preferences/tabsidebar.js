@@ -3,6 +3,8 @@ pref("extensions.tabsidebar.hidetabs", false);
 
 pref("extensions.tabsidebar.changedelay", 100);
 pref("extensions.tabsidebar.scrolldelay", 500);
+pref("extensions.tabsidebar.unselectedchangedelay", 2000);
+pref("extensions.tabsidebar.unselectedscrolldelay", 2000);
 pref("extensions.tabsidebar.refreshrate", 30);
 pref("extensions.tabsidebar.autorefresh", false);
 
