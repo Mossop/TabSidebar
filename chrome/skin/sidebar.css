@@ -127,6 +127,26 @@ separator {
   position: absolute; /* Required to avoid transparency issues - bug 5 */
 }
 
+/* Drop markers */
+
+.toolbarbutton-menubutton-dropmarker {
+  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
+  -moz-image-region: rect(6px, 125px, 11px, 116px);
+}
+
+.toolbarbutton-menubutton-dropmarker:hover {
+  -moz-image-region: rect(22px, 125px, 27px, 116px);
+}
+
+.toolbarbutton-menubutton-dropmarker:hover:active {
+  -moz-image-region: rect(38px, 125px, 43px, 116px);
+}
+
+.toolbarbutton-menubutton-dropmarker[disabled="true"] {
+  list-style-image: url("chrome://tabsidebar/skin/Icons.png") !important;
+  -moz-image-region: rect(54px, 125px, 59px, 116px) !important;
+}
+
 /* Back button */
 .tbs-back {
   list-style-image: inherit;
