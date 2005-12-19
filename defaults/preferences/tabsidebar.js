@@ -1,8 +1,8 @@
 pref("extensions.TabSidebar@blueprintit.co.uk.description", "chrome://tabsidebar/locale/tabsidebar.properties");
 pref("extensions.tabsidebar.hidetabs", false);
 
-pref("extensions.tabsidebar.changedelay", 100);
-pref("extensions.tabsidebar.scrolldelay", 500);
+pref("extensions.tabsidebar.changedelay", 25);
+pref("extensions.tabsidebar.scrolldelay", 100);
 pref("extensions.tabsidebar.unselectedchangedelay", 1000);
 pref("extensions.tabsidebar.unselectedscrolldelay", 1000);
 pref("extensions.tabsidebar.refreshrate", 30);

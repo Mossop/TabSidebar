@@ -611,12 +611,15 @@
         <parameter name="browser"/>
         <body>
         	var preview = this.getPreviewForBrowser(browser);
-        	var drop = preview.nextSibling;
-        	preview._destroy();
-        	preview.parentNode.removeChild(preview);
-        	drop.parentNode.removeChild(drop);
-        	if (this.previews.length == 0)
-            this._refreshTimer.cancel();
+        	if (preview)
+        	{
+          	var drop = preview.nextSibling;
+          	preview._destroy();
+          	preview.parentNode.removeChild(preview);
+          	drop.parentNode.removeChild(drop);
+          	if (this.previews.length == 0)
+              this._refreshTimer.cancel();
+          }
         </body>
       </method>
       

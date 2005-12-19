@@ -217,7 +217,7 @@
         <body>
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
-          this._browser.addEventListener("scroll", this._eventListener, false);
+          this._browser.addEventListener("scroll", this._eventListener, true);
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY | WP.NOTIFY_PROGRESS;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
@@ -232,22 +232,31 @@
           this._browser.webProgress.removeProgressListener(this._progressListener);
           this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
           this._browser.removeEventListener("resize",this._eventListener,false);
-          this._browser.removeEventListener("scroll",this._eventListener,false);
+          this._browser.removeEventListener("scroll",this._eventListener,true);
           //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
         </body>
       </method>
       
+      <field name="_docListenersAdded">false</field>
       <method name="_addDocumentListeners">
         <body>
-          this._browser.contentDocument.addEventListener("DOMNodeInserted", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMNodeRemoved", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMNodeInsertedIntoDocument", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMAttrModified", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMCharacterDataModified", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMElementNameChanged", this._eventListener, false);
-          this._browser.contentDocument.addEventListener("DOMAttributeNameChanged", this._eventListener, false);
-          this._browser.contentWindow.addEventListener("unload", this._eventListener, false);
+          if (this._docListenersAdded)
+          {
+            dump("Already added listeners\n");
+            return;
+          }
+
+          this._browser.contentDocument.addEventListener("DOMNodeInserted", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMNodeRemoved", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMAttrModified", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMCharacterDataModified", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMElementNameChanged", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("DOMAttributeNameChanged", this._eventListener, true);
+          this._browser.contentDocument.addEventListener("scroll", this._eventListener, true);
+          this._browser.contentWindow.addEventListener("unload", this._eventListener, true);
+          this._docListenersAdded=true;
         </body>
       </method>
       
@@ -255,15 +264,45 @@
         <parameter name="win"/>
         <parameter name="doc"/>
         <body>
-          doc.removeEventListener("DOMNodeInserted", this._eventListener, false);
-          doc.removeEventListener("DOMNodeRemoved", this._eventListener, false);
-          doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, false);
-          doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, false);
-          doc.removeEventListener("DOMAttrModified", this._eventListener, false);
-          doc.removeEventListener("DOMCharacterDataModified", this._eventListener, false);
-          doc.removeEventListener("DOMElementNameChanged", this._eventListener, false);
-          doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, false);
+          if (!this._docListenersAdded)
+          {
+            dump("Already removed listeners\n");
+            return;
+          }
+
+          doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
+          doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
+          doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
+          doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
+          doc.removeEventListener("DOMAttrModified", this._eventListener, true);
+          doc.removeEventListener("DOMCharacterDataModified", this._eventListener, true);
+          doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
+          doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
+          doc.removeEventListener("scroll", this._eventListener, true);
           win.removeEventListener("unload", this._eventListener, false);
+          this._docListenersAdded=false;
+        </body>
+      </method>
+      
+      <method name="_documentChanged">
+        <body>
+          var delay = this.previews.changeDelay;
+          if (!this.selected)
+            delay = this.previews.unselectedChangeDelay;
+          this._changeTimer.cancel();
+          this._changeTimed=true;
+          this._changeTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        </body>
+      </method>
+      
+      <method name="_documentScrolled">
+        <body>
+          var delay = this.previews.scrollDelay;
+          if (!this.selected)
+            delay = this.previews.unselectedScrollDelay;
+          this._scrollTimer.cancel();
+          this._scrollTimed=true;
+          this._scrollTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -286,30 +325,20 @@
           }
           else if (event.type=="scroll")
           {
-            var delay = this.previews.scrollDelay;
-            if (!this.selected)
-              delay = this.previews.unselectedScrollDelay;
-            this._scrollTimer.cancel();
-            this._scrollTimed=true;
-            this._scrollTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            this._documentScrolled();
           }
           else if (event.type.substring(0,3)=="DOM")
           {
-            if ((event.type=="DOMAttrModified")&&(event.target.ownerDocument.documentElement==event.target))
-            {
-              if ((event.attrName=="curpos")
-                ||(event.attrName=="maxpos")
-                ||(event.attrName=="pageincrement"))
+            if ((event.type=="DOMAttrModified")&&
+               ((event.attrName=="curpos")
+              ||(event.attrName=="maxpos")
+              ||(event.attrName=="pageincrement")))
               {
+                this._documentScrolled();
                 return;
               }
             }
-            var delay = this.previews.changeDelay;
-            if (!this.selected)
-              delay = this.previews.unselectedChangeDelay;
-            this._changeTimer.cancel();
-            this._changeTimed=true;
-            this._changeTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            this._documentChanged();
           }
         ]]>
         </body>
@@ -544,13 +573,8 @@
             
             this._logMessage("Browser added");
             this._updateSize(true);
+            this.update();
           }
-          else
-          {
-            this.redraw();
-          }
-          this.update();
-          return val;
         ]]>
         </setter>
       </property>
