@@ -1295,6 +1295,106 @@
       ]]>
       </handler>
 
+      <handler event="keypress">
+      <![CDATA[
+        if (event.target.parentNode==this)
+        {
+          var preview = event.target;
+          if (event.altKey||event.shiftKey||event.metaKey)
+          {
+            return;
+          }
+          else if (event.ctrlKey)
+          {
+            if (event.keyCode==event.DOM_VK_UP)
+            {
+              var newpreview = preview.previousSibling.previousSibling;
+              if (newpreview)
+              {
+                this.movePreview(preview,newpreview);
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_DOWN)
+            {
+              var newpreview = preview.nextSibling.nextSibling;
+              if (newpreview)
+              {
+                this.movePreview(preview,newpreview.nextSibling.nextSibling);
+              }
+              event.preventDefault();
+            }
+          }
+          else
+          {
+            if (event.keyCode==event.DOM_VK_UP)
+            {
+              var newpreview = preview.previousSibling.previousSibling;
+              if (newpreview)
+              {
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=newpreview.tab;
+                newpreview.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_DOWN)
+            {
+              var newpreview = preview.nextSibling.nextSibling;
+              if (newpreview)
+              {
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=newpreview.tab;
+                newpreview.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_PAGE_UP)
+            {
+              var compare = preview.previousSibling.previousSibling;
+              if (compare)
+              {
+                var diff = preview.boxObject.y-compare.boxObject.y;
+                var height = this.scrollBox.boxObject.height;
+                var jump = height/diff;
+                var current = preview;
+                var count = 1;
+                while ((count<=jump)&&(current.previousSibling.previousSibling))
+                {
+                  current=current.previousSibling.previousSibling;
+                  count++;
+                }
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=current.tab;
+                current.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_PAGE_DOWN)
+            {
+              var compare = preview.nextSibling.nextSibling;
+              if (compare)
+              {
+                var diff = compare.boxObject.y-preview.boxObject.y;
+                var height = this.scrollBox.boxObject.height;
+                var jump = height/diff;
+                var current = preview;
+                var count = 1;
+                while ((count<=jump)&&(current.nextSibling.nextSibling))
+                {
+                  current=current.nextSibling.nextSibling;
+                  count++;
+                }
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=current.tab;
+                current.focus();
+              }
+              event.preventDefault();
+            }
+          }
+        }
+      ]]>
+      </handler>
     </handlers>
 
   </binding>

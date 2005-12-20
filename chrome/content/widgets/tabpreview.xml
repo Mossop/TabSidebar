@@ -1342,59 +1342,6 @@
         }
       ]]>
       </handler>
-      
-      <handler event="keypress">
-        if (event.altKey||event.shiftKey||event.metaKey)
-        {
-          return;
-        }
-        else if (event.ctrlKey)
-        {
-          if (event.keyCode==event.DOM_VK_UP)
-          {
-            var newpreview = this.previousSibling.previousSibling;
-            if (newpreview)
-            {
-              this.previews.movePreview(this,newpreview);
-            }
-            event.preventDefault();
-          }
-          else if (event.keyCode==event.DOM_VK_DOWN)
-          {
-            var newpreview = this.nextSibling.nextSibling;
-            if (newpreview)
-            {
-              this.previews.movePreview(this,newpreview.nextSibling.nextSibling);
-            }
-            event.preventDefault();
-          }
-        }
-        else
-        {
-          if (event.keyCode==event.DOM_VK_UP)
-          {
-            var newpreview = this.previousSibling.previousSibling;
-            if (newpreview)
-            {
-              this.tab.focus();
-              this.previews.tabbrowser.selectedTab=newpreview.tab;
-              newpreview.focus();
-            }
-            event.preventDefault();
-          }
-          else if (event.keyCode==event.DOM_VK_DOWN)
-          {
-            var newpreview = this.nextSibling.nextSibling;
-            if (newpreview)
-            {
-              this.tab.focus();
-              this.previews.tabbrowser.selectedTab=newpreview.tab;
-              newpreview.focus();
-            }
-            event.preventDefault();
-          }
-        }
-      </handler>
     </handlers>
       
   </binding>
