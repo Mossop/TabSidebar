@@ -229,11 +229,17 @@
       
       <method name="_removeListeners">
         <body>
-          this._browser.webProgress.removeProgressListener(this._progressListener);
-          this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
-          this._browser.removeEventListener("resize",this._eventListener,false);
-          this._browser.removeEventListener("scroll",this._eventListener,true);
-          //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
+          try
+          {
+            this._browser.webProgress.removeProgressListener(this._progressListener);
+            this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
+            this._browser.removeEventListener("resize",this._eventListener,false);
+            this._browser.removeEventListener("scroll",this._eventListener,true);
+            //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
+          }
+          catch (e)
+          {
+          }
         </body>
       </method>
       
@@ -1358,7 +1364,7 @@
             var newpreview = this.nextSibling.nextSibling;
             if (newpreview)
             {
-              this.previews.movePreview(this,newpreview);
+              this.previews.movePreview(this,newpreview.nextSibling.nextSibling);
             }
             event.preventDefault();
           }

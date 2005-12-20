@@ -296,7 +296,7 @@
         		  var browser = event.target.linkedBrowser;
         		  if (browser)
         		  {
-        		    this.updatePreviewPosition(browser);
+        		    this.addPreview(browser);
         		  }
         		}
           }
@@ -557,10 +557,20 @@
         <parameter name="browser"/>
         <body>
         <![CDATA[
-        	var preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreview");
-        	var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
-        	drop.className="dropindicator groove";
-        	drop.setAttribute("orient","horizontal");
+          var preview = this.getPreviewForBrowser(browser);
+          var drop = null;
+          if (preview)
+          {
+            preview._destroy();
+            var drop = preview.nextSibling;
+          }
+          else
+          {
+          	preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreview");
+          	drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+          	drop.className="dropindicator groove";
+          	drop.setAttribute("orient","horizontal");
+          }
         	var id=browser.parentNode.id;
         	if (id)
         	{
@@ -612,28 +622,6 @@
           	if (this.previews.length == 0)
               this._refreshTimer.cancel();
           }
-        </body>
-      </method>
-      
-      <method name="updatePreviewPosition">
-        <parameter name="browser"/>
-        <body>
-        <![CDATA[
-          dump("update preview position\n");
-          var preview = this.getPreviewForBrowser(browser);
-          if (preview)
-          {
-            var drop = preview.nextSibling;
-            var tab = preview.tab;
-            var next = null;
-          	if (tab && tab.nextSibling)
-          	{
-          		next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
-          	}
-        		this.previewContainer.insertBefore(preview,next);
-        		this.previewContainer.insertBefore(drop,next);
-          }
-        ]]>
         </body>
       </method>
       
@@ -988,6 +976,7 @@
         <parameter name="preview"/>
         <parameter name="insertBefore"/>
         <body>
+        <![CDATA[
           var newIndex = this.previews.length;
           if (insertBefore)
           {
@@ -1002,7 +991,13 @@
           if (newIndex==oldIndex)
             return;
 
+          var focus=false;
+          if (this.ownerDocument.commandDispatcher.focusedElement && this.ownerDocument.commandDispatcher.focusedElement==preview)
+            focus=true;
+          
           this.tabbrowser.moveTabTo(preview.tab, newIndex);
+            preview.focus();
+        ]]>
         </body>
       </method>
       
