@@ -270,16 +270,22 @@
             return;
           }
 
-          doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
-          doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
-          doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
-          doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
-          doc.removeEventListener("DOMAttrModified", this._eventListener, true);
-          doc.removeEventListener("DOMCharacterDataModified", this._eventListener, true);
-          doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
-          doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
-          doc.removeEventListener("scroll", this._eventListener, true);
-          win.removeEventListener("unload", this._eventListener, false);
+          try
+          {
+            doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
+            doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
+            doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
+            doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
+            doc.removeEventListener("DOMAttrModified", this._eventListener, true);
+            doc.removeEventListener("DOMCharacterDataModified", this._eventListener, true);
+            doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
+            doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
+            doc.removeEventListener("scroll", this._eventListener, true);
+            win.removeEventListener("unload", this._eventListener, false);
+          }
+          catch (e)
+          {
+          }
           this._docListenersAdded=false;
         </body>
       </method>
@@ -333,10 +339,9 @@
                ((event.attrName=="curpos")
               ||(event.attrName=="maxpos")
               ||(event.attrName=="pageincrement")))
-              {
+            {
                 this._documentScrolled();
                 return;
-              }
             }
             this._documentChanged();
           }
@@ -629,13 +634,13 @@
       
       <method name="_loadComplete">
         <body>
+          this.loading=false;
           this._addDocumentListeners();
           this.stopButton.disabled=true;
           this._loadTimer.cancel();
           var delay = this.previews.loadDelay;
           if (delay==0)
           {
-            this.loading=false;
             this.update();
             this.redraw();
           }
@@ -1213,7 +1218,10 @@
           {
           	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
           	{
-              this._loadComplete();
+              if (this.loading)
+                this._loadComplete();
+              else
+                this._logWarning("Received repeat load - "+stateFlags+"\n");
             }
             else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
             {
@@ -1262,7 +1270,6 @@
         <![CDATA[
           if (timer==this._redrawTimer)
           {
-            this.loading=false;
             this.update();
             this._redraw();
           }
@@ -1331,28 +1338,55 @@
       </handler>
 
       <handler event="keypress">
-        dump("press "+event.keyCode+"\n");
-        if (event.keyCode==38)
+        if (event.altKey||event.shiftKey||event.metaKey)
         {
-          var newpreview = this.previousSibling.previousSibling;
-          if (newpreview)
-          {
-            this.tab.focus();
-            this.previews.tabbrowser.selectedTab=newpreview.tab;
-            newpreview.focus();
-          }
-          event.preventDefault();
+          return;
         }
-        else if (event.keyCode==40)
+        else if (event.ctrlKey)
         {
-          var newpreview = this.nextSibling.nextSibling;
-          if (newpreview)
+          if (event.keyCode==event.DOM_VK_UP)
           {
-            this.tab.focus();
-            this.previews.tabbrowser.selectedTab=newpreview.tab;
-            newpreview.focus();
+            var newpreview = this.previousSibling.previousSibling;
+            if (newpreview)
+            {
+              this.previews.movePreview(this,newpreview);
+            }
+            event.preventDefault();
           }
-          event.preventDefault();
+          else if (event.keyCode==event.DOM_VK_DOWN)
+          {
+            var newpreview = this.nextSibling.nextSibling;
+            if (newpreview)
+            {
+              this.previews.movePreview(this,newpreview);
+            }
+            event.preventDefault();
+          }
+        }
+        else
+        {
+          if (event.keyCode==event.DOM_VK_UP)
+          {
+            var newpreview = this.previousSibling.previousSibling;
+            if (newpreview)
+            {
+              this.tab.focus();
+              this.previews.tabbrowser.selectedTab=newpreview.tab;
+              newpreview.focus();
+            }
+            event.preventDefault();
+          }
+          else if (event.keyCode==event.DOM_VK_DOWN)
+          {
+            var newpreview = this.nextSibling.nextSibling;
+            if (newpreview)
+            {
+              this.tab.focus();
+              this.previews.tabbrowser.selectedTab=newpreview.tab;
+              newpreview.focus();
+            }
+            event.preventDefault();
+          }
         }
       </handler>
     </handlers>

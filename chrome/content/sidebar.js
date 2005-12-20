@@ -101,14 +101,7 @@ init: function()
 		var optionsBtn = topwin.document.createElement("toolbarbutton");
 		optionsBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.options.tooltip"));
 		optionsBtn.id = "tabsidebar-options";
-		if (pos)
-		{
-			header.insertBefore(optionsBtn,pos);
-		}
-		else
-		{
-			header.appendChild(optionsBtn);
-		}
+		header.insertBefore(optionsBtn,pos);
 		optionsBtn.addEventListener("command",sidebar.showOptions,false);
 	}
 	
@@ -117,14 +110,7 @@ init: function()
 		var helpBtn = topwin.document.createElement("toolbarbutton");
 		helpBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.help.tooltip"));
 		helpBtn.id = "tabsidebar-help";
-		if (pos)
-		{
-			header.insertBefore(helpBtn,pos);
-		}
-		else
-		{
-			header.appendChild(helpBtn);
-		}
+		header.insertBefore(helpBtn,pos);
 		helpBtn.addEventListener("command",sidebar.showHelp,false);
 	}
 },

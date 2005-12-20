@@ -2,12 +2,12 @@
   overflow-y: scroll;
 }
 
-.tbs-tabpreview {
-  -moz-box-align: center;
+.tbs-focusdetector {
+  -moz-user-focus: normal;
 }
 
-.tbs-tabpreview[selected="true"] {
-  -moz-user-focus: normal;
+.tbs-tabpreview {
+  -moz-box-align: center;
 }
 
 .tbs-tabpreview:focus > .tbs-tabmain {

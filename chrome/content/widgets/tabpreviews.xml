@@ -77,6 +77,8 @@
         <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
       </xul:vbox>          
 
+      <xul:box class="tbs-focusdetector"/>
+      
       <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
                      ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
                      ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
@@ -294,7 +296,7 @@
         		  var browser = event.target.linkedBrowser;
         		  if (browser)
         		  {
-        		    this.movePreview(browser);
+        		    this.updatePreviewPosition(browser);
         		  }
         		}
           }
@@ -407,7 +409,8 @@
       <field name="tabbrowser"/>
       <field name="window"/>
       <field name="previewContainer">this</field>
-      <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[2]</field>
+      <field name="focusDetector">this.ownerDocument.getAnonymousNodes(this)[2]</field>
+      <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[3]</field>
       <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
       <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
@@ -565,25 +568,14 @@
         	}
           var panel = browser.parentNode.id;
           var tab = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"linkedpanel",panel);
+          var next = null;
         	if (tab && tab.nextSibling)
         	{
-        		var next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
-        		if (next)
-        		{
-          		this.previewContainer.insertBefore(preview,next);
-          		this.previewContainer.insertBefore(drop,next);
-          	}
-          	else
-          	{
-              this.previewContainer.appendChild(preview);
-              this.previewContainer.appendChild(drop);
-          	}
+        		next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
         	}
-        	else
-        	{
-        		this.previewContainer.appendChild(preview);
-        		this.previewContainer.appendChild(drop);
-        	}
+      		this.previewContainer.insertBefore(preview,next);
+      		this.previewContainer.insertBefore(drop,next);
+
         	preview.init();
 
         	if (this.tabbrowser.selectedBrowser==browser)
@@ -623,15 +615,25 @@
         </body>
       </method>
       
-      <method name="movePreview">
+      <method name="updatePreviewPosition">
         <parameter name="browser"/>
         <body>
+        <![CDATA[
+          dump("update preview position\n");
           var preview = this.getPreviewForBrowser(browser);
           if (preview)
           {
-            this.removePreview(browser);
-            this.addPreview(browser);
+            var drop = preview.nextSibling;
+            var tab = preview.tab;
+            var next = null;
+          	if (tab && tab.nextSibling)
+          	{
+          		next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
+          	}
+        		this.previewContainer.insertBefore(preview,next);
+        		this.previewContainer.insertBefore(drop,next);
           }
+        ]]>
         </body>
       </method>
       
@@ -982,6 +984,28 @@
         </body>
       </method>
 
+      <method name="movePreview">
+        <parameter name="preview"/>
+        <parameter name="insertBefore"/>
+        <body>
+          var newIndex = this.previews.length;
+          if (insertBefore)
+          {
+            newIndex = insertBefore.tab._tPos;
+          }
+          
+          var oldIndex = preview.tab._tPos;
+          
+          if (newIndex>oldIndex)
+            newIndex--;
+            
+          if (newIndex==oldIndex)
+            return;
+
+          this.tabbrowser.moveTabTo(preview.tab, newIndex);
+        </body>
+      </method>
+      
       <method name="onDrop">
         <parameter name="aEvent"/>
         <parameter name="aXferData"/>
@@ -1003,24 +1027,8 @@
                 preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
               }
               
-              var newIndex = this.previews.length;
               var target = this.getDropElement(aEvent,false);
-              if (target.nextSibling)
-              {
-                target = target.nextSibling;
-                newIndex = target.tab._tPos;
-              }
-              
-              var previews = this.previews;
-              var oldIndex = preview.tab._tPos;
-              
-              if (newIndex>oldIndex)
-                newIndex--;
-                
-              if (newIndex==oldIndex)
-                return;
-  
-              this.tabbrowser.moveTabTo(preview.tab, newIndex);
+              this.movePreview(preview,target.nextSibling);
             }
             else
             {
@@ -1259,10 +1267,12 @@
       </handler>
       
       <handler event="focus">
-        if (event.originalTarget.localName=='tabpreview')
+      <![CDATA[
+        if ((event.originalTarget==this.focusDetector)&&(this._selected))
         {
-          //this.scrollToPreview(event.originalTarget);
+          this._selected.focus();
         }
+      ]]>
       </handler>
       
       <handler event="popupshowing">
