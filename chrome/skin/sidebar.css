@@ -109,11 +109,12 @@ separator {
 }
 
 .tbs-favicon {
-  list-style-image: url(chrome://global/skin/icons/folder-item.png);
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
   -moz-margin-end: 2px;
   height: 16px;
+  max-height: 16px;
   width: 16px;
+  max-width: 16px;
 }
 
 /* opacity:1 for favicon,security,reload when selected or hovered */

@@ -77,7 +77,7 @@
         <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
       </xul:vbox>          
 
-      <xul:box class="tbs-focusdetector"/>
+      <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
       
       <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
                      ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
@@ -1262,12 +1262,22 @@
       </handler>
       
       <handler event="focus">
-      <![CDATA[
-        if ((event.originalTarget==this.focusDetector)&&(this._selected))
+        if (event.originalTarget==this.focusDetector)
         {
-          this._selected.focus();
+          if (this._selected)
+            this._selected.focus();
         }
-      ]]>
+        else if (event.target.parentNode==this)
+        {
+          this.focusDetector.style.MozUserFocus="ignore";
+        }
+      </handler>
+      
+      <handler event="blur">
+        if (event.target.parentNode==this)
+        {
+          this.focusDetector.style.MozUserFocus="normal";
+        }
       </handler>
       
       <handler event="popupshowing">

@@ -1342,7 +1342,7 @@
         }
       ]]>
       </handler>
-
+      
       <handler event="keypress">
         if (event.altKey||event.shiftKey||event.metaKey)
         {
