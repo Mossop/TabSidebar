@@ -1032,7 +1032,12 @@
           }
           else
           {
-            tabbrowser.removeTab(this.tab);
+            if (!this.id)
+          	 this.id=this._browser.parentNode.id;
+
+            var tab = this.tab;
+            this._destroy();
+            tabbrowser.removeTab(tab);
           }
         </body>
       </method>
