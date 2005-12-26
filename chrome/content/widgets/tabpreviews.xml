@@ -210,6 +210,7 @@
           this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
           this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
           this._loadDelay = this.preferences.getIntPref("loaddelay");
+          this._unselectedLoadDelay = this.preferences.getIntPref("unselectedloaddelay");
           this._changeDelay = this.preferences.getIntPref("changedelay");
           this._unselectedChangeDelay = this.preferences.getIntPref("unselectedchangedelay");
           this._scrollDelay = this.preferences.getIntPref("scrolldelay");
@@ -267,8 +268,6 @@
             this.tabbrowser=null;
             this.window=null;
   
-            this._refreshTimer.cancel();
-            this._refreshTimer=null;
             this._resizeTimer.cancel();
             this._resizeTimer=null;
 
@@ -321,10 +320,6 @@
       <field name="_selected"/>
       <field name="_redrawPreview">0</field>
       
-      <field name="_refreshTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-
       <field name="_resizeTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -469,18 +464,6 @@
         </setter>
       </property>
 
-      <property name="autoRefresh">
-        <getter>
-          return this.preferences.getBoolPref("autorefresh");
-        </getter>
-      </property>
-      
-      <property name="refreshRate">
-        <getter>
-          return Math.max(5,this.preferences.getIntPref("refreshrate"))*1000;
-        </getter>
-      </property>
-      
       <field name="_loadRefresh"/>
       <property name="loadRefresh" onget="return this._loadRefresh;"/>
       
@@ -493,6 +476,9 @@
       
       <field name="_loadDelay"/>
       <property name="loadDelay" onget="return this._loadDelay;"/>
+      
+      <field name="_unselectedLoadDelay"/>
+      <property name="unselectedLoadDelay" onget="return this._unselectedLoadDelay;"/>
       
       <field name="_changeDelay"/>
       <property name="changeDelay" onget="return this._changeDelay;"/>
@@ -598,13 +584,6 @@
         	}
         	
         	preview.browser=browser;
-        	
-          if (this.previews.length == 1 && this.autoRefresh)
-          {
-            this._refreshTimer.initWithCallback(this, 
-                                                this.refreshRate,
-                                                Components.interfaces.nsITimer.TYPE_REPEATING_SLACK)
-          }
         ]]>
         </body>
       </method>
@@ -619,8 +598,6 @@
           	preview._destroy();
           	preview.parentNode.removeChild(preview);
           	drop.parentNode.removeChild(drop);
-          	if (this.previews.length == 0)
-              this._refreshTimer.cancel();
           }
         </body>
       </method>
@@ -1124,19 +1101,7 @@
         <parameter name="timer"/>
         <body>
         <![CDATA[
-          if (timer==this._refreshTimer)
-          {
-            var pos = this._redrawPreview;
-            if (pos>=this.previews.length)
-              pos=0;
-            var preview = this.previews[pos];
-            preview.redraw();
-            this._redrawPreview=pos+1;
-            this._refreshTimer.initWithCallback(this,
-                                                this.refreshRate/this.previews.length,
-                                                Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-          }
-          else if (timer==this._resizeTimer)
+          if (timer==this._resizeTimer)
           {
             if (this.displayHeight<=0)
             {
@@ -1190,6 +1155,9 @@
             case "loaddelay":
               this._loadDelay = this.preferences.getIntPref(data);
               break;
+            case "unselectedloaddelay":
+              this._unselectedLoadDelay = this.preferences.getIntPref(data);
+              break;
             case "scrolldelay":
               this._scrollDelay = this.preferences.getIntPref(data);
               break;
@@ -1201,16 +1169,6 @@
               break;
             case "unselectedchangedelay":
               this._unselectedChangeDelay = this.preferences.getIntPref(data);
-              break;
-            case "refreshrate":
-            case "autorefresh":
-              this._refreshTimer.cancel();
-              if (this.autoRefresh && this.previews.length>0)
-              {
-                this._refreshTimer.initWithCallback(this,
-                                                    this.refreshRate/this.previews.length,
-                                                    Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-              }
               break;
           }
         ]]>

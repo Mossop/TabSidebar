@@ -131,7 +131,7 @@
           {
             if (this._browser)
             {
-              this._removeDocumentListeners(this._browser.contentWindow,this._browser.contentDocument);
+              this._emptyDocumentListeners();
               this._removeListeners();
               this._browser=null;
             }
@@ -139,10 +139,10 @@
             this._changeTimer=null;
             this._scrollTimer.cancel();
             this._scrollTimer=null;
-            this._redrawTimer.cancel();
-            this._redrawTimer=null;
             this._loadTimer.cancel();
             this._loadTimer=null;
+            this._updateTimer.cancel();
+            this._updateTimer=null;
             
             this._destroyed=true;
           }
@@ -218,6 +218,8 @@
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
           this._browser.addEventListener("scroll", this._eventListener, true);
+          this._browser.addEventListener("load", this._eventListener, true);
+          this._browser.addEventListener("unload", this._eventListener, true);
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY | WP.NOTIFY_PROGRESS;
           this._browser.webProgress.addProgressListener(this._progressListener,mask);
@@ -232,9 +234,11 @@
           try
           {
             this._browser.webProgress.removeProgressListener(this._progressListener);
-            this._browser.removeEventListener("DOMTitleChanged",this._eventListener,false);
-            this._browser.removeEventListener("resize",this._eventListener,false);
-            this._browser.removeEventListener("scroll",this._eventListener,true);
+            this._browser.removeEventListener("DOMTitleChanged", this._eventListener, false);
+            this._browser.removeEventListener("resize", this._eventListener, false);
+            this._browser.removeEventListener("scroll", this._eventListener, true);
+            this._browser.removeEventListener("load", this._eventListener, true);
+            this._browser.removeEventListener("unload", this._eventListener, true);
             //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
           }
           catch (e)
@@ -243,41 +247,39 @@
         </body>
       </method>
       
-      <field name="_docListenersAdded">false</field>
+      <field name="_listenedDocuments">[]</field>
+      
       <method name="_addDocumentListeners">
+      	<parameter name="doc"/>
         <body>
-          if (this._docListenersAdded)
+        <![CDATA[
+          var pos = this._listenedDocuments.indexOf(doc);
+          if (pos<0)
           {
-            dump("Already added listeners\n");
-            return;
+            this._logMessage("Add listener\n");
+            doc.addEventListener("DOMNodeInserted", this._eventListener, true);
+            doc.addEventListener("DOMNodeRemoved", this._eventListener, true);
+            doc.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
+            doc.addEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
+            doc.addEventListener("DOMAttrModified", this._eventListener, true);
+            doc.addEventListener("DOMCharacterDataModified", this._eventListener, true);
+            doc.addEventListener("DOMElementNameChanged", this._eventListener, true);
+            doc.addEventListener("DOMAttributeNameChanged", this._eventListener, true);
+            doc.addEventListener("scroll", this._eventListener, true);
+            this._listenedDocuments.push(doc);
           }
-
-          this._browser.contentDocument.addEventListener("DOMNodeInserted", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMNodeRemoved", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMAttrModified", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMCharacterDataModified", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMElementNameChanged", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("DOMAttributeNameChanged", this._eventListener, true);
-          this._browser.contentDocument.addEventListener("scroll", this._eventListener, true);
-          this._browser.contentWindow.addEventListener("unload", this._eventListener, true);
-          this._docListenersAdded=true;
+        ]]>
         </body>
       </method>
       
       <method name="_removeDocumentListeners">
-        <parameter name="win"/>
         <parameter name="doc"/>
         <body>
-          if (!this._docListenersAdded)
+        <![CDATA[
+          var pos = this._listenedDocuments.indexOf(doc);
+          if (pos>=0)
           {
-            dump("Already removed listeners\n");
-            return;
-          }
-
-          try
-          {
+            this._logMessage("Remove listener\n");
             doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
             doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
             doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
@@ -287,12 +289,58 @@
             doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
             doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
             doc.removeEventListener("scroll", this._eventListener, true);
-            win.removeEventListener("unload", this._eventListener, false);
+            this._listenedDocuments.splice(pos,1);
           }
-          catch (e)
+        ]]>
+        </body>
+      </method>
+      
+      <method name="_emptyDocumentListeners">
+        <body>
+        <![CDATA[
+          while (this._listenedDocuments.length>0)
           {
+            this._removeDocumentListeners(this._listenedDocuments[0]);
           }
-          this._docListenersAdded=false;
+        ]]>
+        </body>
+      </method>
+      
+      <method name="_findDocuments">
+      	<parameter name="doc"/>
+      	<body>
+      	<![CDATA[
+      		if (doc && (doc instanceof Document))
+      		{
+	      		this._addDocumentListeners(doc);
+	      		var subdocs = doc.getElementsByTagName("frame");
+	      		for (var pos = 0; pos<subdocs.length; pos++)
+	      		{
+      				this._findDocuments(subdocs[pos].contentDocument);
+	      		}
+	      		subdocs = doc.getElementsByTagName("iframe");
+	      		for (var pos = 0; pos<subdocs.length; pos++)
+	      		{
+      				this._findDocuments(subdocs[pos].contentDocument);
+	      		}
+	      		subdocs = doc.getElementsByTagName("browser");
+	      		for (var pos = 0; pos<subdocs.length; pos++)
+	      		{
+      				this._findDocuments(subdocs[pos].contentDocument);
+	      		}
+	      	}
+				]]>
+      	</body>
+      </method>
+      
+      <method name="_documentLoaded">
+        <body>
+          var delay = this.previews.loadDelay;
+          if (!this.selected)
+            delay = this.previews.unselectedLoadDelay;
+          this._loadTimer.cancel();
+          this._loadTimed=true;
+          this._loadTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -331,13 +379,24 @@
             this._logMessage("Browser resized");
             this._updateSize(false);
           }
-          else if (event.type=="unload")
-          {
-            this._removeDocumentListeners(event.currentTarget,event.target);
-          }
           else if (event.type=="scroll")
           {
             this._documentScrolled();
+          }
+          else if (event.type=="load")
+          {
+						if (event.originalTarget instanceof Document)
+						{
+							this._addDocumentListeners(event.originalTarget);
+							this._documentLoaded();
+						}
+          }
+          else if (event.type=="unload")
+          {
+            if (event.originalTarget instanceof Document)
+            {
+              this._removeDocumentListeners(event.originalTarget);
+            }
           }
           else if (event.type.substring(0,3)=="DOM")
           {
@@ -541,11 +600,12 @@
       </field>
       <field name="_scrollTimed">false</field>
       
-      <field name="_redrawTimer">
+      <field name="_loadTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
+      <field name="_loadTimed">false</field>
       
-      <field name="_loadTimer">
+      <field name="_updateTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
       
@@ -558,8 +618,8 @@
         <![CDATA[
           if (this._browser)
           {
-            this._removeDocumentListeners(this._browser.contentWindow,this._browser.contentDocument);
             this._removeListeners();
+            this._emptyDocumentListeners();
           }
           this._browser=val;
           if (val)
@@ -571,7 +631,6 @@
             }
             else
             {
-              this._addDocumentListeners();
               this.loading=false;
             }
 
@@ -580,6 +639,7 @@
               this._setSecurity(this._browser.securityUI.state);
             }
 
+						this._findDocuments(this._browser.contentDocument);
             this._addListeners();
             
             this._logMessage("Browser added");
@@ -614,46 +674,39 @@
           catch (e)
           {
           }
-          }
         ]]>
         </body>
       </method>
       
       <method name="_loadStarted">
         <body>
-          this._invalid=true;
           this.loading=true;
+          this._invalid=true;
+          this.stopButton.disabled=false;
+
+          this._emptyDocumentListeners();
           this._changeTimer.cancel();
-          this._changeTimer.delay=-1;
           this._scrollTimer.cancel();
-          this._scrollTimer.delay=-1;
           this._loadTimer.cancel();
+          this._changeTimed=false;
+          this._scrollTimed=false;
+          this._loadTimed=false;
+
+          this._updateTimer.cancel();
           if (this.previews.loadRefresh)
           {
-            this._loadTimer.initWithCallback(this, 
+            this._updateTimer.initWithCallback(this, 
                                              this.previews.loadRefreshRate, 
                                              Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
           }
-          this.stopButton.disabled=false;
         </body>
       </method>
       
       <method name="_loadComplete">
         <body>
           this.loading=false;
-          this._addDocumentListeners();
           this.stopButton.disabled=true;
-          this._loadTimer.cancel();
-          var delay = this.previews.loadDelay;
-          if (delay==0)
-          {
-            this.update();
-            this.redraw();
-          }
-          else
-          {
-            this._redrawTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-          }
+          this._updateTimer.cancel();
         </body>
       </method>
       
@@ -1279,12 +1332,7 @@
         <parameter name="timer"/>
         <body>
         <![CDATA[
-          if (timer==this._redrawTimer)
-          {
-            this.update();
-            this._redraw();
-          }
-          else if (timer==this._loadTimer)
+          if (timer==this._updateTimer)
           {
             //this.update();
             if (this._invalid)
@@ -1293,17 +1341,26 @@
               this._invalid=false;
             }
           }
+          else if (timer==this._loadTimer)
+          {
+            this._loadTimed=false;
+            if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
+							return;
+            this._redraw();
+          }
           else if (timer==this._changeTimer)
           {
-            if (!this._scrollTimed)
-              this._redraw();
             this._changeTimed=false;
+            if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
+							return;
+            this.redraw();
           }
           else if (timer==this._scrollTimer)
           {
-            if (!this._changeTimed)
-              this._redraw();
             this._scrollTimed=false;
+            if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
+							return;
+            this.redraw();
           }
         ]]>
         </body>
