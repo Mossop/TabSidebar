@@ -418,17 +418,13 @@
             this._logMessage("Browser resized");
             this._updateSize(false);
           }
-          else if (event.type=="scroll")
-          {
-            this._documentScrolled();
-          }
           else if (event.type=="load")
           {
-						if (event.originalTarget instanceof Document)
-						{
-							this._addDocumentListeners(event.originalTarget);
-							this._documentLoaded();
-						}
+            if (event.originalTarget instanceof Document)
+            {
+              this._addDocumentListeners(event.originalTarget);
+              this._documentLoaded();
+            }
           }
           else if (event.type=="unload")
           {
@@ -463,7 +459,11 @@
               this._logMessage("Unload of "+event.originalTarget);
             }
           }
-          else if (event.type.substring(0,3)=="DOM")
+          else if ((event.type=="scroll")&&(!this.loading))
+          {
+            this._documentScrolled();
+          }
+          else if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
           {
             if ((event.type=="DOMAttrModified")&&
                ((event.attrName=="curpos")
@@ -1419,6 +1419,7 @@
             if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
 							return;
             this._redraw();
+            this.update();
           }
           else if (timer==this._changeTimer)
           {
