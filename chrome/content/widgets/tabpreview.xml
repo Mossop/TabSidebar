@@ -71,7 +71,9 @@
           <xul:image class="tbs-favicon" validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
           <xul:image class="tbs-loading" anonid="loading" tooltip="tabpreview_tooltip"/>
           <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
-          <xul:toolbarbutton class="tbs-close tbs-icon" anonid="close" tooltiptext="&closeTab.label;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.close();"/>
+          <xul:toolbarbutton class="tbs-close tbs-icon" anonid="close" tooltiptext="&closeTab.label;"
+                             onmousedown="event.stopPropagation();"
+                             oncommand="this.parentNode.parentNode.parentNode.close();"/>
         </xul:hbox>
         <xul:stack>
           <xul:box tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
@@ -79,11 +81,15 @@
           </xul:box>
           <xul:vbox>
             <xul:hbox pack="end" class="tbs-topstrip">
-              <xul:toolbarbutton class="tbs-security tbs-icon" anonid="security" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
+              <xul:toolbarbutton class="tbs-security tbs-icon" anonid="security"
+                                 onmousedown="event.stopPropagation();"
+                                 oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
             </xul:hbox>
             <xul:box tooltip="tabpreview_tooltip" flex="1"/>
             <xul:hbox pack="start" class="tbs-bottomstrip">
-              <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.stop();"/>
+              <xul:toolbarbutton class="tbs-stop tbs-icon" anonid="stop" disabled="true" tooltiptext="&stopButton.tooltip;"
+                                 onmousedown="event.stopPropagation();"
+                                 oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.stop();"/>
               <xul:spacer flex="1"/>
               <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" anonid="back" disabled="true" tooltiptext="&backButton.tooltip;"
                                  onmousedown="event.stopPropagation();"
@@ -265,8 +271,16 @@
             doc.addEventListener("DOMCharacterDataModified", this._eventListener, true);
             doc.addEventListener("DOMElementNameChanged", this._eventListener, true);
             doc.addEventListener("DOMAttributeNameChanged", this._eventListener, true);
+            doc.addEventListener("DOMActivate", this._eventListener, true);
+            doc.addEventListener("DOMFocusIn", this._eventListener, true);
+            doc.addEventListener("DOMFocusOut", this._eventListener, true);
+            doc.addEventListener("DOMSubtreeModified", this._eventListener, true);
             doc.addEventListener("scroll", this._eventListener, true);
             this._listenedDocuments.push(doc);
+          }
+          else
+          {
+            this._logMessage("Listeners already added\n");
           }
         ]]>
         </body>
@@ -289,7 +303,15 @@
             doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
             doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
             doc.removeEventListener("scroll", this._eventListener, true);
+            doc.removeEventListener("DOMActivate", this._eventListener, true);
+            doc.removeEventListener("DOMFocusIn", this._eventListener, true);
+            doc.removeEventListener("DOMFocusOut", this._eventListener, true);
+            doc.removeEventListener("DOMSubtreeModified", this._eventListener, true);
             this._listenedDocuments.splice(pos,1);
+          }
+          else
+          {
+            this._logMessage("Listeners already removed\n");
           }
         ]]>
         </body>
@@ -310,25 +332,40 @@
       	<parameter name="doc"/>
       	<body>
       	<![CDATA[
-      		if (doc && (doc instanceof Document))
+      		if (doc)
       		{
-	      		this._addDocumentListeners(doc);
-	      		var subdocs = doc.getElementsByTagName("frame");
-	      		for (var pos = 0; pos<subdocs.length; pos++)
-	      		{
-      				this._findDocuments(subdocs[pos].contentDocument);
-	      		}
-	      		subdocs = doc.getElementsByTagName("iframe");
-	      		for (var pos = 0; pos<subdocs.length; pos++)
-	      		{
-      				this._findDocuments(subdocs[pos].contentDocument);
-	      		}
-	      		subdocs = doc.getElementsByTagName("browser");
-	      		for (var pos = 0; pos<subdocs.length; pos++)
-	      		{
-      				this._findDocuments(subdocs[pos].contentDocument);
-	      		}
+            if (doc.contentDocument && (doc.contentDocument instanceof Document))
+              doc=doc.contentDocument;
+
+            if (doc instanceof Document)
+              this._addDocumentListeners(doc);
+
+            if (doc.getElementsByTagName)
+            {
+  	      		var subdocs = doc.getElementsByTagName("frame");
+  	      		for (var pos = 0; pos<subdocs.length; pos++)
+  	      		{
+                this._logMessage("Adding new frame");
+        				this._findDocuments(subdocs[pos].contentDocument);
+  	      		}
+  	      		subdocs = doc.getElementsByTagName("iframe");
+  	      		for (var pos = 0; pos<subdocs.length; pos++)
+  	      		{
+                this._logMessage("Adding new iframe");
+        				this._findDocuments(subdocs[pos].contentDocument);
+  	      		}
+  	      		subdocs = doc.getElementsByTagName("browser");
+  	      		for (var pos = 0; pos<subdocs.length; pos++)
+  	      		{
+                this._logMessage("Adding new browser");
+        				this._findDocuments(subdocs[pos].contentDocument);
+  	      		}
+            }
 	      	}
+          else
+          {
+            this._logMessage("Attempt to add null doc");
+          }
 				]]>
       	</body>
       </method>
@@ -370,9 +407,11 @@
         <parameter name="event"/>
         <body>
         <![CDATA[
+          //this._logMessage("Event - "+event.type);
           if (event.type=="DOMTitleChanged")
           {
             this.update();
+            //this._documentChanged();
           }
           else if (event.type=="resize")
           {
@@ -393,9 +432,35 @@
           }
           else if (event.type=="unload")
           {
-            if (event.originalTarget instanceof Document)
+            this._logMessage("unload "+event.originalTarget);
+            var doc = null;
+            if (event.originalTarget)
             {
-              this._removeDocumentListeners(event.originalTarget);
+              if (event.originalTarget instanceof Document)
+              {
+                doc=event.originalTarget;
+              }
+              else if (event.originalTarget.document)
+              {
+                doc=event.originalTarget.document;
+              }
+              else if (event.originalTarget.contentDocument)
+              {
+                doc=event.originalTarget.contentDocument;
+              }
+              else if (event.originalTarget.ownerDocument.documentElement==event.originalTarget)
+              {
+                doc=event.originalTarget.ownerDocument;
+              }
+            }
+            
+            if (doc)
+            {
+              this._removeDocumentListeners(doc);
+            }
+            else
+            {
+              this._logMessage("Unload of "+event.originalTarget);
             }
           }
           else if (event.type.substring(0,3)=="DOM")
@@ -407,6 +472,10 @@
             {
                 this._documentScrolled();
                 return;
+            }
+            if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument"))
+            {
+              this._findDocuments(event.target);
             }
             this._documentChanged();
           }
@@ -691,7 +760,7 @@
           this._changeTimed=false;
           this._scrollTimed=false;
           this._loadTimed=false;
-
+          
           this._updateTimer.cancel();
           if (this.previews.loadRefresh)
           {
@@ -707,6 +776,9 @@
           this.loading=false;
           this.stopButton.disabled=true;
           this._updateTimer.cancel();
+
+          this._emptyDocumentListeners();
+          this._findDocuments(this._browser.contentDocument);
         </body>
       </method>
       
