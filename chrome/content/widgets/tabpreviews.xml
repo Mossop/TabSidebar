@@ -212,6 +212,8 @@
           this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
           this._loadDelay = this.preferences.getIntPref("loaddelay");
           this._unselectedLoadDelay = this.preferences.getIntPref("unselectedloaddelay");
+          this._textDelay = this.preferences.getIntPref("textdelay");
+          this._unselectedTextDelay = this.preferences.getIntPref("unselectedtextdelay");
           this._changeDelay = this.preferences.getIntPref("changedelay");
           this._unselectedChangeDelay = this.preferences.getIntPref("unselectedchangedelay");
           this._scrollDelay = this.preferences.getIntPref("scrolldelay");
@@ -530,6 +532,12 @@
       
       <field name="_unselectedChangeDelay"/>
       <property name="unselectedChangeDelay" onget="return this._unselectedChangeDelay;"/>
+      
+      <field name="_textDelay"/>
+      <property name="textDelay" onget="return this._textDelay;"/>
+      
+      <field name="_unselectedTextDelay"/>
+      <property name="unselectedTextDelay" onget="return this._unselectedTextDelay;"/>
       
       <field name="_scrollDelay"/>
       <property name="scrollDelay" onget="return this._scrollDelay;"/>
@@ -1208,6 +1216,12 @@
               break;
             case "unselectedscrolldelay":
               this._unselectedScrollDelay = this.preferences.getIntPref(data);
+              break;
+            case "textdelay":
+              this._textDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedtextdelay":
+              this._unselectedTextDelay = this.preferences.getIntPref(data);
               break;
             case "changedelay":
               this._changeDelay = this.preferences.getIntPref(data);

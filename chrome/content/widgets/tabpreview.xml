@@ -381,6 +381,17 @@
         </body>
       </method>
       
+      <method name="_documentTextInput">
+        <body>
+          var delay = this.previews.textDelay;
+          if (!this.selected)
+            delay = this.previews.unselectedTextDelay;
+          this._textTimer.cancel();
+          this._textTimed=true;
+          this._textTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        </body>
+      </method>
+      
       <method name="_documentChanged">
         <body>
           var delay = this.previews.changeDelay;
@@ -410,9 +421,7 @@
           //this._logMessage("Event - "+event.type);
           if (event.type=="DOMTitleChanged")
           {
-            var el = this.titleField;
-            if (el)
-              el.value=this.title;
+            this.onTitleChange();
           }
           else if (event.type=="resize")
           {
@@ -477,6 +486,22 @@
             if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument"))
             {
               this._findDocuments(event.target);
+            }
+            if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
+            {
+              if (event.target instanceof HTMLTextAreaElement)
+              {
+                this._documentTextInput();
+                return;
+              }
+              if (event.target instanceof HTMLInputElement)
+              {
+                if ((event.target.type=="text")||(event.target.type=="password"))
+                {
+                  this._documentTextInput();
+                  return;
+                }
+              }
             }
             this._documentChanged();
           }
@@ -664,6 +689,11 @@
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
       <field name="_changeTimed">false</field>
+      
+      <field name="_textTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      <field name="_textTimed">false</field>
       
       <field name="_scrollTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
@@ -1176,9 +1206,7 @@
 
           this.onLinkIconAvailable();
 
-          el = this.titleField;
-          if (el)
-            el.value=this.title;
+          this.onTitleChange();
         </body>
       </method>
       
@@ -1408,7 +1436,16 @@
             el.src=this.icon;
         </body>
       </method>
+
+      <method name="onTitleChange">
+        <body>
+          var el = this.titleField;
       
+          if (el)
+            el.value=this.title;
+        </body>
+      </method>
+            
       <!--  Start of nsITimerCallback implementation -->
 
       <method name="notify">
@@ -1423,29 +1460,36 @@
               this._redraw();
               this._invalid=false;
             }
+            return;
           }
           else if (timer==this._loadTimer)
           {
             this._loadTimed=false;
-            if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
-							return;
-            this.redraw();
-            this.update();
           }
           else if (timer==this._changeTimer)
           {
             this._changeTimed=false;
-            if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
-							return;
-            this.redraw();
+          }
+          else if (timer==this._textTimer)
+          {
+            this._textTimed=false;
           }
           else if (timer==this._scrollTimer)
           {
             this._scrollTimed=false;
-            if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
-							return;
-            this.redraw();
           }
+          else
+          {
+            return;
+          }
+
+          if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed)||(this._textTimed))
+            return;
+
+          this.redraw();
+
+          if (timer==this._loadTimer)
+            this.update();
         ]]>
         </body>
       </method>
