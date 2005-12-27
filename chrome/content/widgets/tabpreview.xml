@@ -410,8 +410,9 @@
           //this._logMessage("Event - "+event.type);
           if (event.type=="DOMTitleChanged")
           {
-            this.update();
-            //this._documentChanged();
+            var el = this.titleField;
+            if (el)
+              el.value=this.title;
           }
           else if (event.type=="resize")
           {
@@ -779,6 +780,8 @@
 
           this._emptyDocumentListeners();
           this._findDocuments(this._browser.contentDocument);
+
+          this._documentLoaded();
         </body>
       </method>
       
@@ -1169,22 +1172,13 @@
 
       <method name="update">
         <body>
-          var uri = this.uri;
-          var el = this.uriField;
-          if (el)
-            el.value=uri;
+          this.onLocationChange();
+
+          this.onLinkIconAvailable();
 
           el = this.titleField;
           if (el)
             el.value=this.title;
-
-          el = this.faviconIcon;
-          if (el)
-            el.src=this.icon;
-          
-          var reload = this.reloadButton;
-          reload.disabled=(uri=="about:blank" || uri=="");
-          this.historyChange();
         </body>
       </method>
       
@@ -1339,7 +1333,16 @@
         <parameter name="request"/>
         <parameter name="location"/>
         <body>
-          this.update();
+          var uri = this.uri;
+
+          var el = this.uriField;
+          if (el)
+            el.value=this.uri;
+
+          var reload = this.reloadButton;
+          reload.disabled=(uri=="about:blank" || uri=="");
+
+          this.historyChange();
         </body>
       </method>
       
@@ -1398,6 +1401,14 @@
         </body>
       </method>
       
+      <method name="onLinkIconAvailable">
+        <body>
+          var el = this.faviconIcon;
+          if (el)
+            el.src=this.icon;
+        </body>
+      </method>
+      
       <!--  Start of nsITimerCallback implementation -->
 
       <method name="notify">
@@ -1418,7 +1429,7 @@
             this._loadTimed=false;
             if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed))
 							return;
-            this._redraw();
+            this.redraw();
             this.update();
           }
           else if (timer==this._changeTimer)

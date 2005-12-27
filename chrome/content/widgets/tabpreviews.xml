@@ -103,6 +103,7 @@
         }
         this.window = topwin;
         this.tabbrowser = topwin.document.getElementById("content");
+        this.tabbrowser.addProgressListener(this._progressListener);
         
         this._loadLocale();
         this._initTree();
@@ -247,6 +248,8 @@
         <body>
           if (!this._destroyed)
           {
+            this.tabbrowser.removeProgressListener(this._progressListener);
+
             while (this.firstChild)
             {
               if (this.firstChild.localName == "tabpreview")
@@ -315,6 +318,48 @@
         </body>
       </method>
       
+      <field name="_progressListener">({
+          tabpreviews: this,
+
+          onProgressChange : function (aWebProgress, aRequest,
+                                       aCurSelfProgress, aMaxSelfProgress,
+                                       aCurTotalProgress, aMaxTotalProgress)
+          {
+          },
+
+          onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
+          {
+          },
+
+          onLocationChange : function(aWebProgress, aRequest, aLocation)
+          {
+          },
+
+          onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage)
+          {
+          },
+
+          onSecurityChange : function(aWebProgress, aRequest, aState)
+          {
+          },
+
+          onLinkIconAvailable : function(browser)
+          {
+            var preview = this.tabpreviews.getPreviewForBrowser(browser);
+            if (preview)
+              preview.onLinkIconAvailable();
+          },
+          
+          QueryInterface : function(aIID)
+          {
+            if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                aIID.equals(Components.interfaces.nsISupports))
+              return this;
+            throw Components.results.NS_NOINTERFACE;
+          }
+        });</field>
+
       <!-- Internal fields and methods -->
 
       <field name="_selected"/>
