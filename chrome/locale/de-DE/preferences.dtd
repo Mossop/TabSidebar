@@ -2,8 +2,6 @@
 <!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
 <!ENTITY tabsidebar.options.version               "Version: ">
 
-<!ENTITY paneGeneral.title                        "Allgemein">
-
 <!ENTITY paneGeneral.hidetabs.label               "Bei geöffneter Sidebar die Tab-Leiste verstecken">
 <!ENTITY paneGeneral.hidetabs.accesskey           "">
 

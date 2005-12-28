@@ -2,6 +2,3 @@
 <!ENTITY tabsidebar.menu.label            "&tabsidebar.brand;">
 <!ENTITY tabsidebar.menu.accesskey        "T">
 <!ENTITY tabsidebar.opensidebar           "Open &tabsidebar.brand;">
-
-<!ENTITY tabsidebar.refresh.label         "Refresh preview">
-<!ENTITY tabsidebar.refreshall.label      "Refresh all previews">
