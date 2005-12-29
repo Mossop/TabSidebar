@@ -1,0 +1,9 @@
+<!ENTITY tabsidebar.options.title "&tabsidebar.brand; のオプション">
+<!ENTITY tabsidebar.options.style "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.version "バージョン: ">
+
+<!ENTITY paneGeneral.hidetabs.label "Tab Sidebar が開いている時はタブバーを隠す">
+<!ENTITY paneGeneral.hidetabs.accesskey "H">
+
+<!ENTITY paneDisplay.content.navigation.label "ナビゲーションボタンを表示する">
+<!ENTITY paneDisplay.content.navigation.accesskey "n">

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+%brandDTD;
+]>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:nc="http://home.netscape.com/NC-rdf#">
+
+  <rdf:Description about="urn:root">
+    <nc:subheadings>
+      <rdf:Seq>
+        <rdf:li><rdf:Description ID="tabsidebar-help" nc:name="Welcome to &tabsidebar.brand; Help" nc:link="welcome.xhtml"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage" nc:name="Using &tabsidebar.brand;" nc:link="using.xhtml" /></rdf:li>
+        <rdf:li><rdf:Description ID="options" nc:name="Options" nc:link="options.xhtml" /></rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+
+  <rdf:Description about="#usage">
+    <nc:subheadings>
+      <rdf:Seq>
+        <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Displaying &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-previews" nc:name="Using Previews" nc:link="using.xhtml#usage_previews"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-tabs" nc:name="Manipulating Tabs" nc:link="using.xhtml#usage_tabs"/></rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+
+  <rdf:Description about="#options">
+    <nc:subheadings>
+      <rdf:Seq>
+        <rdf:li><rdf:Description ID="options-showing" nc:name="Displaying Options" nc:link="options.xhtml#options"/></rdf:li>
+        <rdf:li><rdf:Description ID="options-general" nc:name="General Settings" nc:link="options.xhtml#general_options"/></rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+
+</rdf:RDF>
