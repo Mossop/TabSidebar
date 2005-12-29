@@ -21,7 +21,7 @@
   <rdf:Description about="#usage">
     <nc:subheadings>
       <rdf:Seq>
-        <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Displaying &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Displaying and Closing &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
         <rdf:li><rdf:Description ID="usage-previews" nc:name="Using Previews" nc:link="using.xhtml#usage_previews"/></rdf:li>
         <rdf:li><rdf:Description ID="usage-tabs" nc:name="Manipulating Tabs" nc:link="using.xhtml#usage_tabs"/></rdf:li>
       </rdf:Seq>
