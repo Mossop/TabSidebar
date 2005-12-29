@@ -410,6 +410,9 @@
       
       <method name="_documentLoaded">
         <body>
+          if (!this.previews)
+            return;
+            
           var delay = this.previews.loadDelay;
           if (!this.selected)
             delay = this.previews.unselectedLoadDelay;
@@ -421,6 +424,9 @@
       
       <method name="_documentTextInput">
         <body>
+          if (!this.previews)
+            return;
+            
           var delay = this.previews.textDelay;
           if (!this.selected)
             delay = this.previews.unselectedTextDelay;
@@ -432,6 +438,9 @@
       
       <method name="_documentChanged">
         <body>
+          if (!this.previews)
+            return;
+            
           var delay = this.previews.changeDelay;
           if (!this.selected)
             delay = this.previews.unselectedChangeDelay;
@@ -443,6 +452,9 @@
       
       <method name="_documentScrolled">
         <body>
+          if (!this.previews)
+            return;
+            
           var delay = this.previews.scrollDelay;
           if (!this.selected)
             delay = this.previews.unselectedScrollDelay;
@@ -858,7 +870,7 @@
           this._loadTimed=false;
           
           this._updateTimer.cancel();
-          if (this.previews.loadRefresh)
+          if ((this.previews)&&(this.previews.loadRefresh))
           {
             this._updateTimer.initWithCallback(this._timerListener, 
                                              this.previews.loadRefreshRate, 
