@@ -1,0 +1,10 @@
+<!ENTITY dialog.title "&tabsidebar.brand; Hakkında">
+<!ENTITY dialog.version "Sürüm:">
+<!ENTITY dialog.author "Yazar:">
+<!ENTITY dialog.description       "&tabsidebar.brand; provides you with a quick thumbnail preview of every tab you have
+                                  open.">
+<!ENTITY dialog.homepage "Web sayfasına git">
+<!ENTITY dialog.contributors "Destekleyenler:">
+
+
+<!ENTITY dialog.accept "Kapat">

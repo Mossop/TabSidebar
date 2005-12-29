@@ -20,6 +20,9 @@
     <em:name>Tab Sidebar</em:name>
     <em:description>Displays previews of your tabs in your sidebar.</em:description>
     <em:creator>Mossop</em:creator>
+    <em:contributor>Peter Van Der Woude: Extensive testing, suggestions and contributions.</em:contributor>
+    <em:contributor>ReinekeFux: German localisation.</em:contributor>
+    <em:contributor>Erkan Kaplan: Turkish localisation.</em:contributor>
     <em:optionsURL>chrome://tabsidebar/content/preferences.xul</em:optionsURL>
     <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/tabsidebar/index.html</em:homepageURL>
     <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/update.rdf?guid=%ITEM_ID%&amp;version=%ITEM_VERSION%&amp;app=%APP_ID%&amp;appver=%APP_VERSION%</em:updateURL>

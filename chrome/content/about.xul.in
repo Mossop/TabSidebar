@@ -98,6 +98,7 @@
       <vbox flex="1" style="overflow: auto">
         <description>Peter Van Der Woude: Extensive testing, suggestions and contributions.</description>
         <description>ReinekeFux: German localisation.</description>
+        <description>Erkan Kaplan: Turkish localisation.</description>
       </vbox>
       
     </vbox>
