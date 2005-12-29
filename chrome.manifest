@@ -5,6 +5,7 @@ locale			tabsidebar					en-US														file:chrome/locale/en-US/
 locale			tabsidebar					de-DE														file:chrome/locale/de-DE/
 locale			tabsidebar					tr-TR														file:chrome/locale/tr-TR/
 locale			tabsidebar					nl-NL														file:chrome/locale/nl-NL/
+locale			tabsidebar					fr															file:chrome/locale/fr/
 locale			tabsidebar					ja  														file:chrome/locale/ja/
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul

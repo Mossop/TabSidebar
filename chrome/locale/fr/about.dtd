@@ -1,0 +1,9 @@
+<!ENTITY dialog.title             "À propos de &tabsidebar.brand;">
+<!ENTITY dialog.version           "Version&#160;: ">
+<!ENTITY dialog.author            "Auteur&#160;: ">
+<!ENTITY dialog.description       "&tabsidebar.brand; vous fournit une un aperçu rapide en vignette de chaque onglet ouvert.">
+<!ENTITY dialog.homepage          "Visiter la page web">
+<!ENTITY dialog.contributors      "Contributeurs&#160;: ">
+
+
+<!ENTITY dialog.accept            "Fermer">
