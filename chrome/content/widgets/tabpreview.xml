@@ -389,7 +389,7 @@
       <method name="_checkDocuments">
         <body>
         <![CDATA[
-          if (!this._browser)
+          if ((!this._browser)||(!this._browser.docShell))
             return;
             
           if (this._listenedDocuments.length>0)
@@ -811,12 +811,14 @@
               this.loading=false;
             }
 
-            if ((this._browser.docShell)&&(this._browser.securityUI))
+            if (this._browser.docShell)
             {
-              this._setSecurity(this._browser.securityUI.state);
+              if (this._browser.securityUI)
+              {
+                this._setSecurity(this._browser.securityUI.state);
+              }
+  						this._findDocuments(this._browser.contentDocument);
             }
-
-						this._findDocuments(this._browser.contentDocument);
             this._addListeners();
             
             this._logMessage("Browser added");
@@ -888,7 +890,9 @@
           this._updateTimer.cancel();
 
           this._emptyDocumentListeners();
-          this._findDocuments(this._browser.contentDocument);
+
+          if (this._browser.docShell)
+            this._findDocuments(this._browser.contentDocument);
 
           this._documentLoaded();
         </body>
@@ -993,10 +997,9 @@
       
       <property name="title">
         <getter>
-          if (!this._browser)
-          {
+          if ((!this._browser)||(!this._browser.docShell))
             return "";
-          }
+
           var title = this._browser.contentTitle;
           if (title &amp;&amp; title.length&gt;0)
           {
@@ -1011,10 +1014,9 @@
 
       <property name="uri">
         <getter>
-          if (!this._browser)
-          {
+          if ((!this._browser)||(this._browser.docShell))
             return "";
-          }
+
           var uri = this._browser.currentURI;
           if (uri)
           {
@@ -1029,11 +1031,11 @@
 
       <property name="icon">
         <getter>
+        <![CDATA[
           if (!this._browser)
-          {
             return null;
-          }
-          if (Components.classes["@mozilla.org/browser/favicon-service;1"])
+
+          if ((Components.classes["@mozilla.org/browser/favicon-service;1"])&&(this._browser.docShell))
           {
             var favis = Components.classes["@mozilla.org/browser/favicon-service;1"]
                                   .getService(Components.interfaces.nsIFaviconService);
@@ -1041,6 +1043,7 @@
           }
           else
             return this._browser.mIconURL;
+        ]]>
         </getter>
       </property>
 
@@ -1070,7 +1073,7 @@
         <parameter name="event"/>
         <body>
         <![CDATA[
-          if (this._browser)
+          if ((this._browser)&&(this._browser.docShell))
           {
             if (event && event.shiftKey)
             {
@@ -1089,8 +1092,10 @@
 
       <method name="stop">
         <body>
-          if (this._browser)
+        <![CDATA[
+          if ((this._browser)&&(this._browser.docShell))
             this._browser.stop();
+        ]]>
         </body>
       </method>
 
@@ -1125,7 +1130,7 @@
         <parameter name="event"/>
         <body>
         <![CDATA[
-          if (this._browser)
+          if ((this._browser)&&(this._browser.docShell))
           {
             if (event)
             {
@@ -1161,7 +1166,7 @@
           while (menu.firstChild)
             menu.removeChild(menu.firstChild);
 
-          if (this._browser.docShell)
+          if ((this._browser)&&(this._browser.docShell))
           {
             var sessionHistory = this._browser.sessionHistory;
   
@@ -1191,7 +1196,7 @@
         <parameter name="event"/>
         <body>
         <![CDATA[
-          if (this._browser)
+          if ((this._browser)&&(this._browser.docShell))
           {
             if (event)
             {
@@ -1227,7 +1232,7 @@
           while (menu.firstChild)
             menu.removeChild(menu.firstChild);
 
-          if (this._browser.docShell)
+          if ((this._browser)&&(this._browser.docShell))
           {
             var sessionHistory = this._browser.sessionHistory;
   
