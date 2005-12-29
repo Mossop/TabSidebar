@@ -135,12 +135,8 @@
         <body>
           if (!this._destroyed)
           {
-            if (this._browser)
-            {
-              this._emptyDocumentListeners();
-              this._removeListeners();
-              this._browser=null;
-            }
+            this.loading=false;
+
             this._changeTimer.cancel();
             this._changeTimer=null;
             this._scrollTimer.cancel();
@@ -150,6 +146,13 @@
             this._updateTimer.cancel();
             this._updateTimer=null;
             
+            if (this._browser)
+            {
+              this._emptyDocumentListeners();
+              this._removeListeners();
+              this._browser=null;
+            }
+
             this._destroyed=true;
           }
         </body>
@@ -221,6 +224,8 @@
       
       <method name="_addListeners">
         <body>
+          this._logMessage("Add browser listeners");
+          
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
           this._browser.addEventListener("scroll", this._eventListener, true);
@@ -228,8 +233,11 @@
           this._browser.addEventListener("unload", this._eventListener, true);
           var WP = Components.interfaces.nsIWebProgress;
           var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY | WP.NOTIFY_PROGRESS;
-          this._browser.webProgress.addProgressListener(this._progressListener,mask);
-          //this._browser.sessionHistory.addSHistoryListener(this._historyListener);
+          if (this._browser.docShell)
+          {
+            this._browser.webProgress.addProgressListener(this._progressListener,mask);
+            //this._browser.sessionHistory.addSHistoryListener(this._historyListener);
+          }
           WP=null;
           mask=null;
         </body>
@@ -239,16 +247,22 @@
         <body>
           try
           {
-            this._browser.webProgress.removeProgressListener(this._progressListener);
+            this._logMessage("Remove browser listeners");
+          
             this._browser.removeEventListener("DOMTitleChanged", this._eventListener, false);
             this._browser.removeEventListener("resize", this._eventListener, false);
             this._browser.removeEventListener("scroll", this._eventListener, true);
             this._browser.removeEventListener("load", this._eventListener, true);
             this._browser.removeEventListener("unload", this._eventListener, true);
-            //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
+            if (this._browser.docShell)
+            {
+              this._browser.webProgress.removeProgressListener(this._progressListener);
+              //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
+            }
           }
           catch (e)
           {
+            dump(e+"\n");
           }
         </body>
       </method>
@@ -262,7 +276,8 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos<0)
           {
-            this._logMessage("Add listener\n");
+            this._logMessage("Add document listeners\n");
+            
             doc.addEventListener("DOMNodeInserted", this._eventListener, true);
             doc.addEventListener("DOMNodeRemoved", this._eventListener, true);
             doc.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
@@ -293,7 +308,8 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos>=0)
           {
-            this._logMessage("Remove listener\n");
+            this._logMessage("Remove document listeners\n");
+            
             doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
             doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
             doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
@@ -302,11 +318,11 @@
             doc.removeEventListener("DOMCharacterDataModified", this._eventListener, true);
             doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
             doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
-            doc.removeEventListener("scroll", this._eventListener, true);
             doc.removeEventListener("DOMActivate", this._eventListener, true);
             doc.removeEventListener("DOMFocusIn", this._eventListener, true);
             doc.removeEventListener("DOMFocusOut", this._eventListener, true);
             doc.removeEventListener("DOMSubtreeModified", this._eventListener, true);
+            doc.removeEventListener("scroll", this._eventListener, true);
             this._listenedDocuments.splice(pos,1);
           }
           else
@@ -399,7 +415,7 @@
             delay = this.previews.unselectedLoadDelay;
           this._loadTimer.cancel();
           this._loadTimed=true;
-          this._loadTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._loadTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -410,7 +426,7 @@
             delay = this.previews.unselectedTextDelay;
           this._textTimer.cancel();
           this._textTimed=true;
-          this._textTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._textTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -421,7 +437,7 @@
             delay = this.previews.unselectedChangeDelay;
           this._changeTimer.cancel();
           this._changeTimed=true;
-          this._changeTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._changeTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -432,7 +448,7 @@
             delay = this.previews.unselectedScrollDelay;
           this._scrollTimer.cancel();
           this._scrollTimed=true;
-          this._scrollTimer.initWithCallback(this, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._scrollTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         </body>
       </method>
       
@@ -440,6 +456,9 @@
         <parameter name="event"/>
         <body>
         <![CDATA[
+          if (!this.previews)
+            return;
+          
           //this._logMessage("Event - "+event.type);
           if (event.type=="DOMTitleChanged")
           {
@@ -574,6 +593,24 @@
           }
         });</field>
       
+      <field name="_timerListener">({
+          tabpreview: this,
+
+          notify : function(timer)
+          {
+            this.tabpreview.notify(timer);
+          },
+
+          QueryInterface : function(aIID)
+          {
+            if (aIID.equals(Components.interfaces.nsITimerCallback) ||
+                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                aIID.equals(Components.interfaces.nsISupports))
+              return this;
+            throw Components.results.NS_NOINTERFACE;
+          }
+        });</field>
+      
       <field name="_progressListener">({
           tabpreview: this,
 
@@ -622,19 +659,22 @@
       <method name="_logMessage">
         <parameter name="message"/>
         <body>
-          if (this.previews._enableLogging)
+        <![CDATA[
+          if (this.previews && this.previews._enableLogging)
           {
             Components.classes['@mozilla.org/consoleservice;1']
                       .getService(Components.interfaces.nsIConsoleService)
                       .logStringMessage("Tab Sidebar: "+message);
           }
+        ]]>
         </body>
       </method>
       
       <method name="_logWarning">
         <parameter name="message"/>
         <body>
-          if (this.previews._enableLogging)
+        <![CDATA[
+          if (this.previews && this.previews._enableLogging)
           {
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
@@ -650,13 +690,15 @@
                                     .getService(Components.interfaces.nsIConsoleService);
             console.logMessage(msg);
           }
+        ]]>
         </body>
       </method>
       
       <method name="_logError">
         <parameter name="message"/>
         <body>
-          if (this.previews._enableLogging)
+        <![CDATA[
+          if (this.previews && this.previews._enableLogging)
           {
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
@@ -672,6 +714,7 @@
                                     .getService(Components.interfaces.nsIConsoleService);
             console.logMessage(msg);
           }
+        ]]>
         </body>
       </method>
 
@@ -756,7 +799,7 @@
               this.loading=false;
             }
 
-            if (this._browser.securityUI)
+            if ((this._browser.docShell)&&(this._browser.securityUI))
             {
               this._setSecurity(this._browser.securityUI.state);
             }
@@ -817,7 +860,7 @@
           this._updateTimer.cancel();
           if (this.previews.loadRefresh)
           {
-            this._updateTimer.initWithCallback(this, 
+            this._updateTimer.initWithCallback(this._timerListener, 
                                              this.previews.loadRefreshRate, 
                                              Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
           }
@@ -840,6 +883,7 @@
       <method name="_setSecurity">
         <parameter name="state"/>
         <body>
+        <![CDATA[
           const WPL = Components.interfaces.nsIWebProgressListener;
                        
           switch (state)
@@ -860,7 +904,7 @@
           }
           
           var icon = this.securityIcon;
-          if (this._browser.securityUI)
+          if ((this._browser.docShell)&&(this._browser.securityUI))
           {
             icon.setAttribute("tooltiptext",this._browser.securityUI.tooltipText);
           }
@@ -868,6 +912,7 @@
           {
             icon.removeAttribute("tooltiptext");
           }
+        ]]>
         </body>
       </method>
       
@@ -1102,25 +1147,27 @@
           while (menu.firstChild)
             menu.removeChild(menu.firstChild);
 
-          var sessionHistory = this._browser.sessionHistory;
-
-          var index = sessionHistory.index;
-          var entry;
-
-          var end = (index > 8) ? index - 8 : 0;
-          if ((index - 1) < end) return false;
-          for (var pos = index - 1; pos >= end; pos--)
+          if (this._browser.docShell)
           {
-            entry = sessionHistory.getEntryAtIndex(pos, false);
-            if (entry)
+            var sessionHistory = this._browser.sessionHistory;
+  
+            var index = sessionHistory.index;
+            var entry;
+  
+            var end = (index > 8) ? index - 8 : 0;
+            if ((index - 1) < end) return false;
+            for (var pos = index - 1; pos >= end; pos--)
             {
-              var menuitem = document.createElement("menuitem");
-              menuitem.setAttribute("label", entry.title);
-              menuitem.setAttribute("index", pos);
-              menu.appendChild(menuitem);
+              entry = sessionHistory.getEntryAtIndex(pos, false);
+              if (entry)
+              {
+                var menuitem = document.createElement("menuitem");
+                menuitem.setAttribute("label", entry.title);
+                menuitem.setAttribute("index", pos);
+                menu.appendChild(menuitem);
+              }
             }
           }
-
           return true;
         ]]>
         </body>
@@ -1166,26 +1213,28 @@
           while (menu.firstChild)
             menu.removeChild(menu.firstChild);
 
-          var sessionHistory = this._browser.sessionHistory;
-
-          var index = sessionHistory.index;
-          var count = sessionHistory.count;
-          var entry;
-
-          var end  = ((count-index) > 8) ? index + 8 : count - 1;
-          if ((index + 1) > end) return false;
-          for (var pos = index + 1; pos <= end; pos++)
+          if (this._browser.docShell)
           {
-            entry = sessionHistory.getEntryAtIndex(pos, false);
-            if (entry)
+            var sessionHistory = this._browser.sessionHistory;
+  
+            var index = sessionHistory.index;
+            var count = sessionHistory.count;
+            var entry;
+  
+            var end  = ((count-index) > 8) ? index + 8 : count - 1;
+            if ((index + 1) > end) return false;
+            for (var pos = index + 1; pos <= end; pos++)
             {
-              var menuitem = document.createElement("menuitem");
-              menuitem.setAttribute("label", entry.title);
-              menuitem.setAttribute("index", pos);
-              menu.appendChild(menuitem);
+              entry = sessionHistory.getEntryAtIndex(pos, false);
+              if (entry)
+              {
+                var menuitem = document.createElement("menuitem");
+                menuitem.setAttribute("label", entry.title);
+                menuitem.setAttribute("index", pos);
+                menu.appendChild(menuitem);
+              }
             }
           }
-
           return true;
         ]]>
         </body>
@@ -1209,6 +1258,10 @@
           if (this.previews.previews.length == 1)
           {
             tabbrowser.loadURI("about:blank");
+            if (this._browser.docShell)
+            {
+              this._browser.sessionHistory.PurgeHistory(this._browser.sessionHistory.count);
+            }
           }
           else
           {
@@ -1235,7 +1288,7 @@
       <method name="historyChange">
         <body>
         <![CDATA[
-          if (this._browser)
+          if ((this._browser)&&(this._browser.docShell))
           {
             var session = this._browser.sessionHistory;
             this.backButton.disabled=(session.index<=0);
@@ -1260,6 +1313,9 @@
       <method name="_redraw">
         <body>
         <![CDATA[
+          if (!this.previews)
+            return;
+          
           if (this.previews.displayHeight==0)
           {
             this._logWarning("Cancelling redraw");
@@ -1288,7 +1344,7 @@
           {
             return;
           }
-          if (this._browser)
+          if ((this._browser)&&(this._browser.docShell))
           {
             var win = this._browser.contentWindow;
             var width = this._browserWidth;
@@ -1490,6 +1546,9 @@
         <parameter name="timer"/>
         <body>
         <![CDATA[
+          if (!this.previews)
+            return;
+          
           if (timer==this._updateTimer)
           {
             //this.update();
@@ -1541,10 +1600,15 @@
     <handlers>
       <handler event="mousedown">
       <![CDATA[
-        if (!this._browser)
-        {
+        if (!this.previews)
           return;
-        }
+          
+        if (!this._browser)
+          return;
+
+        if (!this.previews)
+          return;
+          
         var tabbrowser = this.previews.tabbrowser;
         if (event.button==1)
         {

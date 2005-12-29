@@ -496,21 +496,6 @@
       <field name="_contentHeight">-1</field>
       <property name="contentHeight" onget="return this._contentHeight;"/>
       
-      <field name="_suppressSizing">false</field>
-      <property name="suppressSizing">
-        <getter>
-          return this._suppressSizing;
-        </getter>
-        <setter>
-          if (this._suppressSizing != val)
-          {
-            this._suppressSizing = val;
-            this.browserResized(this._selected._browser.contentWindow.innerWidth,this._selected._browser.contentWindow.innerHeight);
-          }
-          return val;
-        </setter>
-      </property>
-
       <field name="_loadRefresh"/>
       <property name="loadRefresh" onget="return this._loadRefresh;"/>
       
@@ -647,6 +632,9 @@
         	var preview = this.getPreviewForBrowser(browser);
         	if (preview)
         	{
+            if (this._selected==preview)
+              this._selected=null;
+              
           	var drop = preview.nextSibling;
           	preview._destroy();
           	preview.parentNode.removeChild(preview);
@@ -1156,7 +1144,7 @@
         <![CDATA[
           if (timer==this._resizeTimer)
           {
-            if (this.displayHeight<=0)
+            if ((this.displayHeight<=0)&&(this._selected))
             {
               this._selected._updateSize(false);
             }
@@ -1251,9 +1239,13 @@
           {
             tab = event.target.tab;
           }
-          else
+          else if (this._selected)
           {
             tab = this._selected.tab;
+          }
+          else
+          {
+            tab = this.previews[0].tab;
           }
           this.tabbrowser.ownerDocument.popupNode = tab;
           var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
@@ -1266,7 +1258,7 @@
         if (event.button==0 && (event.target.localName=="separator" || event.target == this))
         {
           var focus = false;
-          if (document.commandDispatcher.focusedElement==this._selected)
+          if ((this._selected)&&(document.commandDispatcher.focusedElement==this._selected))
           {
             focus=true;
             this._selected.tab.focus();
@@ -1291,7 +1283,7 @@
 
 					var urlbar = this.window.document.getElementById("urlbar");
 
-					if (focus)
+					if ((focus)&&(this._selected))
             this._selected.focus();
           else
 						setTimeout(function() { urlbar.focus(); }, 0);
