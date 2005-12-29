@@ -13,7 +13,7 @@
       <rdf:Seq>
         <rdf:li><rdf:Description ID="tabsidebar-help" nc:name="Welcome to &tabsidebar.brand; Help" nc:link="welcome.xhtml"/></rdf:li>
         <rdf:li><rdf:Description ID="usage" nc:name="Using &tabsidebar.brand;" nc:link="using.xhtml" /></rdf:li>
-        <rdf:li><rdf:Description ID="options" nc:name="Options" nc:link="options.xhtml" /></rdf:li>
+        <rdf:li><rdf:Description ID="options" nc:name="&tabsidebar.brand; Options" nc:link="options.xhtml" /></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
