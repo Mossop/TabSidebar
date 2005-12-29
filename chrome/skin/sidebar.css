@@ -9,7 +9,7 @@ separator {
 
 .tbs-tabpreview label {
   margin: 2px;
-  font-family: message-box;
+  font: message-box;
 }
 
 .tbs-topbox {
