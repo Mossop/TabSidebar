@@ -801,6 +801,18 @@
         </body>
       </method>
       
+      <method name="displayContextMenu">
+        <parameter name="preview"/>
+        <parameter name="x"/>
+        <parameter name="y"/>
+        <body>
+          var tab = preview.tab;
+          this.tabbrowser.ownerDocument.popupNode = tab;
+          var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
+          context.showPopup(tab,x,y,"context");
+        </body>
+      </method>
+      
       <!-- Start of DnD implementation -->
 
       <field name="_lastDrop"/>
@@ -1234,22 +1246,19 @@
           x+=2;
           y+=2;
           
-          var tab = null;
           if (event.target.localName == "tabpreview")
           {
-            tab = event.target.tab;
+            this.displayContextMenu(event.target,x,y);
+            preview = event.target;
           }
           else if (this._selected)
           {
-            tab = this._selected.tab;
+            this.displayContextMenu(this._selected,x,y);
           }
           else
           {
-            tab = this.previews[0].tab;
+            this.displayContextMenu(this.previews[0],x,y);
           }
-          this.tabbrowser.ownerDocument.popupNode = tab;
-          var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
-          context.showPopup(tab,x,y,"context");
         }
       </handler>
       
@@ -1420,6 +1429,27 @@
                 current.focus();
               }
               event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_CONTEXT_MENU)
+            {
+              var preview = null;
+
+              if (this._selected)
+              {
+                preview=this._selected;
+              }
+              else
+              {
+                preview=this.previews[0];
+              }
+
+              var x = preview.boxObject.screenX-this.window.document.documentElement.boxObject.screenX;
+              var y = preview.boxObject.screenY-this.window.document.documentElement.boxObject.screenY;
+    
+              x+=2;
+              y+=2;
+              
+              this.displayContextMenu(preview,x,y);
             }
           }
         }

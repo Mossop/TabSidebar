@@ -857,6 +857,7 @@
       
       <method name="_loadStarted">
         <body>
+        <![CDATA[
           this.loading=true;
           this._invalid=true;
           this.stopButton.disabled=false;
@@ -876,6 +877,7 @@
                                              this.previews.loadRefreshRate, 
                                              Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
           }
+        ]]>
         </body>
       </method>
       
