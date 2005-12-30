@@ -1,0 +1,4 @@
+<!ENTITY tabsidebar.menu.accesskey "T">
+<!ENTITY tabsidebar.menu.label "&tabsidebar.brand;">
+<!ENTITY tabsidebar.opensidebar "Открыть &tabsidebar.brand;">
+<!ENTITY tabsidebar.title "&tabsidebar.brand;">

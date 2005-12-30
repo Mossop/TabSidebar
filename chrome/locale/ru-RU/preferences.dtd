@@ -1,0 +1,7 @@
+<!ENTITY paneDisplay.content.navigation.accesskey "к">
+<!ENTITY paneDisplay.content.navigation.label "Отображать кнопки навигации.">
+<!ENTITY paneGeneral.hidetabs.accesskey "C">
+<!ENTITY paneGeneral.hidetabs.label "Скрыть панель вкладок если открыта боковая панель.">
+<!ENTITY tabsidebar.options.style "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.title "Настройки &tabsidebar.brand;">
+<!ENTITY tabsidebar.options.version "Версия:">

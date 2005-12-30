@@ -1094,6 +1094,13 @@
                 
                 if (move)
                   this.tabbrowser.moveTabTo(newtab, newIndex);
+                
+                if (bgLoad)
+                {
+                  var preview = this.getPreviewForBrowser(newtab.linkedBrowser);
+                  
+                  this.ensureElementsAreVisible(preview,preview);
+                }
               }
               else
               {
@@ -1101,7 +1108,7 @@
                 var preview = aEvent.target;
                 preview.browser.loadURI(url);
   
-                if (this.tabbrowser.selectedTab != preview.tab && !bgLoad)
+                if (!bgLoad)
                   this.tabbrowser.selectedTab = preview.tab;
               }
             }

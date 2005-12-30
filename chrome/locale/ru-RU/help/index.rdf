@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+%brandDTD;
+]>
+
+<rdf:RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:nc="http://home.netscape.com/NC-rdf#">
+
+  <rdf:Description rdf:about="urn:root">
+    <nc:subheadings>
+      <rdf:Seq>
+        <!-- These nodes are used for searching purposes. -->
+        <li><Description nc:name="Открытие боковой панели" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="Просмотр боковой панели" nc:link="using.xhtml#usage_displaying"/></li>
+
+        <li><Description nc:name="Предпросмотр" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Перезагрузка предпросмотров" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Обновление предпросмотров" nc:link="using.xhtml#usage_previews"/></li>
+
+        <li><Description nc:name="Открытие новой вкладки" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Закрытие вкладок" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Перетаскивание вкладок" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Перемещение вкладок" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Перезагрузка вкладок" nc:link="using.xhtml#usage_tabs"/></li>
+
+         <li><Description nc:name="Открытие настроек" nc:link="options.xhtml#options"/></li>
+
+        <li><Description nc:name="Скрытие главной панели вкладок" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Автоматическое скрытие боковой панели" nc:link="options.xhtml#general_options"/></li>
+
+        <li><Description nc:name="Показ/Скрытие значков" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Показ/Скрытие кнопок" nc:link="options.xhtml#general_options"/></li>
+
+        <li><Description nc:name="Автоматическое обновление предпросмотров" nc:link="options.xhtml#general_options"/></li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+</rdf:RDF>
