@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+%brandDTD;
+]>
+
+<rdf:RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:nc="http://home.netscape.com/NC-rdf#">
+
+  <rdf:Description rdf:about="urn:root">
+    <nc:subheadings>
+      <rdf:Seq>
+        <!-- These nodes are used for searching purposes. -->
+        <li><Description nc:name="Aprire la barra laterale" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="Visualizzare la barra laterale" nc:link="using.xhtml#usage_displaying"/></li>
+
+        <li><Description nc:name="Anteprime" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Ricaricare le anteprime" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Aggiornare le anteprime" nc:link="using.xhtml#usage_previews"/></li>
+
+        <li><Description nc:name="Aprire una nuova scheda" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Chiudere le schede" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Trascinare le schede" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Spostare le schede" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Ricaricare le schede" nc:link="using.xhtml#usage_tabs"/></li>
+
+         <li><Description nc:name="Opzioni di apertura" nc:link="options.xhtml#options"/></li>
+
+        <li><Description nc:name="Nascondere la barra delle schede" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Nascondere automaticamente la barra laterale" nc:link="options.xhtml#general_options"/></li>
+
+        <li><Description nc:name="Mostrare/Nascondere le icone" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Mostrare/Nascondere i pulsanti" nc:link="options.xhtml#general_options"/></li>
+
+        <li><Description nc:name="Aggiornare automaticamente le anteprime" nc:link="options.xhtml#general_options"/></li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+</rdf:RDF>
