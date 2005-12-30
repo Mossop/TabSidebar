@@ -1014,7 +1014,7 @@
 
       <property name="uri">
         <getter>
-          if ((!this._browser)||(this._browser.docShell))
+          if ((!this._browser)||(!this._browser.docShell))
             return "";
 
           var uri = this._browser.currentURI;
