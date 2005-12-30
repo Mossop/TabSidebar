@@ -1037,6 +1037,7 @@
         <![CDATA[
           try
           {
+            this._hideDropIndicator();
             if (aDragSession.sourceNode && 
                (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
             {
@@ -1066,7 +1067,7 @@
               this.tabbrowser.dragDropSecurityCheck(aEvent, aDragSession, url);
   
               var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                                    .getService(Components.interfaces.nsIPrefService);
+                                    .getService(Components.interfaces.nsIPrefBranch);
               var bgLoad = true;
               try
               {
@@ -1079,6 +1080,8 @@
   
               if (aEvent.target.localName != "tabpreview")
               {
+                this._logMessage("Adding new tab: "+bgLoad);
+                
                 // We're adding a new tab.
                 var move = false;
                 var newIndex = this.previews.length;
@@ -1115,7 +1118,7 @@
           }
           catch (e)
           {
-            dump(e);
+            this._logError(e);
           }
         ]]>
         </body>
