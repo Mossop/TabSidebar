@@ -109,7 +109,9 @@
                                onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"/>
               </xul:toolbarbutton>
               <xul:spacer flex="1"/>
-              <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadButton.tooltip;" onmousedown="event.stopPropagation();" oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
+              <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadButton.tooltip;"
+                                 onmousedown="event.stopPropagation();"
+                                 oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
             </xul:hbox>
           </xul:vbox>
         </xul:stack>
@@ -471,92 +473,117 @@
           if (!this.previews)
             return;
           
-          //this._logMessage("Event - "+event.type);
-          if (event.type=="DOMTitleChanged")
+          try
           {
-            this.onTitleChange();
-          }
-          else if (event.type=="resize")
-          {
-            this._logMessage("Browser resized");
-            this._updateSize(false);
-          }
-          else if (event.type=="load")
-          {
-            if (event.originalTarget instanceof Document)
+            //this._logMessage("Event - "+event.type);
+            if (event.type=="DOMTitleChanged")
             {
-              this._addDocumentListeners(event.originalTarget);
-              this._documentLoaded();
+              this.onTitleChange();
             }
-          }
-          else if (event.type=="unload")
-          {
-            this._logMessage("unload "+event.originalTarget);
-            var doc = null;
-            if (event.originalTarget)
+            else if (event.type=="resize")
             {
-              if (event.originalTarget instanceof Document)
-              {
-                doc=event.originalTarget;
-              }
-              else if (event.originalTarget.document)
-              {
-                doc=event.originalTarget.document;
-              }
-              else if (event.originalTarget.contentDocument)
-              {
-                doc=event.originalTarget.contentDocument;
-              }
-              else if (event.originalTarget.ownerDocument.documentElement==event.originalTarget)
-              {
-                doc=event.originalTarget.ownerDocument;
-              }
+              this._logMessage("Browser resized");
+              this._updateSize(false);
             }
-            
-            if (doc)
+            else if (event.type=="load")
             {
-              this._removeDocumentListeners(doc);
-            }
-            else
-            {
-              this._logMessage("Unload of "+event.originalTarget);
-            }
-          }
-          else if ((event.type=="scroll")&&(!this.loading))
-          {
-            this._documentScrolled();
-          }
-          else if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
-          {
-            if ((event.type=="DOMAttrModified")&&
-               ((event.attrName=="curpos")
-              ||(event.attrName=="maxpos")
-              ||(event.attrName=="pageincrement")))
-            {
-                this._documentScrolled();
-                return;
-            }
-            if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument"))
-            {
-              this._findDocuments(event.target);
-            }
-            if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
-            {
-              if (event.target instanceof HTMLTextAreaElement)
+              if (event.target)
               {
-                this._documentTextInput();
-                return;
-              }
-              if (event.target instanceof HTMLInputElement)
-              {
-                if ((event.target.type=="text")||(event.target.type=="password"))
+                if (event.target instanceof Document)
                 {
-                  this._documentTextInput();
-                  return;
+                  doc=event.target;
+                }
+                else if (event.target.document)
+                {
+                  doc=event.target.document;
+                }
+                else if (event.target.contentDocument)
+                {
+                  doc=event.target.contentDocument;
+                }
+                else if (event.target.ownerDocument.documentElement==event.target)
+                {
+                  doc=event.target.ownerDocument;
                 }
               }
+              
+              if (doc)
+              {
+                this._addDocumentListeners(doc);
+                this._documentLoaded();
+              }
             }
-            this._documentChanged();
+            else if (event.type=="unload")
+            {
+              var doc = null;
+              if (event.target)
+              {
+                if (event.target instanceof Document)
+                {
+                  doc=event.target;
+                }
+                else if (event.target.document)
+                {
+                  doc=event.target.document;
+                }
+                else if (event.target.contentDocument)
+                {
+                  doc=event.target.contentDocument;
+                }
+                else if (event.target.ownerDocument.documentElement==event.target)
+                {
+                  doc=event.target.ownerDocument;
+                }
+              }
+              
+              if (doc)
+              {
+                this._removeDocumentListeners(doc);
+              }
+              else
+              {
+                this._logMessage("Unload of "+event.target);
+              }
+            }
+            else if (this._listenedDocuments.indexOf(event.target.ownerDocument)>=0)
+            {
+              if (event.type=="scroll")
+              {
+                this._documentScrolled();
+              }
+              else if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
+              {
+                if ((event.type=="DOMAttrModified")&&
+                   ((event.attrName=="curpos")
+                  ||(event.attrName=="maxpos")
+                  ||(event.attrName=="pageincrement")))
+                {
+                    this._documentScrolled();
+                    return;
+                }
+                if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
+                {
+                  if (event.target instanceof HTMLTextAreaElement)
+                  {
+                    this._documentTextInput();
+                    return;
+                  }
+                  if (event.target instanceof HTMLInputElement)
+                  {
+                    if ((event.target.type=="text")||(event.target.type=="password"))
+                    {
+                      this._documentTextInput();
+                      return;
+                    }
+                  }
+                }
+                this._documentChanged();
+              }
+            }
+          }
+          catch (e)
+          {
+            this._logWarning(e);
           }
         ]]>
         </body>
@@ -888,11 +915,6 @@
           this.loading=false;
           this.stopButton.disabled=true;
           this._updateTimer.cancel();
-
-          this._emptyDocumentListeners();
-
-          if (this._browser.docShell)
-            this._findDocuments(this._browser.contentDocument);
 
           this._documentLoaded();
         </body>
