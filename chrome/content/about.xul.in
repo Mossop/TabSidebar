@@ -86,7 +86,7 @@
       <separator class="thin"/>
   
       <hbox pack="end">
-        <label class="text-link" onclick="window.opener.open('http://users.blueprintit.co.uk/~dave/web/firefox/tabsidebar', '_blank')" value="&dialog.homepage;"/>
+        <label class="text-link" onclick="window.opener.open('http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar', '_blank')" value="&dialog.homepage;"/>
       </hbox>
   
       <separator class="thin"/>
