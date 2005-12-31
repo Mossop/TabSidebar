@@ -9,7 +9,7 @@
         xmlns:nc="http://home.netscape.com/NC-rdf#">
 
   <rdf:Description about="urn:root"
-          nc:title="&tabsidebar.brand; Help"
+          nc:title="Hilfe zu &tabsidebar.brand;"
           nc:defaulttopic="tabsidebar-help"
           nc:base="chrome://tabsidebar/locale/help/">
     <nc:panellist>
@@ -25,7 +25,7 @@
         <rdf:li>
           <rdf:Description nc:panelid="search"
               nc:datasources=""
-              nc:emptysearchtext="[No matching items found.]"
+              nc:emptysearchtext="[Keine Suchergebnisse gefunden]"
               nc:emptysearchlink="chrome://help/locale/welcome.xhtml#search_tips"/>
         </rdf:li>
         <rdf:li>
