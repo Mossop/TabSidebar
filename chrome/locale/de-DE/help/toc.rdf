@@ -13,7 +13,7 @@
       <rdf:Seq>
         <rdf:li><rdf:Description ID="tabsidebar-help" nc:name="Welcome to &tabsidebar.brand; Help" nc:link="welcome.xhtml"/></rdf:li>
         <rdf:li><rdf:Description ID="usage" nc:name="Using &tabsidebar.brand;" nc:link="using.xhtml" /></rdf:li>
-        <rdf:li><rdf:Description ID="options" nc:name="&tabsidebar.brand; Options" nc:link="options.xhtml" /></rdf:li>
+        <rdf:li><rdf:Description ID="options" nc:name="Options" nc:link="options.xhtml" /></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
@@ -21,7 +21,7 @@
   <rdf:Description about="#usage">
     <nc:subheadings>
       <rdf:Seq>
-        <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Displaying and Closing &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Displaying &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
         <rdf:li><rdf:Description ID="usage-previews" nc:name="Using Previews" nc:link="using.xhtml#usage_previews"/></rdf:li>
         <rdf:li><rdf:Description ID="usage-tabs" nc:name="Manipulating Tabs" nc:link="using.xhtml#usage_tabs"/></rdf:li>
       </rdf:Seq>

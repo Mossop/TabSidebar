@@ -1,10 +1,9 @@
-<!ENTITY dialog.title             "About &tabsidebar.brand;">
+<!ENTITY dialog.title             "Über &tabsidebar.brand;">
 <!ENTITY dialog.version           "Version: ">
-<!ENTITY dialog.author            "Author: ">
-<!ENTITY dialog.description       "&tabsidebar.brand; provides you with a quick thumbnail preview of every tab you have
-                                  open.">
-<!ENTITY dialog.homepage          "Visit home page">
-<!ENTITY dialog.contributors      "Contributors: ">
+<!ENTITY dialog.author            "Erstellt von: ">
+<!ENTITY dialog.description       "&tabsidebar.brand; bietet eine schnelle Vorschau der Inhalte aller offenen Tabs.">
+<!ENTITY dialog.homepage          "Homepage besuchen">
+<!ENTITY dialog.contributors      "Mitwirkende: ">
 
 
-<!ENTITY dialog.accept            "Close">
+<!ENTITY dialog.accept            "Schließen">

@@ -2,8 +2,10 @@
 <!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
 <!ENTITY tabsidebar.options.version               "Version: ">
 
-<!ENTITY paneGeneral.hidetabs.label               "Bei geöffneter Sidebar die Tab-Leiste verstecken">
-<!ENTITY paneGeneral.hidetabs.accesskey           "">
+<!ENTITY paneGeneral.title                        "Allgemein">
 
-<!ENTITY paneDisplay.content.navigation.label     "Display navigation buttons.">
-<!ENTITY paneDisplay.content.navigation.accesskey "n">
+<!ENTITY paneGeneral.hidetabs.label               "Tab-Leiste bei offener Sidebar verstecken">
+<!ENTITY paneGeneral.hidetabs.accesskey           "T">
+
+<!ENTITY paneDisplay.content.navigation.label     "Navigations-Schaltflächen anzeigen">
+<!ENTITY paneDisplay.content.navigation.accesskey "N">

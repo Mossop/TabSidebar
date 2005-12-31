@@ -2,3 +2,6 @@
 <!ENTITY tabsidebar.menu.label            "&tabsidebar.brand;">
 <!ENTITY tabsidebar.menu.accesskey        "T">
 <!ENTITY tabsidebar.opensidebar           "&tabsidebar.brand; öffnen">
+
+<!ENTITY tabsidebar.refresh.label         "Vorschaubild aktualisieren">
+<!ENTITY tabsidebar.refreshall.label      "Alle Vorschaubilder aktualisieren">
