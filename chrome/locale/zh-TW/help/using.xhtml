@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+  <!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
+  <!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd" >
+  <!ENTITY % menusDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+  <!ENTITY % platformDTD SYSTEM "chrome://browser/locale/help/platformStrings.dtd" >
+  %tabbrowserDTD;
+  %brandDTD;
+  %menusDTD;
+  %platformDTD;
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>使用 &tabsidebar.brand;</title>
+  <link rel="stylesheet" type="text/css" href="chrome://help/skin/helpFileLayout.css"/>
+</head>
+
+<body>
+
+<h1>使用 &tabsidebar.brand;</h1>
+<p>這份文件會解釋如何使用 &tabsidebar.brand;。</p>
+
+<div class="contentsBox">本節內容:
+  <ul>
+    <li><a href="#usage_displaying">打開和關閉 &tabsidebar.brand;</a></li>
+    <li><a href="#usage_previews">使用縮圖預覽</a></li>
+    <li><a href="#usage_tabs">如何操作分頁</a></li>
+  </ul>
+</div>
+
+<h2 id="usage_displaying">打開和關閉 &tabsidebar.brand;</h2>
+
+<p>要打開或關閉 Tab Sidebar，只要從 <span class="menuPath">檢視 &gt; 側邊欄 &gt; &tabsidebar.menu.label;</span> 切換就可以了。
+   想快速開關側邊欄也可以按鍵盤上 &accelKey;+&shiftKey;+<kbd>T</kbd> 或 &accelKey;+&shiftKey;+<kbd>E</kbd>。</p>
+   
+<h2 id="usage_previews">使用縮圖預覽</h2>
+
+<p>使用 &tabsidebar.brand; 最大的好處就是可以預覽你所開啟的每個分頁畫面，當頁面重新載入時，縮圖預覽也會自動重繪。</p>
+
+<h2 id="usage_tabs">如何操作分頁</h2>
+
+<p>&tabsidebar.brand; 和原來的分頁列一樣，提供了多種操作分頁的方法。下面是可使用的動作列表：</p>
+   
+<dl>
+	<dt>建立新分頁</dt>
+  <dd>在 Tab Sidebar 裡建立新分頁的方法和原來的分頁列一樣，只要在側邊欄中空白的地方按兩下即可。如果在分頁間的空白處按兩下的話，就會在兩個分頁間插入新分頁。
+   你也可以於<span class="mac">按住 &ctrlKey; 後，再點</span>側邊欄<span class="noMac">按滑鼠右鍵</span>，接著選擇
+   <span class="menuPath">&newTab.label;</span>，就可以在最後面加入新分頁了。
+   將網址或書籤項目拖放到側邊欄中的空白區域（或分頁間的空白處），則會直接以該網址開啟新分頁。</dd>
+
+	<dt>關閉使用中或背景分頁</dt> 
+  <dd>有幾個方法可以關閉分頁。最快的方法就是和原來的分頁列一樣，在側邊欄的分頁縮圖上按滑鼠中鍵關閉該分頁。也可以
+  <span class="mac">按住 &ctrlKey; 後，再點</span>側邊欄<span class="noMac">按滑鼠右鍵</span>，接著選擇 <span class="menuPath">&closeTab.label;</span>。
+   不然如果你有勾選 <a href="options.xhtml#display_options">Tab Sidebar 選項</a> 顯示導覽按鈕的話，按一下關閉鈕也可以關閉分頁。</dd>
+   
+	<dd>快顯功能表可以讓你關閉除了已選分頁外的其他分頁。只要於<span class="mac">按住 &ctrlKey; 後，再點</span>分頁<span class="noMac">按滑鼠右鍵</span>
+   ，然後選擇 <span class="menuPath">&closeOtherTabs.label;</span> 即可。</dd>
+   
+	<dt>重新載入使用中或背景分頁</dt>
+  <dd>和原來的分頁列相同，&tabsidebar.brand; 也可以於快顯功能表中重新載入單一或全部分頁。只要
+  <span class="mac">按住 &ctrlKey; 後，再點</span>側邊欄<span class="noMac">按滑鼠右鍵</span>，然後選 <span class="menuPath">&reloadTab.label;</span>
+   或 <span class="menuPath">&reloadAllTabs.label;</span> 就可以了。預設的情況下，每個分頁縮圖上都會顯示重新載入的按鈕，所以也可以按該按鈕來重新載入分頁。
+   如果不想顯示按鈕，可以從 <a href="options.xhtml#display_options">選項視窗</a> 中關閉。</dd>
+
+	<dt>移動分頁順序</dt>
+  <dd>&tabsidebar.brand; 也可以像原來分頁列一樣，用拖放的方式移動分頁順序。先在分頁上按滑鼠左鍵，然後移動到你想要放置的地方後放開滑鼠。
+  在移動滑鼠時會出現箭頭指示，提示你放開滑鼠時分頁會移動到哪裡。</dd>
+</dl>
+   
+</body>
+</html>

@@ -1,0 +1,9 @@
+<!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; 選項">
+<!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.version               "版本: ">
+
+<!ENTITY paneGeneral.hidetabs.label               "當側邊欄開啟時隱藏分頁工具列。">
+<!ENTITY paneGeneral.hidetabs.accesskey           "H">
+
+<!ENTITY paneDisplay.content.navigation.label     "顯示導覽按鈕。">
+<!ENTITY paneDisplay.content.navigation.accesskey "n">

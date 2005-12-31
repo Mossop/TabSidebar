@@ -9,6 +9,7 @@ locale			tabsidebar					fr															file:chrome/locale/fr/
 locale			tabsidebar					it															file:chrome/locale/it/
 locale			tabsidebar					ja  														file:chrome/locale/ja/
 locale			tabsidebar					ru-RU  													file:chrome/locale/ru-RU/
+locale			tabsidebar					zh-TW														file:chrome/locale/zh-TW/
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
