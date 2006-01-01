@@ -1,0 +1,9 @@
+<!ENTITY tabsidebar.options.title                 "Možnosti &tabsidebar.brand;">
+<!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.version               "Verzia: ">
+
+<!ENTITY paneGeneral.hidetabs.label               "Pri otvorenom bočnom paneli skryť hlavný">
+<!ENTITY paneGeneral.hidetabs.accesskey           "S">
+
+<!ENTITY paneDisplay.content.navigation.label     "Zobraziť navigačné tlačidlá">
+<!ENTITY paneDisplay.content.navigation.accesskey "t">
