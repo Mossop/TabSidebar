@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [
+<!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">
+%brandDTD;
+]>
+
+<rdf:RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:nc="http://home.netscape.com/NC-rdf#">
+
+  <rdf:Description rdf:about="urn:root">
+    <nc:subheadings>
+      <rdf:Seq>
+        <!-- These nodes are used for searching purposes. -->
+        <li><Description nc:name="Abrir panel lateral" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="Ver panel lateral" nc:link="using.xhtml#usage_displaying"/></li>
+
+        <li><Description nc:name="Vistas previas" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Recargar vistas previas" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Actualizar vistas previas" nc:link="using.xhtml#usage_previews"/></li>
+
+        <li><Description nc:name="Abrir nueva pestaña" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Cerrar pestañas" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Arrastrar pestañas" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Mover pestañas" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Recargar pestañas" nc:link="using.xhtml#usage_tabs"/></li>
+
+         <li><Description nc:name="Abrir Opciones" nc:link="options.xhtml#options"/></li>
+
+        <li><Description nc:name="Ocultar barra de pestañas principal" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Ocultar automáticamente panel lateral" nc:link="options.xhtml#general_options"/></li>
+
+        <li><Description nc:name="Mostrar/ocultar iconos" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Mostrar/ocultar botones" nc:link="options.xhtml#general_options"/></li>
+
+        <li><Description nc:name="Actualizar vistas previas automáticamente" nc:link="options.xhtml#general_options"/></li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+</rdf:RDF>

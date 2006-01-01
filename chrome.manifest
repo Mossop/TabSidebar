@@ -11,6 +11,7 @@ locale			tabsidebar					ja  														file:chrome/locale/ja/
 locale			tabsidebar					ru-RU  													file:chrome/locale/ru-RU/
 locale			tabsidebar					zh-TW														file:chrome/locale/zh-TW/
 locale			tabsidebar					sk-SK														file:chrome/locale/sk-SK/
+locale			tabsidebar					es-ES														file:chrome/locale/es-ES/
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
