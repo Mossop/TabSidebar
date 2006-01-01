@@ -29,6 +29,7 @@
     <em:contributor>Alexander L. Slovesnik</em:contributor>
     <em:contributor>Jose Sun</em:contributor>
     <em:contributor>SlovakSoft</em:contributor>
+    <em:contributor>Urko</em:contributor>
     <em:optionsURL>chrome://tabsidebar/content/preferences.xul</em:optionsURL>
     <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar/index.html</em:homepageURL>
     <em:iconURL>chrome://tabsidebar/skin/icon.png</em:iconURL>

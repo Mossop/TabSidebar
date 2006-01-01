@@ -1,0 +1,7 @@
+<!ENTITY tabsidebar.options.title "Opciones de &tabsidebar.brand;">
+<!ENTITY tabsidebar.options.style "width: 45em; height: 18em;">
+<!ENTITY tabsidebar.options.version "Versión: ">
+<!ENTITY paneGeneral.hidetabs.label "Ocultar la barra de pestañas cuando está abierto el panel lateral.">
+<!ENTITY paneGeneral.hidetabs.accesskey "O">
+<!ENTITY paneDisplay.content.navigation.label "Mostrar botones de navegación.">
+<!ENTITY paneDisplay.content.navigation.accesskey "n">
