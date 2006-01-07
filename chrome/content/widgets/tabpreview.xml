@@ -127,8 +127,8 @@
       </constructor>
 
       <destructor>
-        if (this.previews)
-          this._logMessage("tabpreview destructor");
+        /*if (this.previews)
+          this._logMessage("tabpreview destructor");*/
         this._destroy();
       </destructor>
       
@@ -137,25 +137,32 @@
         <body>
           if (!this._destroyed)
           {
-            this.loading=false;
-
-            this._changeTimer.cancel();
-            this._changeTimer=null;
-            this._scrollTimer.cancel();
-            this._scrollTimer=null;
-            this._loadTimer.cancel();
-            this._loadTimer=null;
-            this._updateTimer.cancel();
-            this._updateTimer=null;
-            
-            if (this._browser)
+            try
             {
-              this._emptyDocumentListeners();
-              this._removeListeners();
-              this._browser=null;
+              this._destroyed=true;
+              
+              if (this._browser)
+              {
+                this._emptyDocumentListeners();
+                this._removeListeners();
+                this._browser=null;
+              }
+  
+              //this.loading=false;
+  
+              this._changeTimer.cancel();
+              this._changeTimer=null;
+              this._scrollTimer.cancel();
+              this._scrollTimer=null;
+              this._loadTimer.cancel();
+              this._loadTimer=null;
+              this._updateTimer.cancel();
+              this._updateTimer=null;
             }
-
-            this._destroyed=true;
+            catch (e)
+            {
+              dump(e+"\n");
+            }
           }
         </body>
       </method>
@@ -226,7 +233,7 @@
       
       <method name="_addListeners">
         <body>
-          this._logMessage("Add browser listeners");
+          //this._logMessage("Add browser listeners");
           
           this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
           this._browser.addEventListener("resize", this._eventListener, false);
@@ -249,7 +256,7 @@
         <body>
           try
           {
-            this._logMessage("Remove browser listeners");
+            //this._logMessage("Remove browser listeners");
           
             this._browser.removeEventListener("DOMTitleChanged", this._eventListener, false);
             this._browser.removeEventListener("resize", this._eventListener, false);
@@ -278,7 +285,7 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos<0)
           {
-            this._logMessage("Add document listeners\n");
+            //this._logMessage("Add document listeners\n");
             
             doc.addEventListener("DOMNodeInserted", this._eventListener, true);
             doc.addEventListener("DOMNodeRemoved", this._eventListener, true);
@@ -297,7 +304,7 @@
           }
           else
           {
-            this._logMessage("Listeners already added\n");
+            //this._logMessage("Listeners already added\n");
           }
         ]]>
         </body>
@@ -310,7 +317,7 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos>=0)
           {
-            this._logMessage("Remove document listeners\n");
+            //this._logMessage("Remove document listeners\n");
             
             doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
             doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
@@ -329,7 +336,7 @@
           }
           else
           {
-            this._logMessage("Listeners already removed\n");
+            //this._logMessage("Listeners already removed\n");
           }
         ]]>
         </body>
@@ -1587,7 +1594,7 @@
         <parameter name="timer"/>
         <body>
         <![CDATA[
-          if (!this.previews)
+          if ((!this.previews)||(!this._browser))
             return;
           
           if (timer==this._updateTimer)
