@@ -1,9 +1,9 @@
-<!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; Opties">
+<!ENTITY tabsidebar.options.title                 "&tabsidebar.brand;-opties">
 <!ENTITY tabsidebar.options.style                 "width: 35em; height: 18em;">
 <!ENTITY tabsidebar.options.version               "Versie: ">
 
-<!ENTITY paneGeneral.hidetabs.label               "Verberg de tabbladenbalk als de tab zijbalk geopend is.">
-<!ENTITY paneGeneral.hidetabs.accesskey           "H">
+<!ENTITY paneGeneral.hidetabs.label               "De tabbladenbalk verbergen wanneer de zijbalk is geopend.">
+<!ENTITY paneGeneral.hidetabs.accesskey           "v">
 
-<!ENTITY paneDisplay.content.navigation.label     "Laat de navigatieknoppen zien.">
-<!ENTITY paneDisplay.content.navigation.accesskey "n">
+<!ENTITY paneDisplay.content.navigation.label     "Navigatieknoppen weergeven.">
+<!ENTITY paneDisplay.content.navigation.accesskey "N">

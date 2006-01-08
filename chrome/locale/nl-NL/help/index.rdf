@@ -13,28 +13,28 @@
     <nc:subheadings>
       <rdf:Seq>
         <!-- These nodes are used for searching purposes. -->
-        <li><Description nc:name="Opening the sidebar" nc:link="using.xhtml#usage_displaying"/></li>
-        <li><Description nc:name="Viewing the sidebar" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="De zijbalk openen" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="De zijbalk bekijken" nc:link="using.xhtml#usage_displaying"/></li>
 
-        <li><Description nc:name="Thumbnails (Previews)" nc:link="using.xhtml#usage_previews"/></li>
-        <li><Description nc:name="Reloading previews" nc:link="using.xhtml#usage_previews"/></li>
-        <li><Description nc:name="Refreshing previews" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Voorbeeldweergaven" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Voorbeeldweergaven vernieuwen" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Voorbeeldweergaven verversen" nc:link="using.xhtml#usage_previews"/></li>
 
-        <li><Description nc:name="Opening a new tab" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Closing tabs" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Dragging tabs" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Moving tabs" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Reloading tabs" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Een nieuw tabblad openen" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Tabbladen sluiten" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Tabbladen verslepen" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Tabbladen verplaatsen" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Tabbladen vernieuwen" nc:link="using.xhtml#usage_tabs"/></li>
 
-         <li><Description nc:name="Opening Options" nc:link="options.xhtml#options"/></li>
+         <li><Description nc:name="Opties weergeven" nc:link="options.xhtml#options"/></li>
 
-        <li><Description nc:name="Hiding the main tab bar" nc:link="options.xhtml#general_options"/></li>
-        <li><Description nc:name="Automatically hiding the sidebar" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="De tabbladenbalk verbergen" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Automatisch de zijbalk verbergen" nc:link="options.xhtml#general_options"/></li>
 
-        <li><Description nc:name="Showing/Hiding icons" nc:link="options.xhtml#general_options"/></li>
-        <li><Description nc:name="Showing/Hiding buttons" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Pictogrammen tonen/verbergen" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Knoppen tonen/verbergen" nc:link="options.xhtml#general_options"/></li>
 
-        <li><Description nc:name="Automatically refreshing previews" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Automatisch voorbeeldweergaven verversen" nc:link="options.xhtml#general_options"/></li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
