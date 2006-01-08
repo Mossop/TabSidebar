@@ -12,8 +12,8 @@
     <nc:subheadings>
       <rdf:Seq>
         <rdf:li><rdf:Description ID="tabsidebar-help" nc:name="Welkom bij &tabsidebar.brand; Help" nc:link="welcome.xhtml"/></rdf:li>
-        <rdf:li><rdf:Description ID="usage" nc:name="Gebruiksaanwijzing &tabsidebar.brand;" nc:link="using.xhtml" /></rdf:li>
-        <rdf:li><rdf:Description ID="options" nc:name="Opties" nc:link="options.xhtml" /></rdf:li>
+        <rdf:li><rdf:Description ID="usage" nc:name="&tabsidebar.brand; gebruiken" nc:link="using.xhtml" /></rdf:li>
+        <rdf:li><rdf:Description ID="options" nc:name="&tabsidebar.brand;-opties" nc:link="options.xhtml" /></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
@@ -22,8 +22,8 @@
     <nc:subheadings>
       <rdf:Seq>
         <rdf:li><rdf:Description ID="usage-manipulating" nc:name="Weergeven en sluiten van de &tabsidebar.brand;" nc:link="using.xhtml#usage_displaying"/></rdf:li>
-        <rdf:li><rdf:Description ID="usage-previews" nc:name="Voorbeeldweergave gebruiken" nc:link="using.xhtml#usage_previews"/></rdf:li>
-        <rdf:li><rdf:Description ID="usage-tabs" nc:name="Tabs manipuleren" nc:link="using.xhtml#usage_tabs"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-previews" nc:name="Voorbeeldweergaven gebruiken" nc:link="using.xhtml#usage_previews"/></rdf:li>
+        <rdf:li><rdf:Description ID="usage-tabs" nc:name="Tabbladen manipuleren" nc:link="using.xhtml#usage_tabs"/></rdf:li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
@@ -31,7 +31,7 @@
   <rdf:Description about="#options">
     <nc:subheadings>
       <rdf:Seq>
-        <rdf:li><rdf:Description ID="options-showing" nc:name="Weergave Opties" nc:link="options.xhtml#options"/></rdf:li>
+        <rdf:li><rdf:Description ID="options-showing" nc:name="Opties weergeven" nc:link="options.xhtml#options"/></rdf:li>
         <rdf:li><rdf:Description ID="options-general" nc:name="Algemene instellingen" nc:link="options.xhtml#general_options"/></rdf:li>
       </rdf:Seq>
     </nc:subheadings>

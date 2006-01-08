@@ -25,7 +25,7 @@
         <rdf:li>
           <rdf:Description nc:panelid="search"
               nc:datasources=""
-              nc:emptysearchtext="[Geen passend onderwerp gevonden.]"
+              nc:emptysearchtext="[Geen passende onderwerpen gevonden.]"
               nc:emptysearchlink="chrome://help/locale/welcome.xhtml#search_tips"/>
         </rdf:li>
         <rdf:li>

@@ -1,2 +1,2 @@
-<!ENTITY options.buttons "Отображать кнопки навигации">
-<!ENTITY options.hidetabs "Скрывать панель вкладок если открыта боковая панель">
+<!ENTITY options.hidetabs "Скрывать панель вкладок когда открыта боковая панель">
+<!ENTITY options.buttons "Показывать кнопки навигации">
