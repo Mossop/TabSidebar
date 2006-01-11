@@ -69,6 +69,7 @@
         <xul:tooltip id="tabpreview_tooltip" orient="vertical">
           <xul:label class="tbs-tooltip-title" value="Title"/>
           <xul:label class="tbs-tooltip-uri" value="URI"/>
+          <xul:image/>
         </xul:tooltip>
         
       </xul:popupset>
@@ -814,8 +815,8 @@
   
             if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
             {
-              this._contentWidth=newWidth;
-              this._contentHeight=newHeight;
+              this._contentWidth=Math.max(newWidth,300);
+              this._contentHeight=(newHeight/newWidth)*this._contentWidth;
               this._displayWidth=newWidth;
               this._displayHeight=newHeight;
             	this._resize();
@@ -1364,6 +1365,11 @@
           }
           event.originalTarget.childNodes[0].value=preview.title;
           event.originalTarget.childNodes[1].value=preview.uri;
+          
+          var image = event.originalTarget.childNodes[2];
+          image.width=300;
+          image.height=(this.contentHeight/this.contentWidth)*300;
+          image.src=preview.canvas.toDataURL();
         }
       ]]>
       </handler>
