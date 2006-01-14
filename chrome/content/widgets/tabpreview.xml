@@ -235,13 +235,15 @@
         <body>
           //this._logMessage("Add browser listeners");
           
-          this._browser.addEventListener("DOMTitleChanged", this._eventListener, false);
-          this._browser.addEventListener("resize", this._eventListener, false);
-          this._browser.addEventListener("scroll", this._eventListener, true);
-          this._browser.addEventListener("load", this._eventListener, true);
-          this._browser.addEventListener("unload", this._eventListener, true);
+          this._browser.addEventListener("DOMTitleChanged",      this._eventListener, false);
+          this._browser.addEventListener("resize",               this._eventListener, false);
+          this._browser.addEventListener("scroll",               this._eventListener, true);
+          this._browser.addEventListener("load",                 this._eventListener, true);
+          this._browser.addEventListener("unload",               this._eventListener, true);
+          this._browser.addEventListener("pageshow",             this._eventListener, true);
+          this._browser.addEventListener("pagehide",             this._eventListener, true);
           var WP = Components.interfaces.nsIWebProgress;
-          var mask = WP.NOTIFY_STATE_DOCUMENT | WP.NOTIFY_STATUS | WP.NOTIFY_LOCATION | WP.NOTIFY_SECURITY | WP.NOTIFY_PROGRESS;
+          var mask = WP.NOTIFY_ALL;
           if (this._browser.docShell)
           {
             this._browser.webProgress.addProgressListener(this._progressListener,mask);
@@ -259,10 +261,12 @@
             //this._logMessage("Remove browser listeners");
           
             this._browser.removeEventListener("DOMTitleChanged", this._eventListener, false);
-            this._browser.removeEventListener("resize", this._eventListener, false);
-            this._browser.removeEventListener("scroll", this._eventListener, true);
-            this._browser.removeEventListener("load", this._eventListener, true);
-            this._browser.removeEventListener("unload", this._eventListener, true);
+            this._browser.removeEventListener("resize",          this._eventListener, false);
+            this._browser.removeEventListener("scroll",          this._eventListener, true);
+            this._browser.removeEventListener("load",            this._eventListener, true);
+            this._browser.removeEventListener("unload",          this._eventListener, true);
+            this._browser.removeEventListener("pageshow",        this._eventListener, true);
+            this._browser.removeEventListener("pagehide",        this._eventListener, true);
             if (this._browser.docShell)
             {
               this._browser.webProgress.removeProgressListener(this._progressListener);
@@ -285,22 +289,24 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos<0)
           {
-            //this._logMessage("Add document listeners\n");
+            this._logMessage("Adding document "+doc.location.href);
             
-            doc.addEventListener("DOMNodeInserted", this._eventListener, true);
-            doc.addEventListener("DOMNodeRemoved", this._eventListener, true);
-            doc.addEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
-            doc.addEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
-            doc.addEventListener("DOMAttrModified", this._eventListener, true);
-            doc.addEventListener("DOMCharacterDataModified", this._eventListener, true);
-            doc.addEventListener("DOMElementNameChanged", this._eventListener, true);
-            doc.addEventListener("DOMAttributeNameChanged", this._eventListener, true);
-            doc.addEventListener("DOMActivate", this._eventListener, true);
-            doc.addEventListener("DOMFocusIn", this._eventListener, true);
-            doc.addEventListener("DOMFocusOut", this._eventListener, true);
-            doc.addEventListener("DOMSubtreeModified", this._eventListener, true);
-            doc.addEventListener("scroll", this._eventListener, true);
+            doc.addEventListener("DOMNodeInserted",                this._eventListener, true);
+            doc.addEventListener("DOMNodeRemoved",                 this._eventListener, true);
+            doc.addEventListener("DOMNodeRemovedFromDocument",     this._eventListener, true);
+            doc.addEventListener("DOMNodeInsertedIntoDocument",    this._eventListener, true);
+            doc.addEventListener("DOMAttrModified",                this._eventListener, true);
+            doc.addEventListener("DOMCharacterDataModified",       this._eventListener, true);
+            doc.addEventListener("DOMElementNameChanged",          this._eventListener, true);
+            doc.addEventListener("DOMAttributeNameChanged",        this._eventListener, true);
+            doc.addEventListener("DOMActivate",                    this._eventListener, true);
+            doc.addEventListener("DOMFocusIn",                     this._eventListener, true);
+            doc.addEventListener("DOMFocusOut",                    this._eventListener, true);
+            doc.addEventListener("DOMSubtreeModified",             this._eventListener, true);
+            doc.addEventListener("scroll",                         this._eventListener, true);
             this._listenedDocuments.push(doc);
+            
+            this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
           }
           else
           {
@@ -317,22 +323,24 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos>=0)
           {
-            //this._logMessage("Remove document listeners\n");
+            this._logMessage("Removing document "+doc.location.href);
             
-            doc.removeEventListener("DOMNodeInserted", this._eventListener, true);
-            doc.removeEventListener("DOMNodeRemoved", this._eventListener, true);
-            doc.removeEventListener("DOMNodeRemovedFromDocument", this._eventListener, true);
+            doc.removeEventListener("DOMNodeInserted",             this._eventListener, true);
+            doc.removeEventListener("DOMNodeRemoved",              this._eventListener, true);
+            doc.removeEventListener("DOMNodeRemovedFromDocument",  this._eventListener, true);
             doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
-            doc.removeEventListener("DOMAttrModified", this._eventListener, true);
-            doc.removeEventListener("DOMCharacterDataModified", this._eventListener, true);
-            doc.removeEventListener("DOMElementNameChanged", this._eventListener, true);
-            doc.removeEventListener("DOMAttributeNameChanged", this._eventListener, true);
-            doc.removeEventListener("DOMActivate", this._eventListener, true);
-            doc.removeEventListener("DOMFocusIn", this._eventListener, true);
-            doc.removeEventListener("DOMFocusOut", this._eventListener, true);
-            doc.removeEventListener("DOMSubtreeModified", this._eventListener, true);
-            doc.removeEventListener("scroll", this._eventListener, true);
+            doc.removeEventListener("DOMAttrModified",             this._eventListener, true);
+            doc.removeEventListener("DOMCharacterDataModified",    this._eventListener, true);
+            doc.removeEventListener("DOMElementNameChanged",       this._eventListener, true);
+            doc.removeEventListener("DOMAttributeNameChanged",     this._eventListener, true);
+            doc.removeEventListener("DOMActivate",                 this._eventListener, true);
+            doc.removeEventListener("DOMFocusIn",                  this._eventListener, true);
+            doc.removeEventListener("DOMFocusOut",                 this._eventListener, true);
+            doc.removeEventListener("DOMSubtreeModified",          this._eventListener, true);
+            doc.removeEventListener("scroll",                      this._eventListener, true);
             this._listenedDocuments.splice(pos,1);
+            
+            this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
           }
           else
           {
@@ -355,6 +363,7 @@
       
       <method name="_findDocuments">
       	<parameter name="doc"/>
+        <parameter name="newdocs"/>
       	<body>
       	<![CDATA[
       		if (doc)
@@ -362,8 +371,8 @@
             if (doc.contentDocument && (doc.contentDocument instanceof Document))
               doc=doc.contentDocument;
 
-            if (doc instanceof Document)
-              this._addDocumentListeners(doc);
+            if ((doc instanceof Document)&&(newdocs.indexOf(doc)==-1))
+              newdocs.push(doc);
 
             if (doc.getElementsByTagName)
             {
@@ -371,31 +380,32 @@
   	      		for (var pos = 0; pos<subdocs.length; pos++)
   	      		{
                 this._logMessage("Adding new frame");
-        				this._findDocuments(subdocs[pos].contentDocument);
+        				this._findDocuments(subdocs[pos].contentDocument, newdocs);
   	      		}
   	      		subdocs = doc.getElementsByTagName("iframe");
   	      		for (var pos = 0; pos<subdocs.length; pos++)
   	      		{
                 this._logMessage("Adding new iframe");
-        				this._findDocuments(subdocs[pos].contentDocument);
+        				this._findDocuments(subdocs[pos].contentDocument, newdocs);
   	      		}
   	      		subdocs = doc.getElementsByTagName("browser");
   	      		for (var pos = 0; pos<subdocs.length; pos++)
   	      		{
                 this._logMessage("Adding new browser");
-        				this._findDocuments(subdocs[pos].contentDocument);
+        				this._findDocuments(subdocs[pos].contentDocument, newdocs);
   	      		}
             }
 	      	}
           else
           {
-            this._logMessage("Attempt to add null doc");
+            this._logWarning("Attempt to add null doc");
           }
 				]]>
       	</body>
       </method>
       
       <method name="_checkDocuments">
+        <parameter name="reason"/>
         <body>
         <![CDATA[
           if ((!this._browser)||(!this._browser.docShell))
@@ -407,10 +417,44 @@
               return;
           }
           
-          this._logWarning("Bad document tree detected");
+          var newdocs = [];
+          this._findDocuments(this._browser.contentDocument, newdocs);
+          
+          var target = newdocs.length;
+          
+          this._logMessage("checkDocuments");
+          
+          var lost = this._listenedDocuments.length;
+          var pos=0;
+          while (pos<this._listenedDocuments.length)
+          {
+            var fpos = newdocs.indexOf(this._listenedDocuments[pos]);
+            if (fpos>=0)
+            {
+              this._logMessage("kept "+this._listenedDocuments[pos].location.href);
+              newdocs.splice(fpos,1);
+              pos++;
+            }
+            else
+            {
+              this._logMessage("lost "+this._listenedDocuments[pos].location.href);
+              this._removeDocumentListeners(this._listenedDocuments[pos]);
+            }
+          }
 
-          this._emptyDocumentListeners();
-          this._findDocuments(this._browser.contentDocument);
+          lost-=this._listenedDocuments.length;
+          this._logWarning("Bad document tree detected from "+reason+": lost "+lost+" documents, gained "+newdocs.length+" documents, kept "+this._listenedDocuments.length+" documents.");
+
+          for (var i=0; i<newdocs.length; i++)
+          {
+            this._addDocumentListeners(newdocs[i]);
+            this._logMessage("gained "+this._listenedDocuments[pos].location.href);
+          }
+          
+          if (this._listenedDocuments.length!=target)
+          {
+            this._logWarning("checkDocuments failure: "+target+" -> "+this._listenedDocuments.length);
+          }
           
           this._documentLoaded();
         ]]>
@@ -492,8 +536,9 @@
               this._logMessage("Browser resized");
               this._updateSize(false);
             }
-            else if (event.type=="load")
+            else if ((event.type=="load")||(event.type=="pageshow"))
             {
+              var doc = null;
               if (event.target)
               {
                 if (event.target instanceof Document)
@@ -519,8 +564,12 @@
                 this._addDocumentListeners(doc);
                 this._documentLoaded();
               }
+              else
+              {
+                this._logWarning(event.type+" from unknown place: "+event.target);
+              }
             }
-            else if (event.type=="unload")
+            else if ((event.type=="unload")||(event.type=="pagehide"))
             {
               var doc = null;
               if (event.target)
@@ -549,7 +598,7 @@
               }
               else
               {
-                this._logMessage("Unload of "+event.target);
+                this._logWarning(event.type+" from unknown place: "+event.target);
               }
             }
             else if (this._listenedDocuments.indexOf(event.target.ownerDocument)>=0)
@@ -700,6 +749,7 @@
 
       <!-- Internal fields and methods -->
       
+      <field name="_loadCount">0</field>
       <field name="_invalid">false</field>
       
       <method name="_logMessage">
@@ -851,7 +901,10 @@
               {
                 this._setSecurity(this._browser.securityUI.state);
               }
-  						this._findDocuments(this._browser.contentDocument);
+              var newdocs = [];
+  						this._findDocuments(this._browser.contentDocument, newdocs);
+              for (var i=0; i<newdocs.length; i++)
+                this._addDocumentListeners(newdocs[i]);
             }
             this._addListeners();
             
@@ -894,11 +947,13 @@
       <method name="_loadStarted">
         <body>
         <![CDATA[
+          this._logMessage("loadStarted");
+          
           this.loading=true;
           this._invalid=true;
           this.stopButton.disabled=false;
 
-          this._emptyDocumentListeners();
+          //this._emptyDocumentListeners();
           this._changeTimer.cancel();
           this._scrollTimer.cancel();
           this._loadTimer.cancel();
@@ -919,6 +974,8 @@
       
       <method name="_loadComplete">
         <body>
+          this._logMessage("loadComplete");
+          
           this.loading=false;
           this.stopButton.disabled=true;
           this._updateTimer.cancel();
@@ -1500,7 +1557,7 @@
           this.historyChange();
             
           if (!this.loading)
-            this._checkDocuments();
+            this._checkDocuments("location");
         </body>
       </method>
       
@@ -1512,18 +1569,21 @@
         <body>
         <![CDATA[
           //this._logMessage("onStateChange "+stateFlags+" "+status);
-          if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT)
+          if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK)
           {
           	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
           	{
               if (this.loading)
                 this._loadComplete();
               else
-                this._logWarning("Received repeat load - "+stateFlags+"\n");
+                this._logWarning("Received repeat load complete - "+stateFlags);
             }
             else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
             {
-              this._loadStarted();
+              if (!this.loading)
+                this._loadStarted();
+              else
+                this._logWarning("Received repeat load start - "+stateFlags);
             }
       		}
       	]]>
@@ -1571,7 +1631,7 @@
             el.src=this.icon;
             
           if (!this.loading)
-            this._checkDocuments();
+            this._checkDocuments("icon");
         </body>
       </method>
 
@@ -1584,7 +1644,7 @@
             el.value=this.title;
             
           if (!this.loading)
-            this._checkDocuments();
+            this._checkDocuments("title");
         </body>
       </method>
             
