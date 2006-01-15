@@ -19,5 +19,5 @@ locale			tabsidebar					es-ES														file:chrome/global/locale/es-ES/
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/browser.css
-style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/toolbar.css
-style 			chrome://global/content/customizeToolbar.xul 				chrome://tabsidebar/skin/toolbar.css
+style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/content/branding/toolbar.css
+style 			chrome://global/content/customizeToolbar.xul 				chrome://tabsidebar/content/branding/toolbar.css

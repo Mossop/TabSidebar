@@ -62,7 +62,7 @@
   
     <hbox id="header" align="center">
     
-      <image src="chrome://tabsidebar/skin/logo.png"/>
+      <image src="chrome://tabsidebar/content/branding/logo.png"/>
       
       <vbox flex="1">
         <label class="title" value="&tabsidebar.brand;"/>
