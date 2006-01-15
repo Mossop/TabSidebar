@@ -244,14 +244,13 @@
       </method>
       
       <destructor>
-        //this._logMessage("tabpreviews destructor");
+        dump("Tabpreviews destructor\n");
         this._destroy();
       </destructor>
       
       <field name="_destroyed" value="false"/>
       <method name="_destroy">
         <body>
-          dump("destroy\n");
           if (!this._destroyed)
           {
             try
@@ -286,6 +285,8 @@
     
               this._resizeTimer.cancel();
               this._resizeTimer=null;
+              
+              dump("Tabpreviews destroyed\n");
             }
             catch (e)
             {

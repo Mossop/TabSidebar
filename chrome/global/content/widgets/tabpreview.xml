@@ -127,8 +127,7 @@
       </constructor>
 
       <destructor>
-        /*if (this.previews)
-          this._logMessage("tabpreview destructor");*/
+        dump("Tabpreview destructor\n");
         this._destroy();
       </destructor>
       
@@ -158,6 +157,8 @@
               this._loadTimer=null;
               this._updateTimer.cancel();
               this._updateTimer=null;
+              
+              dump("Tabpreview destroyed\n");
             }
             catch (e)
             {
@@ -249,6 +250,10 @@
             this._browser.webProgress.addProgressListener(this._progressListener,mask);
             //this._browser.sessionHistory.addSHistoryListener(this._historyListener);
           }
+          else
+          {
+            this._logError("Could not register browser progress listener");
+          }
           WP=null;
           mask=null;
         </body>
@@ -271,6 +276,10 @@
             {
               this._browser.webProgress.removeProgressListener(this._progressListener);
               //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
+            }
+            else
+            {
+              this._logWarning("Could not unregister browser progress listener");
             }
           }
           catch (e)
@@ -1362,11 +1371,11 @@
           var tabbrowser = this.previews.tabbrowser;
           if (this.previews.previews.length == 1)
           {
-            tabbrowser.loadURI("about:blank");
+            if (this.uri != "about:blank")
+              tabbrowser.loadURI("about:blank");
+
             if (this._browser.docShell)
-            {
               this._browser.sessionHistory.PurgeHistory(this._browser.sessionHistory.count);
-            }
           }
           else
           {

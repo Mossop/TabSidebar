@@ -1,17 +1,20 @@
-content			tabsidebar																					file:chrome/content/
-skin				tabsidebar					classic/1.0											file:chrome/skin/
+content			tabsidebar																					file:chrome/global/content/
+skin				tabsidebar					classic/1.0											file:chrome/global/skin/
 
-locale			tabsidebar					en-US														file:chrome/locale/en-US/
-locale			tabsidebar					de-DE														file:chrome/locale/de-DE/
-locale			tabsidebar					tr-TR														file:chrome/locale/tr-TR/
-locale			tabsidebar					nl-NL														file:chrome/locale/nl-NL/
-locale			tabsidebar					fr															file:chrome/locale/fr/
-locale			tabsidebar					it															file:chrome/locale/it/
-locale			tabsidebar					ja  														file:chrome/locale/ja/
-locale			tabsidebar					ru-RU  													file:chrome/locale/ru-RU/
-locale			tabsidebar					zh-TW														file:chrome/locale/zh-TW/
-locale			tabsidebar					sk-SK														file:chrome/locale/sk-SK/
-locale			tabsidebar					es-ES														file:chrome/locale/es-ES/
+content			tabsidebar-platform																	file:chrome/platform/content/				platform
+skin				tabsidebar-platform																	file:chrome/platform/skin/					platform
+
+locale			tabsidebar					en-US														file:chrome/global/locale/en-US/
+locale			tabsidebar					de-DE														file:chrome/global/locale/de-DE/
+locale			tabsidebar					tr-TR														file:chrome/global/locale/tr-TR/
+locale			tabsidebar					nl-NL														file:chrome/global/locale/nl-NL/
+locale			tabsidebar					fr															file:chrome/global/locale/fr/
+locale			tabsidebar					it															file:chrome/global/locale/it/
+locale			tabsidebar					ja  														file:chrome/global/locale/ja/
+locale			tabsidebar					ru-RU  													file:chrome/global/locale/ru-RU/
+locale			tabsidebar					zh-TW														file:chrome/global/locale/zh-TW/
+locale			tabsidebar					sk-SK														file:chrome/global/locale/sk-SK/
+locale			tabsidebar					es-ES														file:chrome/global/locale/es-ES/
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
