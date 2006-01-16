@@ -66,7 +66,7 @@
     </resources>
     
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
-      <xul:vbox class="tbs-tabmain">
+      <xul:vbox class="tbs-tabmain" flex="1">
         <xul:hbox class="tbs-topbox" align="center" anonid="topbox">
           <xul:image class="tbs-favicon" validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
           <xul:image class="tbs-loading" anonid="loading" tooltip="tabpreview_tooltip"/>
@@ -75,7 +75,7 @@
                              onmousedown="event.stopPropagation();"
                              oncommand="this.parentNode.parentNode.parentNode.close();"/>
         </xul:hbox>
-        <xul:stack>
+        <xul:stack flex="1">
           <xul:box tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
             <xhtml:canvas class="tbs-canvas" flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
           </xul:box>
@@ -176,7 +176,7 @@
             this._eventListener = function(event) { self._eventFilter(event); };
           }
           if (this.previews.displayHeight>0)
-            this._resize();
+            this.previews._resizePreview(this);
         </body>
       </method>
       
@@ -754,7 +754,6 @@
             throw Components.results.NS_NOINTERFACE;
           }
         });</field>
-      <field name="_resizeListener"/>
 
       <!-- Internal fields and methods -->
       
@@ -925,34 +924,6 @@
         </setter>
       </property>
 
-      <method name="_resize">
-        <body>
-        <![CDATA[
-          if (this.previews.displayHeight<0)
-          {
-            this._logWarning("Attempt to resize preview before size has been calculated");
-            return;
-          }
-          //this._logMessage("resize");
-
-          var canvas = this.canvas;
-
-          //canvas.style.width=this.previews.displayWidth+"px";  /* Don't set this or the auto-sizing won't work */
-          canvas.style.height=this.previews.displayHeight+"px";
-          canvas.style.minHeight=this.previews.displayHeight+"px";
-          canvas.style.maxHeight=this.previews.displayHeight+"px";
-          
-          try
-          {
-            canvas.getContext("2d");
-          }
-          catch (e)
-          {
-          }
-        ]]>
-        </body>
-      </method>
-      
       <method name="_loadStarted">
         <body>
         <![CDATA[
@@ -1379,8 +1350,8 @@
           }
           else
           {
-            if (!this.id)
-          	 this.id=this._browser.parentNode.id;
+            if (!this.hasAttribute("browser"))
+          	 this.setAttribute("browser", this._browser.parentNode.id);
 
             var tab = this.tab;
             this._destroy();
@@ -1405,8 +1376,11 @@
           if ((this._browser)&&(this._browser.docShell))
           {
             var session = this._browser.sessionHistory;
-            this.backButton.disabled=(session.index<=0);
-            this.forwardButton.disabled=((session.index+1)==session.count);
+            if (session)
+            {
+              this.backButton.disabled=(session.index<=0);
+              this.forwardButton.disabled=((session.index+1)==session.count);
+            }
           }
           else
           {

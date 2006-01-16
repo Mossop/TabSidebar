@@ -2,6 +2,10 @@ tabpreview {
   -moz-binding: url('chrome://tabsidebar/content/widgets/tabpreview.xml#tabpreview');
 }
 
-tabpreviews {
-  -moz-binding: url('chrome://tabsidebar/content/widgets/tabpreviews.xml#tabpreviews');
+tabpreviews.tbs-tabpreviews-vertical {
+  -moz-binding: url('chrome://tabsidebar/content/widgets/vertical/tabpreviews.xml#tabpreviews');
+}
+
+tabpreviews.tbs-tabpreviews-horizontal {
+  -moz-binding: url('chrome://tabsidebar/content/widgets/horizontal/tabpreviews.xml#tabpreviews');
 }

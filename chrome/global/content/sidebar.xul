@@ -66,7 +66,7 @@
   <script src="chrome://global/content/nsTransferable.js"/>
   <script src="chrome://browser/content/utilityOverlay.js"/>
 
-  <tabpreviews id="previews">
+  <tabpreviews id="previews" class="tbs-tabpreviews-vertical" flex="1">
   </tabpreviews>
    
 </page>

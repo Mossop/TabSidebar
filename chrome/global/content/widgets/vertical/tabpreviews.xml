@@ -1,0 +1,425 @@
+<?xml version="1.0"?>
+
+ <!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is Tab Sidebar Display.
+   -
+   - The Initial Developer of the Original Code is
+   -     Dave Townsend <dave.townsend@blueprintit.co.uk>.
+   - Portions created by the Initial Developer are Copyright (C) 2005
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK *****
+   -
+   - $HeadURL$
+   - $LastChangedBy$
+   - $Date$
+   - $Revision$
+   -->
+
+<!DOCTYPE bindings [
+<!ENTITY % bidiDTD SYSTEM "chrome://global/locale/global.dtd">
+<!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
+<!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
+%bidiDTD;
+%tabbrowserDTD;
+%tabSidebarDTD;
+]>
+
+<bindings id="TabSidebarBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <binding id="tabpreviews" name="tabpreviews" extends="chrome://tabsidebar/content/widgets/tabpreviews.xml#tabpreviews">
+
+    <resources>
+      <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
+    </resources>
+    
+    <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="horizontal" style="visibility: hidden">
+      <xul:popupset>
+      
+        <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="left">
+          <xul:label class="tbs-tooltip-title" value="Title"/>
+          <xul:label class="tbs-tooltip-uri" value="URI"/>
+          <xul:image/>
+        </xul:tooltip>
+        
+      </xul:popupset>
+        
+      <xul:vbox class="tbs-drop-indicator-bar">
+        <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
+      </xul:vbox>          
+
+      <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
+      
+      <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
+                     ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
+                     ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
+                     ondragdrop="nsDragAndDrop.drop(event, this.parentNode); event.stopPropagation();"
+                     ondragexit="nsDragAndDrop.dragExit(event, this.parentNode); event.stopPropagation();"
+                     align="stretch" flex="1" orient="vertical">
+        
+        <children/>
+
+      </xul:scrollbox>
+    </content>
+    
+    <implementation>
+
+      <field name="previewContainer">this</field>
+      <field name="focusDetector">this.ownerDocument.getAnonymousNodes(this)[2]</field>
+      <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[3]</field>
+      <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
+      <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
+      <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
+
+      <method name="_resizePreview">
+        <parameter name="preview"/>
+        <body>
+        <![CDATA[
+          if (this.displayHeight<0)
+          {
+            this._logWarning("Attempt to resize preview before size has been calculated");
+            return;
+          }
+
+          var canvas = preview.canvas;
+
+          canvas.style.height=this.displayHeight+"px";
+          canvas.style.minHeight=this.displayHeight+"px";
+          canvas.style.maxHeight=this.displayHeight+"px";
+          
+          try
+          {
+            canvas.getContext("2d");
+          }
+          catch (e)
+          {
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="ensureElementsAreVisible">
+        <parameter name="first"/>
+        <parameter name="last"/>
+        <body>
+        <![CDATA[
+          var y = {};
+          this.scrollBoxObject.getPosition({}, y);
+          var scrollTop = y.value;
+          var scrollHeight = this.scrollBox.boxObject.height;
+
+          var eltop = first.boxObject.y;
+          var style = window.getComputedStyle(first,null);
+          eltop-=parseInt(style.marginTop)+parseInt(style.borderTopWidth);
+          
+          var elbottom = last.boxObject.y+last.boxObject.height;
+          style = window.getComputedStyle(last,null);
+          elbottom+=parseInt(style.marginBottom)+parseInt(style.borderBottomWidth);
+
+          if (scrollTop>eltop)
+          {
+            this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
+          }
+          else if ((scrollTop+scrollHeight)<elbottom)
+          {
+            var shift = elbottom-(scrollTop+scrollHeight);
+            if ((scrollTop+shift)>eltop)
+            {
+              shift=eltop-scrollTop;
+            }
+            this.scrollBoxObject.scrollBy(0,shift);
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="browserResized">
+        <parameter name="preview"/>
+        <parameter name="width"/>
+        <parameter name="height"/>
+        <body>
+        <![CDATA[
+          if (this._selected == preview)
+          {
+            var newWidth=0;
+            var newHeight=0;
+  
+            var container = preview.canvas.parentNode;
+            var computed = window.getComputedStyle(container,null);
+            newWidth = parseInt(computed.width);
+            if (newWidth<0)
+            {
+              this._logError("Invalid canvas width ("+newWidth+")");
+              this._resizeTimer.initWithCallback(this, 
+                                                 5,
+                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+              return;
+            }
+            else if (newWidth==0)
+            {
+              this._logWarning("Zero canvas width");
+            }
+
+            newHeight = parseInt((height/width)*newWidth);
+  
+            if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
+            {
+              this._contentWidth=Math.max(newWidth,300);
+              this._contentHeight=(newHeight/newWidth)*this._contentWidth;
+              this._displayWidth=newWidth;
+              this._displayHeight=newHeight;
+              this._resize();
+              this.style.visibility=null;
+            }
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="_drawDropIndicator">
+        <parameter name="drop"/>
+        <body>
+          if (drop!=this._lastDrop)
+          {
+            this.ensureElementsAreVisible(drop,drop);
+            var y = {};
+            this.scrollBoxObject.getPosition({}, y);
+            var dropel = drop;
+            if (drop.localName == "tabpreview")
+            {
+              dropel = drop.canvas.parentNode;
+            }
+            var pos = dropel.boxObject.y+(dropel.boxObject.height/2);
+            pos = pos - y.value - 5;
+            this.dragDropIndicator.style.marginTop = pos + "px";
+            if (!this._lastDrop)
+            {
+              this.dragDropBar.setAttribute("dragging","true");
+            }
+            this._lastDrop=drop;
+          }
+        </body>
+      </method>
+      
+      <method name="getDropElement">
+        <parameter name="aEvent"/>
+        <parameter name="external"/>
+        <body>
+        <![CDATA[
+          var y = {};
+          this.scrollBoxObject.getPosition({}, y);
+          var ypos = aEvent.clientY+y.value;
+          var diff = 0;
+          var previews = this.previews;
+          for (var i=0; i<previews.length; i++)
+          {
+            var bo = previews[i].boxObject;
+            if (external)
+            {
+              if (bo.y>ypos)
+              {
+                return previews[i].previousSibling;
+              }
+              else if ((bo.y+bo.height)>=ypos)
+              {
+                return previews[i];
+              }
+            }
+            else
+            {
+              if ((bo.y+(bo.height/2))>ypos)
+              {
+                return previews[i].previousSibling;
+              }
+            }
+          }
+          return previews[previews.length-1].nextSibling;
+        ]]>
+        </body>
+      </method>
+      
+      <method name="checkDragScroll">
+        <parameter name="aEvent"/>
+        <body>
+        <![CDATA[
+          var y = {};
+          this.scrollBoxObject.getPosition({}, y);
+
+          if (y.value>0 && aEvent.clientY<10)
+          {
+            this.scrollBoxObject.scrollBy(0,-20);
+            this._hideDropIndicator();
+            return true;
+          }
+          
+          var bottom = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.height-this.scrollBox.boxObject.height;
+          
+          if ((this.scrollBox.boxObject.height-aEvent.clientY)<10 && y.value<bottom)
+          {
+            this.scrollBoxObject.scrollBy(0,20);
+            this._hideDropIndicator();
+            return true;
+          }
+          
+          return false;
+        ]]>
+        </body>
+      </method>
+      
+    </implementation>
+    
+    <handlers>
+      <handler event="keypress">
+      <![CDATA[
+        if (event.target.parentNode==this)
+        {
+          var preview = event.target;
+          if (event.altKey||event.shiftKey||event.metaKey)
+          {
+            return;
+          }
+          else if (event.ctrlKey)
+          {
+            if (event.keyCode==event.DOM_VK_UP)
+            {
+              var newpreview = preview.previousSibling.previousSibling;
+              if (newpreview)
+              {
+                this.movePreview(preview,newpreview);
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_DOWN)
+            {
+              var newpreview = preview.nextSibling.nextSibling;
+              if (newpreview)
+              {
+                this.movePreview(preview,newpreview.nextSibling.nextSibling);
+              }
+              event.preventDefault();
+            }
+          }
+          else
+          {
+            if (event.keyCode==event.DOM_VK_UP)
+            {
+              var newpreview = preview.previousSibling.previousSibling;
+              if (newpreview)
+              {
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=newpreview.tab;
+                newpreview.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_DOWN)
+            {
+              var newpreview = preview.nextSibling.nextSibling;
+              if (newpreview)
+              {
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=newpreview.tab;
+                newpreview.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_PAGE_UP)
+            {
+              var compare = preview.previousSibling.previousSibling;
+              if (compare)
+              {
+                var diff = preview.boxObject.y-compare.boxObject.y;
+                var height = this.scrollBox.boxObject.height;
+                var jump = height/diff;
+                var current = preview;
+                var count = 1;
+                while ((count<=jump)&&(current.previousSibling.previousSibling))
+                {
+                  current=current.previousSibling.previousSibling;
+                  count++;
+                }
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=current.tab;
+                current.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_PAGE_DOWN)
+            {
+              var compare = preview.nextSibling.nextSibling;
+              if (compare)
+              {
+                var diff = compare.boxObject.y-preview.boxObject.y;
+                var height = this.scrollBox.boxObject.height;
+                var jump = height/diff;
+                var current = preview;
+                var count = 1;
+                while ((count<=jump)&&(current.nextSibling.nextSibling))
+                {
+                  current=current.nextSibling.nextSibling;
+                  count++;
+                }
+                preview.tab.focus();
+                this.tabbrowser.selectedTab=current.tab;
+                current.focus();
+              }
+              event.preventDefault();
+            }
+            else if (event.keyCode==event.DOM_VK_CONTEXT_MENU)
+            {
+              var preview = null;
+
+              if (this._selected)
+              {
+                preview=this._selected;
+              }
+              else
+              {
+                preview=this.previews[0];
+              }
+
+              var x = preview.boxObject.screenX-this.window.document.documentElement.boxObject.screenX;
+              var y = preview.boxObject.screenY-this.window.document.documentElement.boxObject.screenY;
+    
+              x+=2;
+              y+=2;
+              
+              this.displayContextMenu(preview,x,y);
+            }
+          }
+        }
+      ]]>
+      </handler>
+    </handlers>
+  </binding>
+</bindings>

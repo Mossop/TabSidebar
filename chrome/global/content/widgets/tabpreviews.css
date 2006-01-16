@@ -1,5 +1,9 @@
-.tbs-scrollbox {
+.tbs-scrollbox[orient="vertical"] {
   overflow-y: scroll;
+}
+
+.tbs-scrollbox[orient="horizontal"] {
+  overflow-x: scroll;
 }
 
 .tbs-tabpreview {
@@ -18,10 +22,14 @@
   display: none;
 }
 
-.tbs-tabpreviews[hide~="forward"] .tbs-forward,
-.tbs-tabpreviews[hide~="back"] .tbs-back,
-.tbs-tabpreviews[hide~="reload"] .tbs-reload,
-.tbs-tabpreviews[hide~="stop"] .tbs-stop {
+.tbs-tabpreviews-vertical[hide~="navigation"] .tbs-forward,
+.tbs-tabpreviews-vertical[hide~="navigation"] .tbs-back,
+.tbs-tabpreviews-vertical[hide~="navigation"] .tbs-reload,
+.tbs-tabpreviews-vertical[hide~="navigation"] .tbs-stop,
+.tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-forward,
+.tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-back,
+.tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-reload,
+.tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-stop {
   display: none !important;
 }
 
@@ -33,10 +41,9 @@
   display: none;
 }
 
-.tbs-tabpreviews[hide~="uri"] .tbs-bottombox {
-  display: none;
-}
-
-.tbs-tabpreviews[hide~="uri"] .tbs-tooltip-uri {
+.tbs-tabpreviews-vertical[hide~="uri"] .tbs-bottombox,
+.tbs-tabpreviews-vertical[hide~="uri"] .tbs-tooltip-uri,
+.tbs-tabpreviews-horizontal[hide~="uri"] .tbs-bottombox,
+.tbs-tabpreviews-horizontal[hide~="uri"] .tbs-tooltip-uri {
   display: none;
 }

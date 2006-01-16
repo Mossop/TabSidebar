@@ -64,16 +64,10 @@
     <preferences>
       <preference type="bool" id="hidetabs"
       name="extensions.tabsidebar.hidetabs"/>
-      <preference type="bool" id="content.reload"
-      name="extensions.tabsidebar.content.reload" onchange="prefs.updateNav();"/>
-      <preference type="bool" id="content.stop"
-      name="extensions.tabsidebar.content.stop"/>
-      <preference type="bool" id="content.forward"
-      name="extensions.tabsidebar.content.forward"/>
-      <preference type="bool" id="content.back"
-      name="extensions.tabsidebar.content.back"/>
-      <preference type="bool" id="content.uri" 
-      name="extensions.tabsidebar.content.uri"/>
+      <preference type="bool" id="content.navigation"
+      name="extensions.tabsidebar.content.navigation"/>
+      <preference type="int" id="position" 
+      name="extensions.tabsidebar.position"/>
     </preferences>
 
     <hbox align="start">
@@ -97,6 +91,15 @@
         
         <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
                                               label="&paneDisplay.content.navigation.label;"/>
+
+        <radiogroup preference="position">
+          <radio label="Sidebar" value="0"/>
+          <radio label="Top" value="1"/>
+          <radio label="Bottom" value="2"/>
+          <radio label="Left" value="3"/>
+          <radio label="Right" value="4"/>
+        </radiogroup>
+
       </vbox>
       
     </hbox>

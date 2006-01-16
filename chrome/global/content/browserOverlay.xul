@@ -59,7 +59,7 @@
           type="checkbox"
           group="sidebar"
           sidebarurl="chrome://tabsidebar/content/sidebar.xul"
-          oncommand="toggleSidebar('viewTabSidebar');"/>
+          oncommand="TabSidebarHandler.toggleSidebar();"/>
   </broadcasterset>
 
   <toolbarpalette id="BrowserToolbarPalette">
@@ -79,7 +79,17 @@
   </keyset>
   
   <hbox id="browser">
-    <script src="chrome://tabsidebar/content/browser.js" insertafter="appcontent"/>
+    <vbox id="tabsidebar-left-container" persist="hidden width" hidden="true" insertbefore="appcontent" width="200px" style="min-width: 150px; max-width: 300px"/>
+    <splitter id="tabsidebar-left-splitter" persist="hidden" hidden="true" insertbefore="appcontent"/>
+    <vbox id="appcontent">
+      <hbox id="tabsidebar-top-container" persist="hidden width" hidden="true" insertbefore="content" height="200px" style="min-height: 150px; max-height: 300px"/>
+      <splitter id="tabsidebar-top-splitter" persist="hidden" hidden="true" insertbefore="content"/>
+      <hbox id="tabsidebar-bottom-container" persist="hidden width" hidden="true" insertafter="content" height="200px" style="min-height: 150px; max-height: 300px"/>
+      <splitter id="tabsidebar-bottom-splitter" persist="hidden" hidden="true" insertafter="content"/>
+    </vbox>
+    <vbox id="tabsidebar-right-container" persist="hidden width" hidden="true" insertafter="appcontent" width="200px" style="min-width: 150px; max-width: 300px"/>
+    <splitter id="tabsidebar-right-splitter" persist="hidden" hidden="true" insertafter="appcontent"/>
+    <script src="chrome://tabsidebar/content/browser.js"/>
   </hbox>
   
 </overlay>

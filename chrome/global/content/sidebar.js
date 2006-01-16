@@ -125,5 +125,22 @@ destroy: function()
 	button = topwin.document.getElementById("tabsidebar-help");
 	if (button)
 		button.parentNode.removeChild(button);
+},
+
+load: function(event)
+{
+	//document.getElementById("previews").init();
+},
+
+unload: function(event)
+{
+	if ((event.type=="pagehide")&&(event.persisted))
+		return;
+		
+	document.getElementById("previews")._destroy();
 }
 }
+
+window.addEventListener("load", sidebar.load, false);
+window.addEventListener("unload", sidebar.unload, false);
+window.addEventListener("pagehide", sidebar.unload, false);

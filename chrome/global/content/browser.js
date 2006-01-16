@@ -48,6 +48,7 @@ var TabSidebarHandler = {
 prefs: null,
 hidden: false,
 doc: null,
+position: 0,
 
 // Constructor and destructor
 init: function()
@@ -65,7 +66,88 @@ init: function()
 	sidebarBox.addEventListener("DOMAttrModified", function(event) { self.attributeListener(event); }, false);
 	sidebar.addEventListener("load", function(event) { self.sidebarLoad(event); }, true);
 	
+	this.position=this.prefs.getIntPref("position");
+
   this.prefs.addObserver("",this,false);
+  
+  window.addEventListener("load", function(event) { self.load(event); }, false);
+},
+
+getContainer: function()
+{
+	var container = null;
+	
+	switch (this.position)
+	{
+		case 1:	container = document.getElementById("tabsidebar-top-container");
+						break;
+		case 2:	container = document.getElementById("tabsidebar-bottom-container");
+						break;
+		case 3:	container = document.getElementById("tabsidebar-left-container");
+						break;
+		case 4:	container = document.getElementById("tabsidebar-right-container");
+						break;
+	}
+	return container;
+},
+
+getSplitter: function()
+{
+	var splitter = null;
+	
+	switch (this.position)
+	{
+		case 1:	splitter = document.getElementById("tabsidebar-top-splitter");
+						break;
+		case 2:	splitter = document.getElementById("tabsidebar-bottom-splitter");
+						break;
+		case 3:	splitter = document.getElementById("tabsidebar-left-splitter");
+						break;
+		case 4:	splitter = document.getElementById("tabsidebar-right-splitter");
+						break;
+	}
+	return splitter;
+},
+
+createPreviews: function(container)
+{
+	var previews = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreviews");
+	if (this.position>2)
+		previews.setAttribute("class","tbs-tabpreviews-vertical");
+	else
+		previews.setAttribute("class","tbs-tabpreviews-horizontal");
+	previews.setAttribute("flex","1");
+	previews.setAttribute("id","tabsidebar-previews");
+	container.appendChild(previews);
+},
+
+toggleSidebar: function()
+{
+	if (this.position==0)
+		toggleSidebar('viewTabSidebar');
+	else
+	{
+		var command = document.getElementById("viewTabSidebar");
+		var container = this.getContainer();
+		var splitter = this.getSplitter();
+		if (this.isOpen())
+		{
+			this.sidebarDestroy();
+			container.firstChild._destroy();
+			container.removeChild(container.firstChild);
+			container.setAttribute("hidden","true");
+			splitter.setAttribute("hidden","true");
+			command.setAttribute("checked","false");
+		}
+		else
+		{
+			container.setAttribute("hidden","false");
+			splitter.setAttribute("hidden","false");
+			this.createPreviews(container);
+			this.sidebarInitialise();
+			command.setAttribute("checked","true");
+		}
+	}
 },
 
 sidebarLoad: function(event)
@@ -96,8 +178,16 @@ sidebarDestroy: function()
 
 isOpen: function()
 {
-	var sidebarBox = this.doc.getElementById("sidebar-box");
-	return sidebarBox.getAttribute("sidebarcommand") == "viewTabSidebar";
+	if (this.position==0)
+	{
+		var sidebarBox = this.doc.getElementById("sidebar-box");
+		return sidebarBox.getAttribute("sidebarcommand") == "viewTabSidebar";
+	}
+	else
+	{
+		var container = this.getContainer();
+		return !container.hidden;
+	}
 },
 
 showTabbar: function()
@@ -123,15 +213,25 @@ hideTabbar: function()
 },
 
 // Event observers
-observe: function (aSubject, aTopic, aPrefName)
+load: function(event)
 {
-	//dump("pref change\n");
-	
-	if (this.isOpen())
+	if ((this.position!=0)&&(this.isOpen()))
 	{
-		try
+		var command = document.getElementById("viewTabSidebar");
+		var container = this.getContainer();
+		this.createPreviews(container);
+		this.sidebarInitialise();
+		command.setAttribute("checked","true");
+	}
+},
+
+observe: function (subject, topic, data)
+{
+	if (data=="hidetabs")
+	{
+		if (this.isOpen())
 		{
-		  if (this.prefs.getBoolPref("hidetabs"))
+		  if (this.prefs.getBoolPref(data))
 		  {
 		  	this.hideTabbar();
 		  }
@@ -140,10 +240,15 @@ observe: function (aSubject, aTopic, aPrefName)
 		  	this.showTabbar();
 		  }
 		}
-		catch (e)
-		{
-			dump(e);
-		}
+	}
+	else if (data=="position")
+	{
+		var open = this.isOpen();
+		if (open)
+			this.toggleSidebar();
+		this.position=this.prefs.getIntPref(data);
+		if (open)
+			this.toggleSidebar();
 	}
 },
 
