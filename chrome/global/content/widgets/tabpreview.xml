@@ -188,8 +188,12 @@
         this._anonymousNodes[0];
       </field>
       
+      <field name="_bottombox">
+        this._anonymousNodes[2];
+      </field>
+      
       <field name="uriField">
-        this._anonymousNodes[2].firstChild;
+        this._bottombox.firstChild;
       </field>
       
       <field name="titleField">

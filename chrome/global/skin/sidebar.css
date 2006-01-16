@@ -1,14 +1,20 @@
 /* Generic layout */
-.tbs-scrollbox {
+.tbs-tabpreviews-vertical .tbs-scrollbox {
   padding: 0px 2px 0px 2px;
+}
+
+.tbs-tabpreviews-horizontal .tbs-scrollbox {
+  padding: 2px 0px 2px 0px;
 }
 
 .tbs-tabpreviews-vertical separator {
   margin: 4px 0px 4px 0px !important;
+  height: 0px !important;
 }
 
 .tbs-tabpreviews-horizontal separator {
   margin: 0px 4px 0px 4px !important;
+  width: 0px !important;
 }
 
 .tbs-tabpreview label {
@@ -80,20 +86,35 @@
 /* Drag and drop */
 .tbs-drop-indicator-bar {
   display: none;
-  width: 0px;
   position: relative;
+}
+
+.tbs-tabpreviews-vertical .tbs-drop-indicator-bar {
+  width: 0;
+}
+
+.tbs-tabpreviews-horizontal .tbs-drop-indicator-bar {
+  height: 0;
 }
 
 .tbs-drop-indicator {
   height: 11px;
   width: 11px;
-  -moz-margin-end: -15px;
   position: relative;
   background: 50% 50% no-repeat;
+}
+
+.tbs-tabpreviews-horizontal .tbs-drop-indicator {
+  margin-bottom: -15px;
+  background-image: url('chrome://tabsidebar/skin/dropIndicatorTTB.png');
+}
+
+.tbs-tabpreviews-vertical .tbs-drop-indicator {
+  -moz-margin-end: -15px;
   background-image: url('chrome://tabsidebar/skin/dropIndicatorLTR.png');
 }
 
-.tbs-drop-indicator[chromedir="rtl"] {
+.tbs-tabpreviews-vertical .tbs-drop-indicator[chromedir="rtl"] {
   background-image: url('chrome://tabsidebar/skin/dropIndicatorRTL.png');
 }
 
@@ -132,7 +153,7 @@
   list-style-image: url("chrome://tabsidebar/skin/Icons.png");
   -moz-appearance: none;
   border: none !important;
-  padding: 0px;
+  padding: 0px !important;
   position: absolute; /* Required to avoid transparency issues - bug 5 */
 }
 

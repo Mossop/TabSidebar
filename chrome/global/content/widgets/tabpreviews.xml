@@ -115,9 +115,9 @@
         	var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
         	drop.className="dropindicator groove";
           if (this.getAttribute("orient")=="vertical")
-            drop.setAttribute("orient","horizontal");
-          else
             drop.setAttribute("orient","vertical");
+          else
+            drop.setAttribute("orient","horizontal");
           this.previewContainer.appendChild(drop);
         </body>
       </method>
@@ -549,9 +549,9 @@
           	drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
           	drop.className="dropindicator groove";
             if (this.getAttribute("orient")=="vertical")
-              drop.setAttribute("orient","horizontal");
-            else
               drop.setAttribute("orient","vertical");
+            else
+              drop.setAttribute("orient","horizontal");
           }
         	var id=browser.parentNode.id;
         	if (id)
@@ -1035,8 +1035,8 @@
       <handler event="click">
         if (event.button == 2)
         {
-          var x = this.boxObject.screenX-this.window.document.documentElement.boxObject.screenX+event.clientX;
-          var y = this.boxObject.screenY-this.window.document.documentElement.boxObject.screenY+event.clientY;
+          var x = event.screenX-this.window.document.documentElement.boxObject.screenX;
+          var y = event.screenY-this.window.document.documentElement.boxObject.screenY;
 
           x+=2;
           y+=2;

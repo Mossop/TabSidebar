@@ -219,7 +219,7 @@
             {
               dropel = drop.canvas.parentNode;
             }
-            var pos = dropel.boxObject.y+(dropel.boxObject.height/2);
+            var pos = dropel.boxObject.y+(dropel.boxObject.height/2)-this.boxObject.y;
             pos = pos - y.value - 5;
             this.dragDropIndicator.style.marginTop = pos + "px";
             if (!this._lastDrop)

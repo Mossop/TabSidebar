@@ -113,9 +113,14 @@
 
           var canvas = preview.canvas;
 
+          preview._topbox.style.width=this.displayWidth+"px";
+          preview._bottombox.style.width=this.displayWidth+"px";
           canvas.style.width=this.displayWidth+"px";
           canvas.style.minWidth=this.displayWidth+"px";
           canvas.style.maxWidth=this.displayWidth+"px";
+          canvas.style.height=this.displayHeight+"px";
+          canvas.style.minHeight=this.displayHeight+"px";
+          canvas.style.maxHeight=this.displayHeight+"px";
           
           try
           {
@@ -173,10 +178,11 @@
           {
             var newWidth=0;
             var newHeight=0;
-  
-            var container = preview.canvas.parentNode;
-            var computed = window.getComputedStyle(container,null);
-            newHeight = parseInt(computed.height);
+
+            var box = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0];
+            newHeight = this.scrollBoxObject.height-(preview.canvas.parentNode.boxObject.y-box.boxObject.y);
+            newHeight-=28; // TODO MAGIC NUMBER
+
             if (newHeight<0)
             {
               this._logError("Invalid canvas height ("+newHeight+")");
@@ -219,7 +225,7 @@
             {
               dropel = drop.canvas.parentNode;
             }
-            var pos = dropel.boxObject.x+(dropel.boxObject.width/2);
+            var pos = dropel.boxObject.x+(dropel.boxObject.width/2)-this.boxObject.x;
             pos = pos - x.value - 5;
             this.dragDropIndicator.style.marginLeft = pos + "px";
             if (!this._lastDrop)

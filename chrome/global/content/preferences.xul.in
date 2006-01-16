@@ -89,7 +89,7 @@
       
         <separator class="thin"/>
         
-        <checkbox preference="content.reload"   accesskey="&paneDisplay.content.navigation.accesskey;"
+        <checkbox preference="content.navigation"   accesskey="&paneDisplay.content.navigation.accesskey;"
                                               label="&paneDisplay.content.navigation.label;"/>
 
         <radiogroup preference="position">
