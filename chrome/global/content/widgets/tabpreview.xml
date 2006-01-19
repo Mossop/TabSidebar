@@ -150,13 +150,14 @@
               //this.loading=false;
   
               this._changeTimer.cancel();
+              this._changeTime=0;
+              this._changeReason="";
               this._changeTimer=null;
-              this._scrollTimer.cancel();
-              this._scrollTimer=null;
-              this._loadTimer.cancel();
-              this._loadTimer=null;
               this._updateTimer.cancel();
               this._updateTimer=null;
+              
+              this._timerListener.tabpreview=null;
+              this._timerListener=null;
               
               dump("Tabpreview destroyed\n");
             }
@@ -474,17 +475,37 @@
         </body>
       </method>
       
+      <method name="_startTimer">
+        <parameter name="reason"/>
+        <parameter name="selectedDelay"/>
+        <parameter name="unselectedDelay"/>
+        <body>
+        <![CDATA[
+          var delay = selectedDelay;
+          
+          if (!this.selected)
+            delay = unselectedLoadDelay;
+
+          var date = Date.now()+delay;
+          
+          this._changeReason+=" "+reason;
+
+          if (date>this._changeTime)
+          {
+            this._changeTimer.cancel();
+            this._changeTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            this._changeTime=date;
+          }
+        ]]>
+        </body>
+      </method>
+      
       <method name="_documentLoaded">
         <body>
           if (!this.previews)
             return;
             
-          var delay = this.previews.loadDelay;
-          if (!this.selected)
-            delay = this.previews.unselectedLoadDelay;
-          this._loadTimer.cancel();
-          this._loadTimed=true;
-          this._loadTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._startTimer("load", this.previews.loadDelay, this.previews.unselectedLoadDelay);
         </body>
       </method>
       
@@ -493,12 +514,7 @@
           if (!this.previews)
             return;
             
-          var delay = this.previews.textDelay;
-          if (!this.selected)
-            delay = this.previews.unselectedTextDelay;
-          this._textTimer.cancel();
-          this._textTimed=true;
-          this._textTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._startTimer("text", this.previews.textDelay, this.previews.unselectedTextDelay);
         </body>
       </method>
       
@@ -507,12 +523,7 @@
           if (!this.previews)
             return;
             
-          var delay = this.previews.changeDelay;
-          if (!this.selected)
-            delay = this.previews.unselectedChangeDelay;
-          this._changeTimer.cancel();
-          this._changeTimed=true;
-          this._changeTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._startTimer("change", this.previews.changeDelay, this.previews.unselectedChangeDelay);
         </body>
       </method>
       
@@ -521,12 +532,7 @@
           if (!this.previews)
             return;
             
-          var delay = this.previews.scrollDelay;
-          if (!this.selected)
-            delay = this.previews.unselectedScrollDelay;
-          this._scrollTimer.cancel();
-          this._scrollTimed=true;
-          this._scrollTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this._startTimer("scroll", this.previews.scrollDelay, this.previews.unselectedScrollDelay);
         </body>
       </method>
       
@@ -706,7 +712,8 @@
 
           notify : function(timer)
           {
-            this.tabpreview.notify(timer);
+            if (this.tabpreview)
+              this.tabpreview.notify(timer);
           },
 
           QueryInterface : function(aIID)
@@ -858,25 +865,13 @@
         </body>
       </method>
       
+      <field name="_runningTimers">[]</field>
+      
       <field name="_changeTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
-      <field name="_changeTimed">false</field>
-      
-      <field name="_textTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-      <field name="_textTimed">false</field>
-      
-      <field name="_scrollTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-      <field name="_scrollTimed">false</field>
-      
-      <field name="_loadTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-      <field name="_loadTimed">false</field>
+      <field name="_changeTime">0</field>
+      <field name="_changeReason">0</field>
       
       <field name="_updateTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
@@ -939,11 +934,8 @@
 
           //this._emptyDocumentListeners();
           this._changeTimer.cancel();
-          this._scrollTimer.cancel();
-          this._loadTimer.cancel();
-          this._changeTimed=false;
-          this._scrollTimed=false;
-          this._loadTimed=false;
+          this._changeTime=0;
+          this._changeReason="";
           
           this._updateTimer.cancel();
           if ((this.previews)&&(this.previews.loadRefresh))
@@ -1654,38 +1646,15 @@
             }
             return;
           }
-          else if (timer==this._loadTimer)
-          {
-            this._logMessage("loadTimer fired");
-            this._loadTimed=false;
-          }
-          else if (timer==this._changeTimer)
-          {
-            this._logMessage("changeTimer fired");
-            this._changeTimed=false;
-          }
-          else if (timer==this._textTimer)
-          {
-            this._logMessage("textTimer fired");
-            this._textTimed=false;
-          }
-          else if (timer==this._scrollTimer)
-          {
-            this._logMessage("scrollTimer fired");
-            this._scrollTimed=false;
-          }
-          else
-          {
-            return;
-          }
-
-          if ((this._scrollTimed)||(this._loadTimed)||(this._changeTimed)||(this._textTimed))
-            return;
-
+          
+          this._logMessage("Timer fired - "+this._changeReason);
+          
           this.redraw();
 
-          if (timer==this._loadTimer)
+          if (this._changeReason.indexOf("load")>=0)
             this.update();
+            
+          this._changeReason="";
         ]]>
         </body>
       </method>
