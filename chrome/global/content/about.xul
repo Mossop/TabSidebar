@@ -67,7 +67,7 @@
       <vbox flex="1">
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
-          <label class="bold version" value="&dialog.version; @version@"/>
+          <label class="bold version" value="&dialog.version; ${extension.fullversion}"/>
         </hbox>
         <separator class="groove-thin"/>
         <hbox>

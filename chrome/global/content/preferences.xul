@@ -78,7 +78,7 @@
       
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
-          <label class="bold version" value="&tabsidebar.options.version; @version@"/>
+          <label class="bold version" value="&tabsidebar.options.version; ${extension.version}"/>
         </hbox>
 
         <separator class="groove-thin"/>
