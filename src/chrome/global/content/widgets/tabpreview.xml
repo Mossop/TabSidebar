@@ -151,7 +151,7 @@
   
               this._changeTimer.cancel();
               this._changeTime=0;
-              this._changeReason="";
+              this._changeReason=0;
               this._changeTimer=null;
               this._updateTimer.cancel();
               this._updateTimer=null;
@@ -475,6 +475,11 @@
         </body>
       </method>
       
+      <field name="CHANGE_LOAD">1</field>
+      <field name="CHANGE_TEXT">2</field>
+      <field name="CHANGE_DOCUMENT">4</field>
+      <field name="CHANGE_SCROLL">8</field>
+      
       <method name="_startTimer">
         <parameter name="reason"/>
         <parameter name="selectedDelay"/>
@@ -488,7 +493,7 @@
 
           var date = Date.now()+delay;
           
-          this._changeReason+=" "+reason;
+          this._changeReason|=reason;
 
           if (date>this._changeTime)
           {
@@ -505,7 +510,7 @@
           if (!this.previews)
             return;
             
-          this._startTimer("load", this.previews.loadDelay, this.previews.unselectedLoadDelay);
+          this._startTimer(this.CHANGE_LOAD, this.previews.loadDelay, this.previews.unselectedLoadDelay);
         </body>
       </method>
       
@@ -514,7 +519,7 @@
           if (!this.previews)
             return;
             
-          this._startTimer("text", this.previews.textDelay, this.previews.unselectedTextDelay);
+          this._startTimer(this.CHANGE_TEXT, this.previews.textDelay, this.previews.unselectedTextDelay);
         </body>
       </method>
       
@@ -523,7 +528,7 @@
           if (!this.previews)
             return;
             
-          this._startTimer("change", this.previews.changeDelay, this.previews.unselectedChangeDelay);
+          this._startTimer(this.CHANGE_DOCUMENT, this.previews.changeDelay, this.previews.unselectedChangeDelay);
         </body>
       </method>
       
@@ -532,7 +537,7 @@
           if (!this.previews)
             return;
             
-          this._startTimer("scroll", this.previews.scrollDelay, this.previews.unselectedScrollDelay);
+          this._startTimer(this.CHANGE_SCROLL, this.previews.scrollDelay, this.previews.unselectedScrollDelay);
         </body>
       </method>
       
@@ -628,15 +633,19 @@
               }
               else if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
               {
-                if ((event.type=="DOMAttrModified")&&
-                   ((event.attrName=="curpos")
-                  ||(event.attrName=="maxpos")
-                  ||(event.attrName=="pageincrement")))
+                if (event.type=="DOMAttrModified")
                 {
-                    this._documentScrolled();
-                    return;
+                  if ((event.attrName=="maxpos")||(event.attrName=="pageincrement"))
+                  {
+                      return;
+                  }
+                  else if (event.attrName=="curpos")
+                  {
+                      this._documentScrolled();
+                      return;
+                  }
                 }
-                if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
+                else if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
                 {
                   if (event.target instanceof HTMLTextAreaElement)
                   {
@@ -865,8 +874,6 @@
         </body>
       </method>
       
-      <field name="_runningTimers">[]</field>
-      
       <field name="_changeTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -935,7 +942,7 @@
           //this._emptyDocumentListeners();
           this._changeTimer.cancel();
           this._changeTime=0;
-          this._changeReason="";
+          this._changeReason=0;
           
           this._updateTimer.cancel();
           if ((this.previews)&&(this.previews.loadRefresh))
@@ -1553,7 +1560,10 @@
           	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
           	{
               if (this.loading)
+              {
+                this._logMessage("Load status: "+status);
                 this._loadComplete();
+              }
               else
                 this._logWarning("Received repeat load complete - "+stateFlags);
             }
@@ -1651,10 +1661,10 @@
           
           this.redraw();
 
-          if (this._changeReason.indexOf("load")>=0)
+          if (this._changeReason & this.CHANGE_LOAD)
             this.update();
             
-          this._changeReason="";
+          this._changeReason=0;
         ]]>
         </body>
       </method>
