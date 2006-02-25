@@ -170,46 +170,33 @@
         </body>
       </method>
       
-      <method name="browserResized">
-        <parameter name="preview"/>
-        <parameter name="width"/>
-        <parameter name="height"/>
+      <method name="_calculateSize">
         <body>
         <![CDATA[
-          if (this._selected == preview)
+          var newWidth=0;
+          var newHeight=0;
+
+          var box = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0];
+          newHeight = this.scrollBoxObject.height-(this._selected.canvas.parentNode.boxObject.y-box.boxObject.y);
+          newHeight-=28; // TODO MAGIC NUMBER
+
+          if (newHeight<0)
           {
-            var newWidth=0;
-            var newHeight=0;
-
-            var box = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0];
-            newHeight = this.scrollBoxObject.height-(preview.canvas.parentNode.boxObject.y-box.boxObject.y);
-            newHeight-=28; // TODO MAGIC NUMBER
-
-            if (newHeight<0)
-            {
-              this._logError("Invalid canvas height ("+newHeight+")");
-              this._resizeTimer.initWithCallback(this, 
-                                                 5,
-                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-              return;
-            }
-            else if (newHeight==0)
-            {
-              this._logWarning("Zero canvas height");
-            }
-
-            newWidth = parseInt((width/height)*newHeight);
-  
-            if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
-            {
-              this._contentWidth=Math.max(newWidth,300);
-              this._contentHeight=(newHeight/newWidth)*this._contentWidth;
-              this._displayWidth=newWidth;
-              this._displayHeight=newHeight;
-              this._resize();
-              this.style.visibility=null;
-            }
+            this._logError("Invalid canvas height ("+newHeight+")");
+            this._resizeTimer.initWithCallback(this, 
+                                               5,
+                                               Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            return;
           }
+
+          newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
+
+          if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
+          {
+            this._displayWidth=newWidth;
+            this._displayHeight=newHeight;
+          }
+          return true;
         ]]>
         </body>
       </method>
