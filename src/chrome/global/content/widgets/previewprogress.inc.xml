@@ -68,6 +68,7 @@
       </method>
       
       <method name="_loadComplete">
+        <parameter name="status"/>
         <body>
           this._logMessage("loadComplete");
           
@@ -75,7 +76,10 @@
           this.stopButton.disabled=true;
           this._updateTimer.cancel();
 
-          this._documentLoaded();
+          if (status==0)
+            this._documentLoaded();
+          else
+            this._documentLoadError();
         </body>
       </method>
       
@@ -149,12 +153,11 @@
           //this._logMessage("onStateChange "+stateFlags+" "+status);
           if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK)
           {
-          	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
-          	{
+            if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
+            {
               if (this.loading)
               {
-                this._logMessage("Load status: "+status);
-                this._loadComplete();
+                this._loadComplete(status);
               }
               else
                 this._logWarning("Received repeat load complete - "+stateFlags);
@@ -166,8 +169,8 @@
               else
                 this._logWarning("Received repeat load start - "+stateFlags);
             }
-      		}
-      	]]>
+          }
+        ]]>
         </body>
       </method>
       

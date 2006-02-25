@@ -1,8 +1,8 @@
       <field name="_eventListener"/>
       <field name="CHANGE_LOAD">1</field>
       <field name="CHANGE_TEXT">2</field>
-      <field name="CHANGE_DOCUMENT">4</field>
-      <field name="CHANGE_SCROLL">8</field>
+      <field name="CHANGE_SCROLL">4</field>
+      <field name="CHANGE_OTHER">128</field>
       <field name="_changeTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -45,7 +45,6 @@
           if (this._browser.docShell)
           {
             this._browser.webProgress.addProgressListener(this._progressListener,mask);
-            //this._browser.sessionHistory.addSHistoryListener(this._historyListener);
           }
           else
           {
@@ -72,7 +71,6 @@
             if (this._browser.docShell)
             {
               this._browser.webProgress.removeProgressListener(this._progressListener);
-              //this._browser.sessionHistory.removeSHistoryListener(this._historyListener);
             }
             else
             {
@@ -87,7 +85,7 @@
       </method>
       
       <method name="_addDocumentListeners">
-      	<parameter name="doc"/>
+        <parameter name="doc"/>
         <body>
         <![CDATA[
           var pos = this._listenedDocuments.indexOf(doc);
@@ -166,12 +164,12 @@
       </method>
       
       <method name="_findDocuments">
-      	<parameter name="doc"/>
+        <parameter name="doc"/>
         <parameter name="newdocs"/>
-      	<body>
-      	<![CDATA[
-      		if (doc)
-      		{
+        <body>
+        <![CDATA[
+          if (doc)
+          {
             if (doc.contentDocument && (doc.contentDocument instanceof Document))
               doc=doc.contentDocument;
 
@@ -180,32 +178,32 @@
 
             if (doc.getElementsByTagName)
             {
-  	      		var subdocs = doc.getElementsByTagName("frame");
-  	      		for (var pos = 0; pos<subdocs.length; pos++)
-  	      		{
+              var subdocs = doc.getElementsByTagName("frame");
+              for (var pos = 0; pos<subdocs.length; pos++)
+              {
                 this._logMessage("Adding new frame");
-        				this._findDocuments(subdocs[pos].contentDocument, newdocs);
-  	      		}
-  	      		subdocs = doc.getElementsByTagName("iframe");
-  	      		for (var pos = 0; pos<subdocs.length; pos++)
-  	      		{
+                this._findDocuments(subdocs[pos].contentDocument, newdocs);
+              }
+              subdocs = doc.getElementsByTagName("iframe");
+              for (var pos = 0; pos<subdocs.length; pos++)
+              {
                 this._logMessage("Adding new iframe");
-        				this._findDocuments(subdocs[pos].contentDocument, newdocs);
-  	      		}
-  	      		subdocs = doc.getElementsByTagName("browser");
-  	      		for (var pos = 0; pos<subdocs.length; pos++)
-  	      		{
+                this._findDocuments(subdocs[pos].contentDocument, newdocs);
+              }
+              subdocs = doc.getElementsByTagName("browser");
+              for (var pos = 0; pos<subdocs.length; pos++)
+              {
                 this._logMessage("Adding new browser");
-        				this._findDocuments(subdocs[pos].contentDocument, newdocs);
-  	      		}
+                this._findDocuments(subdocs[pos].contentDocument, newdocs);
+              }
             }
-	      	}
+          }
           else
           {
             this._logWarning("Attempt to add null doc");
           }
-				]]>
-      	</body>
+        ]]>
+        </body>
       </method>
       
       <method name="_checkDocuments">
@@ -290,8 +288,7 @@
         </body>
       </method>
       
-      <method name="_updateSize">
-        <parameter name="forceRedraw"/>
+      <method name="_browserResized">
         <body>
         <![CDATA[
           var width = this._browser.parentNode.boxObject.width;
@@ -304,27 +301,31 @@
           }
           
           this._logMessage("new size: "+width+"x"+height);
-          var shouldRedraw = forceRedraw || this._browserWidth != width || this._browserHeight != height;
-          
-          this._browserWidth = width;
+
+          this._invalid = true;
           this._browserHeight = height;
-          this.previews.browserResized(this,this._browserWidth,this._browserHeight);
-          if (shouldRedraw)
-          {
-            this.redraw();
-            return true;
-          }
-          return false;
+          this._browserWidth = width;
         ]]>
         </body>
       </method>
-            
+      
       <method name="_documentLoaded">
         <body>
           if (!this.previews)
             return;
             
+          this._invalid = true;
           this._startTimer(this.CHANGE_LOAD, this.previews.loadDelay, this.previews.unselectedLoadDelay);
+        </body>
+      </method>
+      
+      <method name="_documentLoadError">
+        <body>
+          if (!this.previews)
+            return;
+            
+          this._invalid = true;
+          this._startTimer(this.CHANGE_LOAD, this.previews.loadErrorDelay, this.previews.unselectedLoadErrorDelay);
         </body>
       </method>
       
@@ -333,6 +334,7 @@
           if (!this.previews)
             return;
             
+          this._invalid = true;
           this._startTimer(this.CHANGE_TEXT, this.previews.textDelay, this.previews.unselectedTextDelay);
         </body>
       </method>
@@ -342,7 +344,8 @@
           if (!this.previews)
             return;
             
-          this._startTimer(this.CHANGE_DOCUMENT, this.previews.changeDelay, this.previews.unselectedChangeDelay);
+          this._invalid = true;
+          this._startTimer(this.CHANGE_OTHER, this.previews.changeDelay, this.previews.unselectedChangeDelay);
         </body>
       </method>
       
@@ -351,6 +354,7 @@
           if (!this.previews)
             return;
             
+          this._invalid = true;
           this._startTimer(this.CHANGE_SCROLL, this.previews.scrollDelay, this.previews.unselectedScrollDelay);
         </body>
       </method>
@@ -372,7 +376,8 @@
             else if (event.type=="resize")
             {
               this._logMessage("Browser resized");
-              this._updateSize(false);
+              this._browserResized();
+              this.previews.browserResized(this, this._browserWidth, this._browserHeight);
             }
             else if ((event.type=="load")||(event.type=="pageshow"))
             {
@@ -451,12 +456,12 @@
                 {
                   if ((event.attrName=="maxpos")||(event.attrName=="pageincrement"))
                   {
-                      return;
+                    return;
                   }
                   else if (event.attrName=="curpos")
                   {
-                      this._documentScrolled();
-                      return;
+                    this._documentScrolled();
+                    return;
                   }
                 }
                 else if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
@@ -475,6 +480,7 @@
                     }
                   }
                 }
+                this._logMessage(event.type);
                 this._documentChanged();
               }
             }
@@ -498,23 +504,25 @@
           
           if (timer==this._updateTimer)
           {
-            //this.update();
-            if (this._invalid)
-            {
-              this._redraw();
-              this._invalid=false;
-            }
+            this.update();
+            this.redraw();
+            this._changeTimer.cancel();
+            this._changeTime=0;
+            this._changeReason=0;
             return;
           }
           
-          this._logMessage("Timer fired - "+this._changeReason);
-          
-          this.redraw();
-
-          if (this._changeReason & this.CHANGE_LOAD)
-            this.update();
+          if (this._changeReason)
+          {
+            this._logMessage("Timer fired - "+this._changeReason);
             
-          this._changeReason=0;
+            this.redraw();
+  
+            if (this._changeReason & this.CHANGE_LOAD)
+              this.update();
+              
+            this._changeReason=0;
+          }
         ]]>
         </body>
       </method>

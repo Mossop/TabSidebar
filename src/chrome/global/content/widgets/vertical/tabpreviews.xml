@@ -117,6 +117,8 @@
           canvas.style.minHeight=this.displayHeight+"px";
           canvas.style.maxHeight=this.displayHeight+"px";
           
+          preview._invalid=true;
+          
           try
           {
             canvas.getContext("2d");
@@ -163,45 +165,29 @@
         </body>
       </method>
       
-      <method name="browserResized">
-        <parameter name="preview"/>
-        <parameter name="width"/>
-        <parameter name="height"/>
+      <method name="_calculateSize">
         <body>
         <![CDATA[
-          if (this._selected == preview)
-          {
-            var newWidth=0;
-            var newHeight=0;
-  
-            var container = preview.canvas.parentNode;
-            var computed = window.getComputedStyle(container,null);
-            newWidth = parseInt(computed.width);
-            if (newWidth<0)
-            {
-              this._logError("Invalid canvas width ("+newWidth+")");
-              this._resizeTimer.initWithCallback(this, 
-                                                 5,
-                                                 Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-              return;
-            }
-            else if (newWidth==0)
-            {
-              this._logWarning("Zero canvas width");
-            }
+          var newWidth=0;
+          var newHeight=0;
 
-            newHeight = parseInt((height/width)*newWidth);
-  
-            if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
-            {
-              this._contentWidth=Math.max(newWidth,300);
-              this._contentHeight=(newHeight/newWidth)*this._contentWidth;
-              this._displayWidth=newWidth;
-              this._displayHeight=newHeight;
-              this._resize();
-              this.style.visibility=null;
-            }
+          var container = this._selected.canvas.parentNode;
+          var computed = window.getComputedStyle(container,null);
+          newWidth = parseInt(computed.width);
+          if (newWidth<0)
+          {
+            this._logError("Invalid canvas width ("+newWidth+")");
+            return false;
           }
+
+          newHeight = parseInt((this._browserHeight/this._browserWidth)*newWidth);
+
+          if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
+          {
+            this._displayWidth=newWidth;
+            this._displayHeight=newHeight;
+          }
+          return true;
         ]]>
         </body>
       </method>

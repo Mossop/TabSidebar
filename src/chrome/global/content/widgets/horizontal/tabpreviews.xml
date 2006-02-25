@@ -122,6 +122,8 @@
           canvas.style.minHeight=this.displayHeight+"px";
           canvas.style.maxHeight=this.displayHeight+"px";
           
+          preview._invalid=true;
+          
           try
           {
             canvas.getContext("2d");

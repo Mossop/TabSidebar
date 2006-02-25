@@ -238,7 +238,6 @@
       
       <!-- Internal fields and methods -->
       
-      <field name="_loadCount">0</field>
       <field name="_invalid">false</field>
       
       <method name="_logMessage">
@@ -345,7 +344,7 @@
             this._addListeners();
             
             this._logMessage("Browser added");
-            this._updateSize(true);
+            this._browserResized();
             this.update();
           }
         ]]>
@@ -410,7 +409,6 @@
         </setter>
       </property>
       
-      <!-- Configuration options -->
       <!-- Properties generated from the browser -->
       
       <property name="title">
@@ -566,15 +564,8 @@
       
       <method name="redraw">
         <body>
-          if (!this.loading)
-            this._redraw();
-        </body>
-      </method>
-      
-      <method name="_redraw">
-        <body>
         <![CDATA[
-          if (!this.previews)
+          if ((!this.previews)||(!this._invalid))
             return;
           
           if (this.previews.displayHeight==0)
@@ -582,6 +573,7 @@
             this._logWarning("Cancelling redraw");
             return;
           }
+          
           var canvas = this.canvas;
           if (!canvas)
           {
@@ -593,7 +585,9 @@
             this._logWarning("Attempt to redraw before resize");
             return;
           }
-          //this._logMessage("redraw");
+          
+          this._invalid = false;
+          this._logMessage("redraw");
           canvas.width = this.previews.contentWidth;
           canvas.height = this.previews.contentHeight;
           var ctx = null;
@@ -603,6 +597,7 @@
           }
           catch (e)
           {
+            dump(e+"\n");
             return;
           }
           if ((this._browser)&&(this._browser.docShell))

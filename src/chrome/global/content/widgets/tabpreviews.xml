@@ -52,6 +52,14 @@
     
     <implementation implements="nsITimerCallback,nsIObserver">
     
+      <field name="_validateTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      <field name="_validatePos">0</field>
+      <field name="_validateMax">0</field>
+      <field name="_browserHeight">0</field>
+      <field name="_browserWidth">0</field>
+      
       <constructor>
       <![CDATA[
         var topwin = window;
@@ -90,7 +98,9 @@
               break;
             }
           }
-          for (var i=selectedpos; i>=0; i--)
+          this.addPreview(browsers[selectedpos]);
+          this._updateSize();
+          for (var i=selectedpos-1; i>=0; i--)
           {
             this.addPreview(browsers[i]);
           }
@@ -168,8 +178,11 @@
           this._showPreviews = this.preferences.getBoolPref("content.previews");
 
           this._drawScrolled = true; //this.preferences.getBoolPref("drawscrolled");
+          this._validateRate = this.preferences.getIntPref("validaterate");
           this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
           this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
+          this._loadErrorDelay = this.preferences.getIntPref("loaderrordelay");
+          this._unselectedLoadErrorDelay = this.preferences.getIntPref("unselectedloaderrordelay");
           this._loadDelay = this.preferences.getIntPref("loaddelay");
           this._unselectedLoadDelay = this.preferences.getIntPref("unselectedloaddelay");
           this._textDelay = this.preferences.getIntPref("textdelay");
@@ -235,9 +248,6 @@
               this.tabbrowser=null;
               this.window=null;
     
-              this._resizeTimer.cancel();
-              this._resizeTimer=null;
-              
               dump("Tabpreviews destroyed\n");
             }
             catch (e)
@@ -333,10 +343,6 @@
       <field name="_selected"/>
       <field name="_redrawPreview">0</field>
       
-      <field name="_resizeTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-
       <method name="_resize">
         <body>
         <![CDATA[
@@ -459,6 +465,12 @@
           return Math.max(100,this._loadRefreshRate);
         </getter>
       </property>
+      
+      <field name="_loadErrorDelay"/>
+      <property name="loadErrorDelay" onget="return this._loadErrorDelay;"/>
+      
+      <field name="_unselectedLoadErrorDelay"/>
+      <property name="unselectedLoadErrorDelay" onget="return this._unselectedLoadErrorDelay;"/>
       
       <field name="_loadDelay"/>
       <property name="loadDelay" onget="return this._loadDelay;"/>
@@ -950,19 +962,85 @@
         ]]>
         </body>
       </method>
+      
+      <method name="_updateSize">
+        <body>
+        <![CDATA[
+          if (this._calculateSize())
+          {
+            this._contentWidth=Math.max(this.displayWidth,300);
+            this._contentHeight=(this.displayHeight/this.displayWidth)*this._contentWidth;
+            this.style.visibility=null;
+            this._resize();
+            this._selected.redraw();
+            this._validateMax = this.previews.length;
+            if (this._validateMax <= 1)
+              return;
 
+            this._validatePos = 0;
+          }
+          this._validateTimer.cancel();
+          this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        ]]>
+        </body>
+      </method>
+      
+      <method name="browserResized">
+        <parameter name="preview"/>
+        <parameter name="width"/>
+        <parameter name="height"/>
+        <body>
+          if (preview == this._selected)
+          {
+            if ((width != this._browserWidth) || (height != this._browserHeight))
+            {
+              this._browserWidth = width;
+              this._browserHeight = height;
+              this._updateSize();
+            }
+            else
+            {
+              preview.redraw();
+            }
+          }
+        </body>
+      </method>
+
+      <method name="_validate">
+        <body>
+        <![CDATA[
+          if ((this.displayHeight < 0) && (this._selected))
+          {
+            this._updateSize();
+          }
+          else
+          {
+            while ((this._validatePos < this._validateMax) && (!this.previews[this._validatePos]._invalid))
+              this._validatePos++;
+            
+            if (this._validatePos >= this._validateMax)
+              return;
+            
+            this._logMessage("Updating "+this._validatePos);
+            this.previews[this._validatePos].redraw();
+            this._validatePos++;
+            
+            this._validateTimer.cancel();
+            this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          }
+        ]]>
+        </body>
+      </method>
+      
       <!-- Start of nsITimerCallback implementation -->
 
       <method name="notify">
         <parameter name="timer"/>
         <body>
         <![CDATA[
-          if (timer==this._resizeTimer)
+          if (timer==this._validateTimer)
           {
-            if ((this.displayHeight<=0)&&(this._selected))
-            {
-              this._selected._updateSize(false);
-            }
+            this._validate();
           }
         ]]>
         </body>
@@ -994,11 +1072,20 @@
             case "enablelogging":
               this._enableLogging = this.preferences.getBoolPref(data);
               break;
+            case "validaterate":
+              this._validateRate = this.preferences.getIntPref(data);
+              break;
             case "loadrefresh":
               this._loadRefresh = this.preferences.getBoolPref(data);
               break;
             case "loadrefreshrate":
               this._loadRefreshRate = this.preferences.getIntPref(data);
+              break;
+            case "loaderrordelay":
+              this._loadErrorDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedloaderrordelay":
+              this._unselectedLoadErrorDelay = this.preferences.getIntPref(data);
               break;
             case "loaddelay":
               this._loadDelay = this.preferences.getIntPref(data);
