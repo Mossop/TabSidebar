@@ -233,6 +233,9 @@
         this._stack.firstChild.firstChild;
       </field>
       
+#include "previewevents.inc.xml"
+#include "previewprogress.inc.xml"
+      
       <!-- Internal fields and methods -->
       
       <field name="_loadCount">0</field>
@@ -513,6 +516,8 @@
         ]]>
         </body>
       </method>
+
+#include "previewhistory.inc.xml"
 
       <method name="viewSecurity">
         <body>
