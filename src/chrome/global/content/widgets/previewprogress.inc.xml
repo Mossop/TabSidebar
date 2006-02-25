@@ -1,0 +1,231 @@
+      <field name="_updateTimer">
+        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+      </field>
+      
+      <field name="_progressListener">({
+          tabpreview: this,
+
+          onProgressChange : function (aWebProgress, aRequest,
+                                       aCurSelfProgress, aMaxSelfProgress,
+                                       aCurTotalProgress, aMaxTotalProgress)
+          {
+            this.tabpreview.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
+          },
+
+          onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
+          {
+            this.tabpreview.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
+          },
+
+          onLocationChange : function(aWebProgress, aRequest, aLocation)
+          {
+            this.tabpreview.onLocationChange(aWebProgress, aRequest, aLocation);
+          },
+
+          onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage)
+          {
+            this.tabpreview.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
+          },
+
+          onSecurityChange : function(aWebProgress, aRequest, aState)
+          {
+            this.tabpreview.onSecurityChange(aWebProgress, aRequest, aState);
+          },
+
+          QueryInterface : function(aIID)
+          {
+            if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                aIID.equals(Components.interfaces.nsISupports))
+              return this;
+            throw Components.results.NS_NOINTERFACE;
+          }
+        });</field>
+
+      <method name="_loadStarted">
+        <body>
+        <![CDATA[
+          this._logMessage("loadStarted");
+          
+          this.loading=true;
+          this._invalid=true;
+          this.stopButton.disabled=false;
+
+          //this._emptyDocumentListeners();
+          this._changeTimer.cancel();
+          this._changeTime=0;
+          this._changeReason=0;
+          
+          this._updateTimer.cancel();
+          if ((this.previews)&&(this.previews.loadRefresh))
+          {
+            this._updateTimer.initWithCallback(this._timerListener, 
+                                             this.previews.loadRefreshRate, 
+                                             Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="_loadComplete">
+        <body>
+          this._logMessage("loadComplete");
+          
+          this.loading=false;
+          this.stopButton.disabled=true;
+          this._updateTimer.cancel();
+
+          this._documentLoaded();
+        </body>
+      </method>
+      
+      <method name="_setSecurity">
+        <parameter name="state"/>
+        <body>
+        <![CDATA[
+          const WPL = Components.interfaces.nsIWebProgressListener;
+                       
+          switch (state)
+          {
+            case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_HIGH:
+              this.setAttribute("security", "high");
+              break;
+            case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_LOW:
+              this.setAttribute("security", "low");
+              break;
+            case WPL.STATE_IS_BROKEN:
+              this.setAttribute("security", "broken");
+              break;
+            case WPL.STATE_IS_INSECURE:
+            default:
+              this.setAttribute("security", "none");
+              break;
+          }
+          
+          var icon = this.securityIcon;
+          if ((this._browser.docShell)&&(this._browser.securityUI))
+          {
+            icon.setAttribute("tooltiptext",this._browser.securityUI.tooltipText);
+          }
+          else
+          {
+            icon.removeAttribute("tooltiptext");
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <!--  Start of nsIWebProgressListener implementation -->
+
+      <method name="onLocationChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="location"/>
+        <body>
+          this._logMessage("onLocationChange");
+          var uri = this.uri;
+
+          var el = this.uriField;
+          if (el)
+            el.value=this.uri;
+
+          var reload = this.reloadButton;
+          reload.disabled=(uri=="about:blank" || uri=="");
+
+          this.historyChange();
+            
+          if (!this.loading)
+            this._checkDocuments("location");
+        </body>
+      </method>
+      
+      <method name="onStateChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="stateFlags"/>
+        <parameter name="status"/>
+        <body>
+        <![CDATA[
+          //this._logMessage("onStateChange "+stateFlags+" "+status);
+          if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK)
+          {
+          	if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
+          	{
+              if (this.loading)
+              {
+                this._logMessage("Load status: "+status);
+                this._loadComplete();
+              }
+              else
+                this._logWarning("Received repeat load complete - "+stateFlags);
+            }
+            else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
+            {
+              if (!this.loading)
+                this._loadStarted();
+              else
+                this._logWarning("Received repeat load start - "+stateFlags);
+            }
+      		}
+      	]]>
+        </body>
+      </method>
+      
+      <method name="onStatusChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="status"/>
+        <parameter name="message"/>
+        <body>
+          //this._logMessage("onStatusChange "+status);
+        </body>
+      </method>
+      
+      <method name="onProgressChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="curSelfProgress"/>
+        <parameter name="maxSelfProgress"/>
+        <parameter name="curTotalProgress"/>
+        <parameter name="maxTotalProgress"/>
+        <body>
+          //this._logMessage("onProgressChange ");
+          this._invalid=true;
+        </body>
+      </method>
+      
+      <method name="onSecurityChange">
+        <parameter name="webProgress"/>
+        <parameter name="request"/>
+        <parameter name="state"/>
+        <body>
+          //this._logMessage("onSecurityChange "+state);
+          this._setSecurity(state);
+        </body>
+      </method>
+      
+      <method name="onLinkIconAvailable">
+        <body>
+          this._logMessage("onLinkIconAvailable");
+          var el = this.faviconIcon;
+          if (el)
+            el.src=this.icon;
+            
+          if (!this.loading)
+            this._checkDocuments("icon");
+        </body>
+      </method>
+
+      <method name="onTitleChange">
+        <body>
+          this._logMessage("onTitleChange");
+          var el = this.titleField;
+      
+          if (el)
+            el.value=this.title;
+            
+          if (!this.loading)
+            this._checkDocuments("title");
+        </body>
+      </method>
+            

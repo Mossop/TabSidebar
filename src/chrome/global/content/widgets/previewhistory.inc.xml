@@ -1,0 +1,276 @@
+      <field name="_historyListener">({
+          tabpreview: this,
+
+          OnHistoryGoBack : function(backURI)
+          {
+            return this.tabpreview.OnHistoryGoBack(backURI);
+          },
+
+          OnHistoryGoForward : function(forwardURI)
+          {
+            return this.tabpreview.OnHistoryGoForward(forwardURI);
+          },
+          
+          OnHistoryGotoIndex : function(index, gotoURI)
+          {
+            return this.tabpreview.OnHistoryGotoIndex(index,gotoURI);
+          },
+          
+          OnHistoryNewEntry : function(newURI)
+          {
+            this.tabpreview.OnHistoryNewEntry(newURI);
+          },
+          
+          OnHistoryPurge : function(numEntries)
+          {
+            return this.tabpreview.OnHistoryPurge(numEntries);
+          },
+          
+          OnHistoryReload : function(reloadURI, reloadFlags)
+          {
+            return this.tabpreview.OnHistoryReload(reloadURI, reloadFlags);
+          },
+
+          QueryInterface : function(aIID)
+          {
+            if (aIID.equals(Components.interfaces.nsISHistoryListener) ||
+                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+                aIID.equals(Components.interfaces.nsISupports))
+              return this;
+            throw Components.results.NS_NOINTERFACE;
+          }
+        });</field>
+      
+
+      <method name="gotoHistoryIndex">
+        <parameter name="event"/>
+        <body>
+          var index = event.target.getAttribute("index");
+          if (!index)
+            return false;
+
+          var where = whereToOpenLink(event);
+
+          if (where == "current") {
+            // Normal click.  Go there in the current tab and update session history.
+            this._browser.gotoIndex(index);
+            return true;
+          }
+          else {
+            // Modified click.  Go there in a new tab/window.
+            // This code doesn't copy history or work well with framed pages.
+
+            var sessionHistory = this._browser.sessionHistory;
+            var entry = sessionHistory.getEntryAtIndex(index, false);
+            var url = entry.URI.spec;
+            openUILinkIn(url, where);
+            return true;
+          }
+        </body>
+      </method>
+      
+      <method name="goBack">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          if ((!this._browser)||(!this._browser.docShell))
+            return;
+
+          if (event)
+          {
+            var where = whereToOpenLink(event, false, false);
+            if (where == "current")
+            {
+              this._browser.goBack();
+            }
+            else
+            {
+              var sessionHistory = this._browser.sessionHistory;
+              var currentIndex = sessionHistory.index;
+              var entry = sessionHistory.getEntryAtIndex(currentIndex - 1, false);
+              var url = entry.URI.spec;
+              openUILinkIn(url, where);
+            }
+          }
+          else
+          {
+            this._browser.goBack();
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="populateBackMenu">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          var menu = event.target;
+          
+          while (menu.firstChild)
+            menu.removeChild(menu.firstChild);
+
+          if ((this._browser)&&(this._browser.docShell))
+          {
+            var sessionHistory = this._browser.sessionHistory;
+  
+            var index = sessionHistory.index;
+            var entry;
+  
+            var end = (index > 8) ? index - 8 : 0;
+            if ((index - 1) < end) return false;
+            for (var pos = index - 1; pos >= end; pos--)
+            {
+              entry = sessionHistory.getEntryAtIndex(pos, false);
+              if (entry)
+              {
+                var menuitem = document.createElement("menuitem");
+                menuitem.setAttribute("label", entry.title);
+                menuitem.setAttribute("index", pos);
+                menu.appendChild(menuitem);
+              }
+            }
+          }
+          return true;
+        ]]>
+        </body>
+      </method>
+
+      <method name="goForward">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          if ((!this._browser)||(!this._browser.docShell))
+            return;
+
+          if (event)
+          {
+            var where = whereToOpenLink(event, false, false);
+            if (where == "current")
+            {
+              this._browser.goForward();
+            }
+            else
+            {
+              var sessionHistory = this._browser.sessionHistory;
+              var currentIndex = sessionHistory.index;
+              var entry = sessionHistory.getEntryAtIndex(currentIndex + 1, false);
+              var url = entry.URI.spec;
+              openUILinkIn(url, where);
+            }
+          }
+          else
+          {
+            this._browser.goForward();
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="populateForwardMenu">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          var menu = event.target;
+          
+          while (menu.firstChild)
+            menu.removeChild(menu.firstChild);
+
+          if ((this._browser)&&(this._browser.docShell))
+          {
+            var sessionHistory = this._browser.sessionHistory;
+  
+            var index = sessionHistory.index;
+            var count = sessionHistory.count;
+            var entry;
+  
+            var end  = ((count-index) > 8) ? index + 8 : count - 1;
+            if ((index + 1) > end) return false;
+            for (var pos = index + 1; pos <= end; pos++)
+            {
+              entry = sessionHistory.getEntryAtIndex(pos, false);
+              if (entry)
+              {
+                var menuitem = document.createElement("menuitem");
+                menuitem.setAttribute("label", entry.title);
+                menuitem.setAttribute("index", pos);
+                menu.appendChild(menuitem);
+              }
+            }
+          }
+          return true;
+        ]]>
+        </body>
+      </method>
+
+      <method name="historyChange">
+        <body>
+        <![CDATA[
+          if ((this._browser)&&(this._browser.docShell))
+          {
+            var session = this._browser.sessionHistory;
+            if (session)
+            {
+              this.backButton.disabled=(session.index<=0);
+              this.forwardButton.disabled=((session.index+1)==session.count);
+            }
+          }
+          else
+          {
+            this.backButton.disabled=true;
+            this.forwardButton.disabled=true;
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <!--  Start of nsISHistoryListener implementation -->
+      <method name="OnHistoryGoBack">
+        <parameter name="backURI"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryGoForward">
+        <parameter name="forwardURI"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryGotoIndex">
+        <parameter name="index"/>
+        <parameter name="gotoURI"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryNewEntry">
+        <parameter name="newURI"/>
+        <body>
+          this.historyChange();
+        </body>
+      </method>
+      
+      <method name="OnHistoryPurge">
+        <parameter name="numEntries"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      <method name="OnHistoryReload">
+        <parameter name="reloadURI"/>
+        <parameter name="reloadFlags"/>
+        <body>
+          this.historyChange();
+          return true;
+        </body>
+      </method>
+      
+      
