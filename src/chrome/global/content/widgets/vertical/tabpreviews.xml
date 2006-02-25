@@ -100,6 +100,7 @@
       <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
       <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
+      <field name="anonContainer">this.ownerDocument.getAnonymousNodes(this.scrollBox)[0]</field>
 
       <method name="_resizePreview">
         <parameter name="preview"/>
@@ -112,13 +113,23 @@
           }
 
           var canvas = preview.canvas;
-
           canvas.style.height=this.displayHeight+"px";
           canvas.style.minHeight=this.displayHeight+"px";
           canvas.style.maxHeight=this.displayHeight+"px";
+          canvas.style.width=this.displayWidth+"px";
+          canvas.style.minWidth=this.displayWidth+"px";
+          canvas.style.maxWidth=this.displayWidth+"px";
           
-          preview._invalid=true;
+          var container = canvas.parentNode;
+          var computed = window.getComputedStyle(container,null);
+          var diff = 0;
+          diff += parseInt(computed.borderTopWidth);
+          diff += parseInt(computed.borderBottomWidth);
+          diff += parseInt(computed.paddingTop);
+          diff += parseInt(computed.paddingBottom);
+          container.style.height = (this.displayHeight+diff)+"px";
           
+          preview._invalid=true;          
           try
           {
             canvas.getContext("2d");
@@ -173,12 +184,20 @@
 
           var container = this._selected.canvas.parentNode;
           var computed = window.getComputedStyle(container,null);
-          newWidth = parseInt(computed.width);
+          var diff = 0;
+          diff += parseInt(computed.borderLeftWidth);
+          diff += parseInt(computed.borderRightWidth);
+          diff += parseInt(computed.paddingLeft);
+          diff += parseInt(computed.paddingRight);
+
+          newWidth = container.boxObject.width - diff
+
           if (newWidth<0)
           {
             this._logError("Invalid canvas width ("+newWidth+")");
             return false;
           }
+          this._logMessage("Guessing: "+newWidth);
 
           newHeight = parseInt((this._browserHeight/this._browserWidth)*newWidth);
 

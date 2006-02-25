@@ -76,7 +76,7 @@
                              oncommand="this.parentNode.parentNode.parentNode.close();"/>
         </xul:hbox>
         <xul:stack flex="1">
-          <xul:box tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
+          <xul:box style="overflow: hidden" tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
             <xhtml:canvas class="tbs-canvas" flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
           </xul:box>
           <xul:vbox>

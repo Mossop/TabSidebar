@@ -112,18 +112,25 @@
           }
 
           var canvas = preview.canvas;
-
-          preview._topbox.style.width=this.displayWidth+"px";
-          preview._bottombox.style.width=this.displayWidth+"px";
-          canvas.style.width=this.displayWidth+"px";
-          canvas.style.minWidth=this.displayWidth+"px";
-          canvas.style.maxWidth=this.displayWidth+"px";
           canvas.style.height=this.displayHeight+"px";
           canvas.style.minHeight=this.displayHeight+"px";
           canvas.style.maxHeight=this.displayHeight+"px";
+          canvas.style.width=this.displayWidth+"px";
+          canvas.style.minWidth=this.displayWidth+"px";
+          canvas.style.maxWidth=this.displayWidth+"px";
           
-          preview._invalid=true;
+          var container = canvas.parentNode;
+          var computed = window.getComputedStyle(container,null);
+          var diff = 0;
+          diff += parseInt(computed.borderLeftWidth);
+          diff += parseInt(computed.borderRightWidth);
+          diff += parseInt(computed.paddingLeft);
+          diff += parseInt(computed.paddingRight);
+          container.style.width = (this.displayWidth+diff)+"px";
+          preview._topbox.style.width = (this.displayWidth+diff)+"px";
+          preview._bottombox.style.width = (this.displayWidth+diff)+"px";
           
+          preview._invalid=true;          
           try
           {
             canvas.getContext("2d");
@@ -176,17 +183,20 @@
           var newWidth=0;
           var newHeight=0;
 
-          var box = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0];
-          newHeight = this.scrollBoxObject.height-(this._selected.canvas.parentNode.boxObject.y-box.boxObject.y);
-          newHeight-=28; // TODO MAGIC NUMBER
+          var container = this._selected.canvas.parentNode;
+          var computed = window.getComputedStyle(container,null);
+          var diff = 0;
+          diff += parseInt(computed.borderTopWidth);
+          diff += parseInt(computed.borderBottomWidth);
+          diff += parseInt(computed.paddingTop);
+          diff += parseInt(computed.paddingBottom);
+
+          newHeight = container.boxObject.height - diff
 
           if (newHeight<0)
           {
             this._logError("Invalid canvas height ("+newHeight+")");
-            this._resizeTimer.initWithCallback(this, 
-                                               5,
-                                               Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-            return;
+            return false;
           }
 
           newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
