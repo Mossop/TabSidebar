@@ -30,6 +30,14 @@
   padding-top: 3px;
 }
 
+/* Tooltip */
+
+.tbs-tooltip-title,
+.tbs-tooltip-uri,
+.tbs-tooltip-image {
+  width: 300px;
+}
+
 /* Tab settings */
 .tbs-tabpreview {
   padding: 1px;

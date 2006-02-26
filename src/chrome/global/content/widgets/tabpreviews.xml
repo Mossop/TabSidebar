@@ -1254,10 +1254,75 @@
           event.originalTarget.childNodes[0].value=preview.title;
           event.originalTarget.childNodes[1].value=preview.uri;
           
-          var image = event.originalTarget.childNodes[2];
-          image.width=300;
-          image.height=(this.contentHeight/this.contentWidth)*300;
-          image.src=preview.canvas.toDataURL();
+          var width = 300;
+          if (this.showPreviews)
+          {
+            var image = event.originalTarget.childNodes[2];
+            image.width=width;
+            image.height=(this.contentHeight/this.contentWidth)*width;
+            image.src=preview.canvas.toDataURL();
+          }
+          else
+          {
+            var height = (this._browserHeight/this._browserWidth)*width;
+            
+            var canvas = event.originalTarget.childNodes[3];
+            canvas.width=width;
+            canvas.style.width=width+"px";
+            canvas.style.minWidth=width+"px";
+            canvas.style.maxWidth=width+"px";
+            canvas.height=height;
+            canvas.style.height=height+"px";
+            canvas.style.minHeight=height+"px";
+            canvas.style.maxHeight=height+"px";
+            
+            var ctx = null;
+            try
+            {
+              ctx = canvas.getContext("2d");
+            }
+            catch (e)
+            {
+              canvas.style.display="none";
+              return;
+            }
+            if ((preview._browser)&&(preview._browser.docShell))
+            {
+              var win = preview._browser.contentWindow;
+              var winwidth = this._browserWidth;
+              var scaling = width/winwidth;
+              var winheight = Math.round(height/scaling);
+              ctx.save();
+              ctx.scale(scaling,height/winheight);
+              try
+              {
+                var top = 0;
+                var left = 0;
+                if (this.previews.drawScrolled)
+                {
+                  top=win.scrollY;
+                  left=win.scrollX;
+                }
+                else
+                {
+                  winheight=Math.max(winheight,win.scrollY+1);
+                }
+                ctx.drawWindow(win,left,top,winwidth,winheight,"rgba(255,255,255,255)");
+                canvas.style.display="";
+              }
+              catch (e)
+              {
+                canvas.style.display="none";
+                dump(e+"\n");
+                dump(win+" "+width+"x"+height+"\n");
+              }
+              ctx.restore();
+            }
+            else
+            {
+              canvas.style.display="none";
+            }
+          }
         }
       ]]>
       </handler>

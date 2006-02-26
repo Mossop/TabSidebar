@@ -69,7 +69,8 @@
         <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="left">
           <xul:label class="tbs-tooltip-title" value="Title"/>
           <xul:label class="tbs-tooltip-uri" value="URI"/>
-          <xul:image/>
+          <xul:image class="tbs-tooltip-image"/>
+          <xhtml:canvas class="tbs-tooltip-canvas"/>
         </xul:tooltip>
         
       </xul:popupset>
