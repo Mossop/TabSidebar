@@ -119,16 +119,25 @@
           canvas.style.minWidth=this.displayWidth+"px";
           canvas.style.maxWidth=this.displayWidth+"px";
           
-          var container = canvas.parentNode;
+          var container = canvas.parentNode.parentNode;
+          var mainbox = preview._topbox.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
-          diff += parseInt(computed.borderLeftWidth);
-          diff += parseInt(computed.borderRightWidth);
+          while (container != mainbox)
+          {
+            diff += parseInt(computed.borderLeftWidth);
+            diff += parseInt(computed.borderRightWidth);
+            diff += parseInt(computed.paddingLeft);
+            diff += parseInt(computed.paddingRight);
+            container = container.parentNode;
+            computed = window.getComputedStyle(container,null);
+          }
           diff += parseInt(computed.paddingLeft);
           diff += parseInt(computed.paddingRight);
           container.style.width = (this.displayWidth+diff)+"px";
-          preview._topbox.style.width = (this.displayWidth+diff)+"px";
-          preview._bottombox.style.width = (this.displayWidth+diff)+"px";
+          
+          var offset = (canvas.parentNode.parentNode.boxObject.width-this.displayWidth)/2;
+          canvas.setAttribute("left", offset);
           
           preview._invalid=true;          
           try
@@ -183,7 +192,7 @@
           var newWidth=0;
           var newHeight=0;
 
-          var container = this._selected.canvas.parentNode;
+          var container = this._selected.canvas.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
           diff += parseInt(computed.borderTopWidth);
@@ -193,12 +202,11 @@
 
           newHeight = container.boxObject.height - diff
 
-          if ((newHeight < 0) || (this._browserHeight <=0))
+          if ((newHeight <= 0) || (this._browserHeight <= 0))
           {
-            this._logError("Invalid canvas height ("+newHeight+")");
+            this._logError("Invalid sizes");
             return false;
           }
-
           newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
 
           if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)

@@ -75,10 +75,12 @@
                              onmousedown="event.stopPropagation();"
                              oncommand="this.parentNode.parentNode.parentNode.close();"/>
         </xul:hbox>
-        <xul:stack flex="1">
-          <xul:box style="overflow: hidden" tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
-            <xhtml:canvas class="tbs-canvas" flex="1" anonid="canvas" tooltip="tabpreview_tooltip"/>
-          </xul:box>
+        <xul:stack flex="1" class="tbs-stack">
+          <xul:vbox style="overflow: hidden" pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
+            <xul:box>
+              <xhtml:canvas class="tbs-canvas" anonid="canvas" tooltip="tabpreview_tooltip"/>
+            </xul:box>
+          </xul:vbox>
           <xul:vbox>
             <xul:hbox pack="end" class="tbs-topstrip">
               <xul:toolbarbutton class="tbs-security tbs-icon" anonid="security"
@@ -230,7 +232,7 @@
       </field>
       
       <field name="canvas">
-        this._stack.firstChild.firstChild;
+        this._stack.firstChild.firstChild.firstChild;
       </field>
       
 #include "previewevents.inc.xml"

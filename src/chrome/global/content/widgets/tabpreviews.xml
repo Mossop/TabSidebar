@@ -103,7 +103,7 @@
           }
           var preview = this.addPreview(browsers[selectedpos]);
           if ((preview._browserWidth >= 0) || (preview._browserHeight >0))
-            this.browserResized(preview, preview._browserWidth, preview.browser_height);
+            this.browserResized(preview, preview._browserWidth, preview._browserHeight);
           for (var i=selectedpos-1; i>=0; i--)
           {
             this.addPreview(browsers[i]);

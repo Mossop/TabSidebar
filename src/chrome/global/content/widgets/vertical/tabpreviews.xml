@@ -100,7 +100,6 @@
       <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
       <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
-      <field name="anonContainer">this.ownerDocument.getAnonymousNodes(this.scrollBox)[0]</field>
 
       <method name="_resizePreview">
         <parameter name="preview"/>
@@ -120,11 +119,9 @@
           canvas.style.minWidth=this.displayWidth+"px";
           canvas.style.maxWidth=this.displayWidth+"px";
           
-          var container = canvas.parentNode;
+          var container = canvas.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
-          diff += parseInt(computed.borderTopWidth);
-          diff += parseInt(computed.borderBottomWidth);
           diff += parseInt(computed.paddingTop);
           diff += parseInt(computed.paddingBottom);
           container.style.height = (this.displayHeight+diff)+"px";
@@ -182,7 +179,7 @@
           var newWidth=0;
           var newHeight=0;
 
-          var container = this._selected.canvas.parentNode;
+          var container = this._selected.canvas.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
           diff += parseInt(computed.borderLeftWidth);
@@ -197,8 +194,6 @@
             this._logError("Invalid sizes");
             return false;
           }
-          this._logMessage("Guessing: "+newWidth);
-
           newHeight = parseInt((this._browserHeight/this._browserWidth)*newWidth);
 
           if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)

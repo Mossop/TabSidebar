@@ -39,6 +39,7 @@
 
 .tbs-tabmain {
   padding: 1px;
+  min-width: 115px;
 }
 
 .tbs-tabpreview[selected="true"] {
