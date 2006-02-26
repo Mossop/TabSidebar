@@ -33,6 +33,11 @@
   display: none !important;
 }
 
+.tbs-tabpreviews-vertical[hide~="preview"] .tbs-container,
+.tbs-tabpreviews-horizontal[hide~="preview"] .tbs-container {
+  display: none !important;
+}
+  
 .tbs-tabpreview[loading="false"] .tbs-loading {
   display: none;
 }

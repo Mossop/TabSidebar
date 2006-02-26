@@ -80,6 +80,9 @@
         this._initEvents();
         
         this.init();
+          
+        if (!this.showPreviews)
+          this.style.visibility=null;
       ]]>
       </constructor>
       
@@ -98,8 +101,9 @@
               break;
             }
           }
-          this.addPreview(browsers[selectedpos]);
-          this._updateSize();
+          var preview = this.addPreview(browsers[selectedpos]);
+          if ((preview._browserWidth >= 0) || (preview._browserHeight >0))
+            this.browserResized(preview, preview._browserWidth, preview.browser_height);
           for (var i=selectedpos-1; i>=0; i--)
           {
             this.addPreview(browsers[i]);
@@ -176,6 +180,7 @@
           this._showNavigation = this.preferences.getBoolPref("content.navigation");
           this._showURI = this.preferences.getBoolPref("content.uri");
           this._showPreviews = this.preferences.getBoolPref("content.previews");
+          this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
 
           this._drawScrolled = true; //this.preferences.getBoolPref("drawscrolled");
           this._validateRate = this.preferences.getIntPref("validaterate");
@@ -270,13 +275,17 @@
         		if (event.relatedNode==this.tabbrowser.mPanelContainer)
         		{
           		var browser = event.target.childNodes[1];
-          		this.addPreview(browser);
+          		var preview = this.addPreview(browser);
+              preview.redraw();
         		}
         		else if (event.relatedNode==this.tabbrowser.tabContainer)
         		{
         		  var browser = event.target.linkedBrowser;
         		  if (browser)
-        		    this.addPreview(browser);
+              {
+        		    var preview = this.addPreview(browser);
+                preview.redraw();
+              }
         		}
           }
           else if (event.type=="DOMNodeRemoved")
@@ -438,6 +447,9 @@
       <field name="_showPreviews">false</field>
       <property name="showPreviews" onget="return this._showPreviews;"/>
       
+      <field name="_updatePreviews">false</field>
+      <property name="updatePreviews" onget="return (this._updatePreviews &amp;&amp; this._showPreviews);"/>
+      
       <field name="_showURI">false</field>
       <property name="showURI" onget="return this._showURI;"/>
       
@@ -457,7 +469,7 @@
       <property name="contentHeight" onget="return this._contentHeight;"/>
       
       <field name="_loadRefresh"/>
-      <property name="loadRefresh" onget="return this._loadRefresh;"/>
+      <property name="loadRefresh" onget="return (this._loadRefresh &amp;&amp; this.updatePreviews);"/>
       
       <field name="_loadRefreshRate"/>
       <property name="loadRefreshRate">
@@ -592,6 +604,7 @@
         	}
         	
         	preview.browser=browser;
+          return preview;
         ]]>
         </body>
       </method>
@@ -663,6 +676,8 @@
             hide+=" navigation";
           if (!this.showURI)
             hide+=" uri";
+          if (!this.showPreviews)
+            hide+=" preview";
           
           if (hide.length>0)
             hide=hide.substring(1);
@@ -996,7 +1011,8 @@
             {
               this._browserWidth = width;
               this._browserHeight = height;
-              this._updateSize();
+              if (this.showPreviews)
+                this._updateSize();
             }
             else
             {
@@ -1065,8 +1081,34 @@
               this.updateContent();
               break;
             case "content.previews":
+              for (var i = 0; i < this.previews.length; i++)
+              {
+                this.previews[i]._removeListeners();
+              }
               this._showPreviews = this.preferences.getBoolPref(data);
               this.updateContent();
+              for (var i = 0; i < this.previews.length; i++)
+              {
+                this.previews[i]._addListeners();
+                if (this.updatePreviews)
+                  this.previews[i]._checkDocuments("");
+              }
+              if (this.showPreviews)
+                this._updateSize();
+              break;
+            case "updatepreviews":
+              var previous = this.updatePreviews;
+              this._updatePreviews = this.preferences.getBoolPref(data);
+              if (previous != this.updatePreviews)
+              {
+                for (var i = 0; i < this.previews.length; i++)
+                {
+                  if (this.updatePreviews)
+                    this.previews[i]._checkDocuments("");
+                  else
+                    this.previews[i]._emptyDocumentListeners();
+                }
+              }
               break;
               
             case "enablelogging":

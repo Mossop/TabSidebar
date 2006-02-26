@@ -15,11 +15,12 @@ pref("extensions.tabsidebar.unselectedscrolldelay", 1000);
 
 pref("extensions.tabsidebar.loadrefreshrate", 25);
 pref("extensions.tabsidebar.loadrefresh", true);
-pref("extensions.tabsidebar.validaterate", 1000);
+pref("extensions.tabsidebar.validaterate", 100);
 
 pref("extensions.tabsidebar.content.navigation", true);
 pref("extensions.tabsidebar.content.uri", false);
-pref("extensions.tabsidebar.content.previews", false);
+pref("extensions.tabsidebar.content.previews", true);
+pref("extensions.tabsidebar.updatepreviews", true);
 
 pref("extensions.tabsidebar.showoptions", false);
 pref("extensions.tabsidebar.showhelp", false);

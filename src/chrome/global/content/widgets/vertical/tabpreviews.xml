@@ -192,9 +192,9 @@
 
           newWidth = container.boxObject.width - diff
 
-          if (newWidth<0)
+          if ((newWidth <= 0) || (this._browserWidth <= 0))
           {
-            this._logError("Invalid canvas width ("+newWidth+")");
+            this._logError("Invalid sizes");
             return false;
           }
           this._logMessage("Guessing: "+newWidth);

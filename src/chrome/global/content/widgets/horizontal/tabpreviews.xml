@@ -105,7 +105,7 @@
         <parameter name="preview"/>
         <body>
         <![CDATA[
-          if (this.displayWidth<0)
+          if (this.displayWidth<=0)
           {
             this._logWarning("Attempt to resize preview before size has been calculated");
             return;
@@ -193,7 +193,7 @@
 
           newHeight = container.boxObject.height - diff
 
-          if (newHeight<0)
+          if ((newHeight < 0) || (this._browserHeight <=0))
           {
             this._logError("Invalid canvas height ("+newHeight+")");
             return false;
