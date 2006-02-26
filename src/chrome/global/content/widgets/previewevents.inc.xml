@@ -223,7 +223,7 @@
         <parameter name="reason"/>
         <body>
         <![CDATA[
-          if ((!this._browser) || (!this._browser.docShell) || (!this.previews.showPreviews))
+          if ((!this._browser) || (!this._browser.docShell) || (!this.previews.updatePreviews))
             return;
             
           if (this._listenedDocuments.length>0)
