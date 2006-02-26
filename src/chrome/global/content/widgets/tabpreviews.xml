@@ -276,7 +276,8 @@
         		{
           		var browser = event.target.childNodes[1];
           		var preview = this.addPreview(browser);
-              preview.redraw();
+              if (this.showPreviews)
+                preview.redraw();
         		}
         		else if (event.relatedNode==this.tabbrowser.tabContainer)
         		{
@@ -284,7 +285,8 @@
         		  if (browser)
               {
         		    var preview = this.addPreview(browser);
-                preview.redraw();
+                if (this.showPreviews)
+                  preview.redraw();
               }
         		}
           }
@@ -350,7 +352,6 @@
       <!-- Internal fields and methods -->
 
       <field name="_selected"/>
-      <field name="_redrawPreview">0</field>
       
       <method name="_resize">
         <body>
@@ -663,6 +664,9 @@
       <method name="redrawPreview">
         <parameter name="browser"/>
         <body>
+          if (!this.showPreviews)
+            return;
+            
           var preview = this.getPreviewForBrowser(browser);
           preview.redraw();
         </body>
@@ -690,6 +694,9 @@
       <method name="redraw">
         <body>
         <![CDATA[
+          if (!this.showPreviews)
+            return;
+            
         	var previews = this.previews;
         	for (var i=0; i<previews.length; i++)
         	{
@@ -1014,7 +1021,7 @@
               if (this.showPreviews)
                 this._updateSize();
             }
-            else
+            else if (this.showPreviews)
             {
               preview.redraw();
             }
