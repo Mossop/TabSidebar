@@ -9,23 +9,23 @@
         xmlns:nc="http://home.netscape.com/NC-rdf#">
 
   <rdf:Description about="urn:root"
-          nc:title="Aide pour &tabsidebar.brand;"
+          nc:title="&tabsidebar.brand; Help"
           nc:defaulttopic="tabsidebar-help"
           nc:base="chrome://tabsidebar/locale/help/">
     <nc:panellist>
       <rdf:Seq>
         <rdf:li>
-          <rdf:Description nc:panelid="Table des matières"
+          <rdf:Description nc:panelid="glossary"
               nc:datasources="glossary.rdf"/>
         </rdf:li>
         <rdf:li>
-          <rdf:Description nc:panelid="Index"
+          <rdf:Description nc:panelid="index"
               nc:datasources="index.rdf"/>
         </rdf:li>
         <rdf:li>
-          <rdf:Description nc:panelid="Recherche"
+          <rdf:Description nc:panelid="search"
               nc:datasources=""
-              nc:emptysearchtext="[Aucun élément trouvé.]"
+              nc:emptysearchtext="[No matching items found.]"
               nc:emptysearchlink="chrome://help/locale/welcome.xhtml#search_tips"/>
         </rdf:li>
         <rdf:li>

@@ -1,10 +1,8 @@
-<!ENTITY dialog.title             "Informazioni su &tabsidebar.brand;">
-<!ENTITY dialog.version           "Versione: ">
-<!ENTITY dialog.author            "Autore: ">
-<!ENTITY dialog.description       "&tabsidebar.brand; fornisce una rapida anteprima di piccole immagini di ogni
+<!ENTITY dialog.title "Informazioni su &tabsidebar.brand;">
+<!ENTITY dialog.version "Versione: ">
+<!ENTITY dialog.author "Autore: ">
+<!ENTITY dialog.description "&tabsidebar.brand; fornisce una rapida anteprima di piccole immagini di ogni
                                   scheda aperta">
-<!ENTITY dialog.homepage          "Visita il sito web">
-<!ENTITY dialog.contributors      "Collaboratori: ">
-
-
-<!ENTITY dialog.accept            "Chiudi">
+<!ENTITY dialog.homepage "Visita il sito web">
+<!ENTITY dialog.contributors "Collaboratori: ">
+<!ENTITY dialog.accept "Chiudi">

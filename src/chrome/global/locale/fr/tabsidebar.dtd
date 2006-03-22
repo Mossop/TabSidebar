@@ -1,7 +1,4 @@
-<!ENTITY tabsidebar.title                 "&tabsidebar.brand;">
-<!ENTITY tabsidebar.menu.label            "&tabsidebar.brand;">
-<!ENTITY tabsidebar.menu.accesskey        "T">
-<!ENTITY tabsidebar.opensidebar           "Ouvrir &tabsidebar.brand;">
-
-<!ENTITY tabsidebar.refresh.label         "Rafraîchir les aperçus">
-<!ENTITY tabsidebar.refreshall.label      "Rafraîchir tous les aperçus">
+<!ENTITY tabsidebar.title "&tabsidebar.brand;">
+<!ENTITY tabsidebar.menu.label "&tabsidebar.brand;">
+<!ENTITY tabsidebar.menu.accesskey "T">
+<!ENTITY tabsidebar.opensidebar "Ouvrir &tabsidebar.brand;">

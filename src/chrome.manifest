@@ -13,6 +13,7 @@ locale			tabsidebar					it															${extension.chromebase}/global/locale/i
 locale			tabsidebar					ja  														${extension.chromebase}/global/locale/ja/
 locale			tabsidebar					ru-RU  													${extension.chromebase}/global/locale/ru-RU/
 locale			tabsidebar					zh-TW														${extension.chromebase}/global/locale/zh-TW/
+locale			tabsidebar					zh-CN														${extension.chromebase}/global/locale/zh-CN/
 locale			tabsidebar					sk-SK														${extension.chromebase}/global/locale/sk-SK/
 locale			tabsidebar					es-ES														${extension.chromebase}/global/locale/es-ES/
 

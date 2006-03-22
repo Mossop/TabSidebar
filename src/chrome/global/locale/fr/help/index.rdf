@@ -13,28 +13,28 @@
     <nc:subheadings>
       <rdf:Seq>
         <!-- These nodes are used for searching purposes. -->
-        <li><Description nc:name="Opening the sidebar" nc:link="using.xhtml#usage_displaying"/></li>
-        <li><Description nc:name="Viewing the sidebar" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="Ouverture du panneau latéral" nc:link="using.xhtml#usage_displaying"/></li>
+        <li><Description nc:name="Affichage du panneau latéral" nc:link="using.xhtml#usage_displaying"/></li>
 
-        <li><Description nc:name="Thumbnails (Previews)" nc:link="using.xhtml#usage_previews"/></li>
-        <li><Description nc:name="Reloading previews" nc:link="using.xhtml#usage_previews"/></li>
-        <li><Description nc:name="Refreshing previews" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Vignettes (aperçu)" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Rechargement de l'aperçu" nc:link="using.xhtml#usage_previews"/></li>
+        <li><Description nc:name="Rafraîchissement de l'aperçu" nc:link="using.xhtml#usage_previews"/></li>
 
-        <li><Description nc:name="Opening a new tab" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Closing tabs" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Ouverture d'un nouvel onglet" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Fermeture d'onglets" nc:link="using.xhtml#usage_tabs"/></li>
         <li><Description nc:name="Dragging tabs" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Moving tabs" nc:link="using.xhtml#usage_tabs"/></li>
-        <li><Description nc:name="Reloading tabs" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Déplacement d'onglets" nc:link="using.xhtml#usage_tabs"/></li>
+        <li><Description nc:name="Rechargement des onglets" nc:link="using.xhtml#usage_tabs"/></li>
 
-         <li><Description nc:name="Opening Options" nc:link="options.xhtml#options"/></li>
+         <li><Description nc:name="Ouverture des Options" nc:link="options.xhtml#options"/></li>
 
-        <li><Description nc:name="Hiding the main tab bar" nc:link="options.xhtml#general_options"/></li>
-        <li><Description nc:name="Automatically hiding the sidebar" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Cacher le menu de la barre d'onlgets" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Automatiquement cacher le panneau latéral" nc:link="options.xhtml#general_options"/></li>
 
-        <li><Description nc:name="Showing/Hiding icons" nc:link="options.xhtml#general_options"/></li>
-        <li><Description nc:name="Showing/Hiding buttons" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Afficher/Cacher les icônes" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Afficher/Cacher les boutons" nc:link="options.xhtml#general_options"/></li>
 
-        <li><Description nc:name="Automatically refreshing previews" nc:link="options.xhtml#general_options"/></li>
+        <li><Description nc:name="Rafraîchissement automatique des aperçus" nc:link="options.xhtml#general_options"/></li>
       </rdf:Seq>
     </nc:subheadings>
   </rdf:Description>
