@@ -1,9 +1,7 @@
-<!ENTITY tabsidebar.options.title                 "Options de &tabsidebar.brand;">
-<!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
-<!ENTITY tabsidebar.options.version               "Version&#160;: ">
-
-<!ENTITY paneGeneral.hidetabs.label               "Masquer la barre d'onglets quand le panneau latéral est ouvert.">
-<!ENTITY paneGeneral.hidetabs.accesskey           "M">
-
-<!ENTITY paneDisplay.content.navigation.label     "Afficher les boutons de navigation.">
+<!ENTITY tabsidebar.options.title "Options de &tabsidebar.brand;">
+<!ENTITY tabsidebar.options.style "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.version "Version&#160;: ">
+<!ENTITY paneGeneral.hidetabs.label "Masquer la barre d'onglets quand le panneau latéral est ouvert.">
+<!ENTITY paneGeneral.hidetabs.accesskey "M">
+<!ENTITY paneDisplay.content.navigation.label "Afficher les boutons de navigation.">
 <!ENTITY paneDisplay.content.navigation.accesskey "n">

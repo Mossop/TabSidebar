@@ -1,9 +1,7 @@
-<!ENTITY tabsidebar.options.title                 "Opzioni di &tabsidebar.brand;">
-<!ENTITY tabsidebar.options.style                 "width: 30em; height: 18em;">
-<!ENTITY tabsidebar.options.version               "Versione: ">
-
-<!ENTITY paneGeneral.hidetabs.label               "Nascondi la barra delle schede quando la barra laterale è aperta">
-<!ENTITY paneGeneral.hidetabs.accesskey           "N">
-
-<!ENTITY paneDisplay.content.navigation.label     "Visualizza i pulsanti per la navigazione">
+<!ENTITY tabsidebar.options.title "Opzioni di &tabsidebar.brand;">
+<!ENTITY tabsidebar.options.style "width: 30em; height: 18em;">
+<!ENTITY tabsidebar.options.version "Versione: ">
+<!ENTITY paneGeneral.hidetabs.label "Nascondi la barra delle schede quando la barra laterale è aperta">
+<!ENTITY paneGeneral.hidetabs.accesskey "N">
+<!ENTITY paneDisplay.content.navigation.label "Visualizza i pulsanti per la navigazione">
 <!ENTITY paneDisplay.content.navigation.accesskey "u">

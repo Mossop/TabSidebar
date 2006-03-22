@@ -98,13 +98,14 @@
       <vbox flex="1" style="overflow: auto">
         <description>Peter van der Woude: Extensive testing, suggestions and contributions.</description>
         <description>ReinekeFux: German localisation.</description>
-        <description>Xavier Robin: French localisation.</description>
+        <description>Xavier Robin &amp; Dagobert_78: French localisation.</description>
         <description>MatrixIsAllOver: Italian localisation.</description>
         <description>Urko: Spanish localisation.</description>
         <description>Peter van der Woude &amp; Ton: Dutch localisation.</description>
         <description>Erkan Kaplan: Turkish localisation.</description>
         <description>SION: Japanese localisation.</description>
         <description>Alexander L. Slovesnik &amp; Modex: Russian localisation.</description>
+        <description>fiag: Chinese (Simplified) localisation.</description>
         <description>Jose Sun: Chinese (Traditional) localisation.</description>
         <description>SlovakSoft: Slovak localisation.</description>
       </vbox>
