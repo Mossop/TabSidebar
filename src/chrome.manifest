@@ -1,20 +1,20 @@
-content			tabsidebar																					file:chrome/global/content/
-skin				tabsidebar					classic/1.0											file:chrome/global/skin/
+content			tabsidebar																					${extension.chromebase}/content/
+skin				tabsidebar					classic/1.0											${extension.chromebase}/skin/
 
-content			tabsidebar-platform																	file:chrome/platform/content/				platform
-skin				tabsidebar-platform																	file:chrome/platform/skin/					platform
+content			tabsidebar-platform																	${extension.chromebase}/platform/content/				platform
+skin				tabsidebar-platform																	${extension.chromebase}/platform/skin/					platform
 
-locale			tabsidebar					en-US														file:chrome/global/locale/en-US/
-locale			tabsidebar					de-DE														file:chrome/global/locale/de-DE/
-locale			tabsidebar					tr-TR														file:chrome/global/locale/tr-TR/
-locale			tabsidebar					nl-NL														file:chrome/global/locale/nl-NL/
-locale			tabsidebar					fr															file:chrome/global/locale/fr/
-locale			tabsidebar					it															file:chrome/global/locale/it/
-locale			tabsidebar					ja  														file:chrome/global/locale/ja/
-locale			tabsidebar					ru-RU  													file:chrome/global/locale/ru-RU/
-locale			tabsidebar					zh-TW														file:chrome/global/locale/zh-TW/
-locale			tabsidebar					sk-SK														file:chrome/global/locale/sk-SK/
-locale			tabsidebar					es-ES														file:chrome/global/locale/es-ES/
+locale			tabsidebar					en-US														${extension.chromebase}/global/locale/en-US/
+locale			tabsidebar					de-DE														${extension.chromebase}/global/locale/de-DE/
+locale			tabsidebar					tr-TR														${extension.chromebase}/global/locale/tr-TR/
+locale			tabsidebar					nl-NL														${extension.chromebase}/global/locale/nl-NL/
+locale			tabsidebar					fr															${extension.chromebase}/global/locale/fr/
+locale			tabsidebar					it															${extension.chromebase}/global/locale/it/
+locale			tabsidebar					ja  														${extension.chromebase}/global/locale/ja/
+locale			tabsidebar					ru-RU  													${extension.chromebase}/global/locale/ru-RU/
+locale			tabsidebar					zh-TW														${extension.chromebase}/global/locale/zh-TW/
+locale			tabsidebar					sk-SK														${extension.chromebase}/global/locale/sk-SK/
+locale			tabsidebar					es-ES														${extension.chromebase}/global/locale/es-ES/
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
