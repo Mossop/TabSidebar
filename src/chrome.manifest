@@ -1,5 +1,5 @@
-content			tabsidebar																					${extension.chromebase}/content/
-skin				tabsidebar					classic/1.0											${extension.chromebase}/skin/
+content			tabsidebar																					${extension.chromebase}/global/content/
+skin				tabsidebar					classic/1.0											${extension.chromebase}/global/skin/
 
 content			tabsidebar-platform																	${extension.chromebase}/platform/content/				platform
 skin				tabsidebar-platform																	${extension.chromebase}/platform/skin/					platform
