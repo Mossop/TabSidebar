@@ -1,0 +1,41 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Compilable=1
+Use Relative Directory=1
+Relative to Project File=1
+Project Start=D6070400000009000C0006002E0000002A
+Using VCS=1
+Save Account=0
+VCS Default Module={5D372030-76A4-4a1a-B192-1BA592EFAE52}
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Filter=
+Create Tagfile=0
+CTags Legacy Support=0
+[Files]
+0=C:\UserData\Dave\UEStudio\TabSidebar\
+[VCS Module List]
+{5D372030-76A4-4a1a-B192-1BA592EFAE52}=
+[uemakeXp]
+Compiler=Configs\Ant Build\Extension Build
+ReleaseMode=0
+Files=76593653
+[Configs\Ant Build\Extension Build]
+OutputDirectory_ReleaseMode=
+OutputDirectory_DebugMode=
+Target=tabsidebar.xpi
+Gecko SDK=c:\gecko-sdk
+[{5D372030-76A4-4a1a-B192-1BA592EFAE52}]
+Module Id={5D372030-76A4-4a1a-B192-1BA592EFAE52}
+Module Type=SVN
+Module Path=C:\UserData\Dave\UEStudio\TabSidebar
+Module Enabled=true
+Account Id={9CB86718-A610-4b92-92D2-BBB0383B90BE}
+Account Type=SVN
+Account Name=Mossop
+VCS Module Path=mozilla/firefox/TabSidebar/trunk
+VCS Specific Settings=
+[Folders]
+C:\UserData\Dave\UEStudio\TabSidebar\=1
