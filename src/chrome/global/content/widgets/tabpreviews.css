@@ -1,14 +1,14 @@
-.tbs-scrollbox[orient="vertical"] {
-  overflow-y: scroll;
-}
-
 .tbs-tabpreviews-vertical,
 .tbs-tabpreviews-horizontal {
 	-moz-appearance: toolbox;
 }
 
-.tbs-scrollbox > .scrollbox-innerbox {
-	-moz-appearance: toolbar;
+.tbs-scrollbox {
+  -moz-appearance: toolbar;
+}
+
+.tbs-scrollbox[orient="vertical"] {
+  overflow-y: scroll;
 }
 
 .tbs-scrollbox[orient="horizontal"] {
