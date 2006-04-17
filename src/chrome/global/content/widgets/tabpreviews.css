@@ -2,12 +2,22 @@
   overflow-y: scroll;
 }
 
+.tbs-tabpreviews-vertical,
+.tbs-tabpreviews-horizontal {
+	-moz-appearance: toolbox;
+}
+
+.tbs-scrollbox > .scrollbox-innerbox {
+	-moz-appearance: toolbar;
+}
+
 .tbs-scrollbox[orient="horizontal"] {
   overflow-x: scroll;
 }
 
 .tbs-tabpreview {
   -moz-box-align: center;
+  -moz-appearance: toolbarbutton;
 }
 
 .tbs-tabpreview:focus > .tbs-tabmain {

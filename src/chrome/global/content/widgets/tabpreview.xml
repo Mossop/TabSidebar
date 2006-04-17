@@ -393,7 +393,7 @@
       <property name="selected">
         <getter>
         <![CDATA[
-          return this.hasAttribute("selected") && (this.getAttribute("selected")=="true");
+          return this.hasAttribute("checked") && (this.getAttribute("checked")=="true");
         ]]>
         </getter>
         <setter>
@@ -401,10 +401,12 @@
           if (!val)
           {
             this.setAttribute("selected","false");
+            this.setAttribute("checked","false");
           }
           else
           {
             this.setAttribute("selected","true");
+            this.setAttribute("checked","true");
           }
           return val;
         ]]>

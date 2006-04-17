@@ -40,7 +40,7 @@
 
 /* Tab settings */
 .tbs-tabpreview {
-  padding: 1px;
+  padding: 2px;
   border: 1px -moz-dialog solid;
   background-color: -moz-dialog;
 }
@@ -63,8 +63,9 @@
   border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
 }
 
-.tbs-tabpreview[security="high"][selected="true"] ,
-.tbs-tabpreview[security="low"][selected="true"] {
+
+.tbs-tabpreview[security="high"][selected="true"] > .tbs-tabmain ,
+.tbs-tabpreview[security="low"][selected="true"] > .tbs-tabmain {
   background-color: #F5F6BE !important;
 }
 
