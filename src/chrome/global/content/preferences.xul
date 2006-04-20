@@ -66,13 +66,17 @@
       name="extensions.tabsidebar.hidetabs"/>
       <preference type="bool" id="content.navigation"
       name="extensions.tabsidebar.content.navigation"/>
+      <preference type="bool" id="content.previews"
+      name="extensions.tabsidebar.content.previews"/>
+      <preference type="bool" id="updatepreviews"
+      name="extensions.tabsidebar.updatepreviews"/>
       <preference type="int" id="position" 
       name="extensions.tabsidebar.position"/>
     </preferences>
 
-    <hbox align="start">
+    <hbox align="start" flex="1">
     
-      <image src="chrome://tabsidebar/skin/logo.png"/>
+      <image src="chrome://tabsidebar/content/branding/logo.png"/>
       
       <vbox flex="1">
       
@@ -82,27 +86,42 @@
         </hbox>
 
         <separator class="groove-thin"/>
-
-        <separator class="thin"/>
-        
-        <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
       
-        <separator class="thin"/>
-        
-        <checkbox preference="content.navigation"   accesskey="&paneDisplay.content.navigation.accesskey;"
-                                              label="&paneDisplay.content.navigation.label;"/>
-
-        <radiogroup preference="position">
-          <radio label="Sidebar" value="0"/>
-          <radio label="Top" value="1"/>
-          <radio label="Bottom" value="2"/>
-          <radio label="Left" value="3"/>
-          <radio label="Right" value="4"/>
-        </radiogroup>
-
       </vbox>
-      
+
     </hbox>
+    
+    <vbox flex="1" pack="start">
+    
+	    <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
+	  
+	    <separator class="thin"/>
+	    
+	    <checkbox preference="content.navigation" accesskey="&paneDisplay.content.navigation.accesskey;"
+	                                              label="&paneDisplay.content.navigation.label;"/>
+	
+	    <separator class="thin"/>
+	    
+	    <checkbox preference="content.previews" accesskey="&paneDisplay.content.previews.accesskey;" 
+	                                            label="&paneDisplay.content.previews.label;"/>      
+	  
+	    <separator class="thin"/>
+	    
+	    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
+	                                          label="&paneDisplay.updatepreviews.label;"/>
+	
+	    <hbox align="stretch" flex="1">
+	    	<button group="position" autoCheck="true" label="&paneDisplay.position.sidebar;"/>
+	    	<button group="position" autoCheck="true" label="&paneDisplay.position.left;"/>
+	    	<vbox align="stretch" flex="1">
+	      	<button group="position" autoCheck="true" label="&paneDisplay.position.top;"/>
+	      	<box flex="1"/>
+	      	<button group="position" autoCheck="true" label="&paneDisplay.position.bottom;"/>
+	    	</vbox>
+	    	<button group="position" autoCheck="true" label="&paneDisplay.position.right;"/>
+	    </hbox>
+
+	  </vbox>
 
   </prefpane>
   

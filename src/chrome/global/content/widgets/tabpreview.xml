@@ -339,7 +339,7 @@
                 this._setSecurity(this._browser.securityUI.state);
               }
               var newdocs = [];
-  						this._findDocuments(this._browser.contentDocument, newdocs);
+              this._findDocuments(this._browser.contentDocument, newdocs);
               for (var i=0; i<newdocs.length; i++)
                 this._addDocumentListeners(newdocs[i]);
             }
@@ -547,7 +547,7 @@
           else
           {
             if (!this.hasAttribute("browser"))
-          	 this.setAttribute("browser", this._browser.parentNode.id);
+             this.setAttribute("browser", this._browser.parentNode.id);
 
             var tab = this.tab;
             this._destroy();
@@ -569,7 +569,7 @@
       <method name="redraw">
         <body>
         <![CDATA[
-          if ((!this.previews)||(!this._invalid))
+          if ((!this.previews)||(!this._invalid)||(!this.previews.showPreviews))
             return;
           
           if (this.previews.displayHeight==0)

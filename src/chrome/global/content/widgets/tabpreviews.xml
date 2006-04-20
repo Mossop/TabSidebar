@@ -126,8 +126,8 @@
       
       <method name="_initTree">
         <body>
-        	var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
-        	drop.className="dropindicator groove";
+          var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+          drop.className="dropindicator groove";
           if (this.getAttribute("orient")=="vertical")
             drop.setAttribute("orient","vertical");
           else
@@ -207,13 +207,13 @@
           
           this.tabbrowser.addProgressListener(this._progressListener);
 
-        	var self=this;
-        	this._eventListener = function(event) { self._eventFilter(event); };
-        	
-        	this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
-        	this.tabbrowser.mPanelContainer.addEventListener("select", this._eventListener, false);
-        	this.tabbrowser.mPanelContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
-        	this.tabbrowser.tabContainer.addEventListener("DOMNodeRemoved", this._eventListener, false);
+          var self=this;
+          this._eventListener = function(event) { self._eventFilter(event); };
+          
+          this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
+          this.tabbrowser.mPanelContainer.addEventListener("select", this._eventListener, false);
+          this.tabbrowser.mPanelContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("DOMNodeRemoved", this._eventListener, false);
         </body>
       </method>
       
@@ -242,10 +242,10 @@
                 this.removeChild(this.firstChild);
               }
       
-            	this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
-            	this.tabbrowser.mPanelContainer.removeEventListener("select", this._eventListener, false);
-            	this.tabbrowser.mPanelContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
-            	this.tabbrowser.tabContainer.removeEventListener("DOMNodeRemoved", this._eventListener, false);
+              this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
+              this.tabbrowser.mPanelContainer.removeEventListener("select", this._eventListener, false);
+              this.tabbrowser.mPanelContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
+              this.tabbrowser.tabContainer.removeEventListener("DOMNodeRemoved", this._eventListener, false);
       
               this.preferences.removeObserver("", this);
               this.preferences=null;
@@ -272,37 +272,45 @@
         <body>
           if (event.type=="DOMNodeInserted")
           {
-        		if (event.relatedNode==this.tabbrowser.mPanelContainer)
-        		{
-          		var browser = event.target.childNodes[1];
-          		var preview = this.addPreview(browser);
-              if (this.showPreviews)
-                preview.redraw();
-        		}
-        		else if (event.relatedNode==this.tabbrowser.tabContainer)
-        		{
-        		  var browser = event.target.linkedBrowser;
-        		  if (browser)
+            if (event.relatedNode==this.tabbrowser.mPanelContainer)
+            {
+              var browser = null;
+              if (event.target.localName == "notificationbox")
+                browser = event.target.firstChild;
+              else
+                browser = event.target.childNodes[1];
+                
+              if (browser)
               {
-        		    var preview = this.addPreview(browser);
+                var preview = this.addPreview(browser);
                 if (this.showPreviews)
                   preview.redraw();
               }
-        		}
+            }
+            else if (event.relatedNode==this.tabbrowser.tabContainer)
+            {
+              var browser = event.target.linkedBrowser;
+              if (browser)
+              {
+                var preview = this.addPreview(browser);
+                if (this.showPreviews)
+                  preview.redraw();
+              }
+            }
           }
           else if (event.type=="DOMNodeRemoved")
           {
-        		if (event.relatedNode==this.tabbrowser.tabContainer)
-        		{
-          		var browser = event.target.linkedBrowser;
+            if (event.relatedNode==this.tabbrowser.tabContainer)
+            {
+              var browser = event.target.linkedBrowser;
               if (browser)
-            		this.removePreview(browser);
-        		}
+                this.removePreview(browser);
+            }
           }
           else if (event.type=="select")
           {
-        		var newBrowser = this.tabbrowser.getBrowserAtIndex(this.tabbrowser.mTabContainer.selectedIndex);
-        		this.selectPreview(newBrowser);
+            var newBrowser = this.tabbrowser.getBrowserAtIndex(this.tabbrowser.mTabContainer.selectedIndex);
+            this.selectPreview(newBrowser);
           }
         </body>
       </method>
@@ -356,13 +364,13 @@
       <method name="_resize">
         <body>
         <![CDATA[
-        	var previews = this.previews;
-        	if (previews.length>0)
+          var previews = this.previews;
+          if (previews.length>0)
             this._logMessage("Resizing to "+this.displayWidth+"x"+this.displayHeight);
-        	for (var i=0; i<previews.length; i++)
-        	{
-        		this._resizePreview(previews[i]);
-        	}
+          for (var i=0; i<previews.length; i++)
+          {
+            this._resizePreview(previews[i]);
+          }
         ]]>
         </body>
       </method>
@@ -525,24 +533,24 @@
         <![CDATA[
           var id=browser.parentNode.id;
           var preview = this.getElementsByAttribute("browser", id);
-        	if (preview.length>0)
-        	{
-        		return preview[0];
-        	}
-        	var previews = this.previews;
-        	for (var i=0; i<previews.length; i++)
-        	{
-        		var preview = previews[i];
-        		if (preview.browser==browser)
-        		{
-          		if (id)
-          		{
-          		  preview.setAttribute("browser", id);
-          		}
-        		  return preview;
-        		}
-        	}
-        	return null;
+          if (preview.length>0)
+          {
+            return preview[0];
+          }
+          var previews = this.previews;
+          for (var i=0; i<previews.length; i++)
+          {
+            var preview = previews[i];
+            if (preview.browser==browser)
+            {
+              if (id)
+              {
+                preview.setAttribute("browser", id);
+              }
+              return preview;
+            }
+          }
+          return null;
         ]]>
         </body>
       </method>
@@ -570,41 +578,41 @@
           }
           else
           {
-          	preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreview");
-          	drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
-          	drop.className="dropindicator groove";
+            preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreview");
+            drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
+            drop.className="dropindicator groove";
             if (this.getAttribute("orient")=="vertical")
               drop.setAttribute("orient","vertical");
             else
               drop.setAttribute("orient","horizontal");
           }
-        	var id=browser.parentNode.id;
-        	if (id)
-        	{
-        		preview.setAttribute("browser", id);
-        	}
+          var id=browser.parentNode.id;
+          if (id)
+          {
+            preview.setAttribute("browser", id);
+          }
           var panel = browser.parentNode.id;
           var tab = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"linkedpanel",panel);
           var next = null;
-        	if (tab && tab.nextSibling)
-        	{
-        		next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
-        	}
-      		this.previewContainer.insertBefore(preview,next);
-      		this.previewContainer.insertBefore(drop,next);
+          if (tab && tab.nextSibling)
+          {
+            next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
+          }
+          this.previewContainer.insertBefore(preview,next);
+          this.previewContainer.insertBefore(drop,next);
 
-        	preview.init();
+          preview.init();
 
-        	if (this.tabbrowser.selectedBrowser==browser)
-        	{
-        	  this.selectPreview(browser);
-        	}
-        	else if (tab && tab.hasAttribute("selected"))
-        	{
+          if (this.tabbrowser.selectedBrowser==browser)
+          {
+            this.selectPreview(browser);
+          }
+          else if (tab && tab.hasAttribute("selected"))
+          {
             preview.selected=(tab.getAttribute("selected")=="true");
-        	}
-        	
-        	preview.browser=browser;
+          }
+          
+          preview.browser=browser;
           return preview;
         ]]>
         </body>
@@ -613,16 +621,16 @@
       <method name="removePreview">
         <parameter name="browser"/>
         <body>
-        	var preview = this.getPreviewForBrowser(browser);
-        	if (preview)
-        	{
+          var preview = this.getPreviewForBrowser(browser);
+          if (preview)
+          {
             if (this._selected==preview)
               this._selected=null;
               
-          	var drop = preview.nextSibling;
-          	preview._destroy();
-          	preview.parentNode.removeChild(preview);
-          	drop.parentNode.removeChild(drop);
+            var drop = preview.nextSibling;
+            preview._destroy();
+            preview.parentNode.removeChild(preview);
+            drop.parentNode.removeChild(drop);
           }
         </body>
       </method>
@@ -638,17 +646,17 @@
         <parameter name="browser"/>
         <body>
         <![CDATA[
-        	var preview = this.getPreviewForBrowser(browser);
-        	if (this._selected)
-        	{
+          var preview = this.getPreviewForBrowser(browser);
+          if (this._selected)
+          {
             this._selected.selected=false;
-        	}
-        	if (preview)
-        	{
-          	preview.selected=true;
+          }
+          if (preview)
+          {
+            preview.selected=true;
             this.scrollToPreview(preview);
           }
-        	this._selected=preview;
+          this._selected=preview;
         ]]>
         </body>
       </method>
@@ -697,11 +705,11 @@
           if (!this.showPreviews)
             return;
             
-        	var previews = this.previews;
-        	for (var i=0; i<previews.length; i++)
-        	{
-        		previews[i].redraw();
-        	}
+          var previews = this.previews;
+          for (var i=0; i<previews.length; i++)
+          {
+            previews[i].redraw();
+          }
         ]]>
         </body>
       </method>
@@ -1213,19 +1221,19 @@
             move = true;
           }
   
-					var newtab = this.tabbrowser.addTab("about:blank");
+          var newtab = this.tabbrowser.addTab("about:blank");
 
           if (move)
             this.tabbrowser.moveTabTo(newtab, newIndex);
 
-					this.tabbrowser.selectedTab = newtab;
+          this.tabbrowser.selectedTab = newtab;
 
-					var urlbar = this.window.document.getElementById("urlbar");
+          var urlbar = this.window.document.getElementById("urlbar");
 
-					if ((focus)&&(this._selected))
+          if ((focus)&&(this._selected))
             this._selected.focus();
           else
-						setTimeout(function() { urlbar.focus(); }, 0);
+            setTimeout(function() { urlbar.focus(); }, 0);
         }
       ]]>
       </handler>

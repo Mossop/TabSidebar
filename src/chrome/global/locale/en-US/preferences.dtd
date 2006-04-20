@@ -7,3 +7,15 @@
 
 <!ENTITY paneDisplay.content.navigation.label     "Display navigation buttons.">
 <!ENTITY paneDisplay.content.navigation.accesskey "n">
+
+<!ENTITY paneDisplay.content.previews.label       "Display page previews.">
+<!ENTITY paneDisplay.content.previews.accesskey   "p">
+
+<!ENTITY paneDisplay.updatepreviews.label         "Keep previews up to date.">
+<!ENTITY paneDisplay.updatepreviews.accesskey     "u">
+
+<!ENTITY paneDisplay.position.sidebar             "Sidebar">
+<!ENTITY paneDisplay.position.left                "Left">
+<!ENTITY paneDisplay.position.top                 "Top">
+<!ENTITY paneDisplay.position.bottom              "Bottom">
+<!ENTITY paneDisplay.position.right               "Right">

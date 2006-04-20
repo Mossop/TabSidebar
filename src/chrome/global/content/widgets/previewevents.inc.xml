@@ -246,13 +246,13 @@
             var fpos = newdocs.indexOf(this._listenedDocuments[pos]);
             if (fpos>=0)
             {
-              this._logMessage("kept "+this._listenedDocuments[pos].location.href);
+              this._logMessage("kept "+this._listenedDocuments[pos].location);
               newdocs.splice(fpos,1);
               pos++;
             }
             else
             {
-              this._logMessage("lost "+this._listenedDocuments[pos].location.href);
+              this._logMessage("lost "+this._listenedDocuments[pos].location);
               this._removeDocumentListeners(this._listenedDocuments[pos]);
             }
           }
