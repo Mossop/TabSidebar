@@ -1,3 +1,14 @@
+window[chromehidden~="toolbar"] #tabsidebar-left-container,
+window[chromehidden~="toolbar"] #tabsidebar-left-splitter,
+window[chromehidden~="toolbar"] #tabsidebar-right-container,
+window[chromehidden~="toolbar"] #tabsidebar-right-splitter,
+window[chromehidden~="toolbar"] #tabsidebar-top-container,
+window[chromehidden~="toolbar"] #tabsidebar-top-splitter,
+window[chromehidden~="toolbar"] #tabsidebar-bottom-container,
+window[chromehidden~="toolbar"] #tabsidebar-bottom-splitter {
+  display: none;
+}
+
 tabpreview {
   -moz-binding: url('chrome://tabsidebar/content/widgets/tabpreview.xml#tabpreview');
 }
