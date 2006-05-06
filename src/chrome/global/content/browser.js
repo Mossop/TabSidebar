@@ -71,6 +71,13 @@ init: function()
   this.prefs.addObserver("",this,false);
   
   window.addEventListener("load", function(event) { self.load(event); }, false);
+  window.addEventListener("unload", TabSidebarHandler.unload, false);
+},
+
+unload: function()
+{
+  window.removeEventListener("unload", TabSidebarHandler.unload, false);
+  TabSidebarHandler.prefs.removeObserver("",TabSidebarHandler);
 },
 
 getContainer: function()

@@ -14,7 +14,7 @@ Project Wordfile=
 Filter=
 Create Tagfile=0
 CTags Legacy Support=0
-Working Time=8462
+Working Time=9901
 [Files]
 0=C:\UserData\Dave\UEStudio\TabSidebar\
 [VCS Module List]
@@ -39,8 +39,8 @@ C:\UserData\Dave\UEStudio\TabSidebar\ - src - chrome - global - content - widget
 Open File0=C:\UserData\Dave\UEStudio\TabSidebar\src\chrome\global\content\bindings.css
 Open File Pos0=761
 Open File Line0=0
-Active File Index=0
-Open File Window Pos0=2,3,-1,-1,-4,-23,44,44,703,560
+Active File Index=4
+Open File Window Pos0=0,1,-1,-1,-4,-23,44,44,703,560
 Open File1=C:\UserData\Dave\UEStudio\TabSidebar\src\chrome\global\content\widgets\tabpreviews.css
 Active File Display Mode=3
 Open File Pos1=0
@@ -54,10 +54,10 @@ Open File3=C:\UserData\Dave\UEStudio\TabSidebar\src\chrome.manifest
 Open File Pos3=0
 Open File Line3=0
 Open File Window Pos3=0,1,-1,-1,-4,-23,110,110,773,612
-Open File4=
-Open File Pos4=34325
-Open File Line4=33725
-Open File Window Pos4=2,3,-1,-1,-4,-23,44,44,748,546
+Open File4=C:\UserData\Dave\UEStudio\TabSidebar\src\chrome\global\content\widgets\previewprogress.inc.xml
+Open File Pos4=0
+Open File Line4=4676
+Open File Window Pos4=2,3,-1,-1,-4,-23,110,110,729,730
 Open File5=
 Open File Pos5=13391
 Open File Line5=12397
