@@ -33,9 +33,11 @@
     <em:contributor>Urko</em:contributor>
     
     <em:optionsURL>chrome://tabsidebar/content/preferences.xul</em:optionsURL>
-    <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar/index.html</em:homepageURL>
     <em:iconURL>chrome://tabsidebar/content/branding/icon.png</em:iconURL>
     <em:aboutURL>chrome://tabsidebar/content/about.xul</em:aboutURL>
+
+    <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/${extension.name}</em:homepageURL>
+    <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/${extension.name}/update.rdf</em:updateURL>
     
   </Description>      
 </RDF>
