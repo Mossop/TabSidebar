@@ -309,7 +309,7 @@
           }
           else if (event.type=="select")
           {
-            var newBrowser = this.tabbrowser.getBrowserAtIndex(this.tabbrowser.mTabContainer.selectedIndex);
+            var newBrowser = this.tabbrowser.getBrowserForTab(this.tabbrowser.selectedTab);
             this.selectPreview(newBrowser);
           }
         </body>

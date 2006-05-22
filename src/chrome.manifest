@@ -5,6 +5,7 @@ content			tabsidebar-platform																	${extension.chromebase}/platform/c
 skin				tabsidebar-platform																	${extension.chromebase}/platform/skin/					platform
 
 locale			tabsidebar					en-US														${extension.chromebase}/global/locale/en-US/
+#ifdef ${release}
 locale			tabsidebar					de-DE														${extension.chromebase}/global/locale/de-DE/
 locale			tabsidebar					tr-TR														${extension.chromebase}/global/locale/tr-TR/
 locale			tabsidebar					nl-NL														${extension.chromebase}/global/locale/nl-NL/
@@ -16,6 +17,7 @@ locale			tabsidebar					zh-TW														${extension.chromebase}/global/locale
 locale			tabsidebar					zh-CN														${extension.chromebase}/global/locale/zh-CN/
 locale			tabsidebar					sk-SK														${extension.chromebase}/global/locale/sk-SK/
 locale			tabsidebar					es-ES														${extension.chromebase}/global/locale/es-ES/
+#endif
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 

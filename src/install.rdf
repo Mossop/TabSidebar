@@ -22,6 +22,7 @@
     <em:creator>Mossop</em:creator>
     
     <em:contributor>Peter van der Woude</em:contributor>
+#ifdef ${release}
     <em:contributor>ReinekeFux</em:contributor>
     <em:contributor>Erkan Kaplan</em:contributor>
     <em:contributor>SION</em:contributor>
@@ -31,6 +32,7 @@
     <em:contributor>Jose Sun</em:contributor>
     <em:contributor>SlovakSoft</em:contributor>
     <em:contributor>Urko</em:contributor>
+#endif
     
     <em:optionsURL>chrome://tabsidebar/content/preferences.xul</em:optionsURL>
     <em:iconURL>chrome://tabsidebar/content/branding/icon.png</em:iconURL>
