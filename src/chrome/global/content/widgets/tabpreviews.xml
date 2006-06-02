@@ -62,13 +62,13 @@
       
       <constructor>
       <![CDATA[
-        var topwin = window;
-        while (topwin.parent && topwin.parent != topwin)
-        {
-          topwin=topwin.parent;
-        }
-        this.window = topwin;
-        this.tabbrowser = topwin.document.getElementById("content");
+        var docshell = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                             .getInterface(Components.interfaces.nsIWebNavigation)
+                             .QueryInterface(Components.interfaces.nsIDocShellTreeItem);
+        docshell = docshell.rootTreeItem;
+        this.window = docshell.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                              .getInterface(Components.interfaces.nsIDOMWindow);
+        this.tabbrowser = this.window.document.getElementById("content");
         
         this._loadLocale();
         this._initTree();
@@ -1097,9 +1097,7 @@
               break;
             case "content.previews":
               for (var i = 0; i < this.previews.length; i++)
-              {
                 this.previews[i]._removeListeners();
-              }
               this._showPreviews = this.preferences.getBoolPref(data);
               this.updateContent();
               for (var i = 0; i < this.previews.length; i++)
@@ -1113,17 +1111,23 @@
               break;
             case "updatepreviews":
               var previous = this.updatePreviews;
-              this._updatePreviews = this.preferences.getBoolPref(data);
-              if (previous != this.updatePreviews)
+              if (this.showPreviews)
               {
                 for (var i = 0; i < this.previews.length; i++)
                 {
+                  this.previews[i]._removeListeners();
+                  this.previews[i]._emptyDocumentListeners();
+                }
+                this._updatePreviews = this.preferences.getBoolPref(data);
+                for (var i = 0; i < this.previews.length; i++)
+                {
+                  this.previews[i]._addListeners();
                   if (this.updatePreviews)
                     this.previews[i]._checkDocuments("");
-                  else
-                    this.previews[i]._emptyDocumentListeners();
                 }
               }
+              else
+                this._updatePreviews = this.preferences.getBoolPref(data);
               break;
               
             case "enablelogging":

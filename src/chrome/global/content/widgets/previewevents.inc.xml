@@ -28,13 +28,14 @@
             throw Components.results.NS_NOINTERFACE;
           }
         });</field>
-      
+            
       <method name="_addListeners">
         <body>
           //this._logMessage("Add browser listeners");
           
           this._browser.addEventListener("DOMTitleChanged",      this._eventListener, false);
-          this._browser.addEventListener("resize",               this._eventListener, false);
+          if (this.previews.showPreviews)
+            this._browser.addEventListener("resize",               this._eventListener, false);
 
           if (this.previews.updatePreviews)
           {
@@ -67,7 +68,8 @@
             //this._logMessage("Remove browser listeners");
           
             this._browser.removeEventListener("DOMTitleChanged", this._eventListener, false);
-            this._browser.removeEventListener("resize",          this._eventListener, false);
+            if (this.previews.showPreviews)
+              this._browser.removeEventListener("resize",          this._eventListener, false);
             
             if (this.previews.updatePreviews)
             {
@@ -89,6 +91,7 @@
           }
           catch (e)
           {
+            this.logError("Error removing listeners from tab: "+e);
             dump(e+"\n");
           }
         </body>
