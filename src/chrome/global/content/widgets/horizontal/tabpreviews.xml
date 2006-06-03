@@ -126,6 +126,9 @@
       <field name="scrollStartToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[0]</field>
       <field name="scrollEndToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[2]</field>
 
+      <field name="_startScrollDisabled">false</field>
+      <field name="_endScrollDisabled">false</field>
+      
       <method name="_resizePreview">
         <parameter name="preview"/>
         <body>
@@ -368,21 +371,29 @@
           var x = {};
           this.scrollBoxObject.getPosition(x, {});
           var state = (x.value <= 0);
-          var button = this.scrollStartToolbar.firstChild;
-          while (button)
+          if (state != this._startScrollDisabled)
           {
-            button.disabled = state;
-            button = button.nextSibling;
+            var button = this.scrollStartToolbar.firstChild;
+            while (button)
+            {
+              button.disabled = state;
+              button = button.nextSibling;
+            }
+            this._startScrollDisabled = state;
           }
 
           var width = {};
           this.scrollBoxObject.getScrolledSize(width, {});
           state = ((x.value+this.scrollBoxObject.width) >= width.value);
-          button = this.scrollEndToolbar.firstChild;
-          while (button)
+          if (state != this._endScrollDisabled)
           {
-            button.disabled = state;
-            button = button.nextSibling;
+            button = this.scrollEndToolbar.firstChild;
+            while (button)
+            {
+              button.disabled = state;
+              button = button.nextSibling;
+            }
+            this._endScrollDisabled = state;
           }
         ]]>
         </body>
