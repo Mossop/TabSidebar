@@ -371,6 +371,11 @@
           {
             this._resizePreview(previews[i]);
           }
+          var x = {};
+          var y = {};
+          this.scrollBoxObject.getPosition(x, y);
+          this.scrollBoxObject.scrollTo(x.value, y.value);
+          this._updateScrollButtons();
         ]]>
         </body>
       </method>
@@ -613,6 +618,7 @@
           }
           
           preview.browser=browser;
+          this._updateScrollButtons();
           return preview;
         ]]>
         </body>
@@ -631,6 +637,11 @@
             preview._destroy();
             preview.parentNode.removeChild(preview);
             drop.parentNode.removeChild(drop);
+            var x = {};
+            var y = {};
+            this.scrollBoxObject.getPosition(x, y);
+            this.scrollBoxObject.scrollTo(x.value, y.value);
+            this._updateScrollButtons();
           }
         </body>
       </method>
@@ -1026,8 +1037,7 @@
             {
               this._browserWidth = width;
               this._browserHeight = height;
-              if (this.showPreviews)
-                this._updateSize();
+              this._updateSize();
             }
             else if (this.showPreviews)
             {
@@ -1063,126 +1073,19 @@
         </body>
       </method>
       
-      <!-- Start of nsITimerCallback implementation -->
-
-      <method name="notify">
-        <parameter name="timer"/>
+      <method name="onPreviewSelect">
+        <parameter name="preview"/>
         <body>
-        <![CDATA[
-          if (timer==this._validateTimer)
-          {
-            this._validate();
-          }
-        ]]>
+          if (this.tabbrowser.selectedTab != preview.tab)
+            this.tabbrowser.selectedTab = preview.tab;
+          else
+            this.ensureElementsAreVisible(preview.previousSibling, preview.nextSibling);
         </body>
       </method>
       
-      <!-- Start of nsIObserver implementation -->
-
-      <method name="observe">
-        <parameter name="subject"/>
-        <parameter name="topic"/>
-        <parameter name="data"/>
+      <method name="onClick">
+        <parameter name="event"/>
         <body>
-        <![CDATA[
-          switch (data)
-          {
-            case "content.navigation":
-              this._showNavigation = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.uri":
-              this._showURI = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.previews":
-              for (var i = 0; i < this.previews.length; i++)
-                this.previews[i]._removeListeners();
-              this._showPreviews = this.preferences.getBoolPref(data);
-              this.updateContent();
-              for (var i = 0; i < this.previews.length; i++)
-              {
-                this.previews[i]._addListeners();
-                if (this.updatePreviews)
-                  this.previews[i]._checkDocuments("");
-              }
-              if (this.showPreviews)
-                this._updateSize();
-              break;
-            case "updatepreviews":
-              var previous = this.updatePreviews;
-              if (this.showPreviews)
-              {
-                for (var i = 0; i < this.previews.length; i++)
-                {
-                  this.previews[i]._removeListeners();
-                  this.previews[i]._emptyDocumentListeners();
-                }
-                this._updatePreviews = this.preferences.getBoolPref(data);
-                for (var i = 0; i < this.previews.length; i++)
-                {
-                  this.previews[i]._addListeners();
-                  if (this.updatePreviews)
-                    this.previews[i]._checkDocuments("");
-                }
-              }
-              else
-                this._updatePreviews = this.preferences.getBoolPref(data);
-              break;
-              
-            case "enablelogging":
-              this._enableLogging = this.preferences.getBoolPref(data);
-              break;
-            case "validaterate":
-              this._validateRate = this.preferences.getIntPref(data);
-              break;
-            case "loadrefresh":
-              this._loadRefresh = this.preferences.getBoolPref(data);
-              break;
-            case "loadrefreshrate":
-              this._loadRefreshRate = this.preferences.getIntPref(data);
-              break;
-            case "loaderrordelay":
-              this._loadErrorDelay = this.preferences.getIntPref(data);
-              break;
-            case "unselectedloaderrordelay":
-              this._unselectedLoadErrorDelay = this.preferences.getIntPref(data);
-              break;
-            case "loaddelay":
-              this._loadDelay = this.preferences.getIntPref(data);
-              break;
-            case "unselectedloaddelay":
-              this._unselectedLoadDelay = this.preferences.getIntPref(data);
-              break;
-            case "scrolldelay":
-              this._scrollDelay = this.preferences.getIntPref(data);
-              break;
-            case "unselectedscrolldelay":
-              this._unselectedScrollDelay = this.preferences.getIntPref(data);
-              break;
-            case "textdelay":
-              this._textDelay = this.preferences.getIntPref(data);
-              break;
-            case "unselectedtextdelay":
-              this._unselectedTextDelay = this.preferences.getIntPref(data);
-              break;
-            case "changedelay":
-              this._changeDelay = this.preferences.getIntPref(data);
-              break;
-            case "unselectedchangedelay":
-              this._unselectedChangeDelay = this.preferences.getIntPref(data);
-              break;
-          }
-        ]]>
-        </body>
-      </method>
-    </implementation>
-    
-    <handlers>
-      
-      <handler event="click">
-        if (event.button == 2)
-        {
           var x = event.screenX-this.window.document.documentElement.boxObject.screenX;
           var y = event.screenY-this.window.document.documentElement.boxObject.screenY;
 
@@ -1201,70 +1104,54 @@
           {
             this.displayContextMenu(this.previews[0],x,y);
           }
-        }
-      </handler>
+        </body>
+      </method>
       
-      <handler event="dblclick">
-      <![CDATA[
-        if (event.button==0 && (event.target.localName=="separator" || event.target == this))
-        {
-          var focus = false;
-          if ((this._selected)&&(document.commandDispatcher.focusedElement==this._selected))
+      <method name="onDblClick">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
+          if ((event.target.localName=="separator" || event.target == this.scrollBox))
           {
-            focus=true;
-            this._selected.tab.focus();
-          }
-
-          var move = false;
-          var newIndex = this.previews.length;
-          var target = this.getDropElement(event,false);
-          if (target.nextSibling)
-          {
-            target = target.nextSibling;
-            newIndex = target.tab._tPos;
-            move = true;
-          }
+            var focus = false;
+            if ((this._selected)&&(document.commandDispatcher.focusedElement==this._selected))
+            {
+              focus=true;
+              this._selected.tab.focus();
+            }
   
-          var newtab = this.tabbrowser.addTab("about:blank");
-
-          if (move)
-            this.tabbrowser.moveTabTo(newtab, newIndex);
-
-          this.tabbrowser.selectedTab = newtab;
-
-          var urlbar = this.window.document.getElementById("urlbar");
-
-          if ((focus)&&(this._selected))
-            this._selected.focus();
-          else
-            setTimeout(function() { urlbar.focus(); }, 0);
-        }
-      ]]>
-      </handler>
+            var move = false;
+            var newIndex = this.previews.length;
+            var target = this.getDropElement(event,false);
+            if (target.nextSibling)
+            {
+              target = target.nextSibling;
+              newIndex = target.tab._tPos;
+              move = true;
+            }
+    
+            var newtab = this.tabbrowser.addTab("about:blank");
+  
+            if (move)
+              this.tabbrowser.moveTabTo(newtab, newIndex);
+  
+            this.tabbrowser.selectedTab = newtab;
+  
+            var urlbar = this.window.document.getElementById("urlbar");
+  
+            if ((focus)&&(this._selected))
+              this._selected.focus();
+            else
+              setTimeout(function() { urlbar.focus(); }, 0);
+          }
+        ]]>
+        </body>
+      </method>
       
-      <handler event="focus">
-        if (event.originalTarget==this.focusDetector)
-        {
-          if (this._selected)
-            this._selected.focus();
-        }
-        else if (event.target.parentNode==this)
-        {
-          this.focusDetector.style.MozUserFocus="ignore";
-        }
-      </handler>
-      
-      <handler event="blur">
-        if (event.target.parentNode==this)
-        {
-          this.focusDetector.style.MozUserFocus="normal";
-        }
-      </handler>
-      
-      <handler event="popupshowing">
-      <![CDATA[
-        if (event.originalTarget.id=="tabpreview_tooltip")
-        {
+      <method name="onPreviewTooltipShowing">
+        <parameter name="event"/>
+        <body>
+        <![CDATA[
           var preview = this.ownerDocument.tooltipNode;
           while (preview.localName!="tabpreview")
           {
@@ -1342,10 +1229,153 @@
               canvas.style.display="none";
             }
           }
-        }
-      ]]>
-      </handler>
+        ]]>
+        </body>
+      </method>
 
+      <!-- Start of nsITimerCallback implementation -->
+
+      <method name="notify">
+        <parameter name="timer"/>
+        <body>
+        <![CDATA[
+          if (timer==this._validateTimer)
+          {
+            this._validate();
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <!-- Start of nsIObserver implementation -->
+
+      <method name="observe">
+        <parameter name="subject"/>
+        <parameter name="topic"/>
+        <parameter name="data"/>
+        <body>
+        <![CDATA[
+          switch (data)
+          {
+            case "content.navigation":
+              this._showNavigation = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.uri":
+              this._showURI = this.preferences.getBoolPref(data);
+              this.updateContent();
+              break;
+            case "content.previews":
+              for (var i = 0; i < this.previews.length; i++)
+                this.previews[i]._removeListeners();
+              this._showPreviews = this.preferences.getBoolPref(data);
+              this.updateContent();
+              for (var i = 0; i < this.previews.length; i++)
+              {
+                this.previews[i]._addListeners();
+                if (this.updatePreviews)
+                  this.previews[i]._checkDocuments("");
+              }
+              this._updateSize();
+              break;
+            case "updatepreviews":
+              var previous = this.updatePreviews;
+              if (this.showPreviews)
+              {
+                for (var i = 0; i < this.previews.length; i++)
+                {
+                  this.previews[i]._removeListeners();
+                  this.previews[i]._emptyDocumentListeners();
+                }
+                this._updatePreviews = this.preferences.getBoolPref(data);
+                for (var i = 0; i < this.previews.length; i++)
+                {
+                  this.previews[i]._addListeners();
+                  if (this.updatePreviews)
+                    this.previews[i]._checkDocuments("");
+                }
+              }
+              else
+                this._updatePreviews = this.preferences.getBoolPref(data);
+              break;
+              
+            case "enablelogging":
+              this._enableLogging = this.preferences.getBoolPref(data);
+              break;
+            case "validaterate":
+              this._validateRate = this.preferences.getIntPref(data);
+              break;
+            case "loadrefresh":
+              this._loadRefresh = this.preferences.getBoolPref(data);
+              break;
+            case "loadrefreshrate":
+              this._loadRefreshRate = this.preferences.getIntPref(data);
+              break;
+            case "loaderrordelay":
+              this._loadErrorDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedloaderrordelay":
+              this._unselectedLoadErrorDelay = this.preferences.getIntPref(data);
+              break;
+            case "loaddelay":
+              this._loadDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedloaddelay":
+              this._unselectedLoadDelay = this.preferences.getIntPref(data);
+              break;
+            case "scrolldelay":
+              this._scrollDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedscrolldelay":
+              this._unselectedScrollDelay = this.preferences.getIntPref(data);
+              break;
+            case "textdelay":
+              this._textDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedtextdelay":
+              this._unselectedTextDelay = this.preferences.getIntPref(data);
+              break;
+            case "changedelay":
+              this._changeDelay = this.preferences.getIntPref(data);
+              break;
+            case "unselectedchangedelay":
+              this._unselectedChangeDelay = this.preferences.getIntPref(data);
+              break;
+          }
+        ]]>
+        </body>
+      </method>
+    </implementation>
+    
+    <handlers>
+      
+      <handler event="DOMMouseScroll" >
+        this.scrollBy(event.detail);
+      </handler>
+      
+      <handler event="scroll">
+        this._updateScrollButtons();
+      </handler>
+      
+      <handler event="focus">
+        if (event.originalTarget==this.focusDetector)
+        {
+          if (this._selected)
+            this._selected.focus();
+        }
+        else if (event.target.parentNode==this)
+        {
+          this.focusDetector.style.MozUserFocus="ignore";
+        }
+      </handler>
+      
+      <handler event="blur">
+        if (event.target.parentNode==this)
+        {
+          this.focusDetector.style.MozUserFocus="normal";
+        }
+      </handler>
+      
     </handlers>
 
   </binding>

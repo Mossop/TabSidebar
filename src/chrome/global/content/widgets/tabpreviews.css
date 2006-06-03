@@ -8,11 +8,11 @@
 }
 
 .tbs-scrollbox[orient="vertical"] {
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .tbs-scrollbox[orient="horizontal"] {
-  overflow-x: scroll;
+  overflow-x: hidden;
 }
 
 .tbs-tabpreview {

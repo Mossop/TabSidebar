@@ -2,3 +2,9 @@
 <!ENTITY tabsidebar.menu.label            "&tabsidebar.brand;">
 <!ENTITY tabsidebar.menu.accesskey        "T">
 <!ENTITY tabsidebar.opensidebar           "Open &tabsidebar.brand;">
+<!ENTITY tabsidebar.scrollup              "Scroll up">
+<!ENTITY tabsidebar.scrolldown            "Scroll down">
+<!ENTITY tabsidebar.scrollleft            "Scroll left">
+<!ENTITY tabsidebar.scrollright           "Scroll right">
+<!ENTITY tabsidebar.scrollstart           "Jump to start">
+<!ENTITY tabsidebar.scrollend             "Jump to end">

@@ -496,7 +496,7 @@
                     }
                   }
                 }
-                this._logMessage(event.type);
+                //this._logMessage(event.type);
                 this._documentChanged();
               }
             }

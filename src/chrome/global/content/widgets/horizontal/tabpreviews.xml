@@ -66,7 +66,7 @@
     <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="vertical" style="visibility: hidden">
       <xul:popupset>
       
-        <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="left">
+        <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="left" onpopupshowing="this.parentNode.parentNode.onPreviewTooltipShowing(event);">
           <xul:label class="tbs-tooltip-title" value="Title"/>
           <xul:label class="tbs-tooltip-uri" value="URI"/>
           <xul:image class="tbs-tooltip-image"/>
@@ -81,26 +81,50 @@
 
       <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
       
-      <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
-                     ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode); event.stopPropagation();"
-                     ondragover="nsDragAndDrop.dragOver(event, this.parentNode); event.stopPropagation();"
-                     ondragdrop="nsDragAndDrop.drop(event, this.parentNode); event.stopPropagation();"
-                     ondragexit="nsDragAndDrop.dragExit(event, this.parentNode); event.stopPropagation();"
-                     align="stretch" flex="1" orient="horizontal">
-        
-        <children/>
+      <xul:hbox flex="1" align="stretch">
+        <xul:toolbar class="tbs-scrolltoolbar" orient="vertical">
+          <xul:toolbarbutton class="tbs-scrollstart" tooltiptext="&tabsidebar.scrollstart;" oncommand="this.parentNode.parentNode.parentNode.scrollToStart();"/>
+          <xul:toolbarbutton class="tbs-scrollleft" flex="1" tooltiptext="&tabsidebar.scrollleft;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(-3);"/>
+          <xul:toolbarbutton class="tbs-startoverflow" type="menu">
+            <xul:menupopup onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showFirstTabs(this);"
+                           oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
+          </xul:toolbarbutton>
+        </xul:toolbar>
 
-      </xul:scrollbox>
+        <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
+                       ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode.parentNode); event.stopPropagation();"
+                       ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
+                       ondragdrop="nsDragAndDrop.drop(event, this.parentNode.parentNode); event.stopPropagation();"
+                       ondragexit="nsDragAndDrop.dragExit(event, this.parentNode.parentNode); event.stopPropagation();"
+                       onclick="if (event.button == 2) this.parentNode.parentNode.onClick(event);"
+                       ondblclick="if (event.button == 0) this.parentNode.parentNode.onDblClick(event);"
+                       align="stretch" flex="1" orient="horizontal">
+          
+          <children/>
+  
+        </xul:scrollbox>
+
+        <xul:toolbar class="tbs-scrolltoolbar" orient="vertical">
+          <xul:toolbarbutton class="tbs-scrollend" tooltiptext="&tabsidebar.scrollend;" oncommand="this.parentNode.parentNode.parentNode.scrollToEnd();"/>
+          <xul:toolbarbutton class="tbs-scrollright" flex="1" tooltiptext="&tabsidebar.scrollright;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(3);"/>
+          <xul:toolbarbutton class="tbs-endoverflow" type="menu">
+            <xul:menupopup onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showLastTabs(this);"
+                           oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
+          </xul:toolbarbutton>
+        </xul:toolbar>
+      </xul:hbox>
     </content>
     
     <implementation>
 
       <field name="previewContainer">this</field>
       <field name="focusDetector">this.ownerDocument.getAnonymousNodes(this)[2]</field>
-      <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[3]</field>
+      <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[1]</field>
       <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
       <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
+      <field name="scrollStartToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[0]</field>
+      <field name="scrollEndToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[2]</field>
 
       <method name="_resizePreview">
         <parameter name="preview"/>
@@ -165,10 +189,12 @@
           var elleft = first.boxObject.x;
           var style = window.getComputedStyle(first,null);
           elleft-=parseInt(style.marginLeft)+parseInt(style.borderLeftWidth);
+          elleft-=this.scrollBoxObject.x;
           
           var elright = last.boxObject.x+last.boxObject.width;
           style = window.getComputedStyle(last,null);
           elright+=parseInt(style.marginRight)+parseInt(style.borderRightWidth);
+          elright-=this.scrollBoxObject.x;
 
           if (scrollLeft>elleft)
           {
@@ -190,6 +216,13 @@
       <method name="_calculateSize">
         <body>
         <![CDATA[
+          if (!this.showPreviews)
+          {
+            this._displayHeight = 0;
+            this._displayWidth = 100;
+            return true;
+          }
+          
           var newWidth=0;
           var newHeight=0;
 
@@ -307,6 +340,108 @@
           
           return false;
         ]]>
+        </body>
+      </method>
+      
+      <method name="scrollBy">
+        <parameter name="distance"/>
+        <body>
+          this.scrollBoxObject.scrollBy(distance*15, 0);
+        </body>
+      </method>
+      
+      <method name="scrollToStart">
+        <body>
+          this.scrollBoxObject.scrollTo(0,0);
+        </body>
+      </method>
+      
+      <method name="scrollToEnd">
+        <body>
+          this.scrollBoxObject.scrollTo(this.scrollBoxObject.width,0);
+        </body>
+      </method>
+      
+      <method name="_updateScrollButtons">
+        <body>
+        <![CDATA[
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var state = (x.value <= 0);
+          var button = this.scrollStartToolbar.firstChild;
+          while (button)
+          {
+            button.disabled = state;
+            button = button.nextSibling;
+          }
+
+          var width = {};
+          this.scrollBoxObject.getScrolledSize(width, {});
+          state = ((x.value+this.scrollBoxObject.width) >= width.value);
+          button = this.scrollEndToolbar.firstChild;
+          while (button)
+          {
+            button.disabled = state;
+            button = button.nextSibling;
+          }
+        ]]>
+        </body>
+      </method>
+      
+      <method name="showFirstTabs">
+        <parameter name="menupopup"/>
+        <body>
+        <![CDATA[
+          while (menupopup.firstChild)
+            menupopup.removeChild(menupopup.firstChild);
+
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var node = this.firstChild;
+          while ((node.boxObject.x-this.scrollBoxObject.x)<x.value)
+          {
+            if (node.localName == "tabpreview")
+            {
+              var item = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "menuitem");
+              item.setAttribute("label", node.title);
+              item.setAttribute("class", "menuitem-iconic");
+              if (node.faviconIcon.src != null)
+                item.setAttribute("image", node.faviconIcon.src);
+              menupopup.appendChild(item);
+              item.tabpreview = node;
+            }
+            node = node.nextSibling;
+          }
+          return (menupopup.firstChild != null);
+        ]]>
+        </body>
+      </method>
+      
+      <method name="showLastTabs">
+        <parameter name="menupopup"/>
+        <body>
+          while (menupopup.firstChild)
+            menupopup.removeChild(menupopup.firstChild);
+
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          x.value+=this.scrollBoxObject.width;
+          var node = this.lastChild;
+          while ((node.boxObject.x-this.scrollBoxObject.x+node.boxObject.width)>x.value)
+          {
+            if (node.localName == "tabpreview")
+            {
+              var item = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "menuitem");
+              item.setAttribute("label", node.title);
+              item.setAttribute("class", "menuitem-iconic");
+              if (node.faviconIcon.src != null)
+                item.setAttribute("image", node.faviconIcon.src);
+              menupopup.insertBefore(item,menupopup.firstChild);
+              item.tabpreview = node;
+            }
+            node = node.previousSibling;
+          }
+          return (menupopup.firstChild != null);
         </body>
       </method>
       

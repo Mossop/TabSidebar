@@ -38,6 +38,79 @@
   width: 300px;
 }
 
+/* Scroll buttons */
+
+.tbs-startoverflow > .toolbarbutton-menu-dropmarker,
+.tbs-endoverflow > .toolbarbutton-menu-dropmarker {
+  display: none;
+}
+
+.tbs-scrolltoolbar > toolbarbutton > .toolbarbutton-text {
+  display: none;
+}
+
+.tbs-scrolltoolbar > toolbarbutton > .toolbarbutton-icon {
+  margin: 0;
+}
+
+.tbs-scrolltoolbar > toolbarbutton {
+  list-style-image: url('chrome://tabsidebar/skin/scrollicons.gif');
+  -moz-box-align: center;
+  -moz-box-pack: center;
+}
+
+.tbs-scrolltoolbar > toolbarbutton[disabled="true"] {
+  list-style-image: url('chrome://tabsidebar/skin/scrollicons-disabled.gif');
+}
+
+.tbs-tabpreviews-vertical .tbs-scrollstart {
+  -moz-image-region: rect(0px, 21px, 5px, 16px);
+}
+
+.tbs-tabpreviews-horizontal .tbs-scrollstart {
+  -moz-image-region: rect(8px, 21px, 13px, 16px);
+}
+
+.tbs-tabpreviews-vertical .tbs-scrollend {
+  -moz-image-region: rect(0px, 29px, 5px, 24px);
+}
+
+.tbs-tabpreviews-horizontal .tbs-scrollend {
+  -moz-image-region: rect(8px, 29px, 13px, 24px);
+}
+
+.tbs-scrollup {
+  -moz-image-region: rect(0px, 5px, 3px, 0px);
+}
+
+.tbs-scrollleft {
+  -moz-image-region: rect(8px, 3px, 13px, 0px);
+}
+
+.tbs-scrolldown {
+  -moz-image-region: rect(0px, 13px, 5px, 8px);
+}
+
+.tbs-scrollright {
+  -moz-image-region: rect(8px, 13px, 13px, 8px);
+}
+
+.tbs-tabpreviews-vertical .tbs-startoverflow {
+  -moz-image-region: rect(0px, 40px, 5px, 32px);
+}
+
+.tbs-tabpreviews-horizontal .tbs-startoverflow {
+  -moz-image-region: rect(8px, 37px, 16px, 32px);
+}
+
+.tbs-tabpreviews-vertical .tbs-endoverflow {
+  -moz-image-region: rect(0px, 40px, 5px, 32px);
+}
+
+.tbs-tabpreviews-horizontal .tbs-endoverflow {
+  -moz-image-region: rect(8px, 37px, 16px, 32px);
+}
+
 /* Tab settings */
 .tbs-tabpreview {
   padding: 2px;
