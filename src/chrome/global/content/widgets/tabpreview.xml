@@ -63,14 +63,17 @@
 
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
+      <stylesheet src="chrome://tabsidebar-platform/content/widgets/tabpreviews.css"/>
     </resources>
     
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
       <xul:vbox class="tbs-tabmain" flex="1">
         <xul:hbox class="tbs-topbox" align="center" anonid="topbox">
-          <xul:image class="tbs-favicon" validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
-          <xul:image class="tbs-loading" anonid="loading" tooltip="tabpreview_tooltip"/>
-          <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
+          <xul:hbox flex="1" align="center">
+            <xul:image class="tbs-favicon" validate="never" anonid="favicon" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
+            <xul:image class="tbs-loading" anonid="loading" tooltip="tabpreview_tooltip"/>
+            <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" anonid="title" crop="end"/>
+          </xul:hbox>
           <xul:toolbarbutton class="tbs-close tbs-icon" anonid="close" tooltiptext="&closeTab.label;"
                              onmousedown="event.stopPropagation();"
                              oncommand="this.parentNode.parentNode.parentNode.close();"/>
@@ -188,7 +191,7 @@
       <field name="_anonymousNodes">this.ownerDocument.getAnonymousNodes(this)[0].childNodes;</field>
       
       <field name="_topbox">
-        this._anonymousNodes[0];
+        this._anonymousNodes[0].childNodes[0];
       </field>
       
       <field name="_bottombox">

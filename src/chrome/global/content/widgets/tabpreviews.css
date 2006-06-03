@@ -54,7 +54,7 @@
 .tbs-tabpreviews-horizontal:not([hide~="preview"]) .tbs-tooltip-canvas {
   display: none !important;
 }
-  
+
 .tbs-tabpreview[loading="false"] .tbs-loading {
   display: none;
 }

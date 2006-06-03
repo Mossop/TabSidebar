@@ -120,6 +120,7 @@
       <field name="previewContainer">this</field>
       <field name="focusDetector">this.ownerDocument.getAnonymousNodes(this)[2]</field>
       <field name="scrollBox">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[1]</field>
+      <field name="scrollPanel">this.ownerDocument.getAnonymousNodes(this.scrollBox)[0]</field>
       <field name="scrollBoxObject">this.scrollBox.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject)</field>
       <field name="dragDropBar">this.ownerDocument.getAnonymousNodes(this)[1]</field>
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
@@ -382,9 +383,8 @@
             this._startScrollDisabled = state;
           }
 
-          var width = {};
-          this.scrollBoxObject.getScrolledSize(width, {});
-          state = ((x.value+this.scrollBoxObject.width) >= width.value);
+          var width = this.scrollPanel.boxObject.width;
+          state = ((x.value+this.scrollBoxObject.width) >= width);
           if (state != this._endScrollDisabled)
           {
             button = this.scrollEndToolbar.firstChild;

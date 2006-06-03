@@ -1161,7 +1161,7 @@
           event.originalTarget.childNodes[1].value=preview.uri;
           
           var width = 300;
-          if (this.showPreviews)
+          if (this.showPreviews && preview.canvas.toDataURL)
           {
             var image = event.originalTarget.childNodes[2];
             image.width=width;
