@@ -152,10 +152,12 @@
           var eltop = first.boxObject.y;
           var style = window.getComputedStyle(first,null);
           eltop-=parseInt(style.marginTop)+parseInt(style.borderTopWidth);
+          eltop-=this.scrollBoxObject.y;
           
           var elbottom = last.boxObject.y+last.boxObject.height;
           style = window.getComputedStyle(last,null);
           elbottom+=parseInt(style.marginBottom)+parseInt(style.borderBottomWidth);
+          elbottom-=this.scrollBoxObject.y;
 
           if (scrollTop>eltop)
           {
