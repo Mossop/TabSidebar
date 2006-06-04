@@ -1,3 +1,16 @@
+.tbs-tabpreviews-vertical,
+.tbs-tabpreviews-horizontal {
+	-moz-appearance: none !important;
+}
+
+.tbs-scrollbox {
+  -moz-appearance: none !important;
+}
+
+.tbs-tabpreview {
+  -moz-appearance: none !important;
+}
+
 .tbs-topbox {
   -moz-box-direction: reverse;
 }

@@ -61,6 +61,7 @@
 
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
+      <stylesheet src="chrome://tabsidebar-platform/content/widgets/tabpreviews.css"/>
     </resources>
     
     <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="horizontal" style="visibility: hidden">

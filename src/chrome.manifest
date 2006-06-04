@@ -1,8 +1,8 @@
-content			tabsidebar																					${extension.chromebase}/global/content/
-skin				tabsidebar					classic/1.0											${extension.chromebase}/global/skin/
+content			tabsidebar                                          ${extension.chromebase}/global/content/
+skin				tabsidebar					classic/1.0                     ${extension.chromebase}/global/skin/
 
-content			tabsidebar-platform																	${extension.chromebase}/platform/content/				platform
-skin				tabsidebar-platform																	${extension.chromebase}/platform/skin/					platform
+skin				tabsidebar-platform	classic/1.0                     ${extension.chromebase}/platform/skin/
+content			tabsidebar-platform                                 ${extension.chromebase}/platform/content/				platform
 
 locale			tabsidebar					en-US														${extension.chromebase}/global/locale/en-US/
 #ifdef ${release}
@@ -23,6 +23,7 @@ overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/conten
 
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/content/bindings.css
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/sidebar.css
+style 			chrome://browser/content/browser.xul 								chrome://tabsidebar-platform/skin/sidebar.css
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/browser.css
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/content/branding/toolbar.css
 style 			chrome://global/content/customizeToolbar.xul 				chrome://tabsidebar/content/branding/toolbar.css

@@ -1,0 +1,41 @@
+tabpreviews .tbs-scrollbox {
+  background: url("chrome://tabsidebar-platform/skin/tabsbackground.gif");
+}
+
+.tbs-tabpreview .tbs-loading {
+  list-style-image: url("chrome://tabsidebar-platform/skin/Throbber-small.gif");
+}
+
+.tbs-tabpreview .tbs-scrolltoolbar menuitem {
+  list-style-image: url("chrome://tabsidebar-platform/skin/favicon.png");
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
+}
+
+.tbs-tabpreview .tbs-favicon {
+  list-style-image: url("chrome://tabsidebar-platform/skin/favicon.png");
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+}
+
+tabpreviews .tbs-tabpreview[selected="true"] .tbs-favicon {
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
+}
+
+.tbs-tabpreview .tbs-icon, .tbs-tabpreview .tbs-icon .toolbarbutton-menubutton-button {
+  list-style-image: url("chrome://tabsidebar-platform/skin/Icons.png");
+}
+
+tabpreviews .tbs-tabpreview {
+  border: 1px solid transparent;
+  background-color: transparent;
+}
+
+tabpreviews .tbs-tabpreview[selected="true"] {
+  border-color: #9c9c9c;
+  -moz-border-radius: 15px;
+  background: #f3f3f3 !important;
+}
+
+tabpreviews .tbs-tabpreview:not([selected="true"]):hover {
+  border: 1px solid transparent;
+  background: url("chrome://tabsidebar-platform/skin/tabbackground.gif");
+}
