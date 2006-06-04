@@ -368,6 +368,16 @@
         </body>
       </method>
       
+      <method name="_checkScrollPosition">
+        <body>
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var end = x.value+this.scrollBoxObject.width;
+          if (end>this.scrollPanel.boxObject.width && this.scrollPanel.boxObject.width>this.scrollBoxObject.width)
+            this.scrollBoxObject.scrollTo(this.scrollPanel.boxObject.width-this.scrollBoxObject.width, 0);
+        </body>
+      </method>
+      
       <method name="_updateScrollButtons">
         <body>
         <![CDATA[

@@ -371,10 +371,7 @@
           {
             this._resizePreview(previews[i]);
           }
-          var x = {};
-          var y = {};
-          this.scrollBoxObject.getPosition(x, y);
-          this.scrollBoxObject.scrollTo(x.value, y.value);
+          this._checkScrollPosition();
           this._updateScrollButtons();
         ]]>
         </body>
@@ -637,10 +634,7 @@
             preview._destroy();
             preview.parentNode.removeChild(preview);
             drop.parentNode.removeChild(drop);
-            var x = {};
-            var y = {};
-            this.scrollBoxObject.getPosition(x, y);
-            this.scrollBoxObject.scrollTo(x.value, y.value);
+            this._checkScrollPosition();
             this._updateScrollButtons();
           }
         </body>
