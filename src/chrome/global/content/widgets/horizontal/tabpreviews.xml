@@ -86,7 +86,8 @@
           <xul:toolbarbutton class="tbs-scrollstart" tooltiptext="&tabsidebar.scrollstart;" oncommand="this.parentNode.parentNode.parentNode.scrollToStart();"/>
           <xul:toolbarbutton class="tbs-scrollleft" flex="1" tooltiptext="&tabsidebar.scrollleft;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(-3);"/>
           <xul:toolbarbutton class="tbs-startoverflow" type="menu">
-            <xul:menupopup onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showFirstTabs(this);"
+            <xul:menupopup popupanchor="bottomleft" popupalign="topleft"
+                           onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showFirstTabs(this);"
                            oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
           </xul:toolbarbutton>
         </xul:toolbar>
@@ -108,7 +109,8 @@
           <xul:toolbarbutton class="tbs-scrollend" tooltiptext="&tabsidebar.scrollend;" oncommand="this.parentNode.parentNode.parentNode.scrollToEnd();"/>
           <xul:toolbarbutton class="tbs-scrollright" flex="1" tooltiptext="&tabsidebar.scrollright;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(3);"/>
           <xul:toolbarbutton class="tbs-endoverflow" type="menu">
-            <xul:menupopup onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showLastTabs(this);"
+            <xul:menupopup popupanchor="bottomright" popupalign="topright"
+                           onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showLastTabs(this);"
                            oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
           </xul:toolbarbutton>
         </xul:toolbar>
