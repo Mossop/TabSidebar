@@ -151,7 +151,7 @@
           canvas.style.maxWidth=this.displayWidth+"px";
           
           var container = canvas.parentNode.parentNode;
-          var mainbox = preview._topbox.parentNode;
+          var mainbox = preview._topbox.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
           while (container != mainbox)
@@ -244,7 +244,7 @@
 
           if ((newHeight <= 0) || (this._browserHeight <= 0))
           {
-            this._logError("Invalid sizes");
+            this._logWarning("Invalid sizes - retrying in a few");
             return false;
           }
           newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
@@ -370,11 +370,13 @@
       
       <method name="_checkScrollPosition">
         <body>
+        <![CDATA[
           var x = {};
           this.scrollBoxObject.getPosition(x, {});
           var end = x.value+this.scrollBoxObject.width;
           if (end>this.scrollPanel.boxObject.width && this.scrollPanel.boxObject.width>this.scrollBoxObject.width)
             this.scrollBoxObject.scrollTo(this.scrollPanel.boxObject.width-this.scrollBoxObject.width, 0);
+        ]]>
         </body>
       </method>
       

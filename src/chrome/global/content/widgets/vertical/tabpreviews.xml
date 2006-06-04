@@ -225,7 +225,7 @@
 
           if ((newWidth <= 0) || (this._browserWidth <= 0))
           {
-            this._logError("Invalid sizes");
+            this._logWarning("Invalid sizes - retrying in a few");
             return false;
           }
           newHeight = parseInt((this._browserHeight/this._browserWidth)*newWidth);
@@ -351,11 +351,13 @@
       
       <method name="_checkScrollPosition">
         <body>
+        <![CDATA[
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
           var end = y.value+this.scrollBoxObject.height;
           if (end>this.scrollPanel.boxObject.height && this.scrollPanel.boxObject.height>this.scrollBoxObject.height)
             this.scrollBoxObject.scrollTo(0,this.scrollPanel.boxObject.height-this.scrollBoxObject.height);
+        ]]>
         </body>
       </method>
       

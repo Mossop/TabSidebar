@@ -577,7 +577,7 @@
           
           if (this.previews.displayHeight==0)
           {
-            this._logWarning("Cancelling redraw");
+            this._logWarning("Sizes not yet worked out - cancelling redraw");
             return;
           }
           
