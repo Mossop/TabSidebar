@@ -355,7 +355,11 @@
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
           var end = y.value+this.scrollBoxObject.height;
-          if (end>this.scrollPanel.boxObject.height && this.scrollPanel.boxObject.height>this.scrollBoxObject.height)
+          if (this.scrollPanel.boxObject.height<=this.scrollBoxObject.height)
+          {
+            this.scrollBoxObject.scrollTo(0,0);
+          }
+          else if (end>this.scrollPanel.boxObject.height)
             this.scrollBoxObject.scrollTo(0,this.scrollPanel.boxObject.height-this.scrollBoxObject.height);
         ]]>
         </body>

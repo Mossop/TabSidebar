@@ -49,6 +49,8 @@ prefs: null,
 hidden: false,
 doc: null,
 position: 0,
+oldToggleAffectedChrome: null,
+lastState: false,
 
 // Constructor and destructor
 init: function()
@@ -230,6 +232,8 @@ load: function(event)
 		this.sidebarInitialise();
 		command.setAttribute("checked","true");
 	}
+	this.oldToggleAffectedChrome = window.toggleAffectedChrome;
+	window.toggleAffectedChrome = this.toggleAffectedChrome;
 },
 
 observe: function (subject, topic, data)
@@ -257,6 +261,25 @@ observe: function (subject, topic, data)
 		if (open)
 			this.toggleSidebar();
 	}
+},
+
+toggleAffectedChrome: function(aHide)
+{
+  TabSidebarHandler.oldToggleAffectedChrome(aHide);
+  if (TabSidebarHandler.position != 0)
+  {
+    if (aHide)
+    {
+      TabSidebarHandler.lastState = TabSidebarHandler.isOpen();
+      if (TabSidebarHandler.lastState)
+        TabSidebarHandler.toggleSidebar();
+    }
+    else
+    {
+      if (TabSidebarHandler.lastState)
+        TabSidebarHandler.toggleSidebar();
+    }
+  }
 },
 
 attributeListener: function(event)

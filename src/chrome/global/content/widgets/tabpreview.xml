@@ -145,9 +145,9 @@
             {
               this._destroyed=true;
               
+              this._emptyDocumentListeners();
               if (this._browser)
               {
-                this._emptyDocumentListeners();
                 this._removeListeners();
                 this._browser=null;
               }

@@ -105,13 +105,9 @@
           if ((preview._browserWidth >= 0) || (preview._browserHeight >0))
             this.browserResized(preview, preview._browserWidth, preview._browserHeight);
           for (var i=selectedpos-1; i>=0; i--)
-          {
             this.addPreview(browsers[i]);
-          }
           for (var i=selectedpos+1; i<browsers.length; i++)
-          {
             this.addPreview(browsers[i]);
-          }
         ]]>
         </body>
       </method>
@@ -210,10 +206,10 @@
           var self=this;
           this._eventListener = function(event) { self._eventFilter(event); };
           
-          this.tabbrowser.tabContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
-          this.tabbrowser.mPanelContainer.addEventListener("select", this._eventListener, false);
-          this.tabbrowser.mPanelContainer.addEventListener("DOMNodeInserted", this._eventListener, false);
-          this.tabbrowser.tabContainer.addEventListener("DOMNodeRemoved", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("TabOpen", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("TabClose", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("TabMove", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("TabSelect", this._eventListener, false);
         </body>
       </method>
       
@@ -236,9 +232,7 @@
               while (this.firstChild)
               {
                 if (this.firstChild.localName == "tabpreview")
-                {
                   this.firstChild._destroy();
-                }
                 this.removeChild(this.firstChild);
               }
       
@@ -270,44 +264,27 @@
       <method name="_eventFilter">
         <parameter name="event"/>
         <body>
-          if (event.type=="DOMNodeInserted")
+          if (event.type=="TabOpen")
           {
-            if (event.relatedNode==this.tabbrowser.mPanelContainer)
-            {
-              var browser = null;
-              if (event.target.localName == "notificationbox")
-                browser = event.target.firstChild;
-              else
-                browser = event.target.childNodes[1];
-                
-              if (browser)
-              {
-                var preview = this.addPreview(browser);
-                if (this.showPreviews)
-                  preview.redraw();
-              }
-            }
-            else if (event.relatedNode==this.tabbrowser.tabContainer)
-            {
-              var browser = event.target.linkedBrowser;
-              if (browser)
-              {
-                var preview = this.addPreview(browser);
-                if (this.showPreviews)
-                  preview.redraw();
-              }
-            }
+            var browser = event.target.linkedBrowser;
+            var preview = this.addPreview(browser);
+            if (this.showPreviews)
+              preview.redraw();
           }
-          else if (event.type=="DOMNodeRemoved")
+          else if (event.type=="TabClose")
           {
-            if (event.relatedNode==this.tabbrowser.tabContainer)
-            {
-              var browser = event.target.linkedBrowser;
-              if (browser)
-                this.removePreview(browser);
-            }
+            var browser = event.target.linkedBrowser;
+            this.removePreview(browser);
           }
-          else if (event.type=="select")
+          else if (event.type=="TabMove")
+          {
+            var browser = event.target.linkedBrowser;
+            this.removePreview(browser);
+            var preview = this.addPreview(browser);
+            if (this.showPreviews)
+              preview.redraw();
+          }
+          else if (event.type=="TabSelect")
           {
             var newBrowser = this.tabbrowser.getBrowserForTab(this.tabbrowser.selectedTab);
             this.selectPreview(newBrowser);
@@ -368,9 +345,7 @@
           if (previews.length>0)
             this._logMessage("Resizing to "+this.displayWidth+"x"+this.displayHeight);
           for (var i=0; i<previews.length; i++)
-          {
             this._resizePreview(previews[i]);
-          }
           this._checkScrollPosition();
           this._updateScrollButtons();
         ]]>
@@ -536,9 +511,7 @@
           var id=browser.parentNode.id;
           var preview = this.getElementsByAttribute("browser", id);
           if (preview.length>0)
-          {
             return preview[0];
-          }
           var previews = this.previews;
           for (var i=0; i<previews.length; i++)
           {
@@ -546,9 +519,7 @@
             if (preview.browser==browser)
             {
               if (id)
-              {
                 preview.setAttribute("browser", id);
-              }
               return preview;
             }
           }
@@ -590,29 +561,21 @@
           }
           var id=browser.parentNode.id;
           if (id)
-          {
             preview.setAttribute("browser", id);
-          }
           var panel = browser.parentNode.id;
           var tab = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"linkedpanel",panel);
           var next = null;
           if (tab && tab.nextSibling)
-          {
             next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
-          }
           this.previewContainer.insertBefore(preview,next);
           this.previewContainer.insertBefore(drop,next);
 
           preview.init();
 
           if (this.tabbrowser.selectedBrowser==browser)
-          {
             this.selectPreview(browser);
-          }
           else if (tab && tab.hasAttribute("selected"))
-          {
             preview.selected=(tab.getAttribute("selected")=="true");
-          }
           
           preview.browser=browser;
           this._updateScrollButtons();
@@ -653,9 +616,7 @@
         <![CDATA[
           var preview = this.getPreviewForBrowser(browser);
           if (this._selected)
-          {
             this._selected.selected=false;
-          }
           if (preview)
           {
             preview.selected=true;
@@ -712,9 +673,7 @@
             
           var previews = this.previews;
           for (var i=0; i<previews.length; i++)
-          {
             previews[i].redraw();
-          }
         ]]>
         </body>
       </method>
@@ -766,9 +725,7 @@
                 aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.title + '</a>');
               }
               else
-              {
                 aXferData.data.addDataForFlavour("text/unicode", "about:blank");
-              }
             }
           }
           catch (e)
@@ -803,13 +760,9 @@
 
               var preview = null;
               if (aDragSession.sourceNode.parentNode == this)
-              {
                 preview = aDragSession.sourceNode;              
-              }
               else
-              {
                 preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
-              }
               
               if (newpos == preview.previousSibling || newpos == preview.nextSibling)
               {
@@ -817,16 +770,12 @@
                 this._hideDropIndicator();
               }
               else
-              {
                 this._drawDropIndicator(newpos);
-              }
             }
             else
             {
               if (aEvent.target.localName=="tabpreview")
-              {
                 this._drawDropIndicator(aEvent.target);
-              }
               else
               {
                 var newpos = this.getDropElement(aEvent,true);
@@ -849,9 +798,7 @@
         <![CDATA[
           var newIndex = this.previews.length;
           if (insertBefore)
-          {
             newIndex = insertBefore.tab._tPos;
-          }
           
           var oldIndex = preview.tab._tPos;
           
@@ -885,13 +832,9 @@
             {
               var preview = null
               if (aDragSession.sourceNode.parentNode == this)
-              {
                 preview = aDragSession.sourceNode;              
-              }
               else
-              {
                 preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
-              }
               
               var target = this.getDropElement(aEvent,false);
               this.movePreview(preview,target.nextSibling);
@@ -974,9 +917,7 @@
           try
           {
             if (!aEvent.relatedTarget && this._lastDrop)
-            {
               this._hideDropIndicator();
-            }
           }
           catch (e)
           {
@@ -1034,9 +975,7 @@
               this._updateSize();
             }
             else if (this.showPreviews)
-            {
               preview.redraw();
-            }
           }
         </body>
       </method>
@@ -1045,9 +984,7 @@
         <body>
         <![CDATA[
           if ((this.displayHeight < 0) && (this._selected))
-          {
             this._updateSize();
-          }
           else
           {
             while ((this._validatePos < this._validateMax) && (!this.previews[this._validatePos]._invalid))
@@ -1087,17 +1024,11 @@
           y+=2;
           
           if (event.target.localName == "tabpreview")
-          {
             this.displayContextMenu(event.target,x,y);
-          }
           else if (this._selected)
-          {
             this.displayContextMenu(this._selected,x,y);
-          }
           else
-          {
             this.displayContextMenu(this.previews[0],x,y);
-          }
         </body>
       </method>
       
@@ -1148,9 +1079,7 @@
         <![CDATA[
           var preview = this.ownerDocument.tooltipNode;
           while (preview.localName!="tabpreview")
-          {
             preview=preview.parentNode;
-          }
           event.originalTarget.childNodes[0].value=preview.title;
           event.originalTarget.childNodes[1].value=preview.uri;
           
@@ -1204,9 +1133,7 @@
                   left=win.scrollX;
                 }
                 else
-                {
                   winheight=Math.max(winheight,win.scrollY+1);
-                }
                 ctx.drawWindow(win,left,top,winwidth,winheight,"rgba(255,255,255,255)");
                 canvas.style.display="";
               }
@@ -1219,9 +1146,7 @@
               ctx.restore();
             }
             else
-            {
               canvas.style.display="none";
-            }
           }
         ]]>
         </body>
@@ -1234,9 +1159,7 @@
         <body>
         <![CDATA[
           if (timer==this._validateTimer)
-          {
             this._validate();
-          }
         ]]>
         </body>
       </method>
@@ -1358,16 +1281,12 @@
             this._selected.focus();
         }
         else if (event.target.parentNode==this)
-        {
           this.focusDetector.style.MozUserFocus="ignore";
-        }
       </handler>
       
       <handler event="blur">
         if (event.target.parentNode==this)
-        {
           this.focusDetector.style.MozUserFocus="normal";
-        }
       </handler>
       
     </handlers>
