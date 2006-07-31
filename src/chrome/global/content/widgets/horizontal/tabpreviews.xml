@@ -242,13 +242,14 @@
 
           newHeight = container.boxObject.height - diff
 
-          if ((newHeight <= 0) || (this._browserHeight <= 0))
+          if (newHeight <= 0)
           {
             this._logWarning("Invalid sizes - retrying in a few");
             return false;
           }
           newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
 
+          this._logMessage("New sizes: "+newWidth+"x"+newHeight+" "+this._browserWidth+"x"+this._browserHeight);
           if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
           {
             this._displayWidth=newWidth;

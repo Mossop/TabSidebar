@@ -81,7 +81,9 @@
         
         this.init();
           
-        if (!this.showPreviews)
+        if (this.showPreviews)
+          this._updateSize();
+        else
           this.style.visibility=null;
       ]]>
       </constructor>
@@ -102,7 +104,7 @@
             }
           }
           var preview = this.addPreview(browsers[selectedpos]);
-          if ((preview._browserWidth >= 0) || (preview._browserHeight >0))
+          if ((preview._browserWidth > 0) && (preview._browserHeight > 0))
             this.browserResized(preview, preview._browserWidth, preview._browserHeight);
           for (var i=selectedpos-1; i>=0; i--)
             this.addPreview(browsers[i]);
@@ -942,12 +944,21 @@
       <method name="_updateSize">
         <body>
         <![CDATA[
-          if (this._calculateSize())
+          this._validateTimer.cancel();
+          this._logMessage("Updating size");
+          if (this._selected && ((this._browserWidth <= 0) || (this._browserHeight <= 0)))
+          {
+            this._selected._browserResized();
+            this._browserWidth = this._selected._browserWidth;
+            this._browserHeight = this._selected._browserHeight;
+            this._logMessage("Found a browser size of "+this._browserWidth+"x"+this._browserHeight);
+          }
+          if (this._selected && (this._browserWidth > 0) && (this._browserHeight > 0) && this._calculateSize())
           {
             this._contentWidth=Math.max(this.displayWidth, 500);
             this._contentHeight=(this.displayHeight/this.displayWidth)*this._contentWidth;
-            this.style.visibility=null;
             this._resize();
+            this.style.visibility=null;
             this._selected.redraw();
             this._validateMax = this.previews.length;
             if (this._validateMax <= 1)
@@ -955,7 +966,6 @@
 
             this._validatePos = 0;
           }
-          this._validateTimer.cancel();
           this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         ]]>
         </body>
@@ -968,6 +978,7 @@
         <body>
           if (preview == this._selected)
           {
+            this._logMessage("Got told a new size of "+width+"x"+height);
             if ((width != this._browserWidth) || (height != this._browserHeight))
             {
               this._browserWidth = width;
@@ -983,7 +994,7 @@
       <method name="_validate">
         <body>
         <![CDATA[
-          if ((this.displayHeight < 0) && (this._selected))
+          if (this.displayHeight < 0)
             this._updateSize();
           else
           {
