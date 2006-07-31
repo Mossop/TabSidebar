@@ -944,7 +944,7 @@
         <![CDATA[
           if (this._calculateSize())
           {
-            this._contentWidth=Math.max(this.displayWidth,300);
+            this._contentWidth=Math.max(this.displayWidth, 500);
             this._contentHeight=(this.displayHeight/this.displayWidth)*this._contentWidth;
             this.style.visibility=null;
             this._resize();

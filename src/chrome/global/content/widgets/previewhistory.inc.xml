@@ -81,6 +81,7 @@
               {
                 var menuitem = document.createElement("menuitem");
                 menuitem.setAttribute("label", entry.title);
+                menuitem.setAttribute("tooltiptext", entry.title);
                 menuitem.setAttribute("index", pos);
                 menu.appendChild(menuitem);
               }
@@ -148,6 +149,7 @@
               {
                 var menuitem = document.createElement("menuitem");
                 menuitem.setAttribute("label", entry.title);
+                menuitem.setAttribute("tooltiptext", entry.title);
                 menuitem.setAttribute("index", pos);
                 menu.appendChild(menuitem);
               }

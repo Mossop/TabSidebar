@@ -101,8 +101,8 @@
                                  onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
                                  oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.goBack(event);">
                 <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.populateBackMenu(event);"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.preventBubble()"
-                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"/>
+                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
+                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
               </xul:toolbarbutton>
               <xul:spacer flex="1"/>
               <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" anonid="forward" disabled="true" tooltiptext="&forwardButton.tooltip;"
@@ -110,8 +110,8 @@
                                  onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
                                  oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.goForward(event);">
                 <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.populateForwardMenu(event);"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.preventBubble()"
-                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"/>
+                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
+                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
               </xul:toolbarbutton>
               <xul:spacer flex="1"/>
               <xul:toolbarbutton class="tbs-reload tbs-icon" anonid="reload" tooltiptext="&reloadButton.tooltip;"
@@ -481,12 +481,11 @@
           {
             var func = new Function("event",node.getAttribute("oncommand"));
             func.call(node,event);
-            if ("tagName" in node)
-            {
-              if (node.namespaceURI == "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-                  && (node.tagName == "menupopup" || node.tagName == "popup"))
-                node.hidePopup();
-            }
+            while (node && (node.localName != "menupopup") && (node.localName != "popup"))
+              node = node.parentNode;
+            if (node)
+              node.hidePopup();
+            event.stopPropagation();
           }
         ]]>
         </body>
