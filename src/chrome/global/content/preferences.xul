@@ -107,9 +107,11 @@
 	  
 	    <separator class="thin"/>
 	    
-	    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
-	                                          label="&paneDisplay.updatepreviews.label;"/>
-	
+			<subpane preference="content.previews" action="disable">
+		    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
+		                                          label="&paneDisplay.updatepreviews.label;"/>
+			</subpane>
+				
 	    <radiogroup preference="position" align="center">
 	      <radio label="&paneDisplay.position.top;" value="1"/>
 	      <hbox flex="1" align="center">
