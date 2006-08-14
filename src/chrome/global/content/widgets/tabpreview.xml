@@ -358,6 +358,12 @@
 
       <!-- Helper properties -->
       
+      <property name="showPreview">
+        <getter>
+          return this.previews.showPreviews;
+        </getter>
+      </property>
+      
       <property name="previews">
         <getter>
           return this.parentNode;
@@ -571,7 +577,7 @@
       <method name="redraw">
         <body>
         <![CDATA[
-          if ((!this.previews)||(!this._invalid)||(!this.previews.showPreviews))
+          if ((!this.previews)||(!this._invalid)||(!this.showPreview))
             return;
           
           if (this.previews.displayHeight==0)

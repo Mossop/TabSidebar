@@ -76,7 +76,7 @@
           this.stopButton.disabled=true;
           this._updateTimer.cancel();
 
-          if (!this.previews.showPreviews)
+          if (!this.showPreview)
             return;
             
           if (status==0)
