@@ -41,7 +41,6 @@
           {
             this._browser.addEventListener("scroll",               this._eventListener, true);
             this._browser.addEventListener("load",                 this._eventListener, true);
-            this._browser.addEventListener("unload",               this._eventListener, true);
             this._browser.addEventListener("pageshow",             this._eventListener, true);
             this._browser.addEventListener("pagehide",             this._eventListener, true);
           }
@@ -75,7 +74,6 @@
             {
               this._browser.removeEventListener("scroll",          this._eventListener, true);
               this._browser.removeEventListener("load",            this._eventListener, true);
-              this._browser.removeEventListener("unload",          this._eventListener, true);
               this._browser.removeEventListener("pageshow",        this._eventListener, true);
               this._browser.removeEventListener("pagehide",        this._eventListener, true);
             }
@@ -453,6 +451,7 @@
               
               if (doc)
               {
+                //this._logMessage(event.type);
                 this._removeDocumentListeners(doc);
               }
               else
