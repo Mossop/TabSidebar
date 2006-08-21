@@ -460,13 +460,13 @@
                 this._logWarning(event.type+" from unknown place: "+event.target);
               }
             }
+            else if (event.type=="scroll")
+            {
+              this._documentScrolled();
+            }
             else if (this._listenedDocuments.indexOf(event.target.ownerDocument)>=0)
             {
-              if (event.type=="scroll")
-              {
-                this._documentScrolled();
-              }
-              else if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
+              if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
               {
                 if (event.type=="DOMAttrModified")
                 {
@@ -496,9 +496,17 @@
                     }
                   }
                 }
-                //this._logMessage(event.type);
+                this._logMessage(event.type);
                 this._documentChanged();
               }
+              else
+              {
+                this._logWarning("Received an unknown event: "+event.type);
+              }
+            }
+            else
+            {
+              this._logWarning("Received an event for an unknown document: "+event.type);
             }
           }
           catch (e)
