@@ -216,7 +216,7 @@
       </method>
       
       <destructor>
-        dump("Tabpreviews destructor\n");
+        //dump("Tabpreviews destructor\n");
         this._destroy();
       </destructor>
       
@@ -249,7 +249,7 @@
               this.tabbrowser=null;
               this.window=null;
     
-              dump("Tabpreviews destroyed\n");
+              //dump("Tabpreviews destroyed\n");
             }
             catch (e)
             {

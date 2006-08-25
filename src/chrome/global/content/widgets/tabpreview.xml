@@ -84,7 +84,7 @@
               <xhtml:canvas class="tbs-canvas" anonid="canvas" tooltip="tabpreview_tooltip"/>
             </xul:box>
           </xul:vbox>
-          <xul:vbox>
+          <xul:vbox style="overflow: hidden">
             <xul:hbox pack="end" class="tbs-topstrip">
               <xul:toolbarbutton class="tbs-security tbs-icon" anonid="security"
                                  onmousedown="event.stopPropagation();"
@@ -132,7 +132,7 @@
       </constructor>
 
       <destructor>
-        dump("Tabpreview destructor\n");
+        //dump("Tabpreview destructor\n");
         this._destroy();
       </destructor>
       
@@ -164,7 +164,7 @@
               this._timerListener.tabpreview=null;
               this._timerListener=null;
               
-              dump("Tabpreview destroyed\n");
+              //dump("Tabpreview destroyed\n");
             }
             catch (e)
             {
