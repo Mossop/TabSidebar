@@ -34,7 +34,7 @@
     <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar/index.html</em:homepageURL>
     <em:iconURL>chrome://tabsidebar/skin/icon.png</em:iconURL>
     <em:aboutURL>chrome://tabsidebar/content/about.xul</em:aboutURL>
-    <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/${extension.name}/update.rdf</em:updateURL>
+    <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/@name@/update.rdf</em:updateURL>
     
   </Description>      
 </RDF>
