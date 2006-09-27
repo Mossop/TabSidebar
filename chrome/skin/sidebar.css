@@ -129,7 +129,6 @@ separator {
   -moz-appearance: none;
   border: none !important;
   padding: 0px;
-  position: absolute; /* Required to avoid transparency issues - bug 5 */
 }
 
 /* Drop markers */
