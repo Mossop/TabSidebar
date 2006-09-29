@@ -20,3 +20,11 @@ tabpreviews.tbs-tabpreviews-vertical {
 tabpreviews.tbs-tabpreviews-horizontal {
   -moz-binding: url('chrome://tabsidebar/content/widgets/horizontal/tabpreviews.xml#tabpreviews');
 }
+
+.tbs-tabpreviews-vertical .tbs-container > box {
+	overflow: hidden;
+}
+
+.tbs-tabpreviews-horizontal .tbs-container {
+	overflow: hidden;
+}

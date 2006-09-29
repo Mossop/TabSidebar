@@ -79,7 +79,7 @@
                              oncommand="this.parentNode.parentNode.parentNode.close();"/>
         </xul:hbox>
         <xul:stack flex="1" class="tbs-stack">
-          <xul:vbox style="overflow: hidden" pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
+          <xul:vbox pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container" anonid="canvas_container">
             <xul:box>
               <xhtml:canvas class="tbs-canvas" anonid="canvas" tooltip="tabpreview_tooltip"/>
             </xul:box>
