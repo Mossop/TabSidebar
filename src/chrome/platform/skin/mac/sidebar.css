@@ -20,12 +20,9 @@ tabpreviews .tbs-tabpreview[selected="true"] .tbs-favicon {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-.tbs-tabpreview .tbs-icon, .tbs-tabpreview .tbs-icon .toolbarbutton-menubutton-button {
-  list-style-image: url("chrome://tabsidebar-platform/skin/Icons.png");
-}
-
 .tbs-tabpreview .tbs-close {
   margin-right: 0px;
+  list-style-image: url("chrome://tabsidebar-platform/skin/Icons.png");
 }
 
 tabpreviews .tbs-tabpreview {
