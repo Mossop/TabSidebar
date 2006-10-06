@@ -111,18 +111,21 @@
 		    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
 		                                          label="&paneDisplay.updatepreviews.label;"/>
 			</subpane>
-				
-	    <radiogroup preference="position" align="center">
-	      <radio label="&paneDisplay.position.top;" value="1"/>
-	      <hbox flex="1" align="center">
-	        <vbox flex="1" pack="center">
-  	        <radio label="&paneDisplay.position.sidebar;" value="0"/>
-  	        <radio label="&paneDisplay.position.left;" value="3"/>
-	        </vbox>
-	        <radio label="&paneDisplay.position.right;" value="4"/>
-	      </hbox>
-	      <radio label="&paneDisplay.position.bottom;" value="2"/>
-	    </radiogroup>
+			
+			<groupbox>
+				<caption label="&paneDisplay.position.caption;"/>
+		    <radiogroup preference="position" align="center">
+		      <radio label="&paneDisplay.position.top;" value="1"/>
+		      <hbox flex="1" align="center">
+		        <vbox flex="1" pack="center">
+	  	        <radio label="&paneDisplay.position.sidebar;" value="0"/>
+	  	        <radio label="&paneDisplay.position.left;" value="3"/>
+		        </vbox>
+		        <radio label="&paneDisplay.position.right;" value="4"/>
+		      </hbox>
+		      <radio label="&paneDisplay.position.bottom;" value="2"/>
+		    </radiogroup>
+		  </groupbox>
 
 	  </vbox>
 

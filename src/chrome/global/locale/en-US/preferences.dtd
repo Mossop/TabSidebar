@@ -14,6 +14,7 @@
 <!ENTITY paneDisplay.updatepreviews.label         "Keep previews up to date.">
 <!ENTITY paneDisplay.updatepreviews.accesskey     "u">
 
+<!ENTITY paneDisplay.position.caption             "Positon">
 <!ENTITY paneDisplay.position.sidebar             "Sidebar">
 <!ENTITY paneDisplay.position.left                "Left">
 <!ENTITY paneDisplay.position.top                 "Top">
