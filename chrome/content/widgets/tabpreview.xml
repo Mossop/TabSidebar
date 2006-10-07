@@ -552,40 +552,37 @@
                 this._logMessage("Unload of "+event.target);
               }
             }
+            else if (event.type=="scroll")
+            {
+              this._documentScrolled();
+            }
             else if (this._listenedDocuments.indexOf(event.target.ownerDocument)>=0)
             {
-              if (event.type=="scroll")
+              if ((event.type=="DOMAttrModified")&&
+                 ((event.attrName=="curpos")
+                ||(event.attrName=="maxpos")
+                ||(event.attrName=="pageincrement")))
               {
-                this._documentScrolled();
+                  this._documentScrolled();
+                  return;
               }
-              else if ((event.type.substring(0,3)=="DOM")&&(!this.loading))
+              if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
               {
-                if ((event.type=="DOMAttrModified")&&
-                   ((event.attrName=="curpos")
-                  ||(event.attrName=="maxpos")
-                  ||(event.attrName=="pageincrement")))
+                if (event.target instanceof HTMLTextAreaElement)
                 {
-                    this._documentScrolled();
-                    return;
+                  this._documentTextInput();
+                  return;
                 }
-                if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
+                if (event.target instanceof HTMLInputElement)
                 {
-                  if (event.target instanceof HTMLTextAreaElement)
+                  if ((event.target.type=="text")||(event.target.type=="password"))
                   {
                     this._documentTextInput();
                     return;
                   }
-                  if (event.target instanceof HTMLInputElement)
-                  {
-                    if ((event.target.type=="text")||(event.target.type=="password"))
-                    {
-                      this._documentTextInput();
-                      return;
-                    }
-                  }
                 }
-                this._documentChanged();
               }
+              this._documentChanged();
             }
           }
           catch (e)
