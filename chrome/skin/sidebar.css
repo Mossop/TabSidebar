@@ -161,7 +161,7 @@ separator {
 
 .tbs-tabpreview[security="high"][selected="true"] ,
 .tbs-tabpreview[security="low"][selected="true"] {
-  background-color: #F5F6BE !important;
+  background-color: #edec7d !important;
 }
 
 .tbs-toolbar {
