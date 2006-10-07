@@ -1,18 +1,18 @@
-content			tabsidebar																					file:chrome/content/
-skin				tabsidebar					classic/1.0											file:chrome/skin/
+content			tabsidebar																					jar:chrome/tabsidebar.jar!/content/
+skin				tabsidebar					classic/1.0											jar:chrome/tabsidebar.jar!/skin/
 
-locale			tabsidebar					en-US														file:chrome/locale/en-US/
-locale			tabsidebar					de-DE														file:chrome/locale/de-DE/
-locale			tabsidebar					tr-TR														file:chrome/locale/tr-TR/
-locale			tabsidebar					nl-NL														file:chrome/locale/nl-NL/
-locale			tabsidebar					fr															file:chrome/locale/fr/
-locale			tabsidebar					it															file:chrome/locale/it/
-locale			tabsidebar					ja  														file:chrome/locale/ja/
-locale			tabsidebar					ru-RU  													file:chrome/locale/ru-RU/
-locale			tabsidebar					zh-TW														file:chrome/locale/zh-TW/
-locale			tabsidebar					zh-CN														file:chrome/locale/zh-CN/
-locale			tabsidebar					sk-SK														file:chrome/locale/sk-SK/
-locale			tabsidebar					es-ES														file:chrome/locale/es-ES/
+locale			tabsidebar					en-US														jar:chrome/tabsidebar.jar!/locale/en-US/
+locale			tabsidebar					de-DE														jar:chrome/tabsidebar.jar!/locale/de-DE/
+locale			tabsidebar					tr-TR														jar:chrome/tabsidebar.jar!/locale/tr-TR/
+locale			tabsidebar					nl-NL														jar:chrome/tabsidebar.jar!/locale/nl-NL/
+locale			tabsidebar					fr															jar:chrome/tabsidebar.jar!/locale/fr/
+locale			tabsidebar					it															jar:chrome/tabsidebar.jar!/locale/it/
+locale			tabsidebar					ja  														jar:chrome/tabsidebar.jar!/locale/ja/
+locale			tabsidebar					ru-RU  													jar:chrome/tabsidebar.jar!/locale/ru-RU/
+locale			tabsidebar					zh-TW														jar:chrome/tabsidebar.jar!/locale/zh-TW/
+locale			tabsidebar					zh-CN														jar:chrome/tabsidebar.jar!/locale/zh-CN/
+locale			tabsidebar					sk-SK														jar:chrome/tabsidebar.jar!/locale/sk-SK/
+locale			tabsidebar					es-ES														jar:chrome/tabsidebar.jar!/locale/es-ES/
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 
