@@ -17,7 +17,6 @@ pref("extensions.tabsidebar.content.reload", true);
 pref("extensions.tabsidebar.content.stop", true);
 pref("extensions.tabsidebar.content.forward", true);
 pref("extensions.tabsidebar.content.back", true);
-pref("extensions.tabsidebar.content.uri", false);
 
 pref("extensions.tabsidebar.showoptions", false);
 pref("extensions.tabsidebar.showhelp", false);

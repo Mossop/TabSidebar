@@ -32,11 +32,3 @@
 .tbs-tabpreview[loading="true"] .tbs-favicon {
   display: none;
 }
-
-.tbs-tabpreviews[hide~="uri"] .tbs-bottombox {
-  display: none;
-}
-
-.tbs-tabpreviews[hide~="uri"] .tbs-tooltip-uri {
-  display: none;
-}

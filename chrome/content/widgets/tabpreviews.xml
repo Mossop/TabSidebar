@@ -204,7 +204,6 @@
           this._showStop = this.preferences.getBoolPref("content.stop");
           this._showForward = this.preferences.getBoolPref("content.forward");
           this._showBack = this.preferences.getBoolPref("content.back");
-          this._showURI = this.preferences.getBoolPref("content.uri");
 
           this._drawScrolled = true; //this.preferences.getBoolPref("drawscrolled");
           this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
@@ -499,9 +498,6 @@
       <field name="_showBack">true</field>
       <property name="showBack" onget="return this._showBack;"/>
             
-      <field name="_showURI">false</field>
-      <property name="showURI" onget="return this._showURI;"/>
-      
       <field name="_displayWidth">-1</field>
       <property name="displayWidth" onget="return this._displayWidth;"/>
       
@@ -750,8 +746,6 @@
             hide+=" back";
           if (!this.showReload)
             hide+=" reload";
-          if (!this.showURI)
-            hide+=" uri";
           
           if (hide.length>0)
             hide=hide.substring(1);
@@ -1217,10 +1211,6 @@
               break;
             case "content.back":
               this._showBack = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.uri":
-              this._showURI = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
               
