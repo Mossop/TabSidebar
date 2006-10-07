@@ -216,7 +216,11 @@ separator {
 .toolbarbutton-icon {
   margin: 0px;
 }
-  
+
+.toolbarbutton-text {
+	margin: 0px;
+}
+
 .tbs-loading {
   list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
