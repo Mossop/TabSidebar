@@ -70,12 +70,11 @@
   </toolbarpalette>
 
   <menupopup id="viewSidebarMenu">
-    <menuitem image="chrome://tabsidebar/skin/toolbar-small.png" acceltext="Ctrl+Shift+T" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
+    <menuitem image="chrome://tabsidebar/skin/toolbar-small.png" acceltext="Ctrl+Shift+E" observes="viewTabSidebar" accesskey="&tabsidebar.menu.accesskey;"/>
   </menupopup>
 
   <keyset id="mainKeyset">
-    <key id="tabsidebar-key" key="t" modifiers="accel,shift" observes="viewTabSidebar"/>
-    <key id="tabsidebar-key2" key="e" modifiers="accel,shift" observes="viewTabSidebar"/>
+     <key id="tabsidebar-key" key="e" modifiers="accel,shift" observes="viewTabSidebar"/>
   </keyset>
   
   <hbox id="browser">
