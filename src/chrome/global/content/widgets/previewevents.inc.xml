@@ -33,7 +33,7 @@
         <body>
           //this._logMessage("Add browser listeners");
           
-          this._browser.addEventListener("DOMTitleChanged",      this._eventListener, false);
+          this._browser.addEventListener("DOMTitleChanged",        this._eventListener, false);
           if (this.showPreview)
             this._browser.addEventListener("resize",               this._eventListener, false);
 
@@ -66,7 +66,7 @@
           {
             //this._logMessage("Remove browser listeners");
           
-            this._browser.removeEventListener("DOMTitleChanged", this._eventListener, false);
+            this._browser.removeEventListener("DOMTitleChanged",   this._eventListener, false);
             if (this.showPreview)
               this._browser.removeEventListener("resize",          this._eventListener, false);
             

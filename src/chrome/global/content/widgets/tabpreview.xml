@@ -94,7 +94,7 @@
 		        </xul:hbox>
 		        <xul:toolbarbutton class="tbs-close tbs-icon" tooltiptext="&closeTab.label;"
 		                           onmousedown="event.stopPropagation();"
-		                           oncommand="this.parentNode.parentNode.parentNode.parentNode.close();"/>
+		                           oncommand="this.preview.close();"/>
 		      </xul:hbox>
 		      <xul:stack flex="1" class="tbs-stack">
 		        <xul:vbox pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container">
@@ -106,35 +106,35 @@
 		          <xul:hbox pack="end" class="tbs-topstrip">
 		            <xul:toolbarbutton class="tbs-security tbs-icon"
 		                               onmousedown="event.stopPropagation();"
-		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
+		                               oncommand="this.preview.viewSecurity();"/>
 		          </xul:hbox>
 		          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
 		          <xul:hbox pack="start" class="tbs-bottomstrip">
 		            <xul:toolbarbutton class="tbs-stop tbs-icon" disabled="true" tooltiptext="&stopButton.tooltip;"
 		                               onmousedown="event.stopPropagation();"
-		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.stop();"/>
+		                               oncommand="this.preview.stop();"/>
 		            <xul:spacer flex="1"/>
 		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
 		                               onmousedown="event.stopPropagation();"
-		                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
-		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.goBack(event);">
-		              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.populateBackMenu(event);"
-		                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
-		                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
+		                               onclick="this.preview.checkMiddleClick(this,event);"
+		                               oncommand="this.preview.goBack(event);">
+		              <xul:menupopup onpopupshowing="this.parentNode.preview.populateBackMenu(event);"
+		                             oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
+		                             onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
 		            </xul:toolbarbutton>
 		            <xul:spacer flex="1"/>
 		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
 		                               onmousedown="event.stopPropagation();"
-		                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
-		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.goForward(event);">
-		              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.populateForwardMenu(event);"
-		                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
-		                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
+		                               onclick="this.preview.checkMiddleClick(this,event);"
+		                               oncommand="this.preview.goForward(event);">
+		              <xul:menupopup onpopupshowing="this.parentNode.preview.populateForwardMenu(event);"
+		                             oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
+		                             onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
 		            </xul:toolbarbutton>
 		            <xul:spacer flex="1"/>
 		            <xul:toolbarbutton class="tbs-reload tbs-icon" tooltiptext="&reloadButton.tooltip;"
 		                               onmousedown="event.stopPropagation();"
-		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
+		                               oncommand="this.preview.reload(event);"/>
 		          </xul:hbox>
 		        </xul:vbox>
 		      </xul:stack>
@@ -197,6 +197,15 @@
             var self = this;
             this._eventListener = function(event) { self._eventFilter(event); };
           }
+          
+          // Set up shortcuts;
+          this.closeButton.preview = this;
+          this.securityIcon.preview = this;
+          this.stopButton.preview = this;
+          this.backButton.preview = this;
+          this.forwardButton.preview = this;
+          this.reloadButton.preview = this;
+          
           if (this.previews.displayHeight>0)
             this.previews._resizePreview(this);
         </body>
@@ -216,6 +225,10 @@
       
       <field name="faviconIcon">
         this._topbox.firstChild;
+      </field>
+      
+      <field name="closeButton">
+        this._topbox.nextSibling;
       </field>
       
       <field name="_stack">
