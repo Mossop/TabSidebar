@@ -1,9 +1,0 @@
-<!ENTITY dialog.title             "O rozšírení &tabsidebar.brand;">
-<!ENTITY dialog.version           "Verzia: ">
-<!ENTITY dialog.author            "Autor: ">
-<!ENTITY dialog.description       "&tabsidebar.brand; poskytuje miniatúru náhľadu každej karty, ktorá je otvorená.">
-<!ENTITY dialog.homepage          "Navštíviť domovskú stránku">
-<!ENTITY dialog.contributors      "Prispievatelia: ">
-
-
-<!ENTITY dialog.accept            "Zavrieť">

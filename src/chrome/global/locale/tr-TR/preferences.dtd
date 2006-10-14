@@ -1,9 +1,0 @@
-<!ENTITY tabsidebar.options.title "&tabsidebar.brand;  Tercihleri">
-<!ENTITY tabsidebar.options.style "width: 30em; height: 18em;">
-<!ENTITY tabsidebar.options.version "Sürüm:">
-
-<!ENTITY paneGeneral.hidetabs.label "Kenar çubuğu açıldığında sekme çubuğunu gizle">
-<!ENTITY paneGeneral.hidetabs.accesskey "Kenar çubuğu açıldığında sekme çubuğunu gizle">
-
-<!ENTITY paneDisplay.content.navigation.label "Yön düğmelerini göster.">
-<!ENTITY paneDisplay.content.navigation.accesskey "n">

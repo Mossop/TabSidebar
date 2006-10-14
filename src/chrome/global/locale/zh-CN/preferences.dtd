@@ -1,7 +1,0 @@
-<!ENTITY tabsidebar.options.title "&tabsidebar.brand;选项">
-<!ENTITY tabsidebar.options.style "width: 30em; height: 18em;">
-<!ENTITY tabsidebar.options.version "版本:">
-<!ENTITY paneGeneral.hidetabs.label "当标签侧栏打开时隐藏标签栏">
-<!ENTITY paneGeneral.hidetabs.accesskey "H">
-<!ENTITY paneDisplay.content.navigation.label "显示导航按钮">
-<!ENTITY paneDisplay.content.navigation.accesskey "n">

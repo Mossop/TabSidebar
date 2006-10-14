@@ -1,9 +1,0 @@
-<!ENTITY dialog.title "About &tabsidebar.brand;">
-<!ENTITY dialog.version "バージョン: ">
-<!ENTITY dialog.author "著作者: ">
-<!ENTITY dialog.description       "&tabsidebar.brand; はタブが開かれるたびにサムネイルを表示します">
-<!ENTITY dialog.homepage "ホームページを表示">
-<!ENTITY dialog.contributors "貢献者: ">
-
-
-<!ENTITY dialog.accept "閉じる">

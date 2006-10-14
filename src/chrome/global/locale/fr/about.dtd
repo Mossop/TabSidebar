@@ -1,7 +1,0 @@
-<!ENTITY dialog.title "À propos de &tabsidebar.brand;">
-<!ENTITY dialog.version "Version :">
-<!ENTITY dialog.author "Auteur :">
-<!ENTITY dialog.description "&tabsidebar.brand; vous fournit un aperçu rapide, via des vignettes, de chaque onglet ouvert.">
-<!ENTITY dialog.homepage "Visiter la page web">
-<!ENTITY dialog.contributors "Contributeurs :">
-<!ENTITY dialog.accept "Fermer">

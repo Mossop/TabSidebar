@@ -1,9 +1,0 @@
-<!ENTITY dialog.title             "Over &tabsidebar.brand;">
-<!ENTITY dialog.version           "Versie: ">
-<!ENTITY dialog.author            "Auteur: ">
-<!ENTITY dialog.description       "&tabsidebar.brand; laat u van elk geopend tabblad een voorbeeldweergave in de zijbalk zien.">
-<!ENTITY dialog.homepage          "Homepage bezoeken">
-<!ENTITY dialog.contributors      "Medewerkers: ">
-
-
-<!ENTITY dialog.accept            "Sluiten">

@@ -1,7 +1,0 @@
-<!ENTITY dialog.title "Acerca de &tabsidebar.brand;">
-<!ENTITY dialog.version "Versión: ">
-<!ENTITY dialog.author "Autor: ">
-<!ENTITY dialog.description "&tabsidebar.brand; le proporciona una vista previa rápida en imagen reducida de cada una de sus pestañas abiertas.">
-<!ENTITY dialog.homepage "Visitar página de inicio">
-<!ENTITY dialog.contributors "Colaboradores: ">
-<!ENTITY dialog.accept "Cerrar">

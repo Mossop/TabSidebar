@@ -5,19 +5,6 @@ skin				tabsidebar-platform	classic/1.0                     ${extension.chromeba
 content			tabsidebar-platform                                 ${extension.chromebase}/platform/content/				platform
 
 locale			tabsidebar					en-US														${extension.chromebase}/global/locale/en-US/
-#ifdef ${release}
-locale			tabsidebar					de-DE														${extension.chromebase}/global/locale/de-DE/
-locale			tabsidebar					tr-TR														${extension.chromebase}/global/locale/tr-TR/
-locale			tabsidebar					nl-NL														${extension.chromebase}/global/locale/nl-NL/
-locale			tabsidebar					fr															${extension.chromebase}/global/locale/fr/
-locale			tabsidebar					it															${extension.chromebase}/global/locale/it/
-locale			tabsidebar					ja  														${extension.chromebase}/global/locale/ja/
-locale			tabsidebar					ru-RU  													${extension.chromebase}/global/locale/ru-RU/
-locale			tabsidebar					zh-TW														${extension.chromebase}/global/locale/zh-TW/
-locale			tabsidebar					zh-CN														${extension.chromebase}/global/locale/zh-CN/
-locale			tabsidebar					sk-SK														${extension.chromebase}/global/locale/sk-SK/
-locale			tabsidebar					es-ES														${extension.chromebase}/global/locale/es-ES/
-#endif
 
 overlay			chrome://browser/content/browser.xul								chrome://tabsidebar/content/browserOverlay.xul
 

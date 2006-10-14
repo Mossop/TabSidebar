@@ -1,7 +1,0 @@
-<!ENTITY dialog.accept "Закрыть">
-<!ENTITY dialog.author "Автор:">
-<!ENTITY dialog.contributors "Участники проекта:">
-<!ENTITY dialog.description "&tabsidebar.brand; позволяет вам показывать каждую открытую вами вкладку в уменьшенном виде в боковой панели.">
-<!ENTITY dialog.homepage "Посетить домашнюю страницу">
-<!ENTITY dialog.title "О &tabsidebar.brand;">
-<!ENTITY dialog.version "Версия:">

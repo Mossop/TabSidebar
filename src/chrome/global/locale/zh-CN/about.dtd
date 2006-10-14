@@ -1,7 +1,0 @@
-<!ENTITY dialog.title "关于 &tabsidebar.brand;">
-<!ENTITY dialog.version "版本:">
-<!ENTITY dialog.author "作者:">
-<!ENTITY dialog.description "&tabsidebar.brand;为您提供所有标签页的快速预览图。">
-<!ENTITY dialog.homepage "访问主页">
-<!ENTITY dialog.contributors "贡献者:">
-<!ENTITY dialog.accept "关闭">
