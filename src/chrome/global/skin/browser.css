@@ -28,3 +28,15 @@ tabbrowser menupopup[anonid="tabContextMenu"] {
 #sidebar-box[sidebarcommand="viewTabSidebar"] #sidebar {
   background-color: -moz-dialog !important;
 }
+
+#tabsidebar-left-container,
+#tabsidebar-right-container {
+	min-width: 150px;
+	max-width: 300px;
+}
+
+#tabsidebar-top-container,
+#tabsidebar-bottom-container {
+	min-height: 110px;
+	max-height: 300px
+}

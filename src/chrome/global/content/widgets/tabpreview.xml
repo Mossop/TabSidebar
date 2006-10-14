@@ -67,77 +67,79 @@
     </resources>
     
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
-    	<xul:stack>
-    		<xul:hbox flex="1">
-		      <xul:hbox class="tbs-top-left"/>
-	      	<xul:hbox flex="1" class="tbs-top-middle"/>
-		      <xul:hbox class="tbs-top-right"/>
-    		</xul:hbox>
-	      <xul:hbox class="tbs-topbox" align="center">
-	        <xul:hbox flex="1" align="center">
-	          <xul:image class="tbs-favicon" validate="never" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
-	          <xul:image class="tbs-loading" tooltip="tabpreview_tooltip"/>
-	          <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" crop="end"/>
-	        </xul:hbox>
-	        <xul:toolbarbutton class="tbs-close tbs-icon" tooltiptext="&closeTab.label;"
-	                           onmousedown="event.stopPropagation();"
-	                           oncommand="this.parentNode.parentNode.parentNode.close();"/>
-	      </xul:hbox>
-	    </xul:stack>
-      <xul:stack flex="1" class="tbs-stack">
-      	<xul:vbox>
-      		<xul:hbox flex="1">
-		     	 	<xul:hbox class="tbs-middle-left"/>
-		     	 	<xul:hbox flex="1" class="tbs-middle-middle"/>
-		      	<xul:hbox class="tbs-middle-right"/>
+    	<xul:stack flex="1">
+    		<xul:vbox>
+	    		<xul:hbox flex="1000" align="stretch" style="max-height: 75px">
+			      <xul:box class="tbs-top-left"/>
+		      	<xul:box flex="1" class="tbs-top-middle"/>
+			      <xul:box class="tbs-top-right"/>
+	    		</xul:hbox>
+      		<xul:hbox flex="1" align="stretch">
+		     	 	<xul:box class="tbs-middle-left"/>
+		     	 	<xul:box flex="1" class="tbs-middle-middle"/>
+		      	<xul:box class="tbs-middle-right"/>
       		</xul:hbox>
-		     	<xul:hbox align="stretch">
-		     	 	<xul:hbox class="tbs-bottom-left"/>
-		     	 	<xul:hbox flex="1" class="tbs-bottom-middle"/>
-		      	<xul:hbox class="tbs-bottom-right"/>
+		     	<xul:hbox flex="1000" align="stretch" style="max-height: 75px">
+		     	 	<xul:box class="tbs-bottom-left"/>
+		     	 	<xul:box flex="1" class="tbs-bottom-middle"/>
+		      	<xul:box class="tbs-bottom-right"/>
 		      </xul:hbox>
-      	</xul:vbox>
-        <xul:vbox pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container">
-          <xul:box>
-            <xhtml:canvas class="tbs-canvas" tooltip="tabpreview_tooltip"/>
-          </xul:box>
-        </xul:vbox>
-        <xul:vbox class="tbs-toolbar" style="overflow: hidden">
-          <xul:hbox pack="end" class="tbs-topstrip">
-            <xul:toolbarbutton class="tbs-security tbs-icon"
-                               onmousedown="event.stopPropagation();"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
-          </xul:hbox>
-          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
-          <xul:hbox pack="start" class="tbs-bottomstrip">
-            <xul:toolbarbutton class="tbs-stop tbs-icon" disabled="true" tooltiptext="&stopButton.tooltip;"
-                               onmousedown="event.stopPropagation();"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.stop();"/>
-            <xul:spacer flex="1"/>
-            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
-                               onmousedown="event.stopPropagation();"
-                               onclick="this.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.goBack(event);">
-              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.populateBackMenu(event);"
-                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
-                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
-            </xul:toolbarbutton>
-            <xul:spacer flex="1"/>
-            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
-                               onmousedown="event.stopPropagation();"
-                               onclick="this.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.goForward(event);">
-              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.populateForwardMenu(event);"
-                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
-                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
-            </xul:toolbarbutton>
-            <xul:spacer flex="1"/>
-            <xul:toolbarbutton class="tbs-reload tbs-icon" tooltiptext="&reloadButton.tooltip;"
-                               onmousedown="event.stopPropagation();"
-                               oncommand="this.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
-          </xul:hbox>
-        </xul:vbox>
-      </xul:stack>
+	    	</xul:vbox>
+	    	<xul:vbox flex="1">
+		      <xul:hbox class="tbs-topbox" align="center">
+		        <xul:hbox flex="1" align="center">
+		          <xul:image class="tbs-favicon" validate="never" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
+		          <xul:image class="tbs-loading" tooltip="tabpreview_tooltip"/>
+		          <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" crop="end"/>
+		        </xul:hbox>
+		        <xul:toolbarbutton class="tbs-close tbs-icon" tooltiptext="&closeTab.label;"
+		                           onmousedown="event.stopPropagation();"
+		                           oncommand="this.parentNode.parentNode.parentNode.parentNode.close();"/>
+		      </xul:hbox>
+		      <xul:stack flex="1" class="tbs-stack">
+		        <xul:vbox pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container">
+		          <xul:box>
+		            <xhtml:canvas class="tbs-canvas" tooltip="tabpreview_tooltip"/>
+		          </xul:box>
+		        </xul:vbox>
+		        <xul:vbox class="tbs-toolbar" style="overflow: hidden">
+		          <xul:hbox pack="end" class="tbs-topstrip">
+		            <xul:toolbarbutton class="tbs-security tbs-icon"
+		                               onmousedown="event.stopPropagation();"
+		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.viewSecurity();"/>
+		          </xul:hbox>
+		          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
+		          <xul:hbox pack="start" class="tbs-bottomstrip">
+		            <xul:toolbarbutton class="tbs-stop tbs-icon" disabled="true" tooltiptext="&stopButton.tooltip;"
+		                               onmousedown="event.stopPropagation();"
+		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.stop();"/>
+		            <xul:spacer flex="1"/>
+		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
+		                               onmousedown="event.stopPropagation();"
+		                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
+		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.goBack(event);">
+		              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.populateBackMenu(event);"
+		                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
+		                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
+		            </xul:toolbarbutton>
+		            <xul:spacer flex="1"/>
+		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
+		                               onmousedown="event.stopPropagation();"
+		                               onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);"
+		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.goForward(event);">
+		              <xul:menupopup onpopupshowing="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.populateForwardMenu(event);"
+		                             oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.gotoHistoryIndex(event); event.stopPropagation()"
+		                             onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.checkMiddleClick(this,event);" tooltiptext=""/>
+		            </xul:toolbarbutton>
+		            <xul:spacer flex="1"/>
+		            <xul:toolbarbutton class="tbs-reload tbs-icon" tooltiptext="&reloadButton.tooltip;"
+		                               onmousedown="event.stopPropagation();"
+		                               oncommand="this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.reload(event);"/>
+		          </xul:hbox>
+		        </xul:vbox>
+		      </xul:stack>
+		    </xul:vbox>
+	    </xul:stack>
     </content>
 
     <implementation implements="nsIWebProgressListener,nsISHistoryListener,nsITimerCallback">
@@ -202,10 +204,10 @@
       
       <!-- Quick access to anonymous nodes -->
       
-      <field name="_anonymousNodes">this.ownerDocument.getAnonymousNodes(this);</field>
+      <field name="_anonymousNodes">this.ownerDocument.getAnonymousNodes(this)[0].childNodes[1].childNodes;</field>
       
       <field name="_topbox">
-        this._anonymousNodes[0].childNodes[1].childNodes[0];
+        this._anonymousNodes[0].firstChild;
       </field>
       
       <field name="titleField">
@@ -241,7 +243,7 @@
       </field>
       
       <field name="canvas">
-        this._stack.childNodes[1].firstChild.firstChild;
+        this._stack.firstChild.firstChild.firstChild;
       </field>
       
 #include "previewevents.inc.xml"

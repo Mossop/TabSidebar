@@ -72,7 +72,6 @@
 }
 
 .tbs-bottom-middle {
-	height: 24px;
 	background-image: url('chrome://tabsidebar/skin/background/bottom-middle-bkgnd.png');
 	background-repeat: repeat-x;
 	background-position: bottom left;
@@ -258,13 +257,16 @@
 	padding: 4px 4px 2px 4px;
 }
 
+.tbs-stack {
+	margin: 0 4px 5px 4px;
+}
+
 .tbs-toolbar {
-	padding: 2px 6px 7px 6px;
+	padding: 2px;
 }
 
 /* Canvas style */
 .tbs-container {
-	margin: 0 4px 5px 4px;
   border: 1px solid ThreeDShadow;
 }
 
