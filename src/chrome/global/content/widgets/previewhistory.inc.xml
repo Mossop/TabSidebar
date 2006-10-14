@@ -83,6 +83,7 @@
                 menuitem.setAttribute("label", entry.title);
                 menuitem.setAttribute("tooltiptext", entry.title);
                 menuitem.setAttribute("index", pos);
+                menuitem.setAttribute("class", "menuitem-iconic");
                 menu.appendChild(menuitem);
               }
             }
@@ -151,6 +152,7 @@
                 menuitem.setAttribute("label", entry.title);
                 menuitem.setAttribute("tooltiptext", entry.title);
                 menuitem.setAttribute("index", pos);
+                menuitem.setAttribute("class", "menuitem-iconic");
                 menu.appendChild(menuitem);
               }
             }

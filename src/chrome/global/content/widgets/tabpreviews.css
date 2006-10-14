@@ -1,12 +1,3 @@
-.tbs-tabpreviews-vertical,
-.tbs-tabpreviews-horizontal {
-	-moz-appearance: toolbox;
-}
-
-.tbs-scrollbox {
-  -moz-appearance: toolbar;
-}
-
 .tbs-scrollbox[orient="vertical"] {
   overflow-y: hidden;
 }
@@ -17,15 +8,6 @@
 
 .tbs-tabpreview {
   -moz-box-align: center;
-  -moz-appearance: toolbarbutton;
-}
-
-.tbs-tabpreview:focus > .tbs-tabmain {
-  border: 1px dotted black;
-}
-
-.tbs-tabpreview > .tbs-tabmain {
-  border: 1px solid transparent;
 }
 
 .tbs-tabpreview[security="none"] .tbs-security {
@@ -60,12 +42,5 @@
 }
 
 .tbs-tabpreview[loading="true"] .tbs-favicon {
-  display: none;
-}
-
-.tbs-tabpreviews-vertical[hide~="uri"] .tbs-bottombox,
-.tbs-tabpreviews-vertical[hide~="uri"] .tbs-tooltip-uri,
-.tbs-tabpreviews-horizontal[hide~="uri"] .tbs-bottombox,
-.tbs-tabpreviews-horizontal[hide~="uri"] .tbs-tooltip-uri {
   display: none;
 }

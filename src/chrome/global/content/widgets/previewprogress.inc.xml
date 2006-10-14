@@ -132,10 +132,6 @@
           this._logMessage("onLocationChange");
           var uri = this.uri;
 
-          var el = this.uriField;
-          if (el)
-            el.value=this.uri;
-
           var reload = this.reloadButton;
           reload.disabled=(uri=="about:blank" || uri=="");
 

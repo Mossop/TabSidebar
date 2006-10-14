@@ -18,7 +18,6 @@ pref("extensions.tabsidebar.loadrefresh", true);
 pref("extensions.tabsidebar.validaterate", 100);
 
 pref("extensions.tabsidebar.content.navigation", true);
-pref("extensions.tabsidebar.content.uri", false);
 pref("extensions.tabsidebar.content.previews", true);
 pref("extensions.tabsidebar.updatepreviews", true);
 

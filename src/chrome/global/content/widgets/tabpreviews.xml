@@ -176,7 +176,6 @@
           }
 
           this._showNavigation = this.preferences.getBoolPref("content.navigation");
-          this._showURI = this.preferences.getBoolPref("content.uri");
           this._showPreviews = this.preferences.getBoolPref("content.previews");
           this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
 
@@ -438,9 +437,6 @@
       <field name="_updatePreviews">false</field>
       <property name="updatePreviews" onget="return (this._updatePreviews &amp;&amp; this._showPreviews);"/>
       
-      <field name="_showURI">false</field>
-      <property name="showURI" onget="return this._showURI;"/>
-      
       <field name="_showNavigation">false</field>
       <property name="showNavigation" onget="return this._showNavigation;"/>
       
@@ -654,8 +650,6 @@
           var hide = "";
           if (!this.showNavigation)
             hide+=" navigation";
-          if (!this.showURI)
-            hide+=" uri";
           if (!this.showPreviews)
             hide+=" preview";
           
@@ -1187,10 +1181,6 @@
           {
             case "content.navigation":
               this._showNavigation = this.preferences.getBoolPref(data);
-              this.updateContent();
-              break;
-            case "content.uri":
-              this._showURI = this.preferences.getBoolPref(data);
               this.updateContent();
               break;
             case "content.previews":

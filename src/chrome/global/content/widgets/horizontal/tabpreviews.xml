@@ -151,7 +151,7 @@
           canvas.style.maxWidth=this.displayWidth+"px";
           
           var container = canvas.parentNode.parentNode;
-          var mainbox = preview._topbox.parentNode.parentNode;
+          var mainbox = preview;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
           while (container != mainbox)
