@@ -1,5 +1,5 @@
 <!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; Options">
-<!ENTITY tabsidebar.options.style                 "width: 30em; height: 30em;">
+<!ENTITY tabsidebar.options.style                 "width: 30em; height: 32em;">
 <!ENTITY tabsidebar.options.version               "Version: ">
 
 <!ENTITY paneGeneral.hidetabs.label               "Hide the tab bar when the sidebar is open.">
