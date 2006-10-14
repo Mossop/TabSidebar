@@ -88,7 +88,8 @@
     </vbox>
     <vbox id="tabsidebar-right-container" persist="hidden width" hidden="true" insertafter="appcontent" width="200px"/>
     <splitter id="tabsidebar-right-splitter" persist="hidden" hidden="true" insertafter="appcontent"/>
-    <script src="chrome://tabsidebar/content/browser.js"/>
   </hbox>
+  
+  <script src="chrome://tabsidebar/content/browser.js"/>
   
 </overlay>

@@ -1,9 +1,13 @@
-.tbs-tabpreview:focus .tbs-title {
-	border: 1px solid -moz-mac-focusring !important;
+.tbs-tabpreviews-vertical .tbs-scrollbox {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bkgnd-vertical.png') !important;
 }
 
-tabpreviews .tbs-scrollbox {
-  background: url("chrome://tabsidebar-platform/skin/tabsbackground.gif");
+.tbs-tabpreviews-horizontal .tbs-scrollbox {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bkgnd-horizontal.png') !important;
+}
+
+.tbs-tabpreview:focus .tbs-title {
+	border: 1px solid -moz-mac-focusring !important;
 }
 
 .tbs-tabpreview .tbs-loading {
