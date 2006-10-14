@@ -674,6 +674,22 @@
     </implementation>
 
     <handlers>
+    	<handler event="mouseover">
+    		var ev = this.previews.tabbrowser.ownerDocument.createEvent("MouseEvent");
+    		ev.initMouseEvent("mouseover", true, true, this.previews.window,
+    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
+    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
+    		this.tab.dispatchEvent(ev);
+    	</handler>
+    	
+    	<handler event="mouseout">
+    		var ev = this.previews.tabbrowser.ownerDocument.createEvent("MouseEvent");
+    		ev.initMouseEvent("mouseout", true, true, this.previews.window,
+    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
+    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
+    		this.tab.dispatchEvent(ev);
+    	</handler>
+    	
       <handler event="mousedown">
       <![CDATA[
         if (!this.previews)
