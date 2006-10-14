@@ -1,3 +1,7 @@
+.tbs-tabpreview:focus .tbs-title {
+	border: 1px solid -moz-mac-focusring !important;
+}
+
 tabpreviews .tbs-scrollbox {
   background: url("chrome://tabsidebar-platform/skin/tabsbackground.gif");
 }
@@ -25,18 +29,110 @@ tabpreviews .tbs-tabpreview[selected="true"] .tbs-favicon {
   list-style-image: url("chrome://tabsidebar-platform/skin/Icons.png");
 }
 
-tabpreviews .tbs-tabpreview {
-  border: 1px solid transparent;
-  background-color: transparent;
+.tbs-top-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-middle-bkgnd.png');
 }
 
-tabpreviews .tbs-tabpreview[selected="true"] {
-  border-color: #9c9c9c;
-  -moz-border-radius: 15px;
-  background: #f3f3f3 !important;
+.tbs-tabpreview[selected="true"] .tbs-top-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-middle.png') !important;
 }
 
-tabpreviews .tbs-tabpreview:not([selected="true"]):hover {
-  border: 1px solid transparent;
-  background: url("chrome://tabsidebar-platform/skin/tabbackground.gif");
+.tbs-tabpreview:hover .tbs-top-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-middle-hover.png');
+}
+
+.tbs-top-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-left-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-top-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-left.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-top-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-left-hover.png');
+}
+
+.tbs-top-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-right-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-top-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-right.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-top-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/top-right-hover.png');
+}
+
+.tbs-bottom-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-middle-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-bottom-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-middle.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-bottom-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-middle-hover.png');
+}
+
+.tbs-bottom-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-left-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-bottom-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-left.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-bottom-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-left-hover.png');
+}
+
+.tbs-bottom-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-right-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-bottom-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-right.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-bottom-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-right-hover.png');
+}
+
+.tbs-middle-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-middle-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-middle-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-middle.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-middle-middle {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-middle-hover.png');
+}
+
+.tbs-middle-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-left-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-middle-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-left.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-middle-left {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-left-hover.png');
+}
+
+.tbs-middle-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-right-bkgnd.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-middle-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-right.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-middle-right {
+	background-image: url('chrome://tabsidebar-platform/skin/background/middle-right-hover.png');
 }

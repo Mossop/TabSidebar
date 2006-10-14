@@ -245,10 +245,6 @@
 }
 
 /* Tab settings */
-.tbs-tabpreview {
-  background-color: -moz-dialog;
-}
-
 .tbs-tabpreview[selected="true"] .tbs-title {
   font-weight: bold;
 }
@@ -329,6 +325,7 @@
 .tbs-icon .toolbarbutton-icon,
 .tbs-icon .toolbarbutton-text {
   margin: 0px;
+  padding: 0px;
 }
   
 .tbs-loading {
@@ -385,10 +382,6 @@
   list-style-image: inherit;
 }
 
-.tbs-back menuitem {
-  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
-}
-
 .tbs-back .toolbarbutton-menubutton-button {
   -moz-image-region: rect(0px, 96px, 16px, 80px);
 }
@@ -424,10 +417,6 @@
 /* Forward button */
 .tbs-forward {
   list-style-image: inherit;
-}
-
-.tbs-forward menuitem {
-  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
 }
 
 .tbs-forward .toolbarbutton-menubutton-button {
