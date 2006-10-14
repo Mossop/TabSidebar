@@ -1,9 +1,15 @@
 /* Generic layout */
 .tbs-tabpreviews-vertical .tbs-scrollbox {
+	background-image: url('chrome://tabsidebar/skin/background/bkgnd-vertical.png');
+	background-repeat: repeat-y;
+	background-position: left;
   padding: 0px 2px 0px 2px;
 }
 
 .tbs-tabpreviews-horizontal .tbs-scrollbox {
+	background-image: url('chrome://tabsidebar/skin/background/bkgnd-horizontal.png');
+	background-repeat: repeat-x;
+	background-position: top;
   padding: 2px 0px 2px 0px;
 }
 
