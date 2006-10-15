@@ -98,8 +98,8 @@
                        ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
                        ondragdrop="nsDragAndDrop.drop(event, this.parentNode.parentNode); event.stopPropagation();"
                        ondragexit="nsDragAndDrop.dragExit(event, this.parentNode.parentNode); event.stopPropagation();"
-                       onclick="if (event.button == 2) this.parentNode.parentNode.onClick(event);"
-                       ondblclick="if (event.button == 0) this.parentNode.parentNode.onDblClick(event);"
+                       onclick="this.parentNode.parentNode.onClick(event);"
+                       ondblclick="this.parentNode.parentNode.onDblClick(event);"
                        align="stretch" flex="1" orient="vertical">
           
           <children/>

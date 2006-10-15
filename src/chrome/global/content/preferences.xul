@@ -70,6 +70,8 @@
       name="extensions.tabsidebar.content.previews"/>
       <preference type="bool" id="updatepreviews"
       name="extensions.tabsidebar.updatepreviews"/>
+      <preference type="bool" id="scrollselects"
+      name="extensions.tabsidebar.scrollselects"/>
       <preference type="int" id="position" 
       name="extensions.tabsidebar.position"/>
     </preferences>
@@ -112,6 +114,11 @@
 		                                          label="&paneDisplay.updatepreviews.label;"/>
 			</subpane>
 			
+	    <separator class="thin"/>
+	    
+	    <checkbox preference="scrollselects" accesskey="&paneDisplay.scrollselects.accesskey;" 
+	                                         label="&paneDisplay.scrollselects.label;"/>      
+	  
 			<groupbox>
 				<caption label="&paneDisplay.position.caption;"/>
 		    <radiogroup preference="position" align="center">

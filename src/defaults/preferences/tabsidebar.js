@@ -20,6 +20,7 @@ pref("extensions.tabsidebar.validaterate", 100);
 pref("extensions.tabsidebar.content.navigation", true);
 pref("extensions.tabsidebar.content.previews", true);
 pref("extensions.tabsidebar.updatepreviews", true);
+pref("extensions.tabsidebar.scrollselects", false);
 
 pref("extensions.tabsidebar.showoptions", false);
 pref("extensions.tabsidebar.showhelp", false);

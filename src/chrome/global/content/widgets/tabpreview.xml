@@ -93,8 +93,7 @@
 		          <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" crop="end"/>
 		        </xul:hbox>
 		        <xul:toolbarbutton class="tbs-close tbs-icon" tooltiptext="&closeTab.label;"
-		                           onmousedown="event.stopPropagation();"
-		                           oncommand="this.preview.close();"/>
+		                           oncommand="this.preview.close()"/>
 		      </xul:hbox>
 		      <xul:stack flex="1" class="tbs-stack">
 		        <xul:vbox pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container">
@@ -105,36 +104,31 @@
 		        <xul:vbox class="tbs-toolbar" style="overflow: hidden">
 		          <xul:hbox pack="end" class="tbs-topstrip">
 		            <xul:toolbarbutton class="tbs-security tbs-icon"
-		                               onmousedown="event.stopPropagation();"
-		                               oncommand="this.preview.viewSecurity();"/>
+		                               oncommand="this.preview.viewSecurity()"/>
 		          </xul:hbox>
 		          <xul:box tooltip="tabpreview_tooltip" flex="1"/>
 		          <xul:hbox pack="start" class="tbs-bottomstrip">
 		            <xul:toolbarbutton class="tbs-stop tbs-icon" disabled="true" tooltiptext="&stopButton.tooltip;"
-		                               onmousedown="event.stopPropagation();"
-		                               oncommand="this.preview.stop();"/>
+		                               oncommand="this.preview.stop()"/>
 		            <xul:spacer flex="1"/>
 		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
-		                               onmousedown="event.stopPropagation();"
 		                               onclick="this.preview.checkMiddleClick(this,event);"
-		                               oncommand="this.preview.goBack(event);">
+		                               oncommand="this.preview.goBack(event)">
 		              <xul:menupopup onpopupshowing="this.parentNode.preview.populateBackMenu(event);"
 		                             oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
 		                             onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
 		            </xul:toolbarbutton>
 		            <xul:spacer flex="1"/>
 		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
-		                               onmousedown="event.stopPropagation();"
 		                               onclick="this.preview.checkMiddleClick(this,event);"
-		                               oncommand="this.preview.goForward(event);">
+		                               oncommand="this.preview.goForward(event)">
 		              <xul:menupopup onpopupshowing="this.parentNode.preview.populateForwardMenu(event);"
 		                             oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
 		                             onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
 		            </xul:toolbarbutton>
 		            <xul:spacer flex="1"/>
 		            <xul:toolbarbutton class="tbs-reload tbs-icon" tooltiptext="&reloadButton.tooltip;"
-		                               onmousedown="event.stopPropagation();"
-		                               oncommand="this.preview.reload(event);"/>
+		                               oncommand="this.preview.reload(event)"/>
 		          </xul:hbox>
 		        </xul:vbox>
 		      </xul:stack>
@@ -573,24 +567,7 @@
 
       <method name="close">
         <body>
-          var tabbrowser = this.previews.tabbrowser;
-          if (this.previews.previews.length == 1)
-          {
-            if (this.uri != "about:blank")
-              tabbrowser.loadURI("about:blank");
-
-            if (this._browser.docShell)
-              this._browser.sessionHistory.PurgeHistory(this._browser.sessionHistory.count);
-          }
-          else
-          {
-            if (!this.hasAttribute("browser"))
-             this.setAttribute("browser", this._browser.parentNode.id);
-
-            var tab = this.tab;
-            this._destroy();
-            tabbrowser.removeTab(tab);
-          }
+          this.previews.tabbrowser.removeTab(this.tab);
         </body>
       </method>
 
@@ -692,46 +669,50 @@
         </body>
       </method>
       
+      <method name="dispatchCloneMouseEvent">
+      	<parameter name="event"/>
+      	<body>
+      		var target = this.tab;
+	    		var ev = this.previews.tabbrowser.ownerDocument.createEvent("MouseEvent");
+	    		ev.initMouseEvent(event.type, true, true, this.previews.window,
+	    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
+	    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
+	    		target.dispatchEvent(ev);
+      	</body>
+      </method>
+      
+      <method name="isToolbarButtonEvent">
+      	<parameter name="event"/>
+      	<body>
+      	<![CDATA[
+      		var node = event.originalTarget;
+      		while (node && (node.localName != "tabpreview") && (node.localName != "toolbarbutton"))
+      			node = node.parentNode;
+      		
+      		return node && node.localName == "toolbarbutton";
+      	]]>
+      	</body>
+      </method>
+      
     </implementation>
 
     <handlers>
     	<handler event="mouseover">
-    		var ev = this.previews.tabbrowser.ownerDocument.createEvent("MouseEvent");
-    		ev.initMouseEvent("mouseover", true, true, this.previews.window,
-    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
-    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
-    		this.tab.dispatchEvent(ev);
+    		this.dispatchCloneMouseEvent(event);
     	</handler>
     	
     	<handler event="mouseout">
-    		var ev = this.previews.tabbrowser.ownerDocument.createEvent("MouseEvent");
-    		ev.initMouseEvent("mouseout", true, true, this.previews.window,
-    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
-    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
-    		this.tab.dispatchEvent(ev);
+    		this.dispatchCloneMouseEvent(event);
     	</handler>
     	
       <handler event="mousedown">
       <![CDATA[
-        if (!this.previews)
-          return;
-          
-        if (!this._browser)
-          return;
-
-        if (!this.previews)
-          return;
-          
-        var tabbrowser = this.previews.tabbrowser;
-        if (event.button==1)
+      	if (this.isToolbarButtonEvent(event))
+      		return;
+      		
+        if (event.button==0)
         {
-          tabbrowser.removeTab(this.tab);
-        }
-        else if (event.button==2)
-        {
-        }
-        else
-        {
+	        var tabbrowser = this.previews.tabbrowser;
           if (tabbrowser.selectedTab != this.tab)
           {
             var focus = false;
@@ -745,11 +726,32 @@
               this.focus();
           }
           else
-          {
             this.focus();
-          }
         }
+        else
+        	this.dispatchCloneMouseEvent(event);
       ]]>
+      </handler>
+    	
+      <handler event="mouseup">
+      	if (this.isToolbarButtonEvent(event))
+      		return;
+      		
+	   		this.dispatchCloneMouseEvent(event);
+      </handler>
+    	
+      <handler event="click">
+      	if (this.isToolbarButtonEvent(event))
+      		return;
+      		
+    		this.dispatchCloneMouseEvent(event);
+      </handler>
+    	
+      <handler event="dblclick">
+      	if (this.isToolbarButtonEvent(event))
+      		return;
+      		
+    		this.dispatchCloneMouseEvent(event);
       </handler>
     </handlers>
       
