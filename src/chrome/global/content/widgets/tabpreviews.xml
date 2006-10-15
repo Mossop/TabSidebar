@@ -237,16 +237,17 @@
                 this.removeChild(this.firstChild);
               }
       
-              this.tabbrowser.tabContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
-              this.tabbrowser.mPanelContainer.removeEventListener("select", this._eventListener, false);
-              this.tabbrowser.mPanelContainer.removeEventListener("DOMNodeInserted", this._eventListener, false);
-              this.tabbrowser.tabContainer.removeEventListener("DOMNodeRemoved", this._eventListener, false);
+		          this.tabbrowser.tabContainer.removeEventListener("TabOpen", this._eventListener, false);
+		          this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
+		          this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
+		          this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
       
               this.preferences.removeObserver("", this);
-              this.preferences=null;
               
-              this.tabbrowser=null;
-              this.window=null;
+              this.preferences = null;
+              this._eventListener = null;
+              this.tabbrowser = null;
+              this.window = null;
     
               //dump("Tabpreviews destroyed\n");
             }

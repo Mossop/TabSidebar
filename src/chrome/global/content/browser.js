@@ -55,6 +55,9 @@ lastState: false,
 // Constructor and destructor
 init: function()
 {
+  window.addEventListener("load", TabSidebarHandler.load, false);
+  window.addEventListener("unload", TabSidebarHandler.unload, false);
+
 	this.doc = document;
 	
 	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -64,22 +67,28 @@ init: function()
 	var sidebarBox = this.doc.getElementById("sidebar-box");
 	var sidebar = this.doc.getElementById("sidebar");
 
-	var self=this;
-	sidebarBox.addEventListener("DOMAttrModified", function(event) { self.attributeListener(event); }, false);
-	sidebar.addEventListener("load", function(event) { self.sidebarLoad(event); }, true);
+	sidebarBox.addEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
+	sidebar.addEventListener("load", TabSidebarHandler.sidebarLoad, true);
 	
 	this.position=this.prefs.getIntPref("position");
 
   this.prefs.addObserver("",this,false);
   
-  window.addEventListener("load", function(event) { self.load(event); }, false);
-  window.addEventListener("unload", TabSidebarHandler.unload, false);
 },
 
 unload: function()
 {
   window.removeEventListener("unload", TabSidebarHandler.unload, false);
   TabSidebarHandler.prefs.removeObserver("",TabSidebarHandler);
+	if (TabSidebarHandler.isOpen())
+	{
+		var container = TabSidebarHandler.getContainer();
+		TabSidebarHandler.sidebarDestroy();
+		container.firstChild._destroy();
+		container.removeChild(container.firstChild);
+	}
+	TabSidebarHandler.doc = null;
+	TabSidebarHandler.prefs = null;
 },
 
 getContainer: function()
@@ -161,7 +170,7 @@ toggleSidebar: function()
 
 sidebarLoad: function(event)
 {
-	var sidebar = this.doc.getElementById("sidebar");
+	var sidebar = TabSidebarHandler.doc.getElementById("sidebar");
 	if (sidebar.contentDocument == event.target)
 	{
 		if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
@@ -224,16 +233,17 @@ hideTabbar: function()
 // Event observers
 load: function(event)
 {
-	if ((this.position!=0)&&(this.isOpen()))
+  window.removeEventListener("load", TabSidebarHandler.load, false);
+	if ((TabSidebarHandler.position!=0)&&(TabSidebarHandler.isOpen()))
 	{
 		var command = document.getElementById("viewTabSidebar");
-		var container = this.getContainer();
-		this.createPreviews(container);
-		this.sidebarInitialise();
+		var container = TabSidebarHandler.getContainer();
+		TabSidebarHandler.createPreviews(container);
+		TabSidebarHandler.sidebarInitialise();
 		command.setAttribute("checked","true");
 	}
-	this.oldToggleAffectedChrome = window.toggleAffectedChrome;
-	window.toggleAffectedChrome = this.toggleAffectedChrome;
+	TabSidebarHandler.oldToggleAffectedChrome = window.toggleAffectedChrome;
+	window.toggleAffectedChrome = TabSidebarHandler.toggleAffectedChrome;
 },
 
 observe: function (subject, topic, data)
@@ -291,12 +301,12 @@ attributeListener: function(event)
 			if (event.newValue == "viewTabSidebar")
 			{
 				//dump("sidebar open\n");
-				this.sidebarInitialise();
+				TabSidebarHandler.sidebarInitialise();
 			}
 			else if (event.prevValue == "viewTabSidebar")
 			{
 				//dump("sidebar close\n");
-				this.sidebarDestroy();
+				TabSidebarHandler.sidebarDestroy();
 			}
 		}
 		//dump(event.attrName+" "+event.prevValue+" -> "+event.newValue+"\n");
