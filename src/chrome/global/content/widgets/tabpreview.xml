@@ -200,7 +200,7 @@
               this._progressListener.tabpreview = null;
               this._progressListener = null;
               
-              dump("Tabpreview destroyed\n");
+              //dump("Tabpreview destroyed\n");
             }
             catch (e)
             {
@@ -273,7 +273,7 @@
           {
             Components.classes['@mozilla.org/consoleservice;1']
                       .getService(Components.interfaces.nsIConsoleService)
-                      .logStringMessage("Tab Sidebar: "+message);
+                      .logStringMessage("Tab Preview: "+message);
           }
         ]]>
         </body>
@@ -287,7 +287,7 @@
           {
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
-            msg.init("Tab Sidebar: "+message,
+            msg.init("Tab Preview: "+message,
                      "chrome://tabsidebar/content/widgets/tabpreview.xml",
                      "",
                      0,
@@ -311,7 +311,7 @@
           {
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
-            msg.init("Tab Sidebar: "+message,
+            msg.init("Tab Preview: "+message,
                      "chrome://tabsidebar/content/widgets/tabpreview.xml",
                      "",
                      0,

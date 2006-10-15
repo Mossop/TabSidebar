@@ -129,8 +129,8 @@
         <parameter name="request"/>
         <parameter name="location"/>
         <body>
-          this._logMessage("onLocationChange");
           var uri = this.uri;
+          this._logMessage("onLocationChange -> "+uri);
 
           var reload = this.reloadButton;
           reload.disabled=(uri=="about:blank" || uri=="");
@@ -220,11 +220,12 @@
 
       <method name="onTitleChange">
         <body>
-          this._logMessage("onTitleChange");
+        	var title = this.title;
+          this._logMessage("onTitleChange -> "+title);
           var el = this.titleField;
       
           if (el)
-            el.value=this.title;
+            el.value=title;
             
           if (!this.loading)
             this._checkDocuments("title");

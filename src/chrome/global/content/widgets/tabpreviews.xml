@@ -244,7 +244,7 @@
               this.tabbrowser = null;
               this.window = null;
     
-              dump("Tabpreviews destroyed\n");
+              //dump("Tabpreviews destroyed\n");
             }
             catch (e)
             {
@@ -261,6 +261,7 @@
         
         handleEvent: function(event)
         {
+        	this.tabpreviews._logMessage("Event - "+event.type);
           if (event.type=="TabOpen")
           {
             var browser = event.target.linkedBrowser;
@@ -356,7 +357,7 @@
           {
             Components.classes['@mozilla.org/consoleservice;1']
                       .getService(Components.interfaces.nsIConsoleService)
-                      .logStringMessage("Tab Sidebar: "+message);
+                      .logStringMessage("Tab Previews: "+message);
           }
         </body>
       </method>
@@ -368,7 +369,7 @@
           {
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
-            msg.init("Tab Sidebar: "+message,
+            msg.init("Tab Previews: "+message,
                      "chrome://tabsidebar/content/widgets/tabpreviews.xml",
                      "",
                      0,
@@ -390,7 +391,7 @@
           {
             var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
             
-            msg.init("Tab Sidebar: "+message,
+            msg.init("Tab Previews: "+message,
                      "chrome://tabsidebar/content/widgets/tabpreviews.xml",
                      "",
                      0,
@@ -593,6 +594,10 @@
             drop.parentNode.removeChild(drop);
             this._checkScrollPosition();
             this._updateScrollButtons();
+          }
+          else
+          {
+          	this._logWarning("Attempt to remove an unknown preview");
           }
         </body>
       </method>

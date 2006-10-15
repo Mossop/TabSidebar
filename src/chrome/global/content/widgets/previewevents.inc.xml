@@ -138,7 +138,10 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos>=0)
           {
-            this._logMessage("Removing document "+doc.location.href);
+          	if (doc.location)
+	            this._logMessage("Removing document "+doc.location.href);
+	          else
+	          	this._logWarning("Removing expired document");
             
             doc.removeEventListener("DOMNodeInserted",             this._eventListener, true);
             doc.removeEventListener("DOMNodeRemoved",              this._eventListener, true);
@@ -397,6 +400,7 @@
             }
             else if ((event.type=="load")||(event.type=="pageshow"))
             {
+            	this.tabpreview._logMessage("Event - "+event.type);
               var doc = null;
               if (event.target)
               {
@@ -430,6 +434,7 @@
             }
             else if ((event.type=="unload")||(event.type=="pagehide"))
             {
+            	this.tabpreview._logMessage("Event - "+event.type);
               var doc = null;
               if (event.target)
               {
