@@ -300,16 +300,22 @@ attributeListener: function(event)
 		{
 			if (event.newValue == "viewTabSidebar")
 			{
+#ifdef ${extension.debug}
 				//dump("sidebar open\n");
+#endif
 				TabSidebarHandler.sidebarInitialise();
 			}
 			else if (event.prevValue == "viewTabSidebar")
 			{
+#ifdef ${extension.debug}
 				//dump("sidebar close\n");
+#endif
 				TabSidebarHandler.sidebarDestroy();
 			}
 		}
+#ifdef ${extension.debug}
 		//dump(event.attrName+" "+event.prevValue+" -> "+event.newValue+"\n");
+#endif
 	}
 }
 

@@ -45,8 +45,10 @@
       <method name="_loadStarted">
         <body>
         <![CDATA[
+#ifdef ${extension.debug}
           this._logMessage("loadStarted");
           
+#endif
           this.loading=true;
           this._invalid=true;
           this.stopButton.disabled=false;
@@ -70,8 +72,10 @@
       <method name="_loadComplete">
         <parameter name="status"/>
         <body>
+#ifdef ${extension.debug}
           this._logMessage("loadComplete");
           
+#endif
           this.loading=false;
           this.stopButton.disabled=true;
           this._updateTimer.cancel();
@@ -130,7 +134,9 @@
         <parameter name="location"/>
         <body>
           var uri = this.uri;
+#ifdef ${extension.debug}
           this._logMessage("onLocationChange -> "+uri);
+#endif
 
           var reload = this.reloadButton;
           reload.disabled=(uri=="about:blank" || uri=="");
@@ -149,7 +155,9 @@
         <parameter name="status"/>
         <body>
         <![CDATA[
+#ifdef ${extension.debug}
           //this._logMessage("onStateChange "+stateFlags+" "+status);
+#endif
           if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK)
           {
             if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
@@ -158,15 +166,19 @@
               {
                 this._loadComplete(status);
               }
+#ifdef ${extension.debug}
               else
                 this._logWarning("Received repeat load complete - "+stateFlags);
+#endif
             }
             else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
             {
               if (!this.loading)
                 this._loadStarted();
+#ifdef ${extension.debug}
               else
                 this._logWarning("Received repeat load start - "+stateFlags);
+#endif
             }
           }
         ]]>
@@ -179,7 +191,9 @@
         <parameter name="status"/>
         <parameter name="message"/>
         <body>
+#ifdef ${extension.debug}
           //this._logMessage("onStatusChange "+status);
+#endif
         </body>
       </method>
       
@@ -191,7 +205,9 @@
         <parameter name="curTotalProgress"/>
         <parameter name="maxTotalProgress"/>
         <body>
+#ifdef ${extension.debug}
           //this._logMessage("onProgressChange ");
+#endif
           this._invalid=true;
         </body>
       </method>
@@ -201,14 +217,18 @@
         <parameter name="request"/>
         <parameter name="state"/>
         <body>
+#ifdef ${extension.debug}
           //this._logMessage("onSecurityChange "+state);
+#endif
           this._setSecurity(state);
         </body>
       </method>
       
       <method name="onLinkIconAvailable">
         <body>
+#ifdef ${extension.debug}
           this._logMessage("onLinkIconAvailable");
+#endif
           var el = this.faviconIcon;
           if (el)
             el.src=this.icon;
@@ -221,7 +241,9 @@
       <method name="onTitleChange">
         <body>
         	var title = this.title;
+#ifdef ${extension.debug}
           this._logMessage("onTitleChange -> "+title);
+#endif
           var el = this.titleField;
       
           if (el)

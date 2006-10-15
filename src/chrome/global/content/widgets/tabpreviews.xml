@@ -74,8 +74,10 @@
         this._migrateOldSettings();
         this._initSettings();
 
+#ifdef ${extension.debug}
         this._logMessage("Tab Sidebar Startup");
         
+#endif
         this._initEvents();
         
         this.init();
@@ -90,8 +92,10 @@
       <method name="init">
         <body>
         <![CDATA[
+#ifdef ${extension.debug}
           this._logMessage("Tab Sidebar Load");
           
+#endif
           var selectedpos = -1;
           var browsers = this.tabbrowser.browsers;
           for (var i=0; i<browsers.length; i++)
@@ -158,6 +162,7 @@
 
       <method name="_initSettings">
         <body>
+#ifdef ${extension.debug}
           try
           {
             this._enableLogging = this.preferences.getBoolPref("enablelogging");
@@ -166,6 +171,7 @@
           {
           }
 
+#endif
           this._showNavigation = this.preferences.getBoolPref("content.navigation");
           this._showPreviews = this.preferences.getBoolPref("content.previews");
           this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
@@ -203,7 +209,9 @@
       </method>
       
       <destructor>
+#ifdef ${extension.debug}
         dump("Tabpreviews destructor\n");
+#endif
         this._destroy();
       </destructor>
       
@@ -244,11 +252,15 @@
               this.tabbrowser = null;
               this.window = null;
     
+#ifdef ${extension.debug}
               //dump("Tabpreviews destroyed\n");
+#endif
             }
             catch (e)
             {
+#ifdef ${extension.debug}
               dump(e+"\n");
+#endif
             }
           }
         </body>
@@ -261,7 +273,9 @@
         
         handleEvent: function(event)
         {
+#ifdef ${extension.debug}
         	this.tabpreviews._logMessage("Event - "+event.type);
+#endif
           if (event.type=="TabOpen")
           {
             var browser = event.target.linkedBrowser;
@@ -340,8 +354,10 @@
         <body>
         <![CDATA[
           var previews = this.previews;
+#ifdef ${extension.debug}
           if (previews.length>0)
             this._logMessage("Resizing to "+this.displayWidth+"x"+this.displayHeight);
+#endif
           for (var i=0; i<previews.length; i++)
             this._resizePreview(previews[i]);
           this._checkScrollPosition();
@@ -350,6 +366,7 @@
         </body>
       </method>
       
+#ifdef ${extension.debug}
       <method name="_logMessage">
         <parameter name="message"/>
         <body>
@@ -406,6 +423,7 @@
         </body>
       </method>
 
+#endif
       <!-- Helper properties -->
 
       <field name="preferences">
@@ -425,9 +443,11 @@
       <!-- Attribute based properties -->
       <!-- Configuration options -->
 
+#ifdef ${extension.debug}
       <field name="_enableLogging">false</field>
       <property name="enableLogging" onget="return this._enableLogging;"/>
       
+#endif
       <field name="_showPreviews">false</field>
       <property name="showPreviews" onget="return this._showPreviews;"/>
       
@@ -540,7 +560,9 @@
           var drop = null;
           if (preview)
           {
+#ifdef ${extension.debug}
             this._logMessage("Found preview: "+preview);
+#endif
             preview._destroy();
             var drop = preview.nextSibling;
           }
@@ -595,10 +617,12 @@
             this._checkScrollPosition();
             this._updateScrollButtons();
           }
+#ifdef ${extension.debug}
           else
           {
           	this._logWarning("Attempt to remove an unknown preview");
           }
+#endif
         </body>
       </method>
       
@@ -727,7 +751,9 @@
           }
           catch (e)
           {
+#ifdef ${extension.debug}
             dump(e);
+#endif
           }
         ]]>
         </body>
@@ -782,7 +808,9 @@
           }
           catch (e)
           {
+#ifdef ${extension.debug}
             dump(e+"\n");
+#endif
           }
         ]]>
         </body>
@@ -862,8 +890,10 @@
   
               if (aEvent.target.localName != "tabpreview")
               {
+#ifdef ${extension.debug}
                 this._logMessage("Adding new tab: "+bgLoad);
                 
+#endif
                 // We're adding a new tab.
                 var move = false;
                 var newIndex = this.previews.length;
@@ -900,7 +930,9 @@
           }
           catch (e)
           {
+#ifdef ${extension.debug}
             this._logError(e);
+#endif
           }
         ]]>
         </body>
@@ -918,7 +950,9 @@
           }
           catch (e)
           {
+#ifdef ${extension.debug}
             dump(e);
+#endif
           }
         ]]>
         </body>
@@ -940,13 +974,17 @@
         <body>
         <![CDATA[
           this._validateTimer.cancel();
+#ifdef ${extension.debug}
           this._logMessage("Updating size");
+#endif
           if (this._selected && ((this._browserWidth <= 0) || (this._browserHeight <= 0)))
           {
             this._selected._browserResized();
             this._browserWidth = this._selected._browserWidth;
             this._browserHeight = this._selected._browserHeight;
+#ifdef ${extension.debug}
             this._logMessage("Found a browser size of "+this._browserWidth+"x"+this._browserHeight);
+#endif
           }
           if (this._selected && (this._browserWidth > 0) && (this._browserHeight > 0) && this._calculateSize())
           {
@@ -973,7 +1011,9 @@
         <body>
           if (preview == this._selected)
           {
+#ifdef ${extension.debug}
             this._logMessage("Got told a new size of "+width+"x"+height);
+#endif
             if ((width != this._browserWidth) || (height != this._browserHeight))
             {
               this._browserWidth = width;
@@ -999,7 +1039,9 @@
             if (this._validatePos >= this._validateMax)
               return;
             
+#ifdef ${extension.debug}
             this._logMessage("Updating "+this._validatePos);
+#endif
             this.previews[this._validatePos].redraw();
             this._validatePos++;
             
@@ -1146,8 +1188,10 @@
               catch (e)
               {
                 canvas.style.display="none";
+#ifdef ${extension.debug}
                 dump(e+"\n");
                 dump(win+" "+width+"x"+height+"\n");
+#endif
               }
               ctx.restore();
             }
@@ -1218,9 +1262,11 @@
                 this._updatePreviews = this.preferences.getBoolPref(data);
               break;
               
+#ifdef ${extension.debug}
             case "enablelogging":
               this._enableLogging = this.preferences.getBoolPref(data);
               break;
+#endif
             case "validaterate":
               this._validateRate = this.preferences.getIntPref(data);
               break;

@@ -163,7 +163,9 @@
       </method>
       
       <destructor>
+#ifdef ${extension.debug}
         dump("Tabpreview destructor\n");
+#endif
         this._destroy();
       </destructor>
       
@@ -200,11 +202,15 @@
               this._progressListener.tabpreview = null;
               this._progressListener = null;
               
+#ifdef ${extension.debug}
               //dump("Tabpreview destroyed\n");
+#endif
             }
             catch (e)
             {
+#ifdef ${extension.debug}
               dump(e+"\n");
+#endif
             }
           }
         </body>
@@ -264,7 +270,8 @@
       <!-- Internal fields and methods -->
       
       <field name="_invalid">false</field>
-      
+
+#ifdef ${extension.debug}
       <method name="_logMessage">
         <parameter name="message"/>
         <body>
@@ -327,6 +334,7 @@
         </body>
       </method>
 
+#endif
       <field name="_browserWidth">-1</field>
       <field name="_browserHeight">-1</field>
       
@@ -368,7 +376,9 @@
             }
             this._addListeners();
             
+#ifdef ${extension.debug}
             this._logMessage("Browser added");
+#endif
             this._browserResized();
             this.update();
           }
@@ -602,24 +612,32 @@
           
           if (this.previews.displayHeight==0)
           {
+#ifdef ${extension.debug}
             this._logWarning("Sizes not yet worked out - cancelling redraw");
+#endif
             return;
           }
           
           var canvas = this.canvas;
           if (!canvas)
           {
+#ifdef ${extension.debug}
             this._logError("Canvas doesnt exist.");
+#endif
             return;
           }
           if (!canvas.hasAttribute("style"))
           {
+#ifdef ${extension.debug}
             this._logWarning("Attempt to redraw before resize");
+#endif
             return;
           }
           
           this._invalid = false;
+#ifdef ${extension.debug}
           this._logMessage("redraw");
+#endif
           canvas.width = this.previews.contentWidth;
           canvas.height = this.previews.contentHeight;
           var ctx = null;
@@ -629,7 +647,9 @@
           }
           catch (e)
           {
+#ifdef ${extension.debug}
             dump(e+"\n");
+#endif
             return;
           }
           if ((this._browser)&&(this._browser.docShell))
@@ -657,8 +677,10 @@
             }
             catch (e)
             {
+#ifdef ${extension.debug}
               dump(e+"\n");
               dump(win+" "+width+"x"+height+"\n");
+#endif
             }
             ctx.restore();
           }

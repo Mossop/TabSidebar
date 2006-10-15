@@ -30,8 +30,10 @@
             
       <method name="_addListeners">
         <body>
-          //this._logMessage("Add browser listeners");
-          
+#ifdef ${extension.debug}
+          this._logMessage("Add browser listeners");
+
+#endif
           this._browser.addEventListener("DOMTitleChanged",        this._eventListener, false);
           if (this.showPreview)
             this._browser.addEventListener("resize",               this._eventListener, false);
@@ -50,10 +52,12 @@
           {
             this._browser.webProgress.addProgressListener(this._progressListener,mask);
           }
+#ifdef ${extension.debug}
           else
           {
             this._logError("Could not register browser progress listener");
           }
+#endif
           WP=null;
           mask=null;
         </body>
@@ -63,8 +67,10 @@
         <body>
           try
           {
-            //this._logMessage("Remove browser listeners");
+#ifdef ${extension.debug}
+            this._logMessage("Remove browser listeners");
           
+#endif
             this._browser.removeEventListener("DOMTitleChanged",   this._eventListener, false);
             if (this.showPreview)
               this._browser.removeEventListener("resize",          this._eventListener, false);
@@ -81,15 +87,19 @@
             {
               this._browser.webProgress.removeProgressListener(this._progressListener);
             }
+#ifdef ${extension.debug}
             else
             {
               this._logWarning("Could not unregister browser progress listener");
             }
+#endif
           }
           catch (e)
           {
-            this.logError("Error removing listeners from tab: "+e);
+#ifdef ${extension.debug}
+            this._logError("Error removing listeners from tab: "+e);
             dump(e+"\n");
+#endif
           }
         </body>
       </method>
@@ -104,8 +114,10 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos<0)
           {
+#ifdef ${extension.debug}
             this._logMessage("Adding document "+doc.location.href);
-            
+
+#endif
             doc.addEventListener("DOMNodeInserted",                this._eventListener, true);
             doc.addEventListener("DOMNodeRemoved",                 this._eventListener, true);
             doc.addEventListener("DOMNodeRemovedFromDocument",     this._eventListener, true);
@@ -120,13 +132,17 @@
             doc.addEventListener("DOMSubtreeModified",             this._eventListener, true);
             doc.addEventListener("scroll",                         this._eventListener, true);
             this._listenedDocuments.push(doc);
+#ifdef ${extension.debug}
             
             this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
+#endif
           }
+#ifdef ${extension.debug}
           else
           {
             //this._logMessage("Listeners already added\n");
           }
+#endif
         ]]>
         </body>
       </method>
@@ -138,11 +154,13 @@
           var pos = this._listenedDocuments.indexOf(doc);
           if (pos>=0)
           {
+#ifdef ${extension.debug}
           	if (doc.location)
 	            this._logMessage("Removing document "+doc.location.href);
 	          else
 	          	this._logWarning("Removing expired document");
             
+#endif
             doc.removeEventListener("DOMNodeInserted",             this._eventListener, true);
             doc.removeEventListener("DOMNodeRemoved",              this._eventListener, true);
             doc.removeEventListener("DOMNodeRemovedFromDocument",  this._eventListener, true);
@@ -157,13 +175,17 @@
             doc.removeEventListener("DOMSubtreeModified",          this._eventListener, true);
             doc.removeEventListener("scroll",                      this._eventListener, true);
             this._listenedDocuments.splice(pos,1);
+#ifdef ${extension.debug}
             
             this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
+#endif
           }
+#ifdef ${extension.debug}
           else
           {
             //this._logMessage("Listeners already removed\n");
           }
+#endif
         ]]>
         </body>
       </method>
@@ -197,27 +219,35 @@
               var subdocs = doc.getElementsByTagName("frame");
               for (var pos = 0; pos<subdocs.length; pos++)
               {
+#ifdef ${extension.debug}
                 this._logMessage("Adding new frame");
+#endif
                 this._findDocuments(subdocs[pos].contentDocument, newdocs);
               }
               subdocs = doc.getElementsByTagName("iframe");
               for (var pos = 0; pos<subdocs.length; pos++)
               {
+#ifdef ${extension.debug}
                 this._logMessage("Adding new iframe");
+#endif
                 this._findDocuments(subdocs[pos].contentDocument, newdocs);
               }
               subdocs = doc.getElementsByTagName("browser");
               for (var pos = 0; pos<subdocs.length; pos++)
               {
+#ifdef ${extension.debug}
                 this._logMessage("Adding new browser");
+#endif
                 this._findDocuments(subdocs[pos].contentDocument, newdocs);
               }
             }
           }
+#ifdef ${extension.debug}
           else
           {
             this._logWarning("Attempt to add null doc");
           }
+#endif
         ]]>
         </body>
       </method>
@@ -240,8 +270,10 @@
           
           var target = newdocs.length;
           
+#ifdef ${extension.debug}
           this._logMessage("checkDocuments");
           
+#endif
           var lost = this._listenedDocuments.length;
           var pos=0;
           while (pos<this._listenedDocuments.length)
@@ -249,31 +281,41 @@
             var fpos = newdocs.indexOf(this._listenedDocuments[pos]);
             if (fpos>=0)
             {
+#ifdef ${extension.debug}
               this._logMessage("kept "+this._listenedDocuments[pos].location);
+#endif
               newdocs.splice(fpos,1);
               pos++;
             }
             else
             {
+#ifdef ${extension.debug}
               this._logMessage("lost "+this._listenedDocuments[pos].location);
+#endif
               this._removeDocumentListeners(this._listenedDocuments[pos]);
             }
           }
 
           lost-=this._listenedDocuments.length;
+#ifdef ${extension.debug}
           this._logWarning("Bad document tree detected from "+reason+": lost "+lost+" documents, gained "+newdocs.length+" documents, kept "+this._listenedDocuments.length+" documents.");
+#endif
 
           for (var i=0; i<newdocs.length; i++)
           {
             this._addDocumentListeners(newdocs[i]);
+#ifdef ${extension.debug}
             this._logMessage("gained "+newdocs[i].location.href);
+#endif
           }
           
+#ifdef ${extension.debug}
           if (this._listenedDocuments.length!=target)
           {
             this._logWarning("checkDocuments failure: "+target+" -> "+this._listenedDocuments.length);
           }
           
+#endif
           this._documentLoaded();
         ]]>
         </body>
@@ -316,8 +358,10 @@
             height+=findbar.boxObject.height;
           }
           
+#ifdef ${extension.debug}
           this._logMessage("new size: "+width+"x"+height);
 
+#endif
           this._invalid = true;
           this._browserHeight = height;
           this._browserWidth = width;
@@ -387,20 +431,26 @@
           
           try
           {
+#ifdef ${extension.debug}
             //this.tabpreview._logMessage("Event - "+event.type);
+#endif
             if (event.type=="DOMTitleChanged")
             {
               this.tabpreview.onTitleChange();
             }
             else if (event.type=="resize")
             {
+#ifdef ${extension.debug}
               this.tabpreview._logMessage("Browser resized");
+#endif
               this.tabpreview._browserResized();
               this.tabpreview.previews.browserResized(this.tabpreview, this.tabpreview._browserWidth, this.tabpreview._browserHeight);
             }
             else if ((event.type=="load")||(event.type=="pageshow"))
             {
+#ifdef ${extension.debug}
             	this.tabpreview._logMessage("Event - "+event.type);
+#endif
               var doc = null;
               if (event.target)
               {
@@ -426,15 +476,19 @@
               {
                 this.tabpreview._addDocumentListeners(doc);
               }
+#ifdef ${extension.debug}
               else
               {
                 this.tabpreview._logWarning(event.type+" from unknown place: "+event.target+" "+event.originalTarget);
               }
+#endif
               this.tabpreview._documentLoaded();
             }
             else if ((event.type=="unload")||(event.type=="pagehide"))
             {
+#ifdef ${extension.debug}
             	this.tabpreview._logMessage("Event - "+event.type);
+#endif
               var doc = null;
               if (event.target)
               {
@@ -458,13 +512,17 @@
               
               if (doc)
               {
+#ifdef ${extension.debug}
                 //this.tabpreview._logMessage(event.type);
+#endif
                 this.tabpreview._removeDocumentListeners(doc);
               }
+#ifdef ${extension.debug}
               else
               {
                 this.tabpreview._logWarning(event.type+" from unknown place: "+event.target);
               }
+#endif
             }
             else if (event.type=="scroll")
             {
@@ -502,22 +560,30 @@
                     }
                   }
                 }
+#ifdef ${extension.debug}
                 this.tabpreview._logMessage(event.type);
+#endif
                 this.tabpreview._documentChanged();
               }
+#ifdef ${extension.debug}
               else
               {
                 this.tabpreview._logWarning("Received an unknown event: "+event.type);
               }
+#endif
             }
+#ifdef ${extension.debug}
             else
             {
               this.tabpreview._logWarning("Received an event for an unknown document: "+event.type);
             }
+#endif
           }
           catch (e)
           {
+#ifdef ${extension.debug}
             this.tabpreview._logWarning(e);
+#endif
           }
         }
       });
@@ -545,8 +611,10 @@
           
           if (this._changeReason)
           {
+#ifdef ${extension.debug}
             this._logMessage("Timer fired - "+this._changeReason);
             
+#endif
             this.redraw();
   
             if (this._changeReason & this.CHANGE_LOAD)

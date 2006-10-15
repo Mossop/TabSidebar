@@ -138,7 +138,9 @@
         <![CDATA[
           if (this.displayWidth<=0)
           {
+#ifdef ${extension.debug}
             this._logWarning("Attempt to resize preview before size has been calculated");
+#endif
             return;
           }
 
@@ -244,12 +246,16 @@
 
           if (newHeight <= 0)
           {
+#ifdef ${extension.debug}
             this._logWarning("Invalid sizes - retrying in a few");
+#endif
             return false;
           }
           newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
 
+#ifdef ${extension.debug}
           this._logMessage("New sizes: "+newWidth+"x"+newHeight+" "+this._browserWidth+"x"+this._browserHeight);
+#endif
           if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
           {
             this._displayWidth=newWidth;
