@@ -147,8 +147,23 @@
       <constructor>
       </constructor>
 
+      <method name="init">
+        <body>
+          // Set up shortcuts;
+          this.closeButton.preview = this;
+          this.securityIcon.preview = this;
+          this.stopButton.preview = this;
+          this.backButton.preview = this;
+          this.forwardButton.preview = this;
+          this.reloadButton.preview = this;
+          
+          if (this.previews.displayHeight>0)
+            this.previews._resizePreview(this);
+        </body>
+      </method>
+      
       <destructor>
-        //dump("Tabpreview destructor\n");
+        dump("Tabpreview destructor\n");
         this._destroy();
       </destructor>
       
@@ -165,49 +180,33 @@
               if (this._browser)
               {
                 this._removeListeners();
-                this._browser=null;
+                this._browser = null;
               }
   
-              //this.loading=false;
+              //this.loading = false;
   
               this._changeTimer.cancel();
-              this._changeTime=0;
-              this._changeReason=0;
-              this._changeTimer=null;
+              this._changeTime = 0;
+              this._changeReason = 0;
+              this._changeTimer = null;
               this._updateTimer.cancel();
-              this._updateTimer=null;
+              this._updateTimer = null;
               
-              this._timerListener.tabpreview=null;
+              this._timerListener.tabpreview = null;
               this._timerListener=null;
               
-              //dump("Tabpreview destroyed\n");
+              this._eventListener.tabpreview = null;
+              this._eventListener = null;
+              this._progressListener.tabpreview = null;
+              this._progressListener = null;
+              
+              dump("Tabpreview destroyed\n");
             }
             catch (e)
             {
               dump(e+"\n");
             }
           }
-        </body>
-      </method>
-      
-      <method name="init">
-        <body>
-          if (!this._eventListener)
-          {
-            var self = this;
-            this._eventListener = function(event) { self._eventFilter(event); };
-          }
-          
-          // Set up shortcuts;
-          this.closeButton.preview = this;
-          this.securityIcon.preview = this;
-          this.stopButton.preview = this;
-          this.backButton.preview = this;
-          this.forwardButton.preview = this;
-          this.reloadButton.preview = this;
-          
-          if (this.previews.displayHeight>0)
-            this.previews._resizePreview(this);
         </body>
       </method>
       

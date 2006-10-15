@@ -204,9 +204,6 @@
           
           this.tabbrowser.addProgressListener(this._progressListener);
 
-          var self=this;
-          this._eventListener = function(event) { self._eventFilter(event); };
-          
           this.tabbrowser.tabContainer.addEventListener("TabOpen", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabClose", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabMove", this._eventListener, false);
@@ -215,7 +212,7 @@
       </method>
       
       <destructor>
-        //dump("Tabpreviews destructor\n");
+        dump("Tabpreviews destructor\n");
         this._destroy();
       </destructor>
       
@@ -245,11 +242,17 @@
               this.preferences.removeObserver("", this);
               
               this.preferences = null;
+              this._eventListener.tabpreviews = null;
               this._eventListener = null;
+              this._validateTimer = null;
+              this._progressListener.tabpreviews = null;
+              this._progressListener = null;
+              this._selected = null;
+              this._lastDrop = null;
               this.tabbrowser = null;
               this.window = null;
     
-              //dump("Tabpreviews destroyed\n");
+              dump("Tabpreviews destroyed\n");
             }
             catch (e)
             {
@@ -261,39 +264,39 @@
       
       <!-- Event handling gubbins -->
 
-      <field name="_eventListener"/>
-
-      <method name="_eventFilter">
-        <parameter name="event"/>
-        <body>
+      <field name="_eventListener">({
+        tabpreviews: this,
+        
+        handleEvent: function(event)
+        {
           if (event.type=="TabOpen")
           {
             var browser = event.target.linkedBrowser;
-            var preview = this.addPreview(browser);
-            if (this.showPreviews)
+            var preview = this.tabpreviews.addPreview(browser);
+            if (this.tabpreviews.showPreviews)
               preview.redraw();
           }
           else if (event.type=="TabClose")
           {
             var browser = event.target.linkedBrowser;
-            this.removePreview(browser);
+            this.tabpreviews.removePreview(browser);
           }
           else if (event.type=="TabMove")
           {
             var browser = event.target.linkedBrowser;
-            this.removePreview(browser);
-            var preview = this.addPreview(browser);
-            if (this.showPreviews)
+            this.tabpreviews.removePreview(browser);
+            var preview = this.tabpreviews.addPreview(browser);
+            if (this.tabpreviews.showPreviews)
               preview.redraw();
           }
           else if (event.type=="TabSelect")
           {
-            var newBrowser = this.tabbrowser.getBrowserForTab(this.tabbrowser.selectedTab);
-            this.selectPreview(newBrowser);
+            var newBrowser = this.tabpreviews.tabbrowser.getBrowserForTab(this.tabpreviews.tabbrowser.selectedTab);
+            this.tabpreviews.selectPreview(newBrowser);
           }
-        </body>
-      </method>
-      
+        }
+      });</field>
+
       <field name="_progressListener">({
           tabpreviews: this,
 
