@@ -70,7 +70,6 @@
                               .getInterface(Components.interfaces.nsIDOMWindow);
         this.tabbrowser = this.window.document.getElementById("content");
         
-        this._loadLocale();
         this._initTree();
         this._migrateOldSettings();
         this._initSettings();
@@ -111,14 +110,6 @@
           for (var i=selectedpos+1; i<browsers.length; i++)
             this.addPreview(browsers[i]);
         ]]>
-        </body>
-      </method>
-      
-      <method name="_loadLocale">
-        <body>
-          var sbs = Components.classes["@mozilla.org/intl/stringbundle;1"]
-                              .getService(Components.interfaces.nsIStringBundleService);
-          var bundle = sbs.createBundle("chrome://browser/locale/browser.properties");
         </body>
       </method>
       
@@ -244,6 +235,7 @@
               this.preferences = null;
               this._eventListener.tabpreviews = null;
               this._eventListener = null;
+              this._validateTimer.cancel();
               this._validateTimer = null;
               this._progressListener.tabpreviews = null;
               this._progressListener = null;
