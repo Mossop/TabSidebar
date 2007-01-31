@@ -27,8 +27,8 @@
     <em:iconURL>chrome://tabsidebar/content/branding/icon.png</em:iconURL>
     <em:aboutURL>chrome://tabsidebar/content/about.xul</em:aboutURL>
 
-    <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/${extension.name}</em:homepageURL>
-    <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/${extension.name}/update.rdf</em:updateURL>
+    <em:homepageURL>http://www.oxymoronical.com/web/firefox/${extension.name}</em:homepageURL>
+    <em:updateURL>http://www.oxymoronical.com/web/firefox/${extension.name}/update.rdf</em:updateURL>
     
   </Description>      
 </RDF>
