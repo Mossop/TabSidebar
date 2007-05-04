@@ -488,13 +488,13 @@
           if (!this._browser)
             return null;
 
-          if ((Components.classes["@mozilla.org/browser/favicon-service;1"])&&(this._browser.docShell))
+          /*if ((Components.classes["@mozilla.org/browser/favicon-service;1"])&&(this._browser.docShell))
           {
             var favis = Components.classes["@mozilla.org/browser/favicon-service;1"]
                                   .getService(Components.interfaces.nsIFaviconService);
             return favis.getFaviconImageForPage(this._browser.currentURI).spec;
           }
-          else
+          else*/
             return this._browser.mIconURL;
         ]]>
         </getter>
