@@ -182,7 +182,7 @@
           this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
           this._scrollSelects = this.preferences.getBoolPref("scrollselects");
 
-          this._drawScrolled = true; //this.preferences.getBoolPref("drawscrolled");
+          this._drawScrolled = this.preferences.getBoolPref("drawscrolled");
           this._validateRate = this.preferences.getIntPref("validaterate");
           this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
           this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
@@ -231,7 +231,8 @@
         <body>
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
-          this.scrollTo(ss.getWindowValue(this.window, "tabsidebar.scrollpos"));
+          var pos = ss.getWindowValue(this.window, "tabsidebar.scrollpos");
+          this.scrollTo(0);
         </body>
       </method>
       
@@ -570,8 +571,7 @@
       <field name="_drawScrolled"/>
       <property name="drawScrolled">
         <getter>
-          //return this._drawScrolled;
-          return true; /* bug 36 */
+          return this._drawScrolled;
         </getter>
       </property>
       
@@ -648,7 +648,9 @@
           preview.init();
 
           if (this.tabbrowser.selectedBrowser==browser)
+          {
             this.selectPreview(browser);
+          }
           else if (tab && tab.hasAttribute("selected"))
             preview.selected=(tab.getAttribute("selected")=="true");
           
@@ -1234,8 +1236,6 @@
                   top=win.scrollY;
                   left=win.scrollX;
                 }
-                else
-                  winheight=Math.max(winheight,win.scrollY+1);
                 ctx.drawWindow(win,left,top,winwidth,winheight,"rgba(255,255,255,255)");
                 canvas.style.display="";
               }
