@@ -59,6 +59,7 @@
       <field name="_validateMax">0</field>
       <field name="_browserHeight">0</field>
       <field name="_browserWidth">0</field>
+      <field name="_newTabPosition">null</field>
       
       <constructor>
       <![CDATA[
@@ -279,6 +280,16 @@
 #endif
           if (event.type=="TabOpen")
           {
+            if (this.tabpreviews._newTabPosition)
+            {
+#ifdef ${extension.debug}
+              this.tabpreviews._logMessage("New tab that needs moving to " + this.tabpreviews._newTabPosition.tab._tPos);
+#endif
+              this.tabpreviews.tabbrowser.moveTabTo(event.target, this.tabpreviews._newTabPosition.tab._tPos);
+              this.tabpreviews._newTabPosition = null;
+              return;
+            }
+
             var browser = event.target.linkedBrowser;
             var preview = this.tabpreviews.addPreview(browser);
             if (this.tabpreviews.showPreviews)
@@ -622,7 +633,7 @@
             this._updateScrollButtons();
           }
 #ifdef ${extension.debug}
-          else
+          else if (!this._newTabPosition)
           {
           	this._logWarning("Attempt to remove an unknown preview");
           }
@@ -842,7 +853,7 @@
             focus=true;
           
           this.tabbrowser.moveTabTo(preview.tab, newIndex);
-            preview.focus();
+          preview.focus();
         ]]>
         </body>
       </method>
@@ -1069,12 +1080,22 @@
       <method name="dispatchCloneMouseEvent">
       	<parameter name="event"/>
       	<body>
-	    		var target = this.previews[0].tab.boxObject.parentBox;
+          var target = this.getDropElement(event, false);
+          if (target.nextSibling)
+          {
+            this._newTabPosition = target.nextSibling;
+#ifdef ${extension.debug}
+            this._logMessage("Potential new tab open at "+this._newTabPosition.tab._tPos);
+#endif
+          }
+
+	    		target = this.previews[0].tab.boxObject.parentBox;
 	    		var ev = this.tabbrowser.ownerDocument.createEvent("MouseEvent");
 	    		ev.initMouseEvent(event.type, true, true, this.window,
 	    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
 	    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
 	    		target.dispatchEvent(ev);
+          this._newTabPosition = null;
       	</body>
       </method>
       
