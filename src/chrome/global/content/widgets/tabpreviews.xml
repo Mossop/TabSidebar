@@ -42,6 +42,8 @@
    - $Revision$
    -->
 
+#define MINBROWSERSIZE 20
+
 <bindings id="TabSidebarBindings" xmlns="http://www.mozilla.org/xbl">
 
   <binding id="tabpreviews" name="tabpreviews">
@@ -81,6 +83,7 @@
 #endif
         this._initEvents();
         
+        this._loadMetrics();
         this.init();
         this._restore();
           
@@ -211,6 +214,19 @@
         </body>
       </method>
       
+      <method name="_loadMetrics">
+        <body>
+          if (this.preferences.prefHasUserValue("metrics.browserwidth"))
+            this._browserWidth = this.preferences.getIntPref("metrics.browserwidth");
+          if (this.preferences.prefHasUserValue("metrics.browserheight"))
+            this._browserHeight = this.preferences.getIntPref("metrics.browserheight");
+          if (this.preferences.prefHasUserValue("metrics.displaywidth"))
+            this._displayWidth = this.preferences.getIntPref("metrics.displaywidth");
+          if (this.preferences.prefHasUserValue("metrics.displayheight"))
+            this._displayHeight = this.preferences.getIntPref("metrics.displayheight");
+        </body>
+      </method>
+      
       <method name="_restore">
         <body>
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
@@ -283,6 +299,15 @@
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
           ss.setWindowValue(this.window, "tabsidebar.scrollpos", this.getScrollPosition());
+        </body>
+      </method>
+      
+      <method name="_saveMetrics">
+        <body>
+          this.preferences.setIntPref("metrics.browserwidth", this._browserWidth);
+          this.preferences.setIntPref("metrics.browserheight", this._browserHeight);
+          this.preferences.setIntPref("metrics.displaywidth", this._displayWidth);
+          this.preferences.setIntPref("metrics.displayheight", this._displayHeight);
         </body>
       </method>
       
@@ -1008,9 +1033,9 @@
         <![CDATA[
           this._validateTimer.cancel();
 #ifdef ${extension.debug}
-          this._logMessage("Updating size");
+          this._logMessage("Checking for new size");
 #endif
-          if (this._selected && ((this._browserWidth <= 0) || (this._browserHeight <= 0)))
+          if (this._selected && ((this._browserWidth <= MINBROWSERSIZE) || (this._browserHeight <= MINBROWSERSIZE)))
           {
             this._selected._browserResized();
             this._browserWidth = this._selected._browserWidth;
@@ -1019,7 +1044,7 @@
             this._logMessage("Found a browser size of "+this._browserWidth+"x"+this._browserHeight);
 #endif
           }
-          if (this._selected && (this._browserWidth > 0) && (this._browserHeight > 0) && this._calculateSize())
+          if (this._selected && (this._browserWidth > MINBROWSERSIZE) && (this._browserHeight > MINBROWSERSIZE) && this._calculateSize())
           {
             this._contentWidth=Math.max(this.displayWidth, 500);
             this._contentHeight=(this.displayHeight/this.displayWidth)*this._contentWidth;

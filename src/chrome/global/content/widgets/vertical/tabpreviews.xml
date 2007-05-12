@@ -241,6 +241,7 @@
           {
             this._displayWidth=newWidth;
             this._displayHeight=newHeight;
+            this._saveMetrics();
           }
           return true;
         ]]>

@@ -639,10 +639,6 @@
                 top=win.scrollY;
                 left=win.scrollX;
               }
-              else
-              {
-                height=Math.max(height,win.scrollY+1);
-              }
               ctx.drawWindow(win,left,top,width,height,"rgba(255,255,255,255)");
             }
             catch (e)

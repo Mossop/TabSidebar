@@ -349,8 +349,8 @@
       <method name="_browserResized">
         <body>
         <![CDATA[
-          var width = this._browser.parentNode.boxObject.width;
-          var height = this._browser.parentNode.boxObject.height;
+          var width = this._browser.parentNode.parentNode.boxObject.width;
+          var height = this._browser.parentNode.parentNode.boxObject.height;
           
           var findbar = this._browser.ownerDocument.getElementById("FindToolbar");
           if (!findbar.hidden)
