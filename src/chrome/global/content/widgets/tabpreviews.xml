@@ -82,6 +82,7 @@
         this._initEvents();
         
         this.init();
+        this._restore();
           
         if (this.showPreviews)
           this._updateSize();
@@ -210,6 +211,14 @@
         </body>
       </method>
       
+      <method name="_restore">
+        <body>
+          var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
+                             .getService(Components.interfaces.nsISessionStore);
+          this.scrollTo(ss.getWindowValue(this.window, "tabsidebar.scrollpos"));
+        </body>
+      </method>
+      
       <destructor>
 #ifdef ${extension.debug}
         dump("Tabpreviews destructor\n");
@@ -222,6 +231,7 @@
         <body>
           if (!this._destroyed)
           {
+            this._persist();
             try
             {
               this._destroyed=true;
@@ -265,6 +275,14 @@
 #endif
             }
           }
+        </body>
+      </method>
+      
+      <method name="_persist">
+        <body>
+          var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
+                             .getService(Components.interfaces.nsISessionStore);
+          ss.setWindowValue(this.window, "tabsidebar.scrollpos", this.getScrollPosition());
         </body>
       </method>
       

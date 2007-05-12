@@ -82,13 +82,20 @@ unload: function()
   TabSidebarHandler.prefs.removeObserver("",TabSidebarHandler);
 	if (TabSidebarHandler.isOpen())
 	{
-		var container = TabSidebarHandler.getContainer();
+		var previews = TabSidebarHandler.getPreviews();
 		TabSidebarHandler.sidebarDestroy();
-		container.firstChild._destroy();
-		container.removeChild(container.firstChild);
+		previews._destroy();
 	}
 	TabSidebarHandler.doc = null;
 	TabSidebarHandler.prefs = null;
+},
+
+getPreviews: function()
+{
+  if (this.position == 0)
+    return sidebar.contentDocument.documentElement;
+  else
+    return this.getContainer().firstChild;
 },
 
 getContainer: function()
@@ -147,11 +154,12 @@ toggleSidebar: function()
 	{
 		var command = document.getElementById("viewTabSidebar");
 		var container = this.getContainer();
+    var previews = this.getPreviews();
 		var splitter = this.getSplitter();
 		if (this.isOpen())
 		{
 			this.sidebarDestroy();
-			container.firstChild._destroy();
+			previews._destroy();
 			container.removeChild(container.firstChild);
 			container.setAttribute("hidden","true");
 			splitter.setAttribute("hidden","true");

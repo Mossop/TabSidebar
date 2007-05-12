@@ -356,6 +356,21 @@
         </body>
       </method>
       
+      <method name="getScrollPosition">
+        <body>
+          var value = {};
+          this.scrollBoxObject.getPosition(value, {});
+          return value.value;
+        </body>
+      </method>
+      
+      <method name="scrollTo">
+        <parameter name="position"/>
+        <body>
+          this.scrollBoxObject.scrollTo(position, 0);
+        </body>
+      </method>
+      
       <method name="scrollBy">
         <parameter name="distance"/>
         <body>
