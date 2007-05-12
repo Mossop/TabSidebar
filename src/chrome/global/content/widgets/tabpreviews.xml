@@ -1087,7 +1087,7 @@
       <method name="_validate">
         <body>
         <![CDATA[
-          if (this.displayHeight < 0)
+          if (this._browserHeight < MINBROWSERSIZE)
             this._updateSize();
           else
           {
