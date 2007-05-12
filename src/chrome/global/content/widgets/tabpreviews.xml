@@ -307,14 +307,16 @@
         </body>
       </method>
       
-      <method name="_storeSession">
+      <method name="_storeSessionValue">
+        <parameter name="key"/>
+        <parameter name="value"/>
         <body>
           if (!this._seenSessionRestore)
             return;
             
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
-          ss.setWindowValue(this.window, "tabsidebar.scrollpos", this.getScrollPosition());
+          ss.setWindowValue(this.window, "tabsidebar."+key, value);
         </body>
       </method>
       

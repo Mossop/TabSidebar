@@ -518,13 +518,14 @@
         </body>
       </method>
       
-      <method name="storeSession">
+      <method name="_storeSessionValue">
+        <parameter name="key"/>
+        <parameter name="value"/>
         <body>
         <![CDATA[
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
-          if (this.ownerDocument.commandDispatcher.focusedElement && this.ownerDocument.commandDispatcher.focusedElement==this)
-            ss.setTabValue(this.tab, "tabsidebar.focused", "true");
+          ss.setTabValue(this.tab, "tabsidebar."+key, value);
         ]]>
         </body>
       </method>
@@ -551,7 +552,7 @@
       <method name="setfocus">
         <body>
           this.focus();
-          this.storeSession();
+          this._storeSessionValue("focused", "true");
         </body>
       </method>
       
