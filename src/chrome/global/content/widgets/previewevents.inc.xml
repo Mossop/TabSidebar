@@ -118,6 +118,7 @@
             this._logMessage("Adding document "+doc.location.href);
 
 #endif
+            this._listenedDocuments.push(doc);
             doc.addEventListener("DOMNodeInserted",                this._eventListener, true);
             doc.addEventListener("DOMNodeRemoved",                 this._eventListener, true);
             doc.addEventListener("DOMNodeRemovedFromDocument",     this._eventListener, true);
@@ -131,7 +132,6 @@
             doc.addEventListener("DOMFocusOut",                    this._eventListener, true);
             doc.addEventListener("DOMSubtreeModified",             this._eventListener, true);
             doc.addEventListener("scroll",                         this._eventListener, true);
-            this._listenedDocuments.push(doc);
 #ifdef ${extension.debug}
             
             this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
@@ -423,9 +423,28 @@
       <![CDATA[
       ({
         tabpreview: this,
-          
+        
+        getDocumentForEvent: function(event)
+        {
+          if (event.target)
+          {
+            if (event.target instanceof Document)
+              return event.target;
+            else if (event.target.document)
+              return event.target.document;
+            else if (event.target.contentDocument)
+              return event.target.contentDocument;
+            else if (event.target.ownerDocument.documentElement==event.target)
+              return event.target.ownerDocument;
+          }
+          return null;
+        },
+        
         handleEvent: function(event)
         {
+          if (this._destroyed)
+            return;
+            
           if (!this.tabpreview.previews)
             return;
           
@@ -434,110 +453,66 @@
 #ifdef ${extension.debug}
             //this.tabpreview._logMessage("Event - "+event.type);
 #endif
-            if (event.type=="DOMTitleChanged")
+            switch (event.type)
             {
-              this.tabpreview.onTitleChange();
+              case "DOMTitleChanged":
+                this.tabpreview.onTitleChange();
+                return;
+              case "resize":
+#ifdef ${extension.debug}
+                this.tabpreview._logMessage("Browser resized");
+#endif
+                this.tabpreview._browserResized();
+                this.tabpreview.previews.browserResized(this.tabpreview, this.tabpreview._browserWidth, this.tabpreview._browserHeight);
+                return;
+              case "load":
+              case "pageshow":
+#ifdef ${extension.debug}
+              	this.tabpreview._logMessage("Event - "+event.type);
+#endif
+                var doc = this.getDocumentForEvent(event);
+                if (doc)
+                  this.tabpreview._addDocumentListeners(doc);
+#ifdef ${extension.debug}
+                else
+                  this.tabpreview._logWarning(event.type+" from unknown place: "+event.target+" "+event.originalTarget);
+#endif
+                this.tabpreview._documentLoaded();
+                return;
+              case "unload":
+              case "pagehide":
+#ifdef ${extension.debug}
+              	this.tabpreview._logMessage("Event - "+event.type);
+#endif
+                var doc = this.getDocumentForEvent(event);
+                if (doc)
+                  this.tabpreview._removeDocumentListeners(doc);
+#ifdef ${extension.debug}
+                else
+                  this.tabpreview._logWarning(event.type+" from unknown place: "+event.target);
+#endif
+                return;
             }
-            else if (event.type=="resize")
-            {
-#ifdef ${extension.debug}
-              this.tabpreview._logMessage("Browser resized");
-#endif
-              this.tabpreview._browserResized();
-              this.tabpreview.previews.browserResized(this.tabpreview, this.tabpreview._browserWidth, this.tabpreview._browserHeight);
-            }
-            else if ((event.type=="load")||(event.type=="pageshow"))
-            {
-#ifdef ${extension.debug}
-            	this.tabpreview._logMessage("Event - "+event.type);
-#endif
-              var doc = null;
-              if (event.target)
-              {
-                if (event.target instanceof Document)
-                {
-                  doc=event.target;
-                }
-                else if (event.target.document)
-                {
-                  doc=event.target.document;
-                }
-                else if (event.target.contentDocument)
-                {
-                  doc=event.target.contentDocument;
-                }
-                else if (event.target.ownerDocument.documentElement==event.target)
-                {
-                  doc=event.target.ownerDocument;
-                }
-              }
-              
-              if (doc)
-              {
-                this.tabpreview._addDocumentListeners(doc);
-              }
-#ifdef ${extension.debug}
-              else
-              {
-                this.tabpreview._logWarning(event.type+" from unknown place: "+event.target+" "+event.originalTarget);
-              }
-#endif
-              this.tabpreview._documentLoaded();
-            }
-            else if ((event.type=="unload")||(event.type=="pagehide"))
-            {
-#ifdef ${extension.debug}
-            	this.tabpreview._logMessage("Event - "+event.type);
-#endif
-              var doc = null;
-              if (event.target)
-              {
-                if (event.target instanceof Document)
-                {
-                  doc=event.target;
-                }
-                else if (event.target.document)
-                {
-                  doc=event.target.document;
-                }
-                else if (event.target.contentDocument)
-                {
-                  doc=event.target.contentDocument;
-                }
-                else if (event.target.ownerDocument.documentElement==event.target)
-                {
-                  doc=event.target.ownerDocument;
-                }
-              }
-              
-              if (doc)
-              {
-#ifdef ${extension.debug}
-                //this.tabpreview._logMessage(event.type);
-#endif
-                this.tabpreview._removeDocumentListeners(doc);
-              }
-#ifdef ${extension.debug}
-              else
-              {
-                this.tabpreview._logWarning(event.type+" from unknown place: "+event.target);
-              }
-#endif
-            }
-            else if (event.type=="scroll")
-            {
+                        
+            if (this.tabpreview.loading)
+              return;
+            
+            var sourcedoc;
+            if (event.target instanceof Document)
+              sourcedoc = event.target;
+            else
+              sourcedoc = event.target.ownerDocument;
+            
+            if (event.type == "scroll")
               this.tabpreview._documentScrolled();
-            }
-            else if (this.tabpreview._listenedDocuments.indexOf(event.target.ownerDocument)>=0)
+            else if (this.tabpreview._listenedDocuments.indexOf(sourcedoc)>=0)
             {
-              if ((event.type.substring(0,3)=="DOM")&&(!this.tabpreview.loading))
+              if (event.type.substring(0,3)=="DOM")
               {
                 if (event.type=="DOMAttrModified")
                 {
                   if ((event.attrName=="maxpos")||(event.attrName=="pageincrement"))
-                  {
                     return;
-                  }
                   else if (event.attrName=="curpos")
                   {
                     this.tabpreview._documentScrolled();
@@ -567,16 +542,12 @@
               }
 #ifdef ${extension.debug}
               else
-              {
                 this.tabpreview._logWarning("Received an unknown event: "+event.type);
-              }
 #endif
             }
 #ifdef ${extension.debug}
             else
-            {
-              this.tabpreview._logWarning("Received an event for an unknown document: "+event.type);
-            }
+              this.tabpreview._logWarning("Received an event for an unknown document: "+sourcedoc.location.href+" "+event.type);
 #endif
           }
           catch (e)
