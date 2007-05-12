@@ -524,7 +524,7 @@
               {
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=newpreview.tab;
-                newpreview.focus();
+                newpreview.setfocus();
               }
               event.preventDefault();
             }
@@ -535,7 +535,7 @@
               {
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=newpreview.tab;
-                newpreview.focus();
+                newpreview.setfocus();
               }
               event.preventDefault();
             }
@@ -556,7 +556,7 @@
                 }
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=current.tab;
-                current.focus();
+                current.setfocus();
               }
               event.preventDefault();
             }
@@ -577,7 +577,7 @@
                 }
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=current.tab;
-                current.focus();
+                current.setfocus();
               }
               event.preventDefault();
             }

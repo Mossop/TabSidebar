@@ -543,7 +543,7 @@
               {
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=newpreview.tab;
-                newpreview.focus();
+                newpreview.setfocus();
               }
               event.preventDefault();
             }
@@ -554,7 +554,7 @@
               {
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=newpreview.tab;
-                newpreview.focus();
+                newpreview.setfocus();
               }
               event.preventDefault();
             }

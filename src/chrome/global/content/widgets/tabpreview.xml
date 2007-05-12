@@ -520,10 +520,12 @@
       
       <method name="storeSession">
         <body>
+        <![CDATA[
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
           if (this.ownerDocument.commandDispatcher.focusedElement && this.ownerDocument.commandDispatcher.focusedElement==this)
             ss.setTabValue(this.tab, "tabsidebar.focused", "true");
+        ]]>
         </body>
       </method>
       
@@ -543,6 +545,13 @@
             event.stopPropagation();
           }
         ]]>
+        </body>
+      </method>
+      
+      <method name="setfocus">
+        <body>
+          this.focus();
+          this.storeSession();
         </body>
       </method>
       
@@ -744,10 +753,10 @@
             }
             tabbrowser.selectedTab=this.tab;
             if (focus)
-              this.focus();
+              this.setfocus();
           }
           else
-            this.focus();
+            this.setfocus();
         }
         else
         	this.dispatchCloneMouseEvent(event);

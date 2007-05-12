@@ -930,7 +930,7 @@
             focus=true;
           
           this.tabbrowser.moveTabTo(preview.tab, newIndex);
-          preview.focus();
+          preview.setfocus();
         ]]>
         </body>
       </method>
@@ -1429,7 +1429,7 @@
         if (event.originalTarget==this.focusDetector)
         {
           if (this._selected)
-            this._selected.focus();
+            this._selected.setfocus();
         }
         else if (event.target.parentNode==this)
           this.focusDetector.style.MozUserFocus="ignore";
