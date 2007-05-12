@@ -195,6 +195,7 @@
           if (scrollTop>eltop)
           {
             this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
+            this._storeSession();
           }
           else if ((scrollTop+scrollHeight)<elbottom)
           {
@@ -204,6 +205,7 @@
               shift=eltop-scrollTop;
             }
             this.scrollBoxObject.scrollBy(0,shift);
+            this._storeSession();
           }
         ]]>
         </body>
@@ -350,6 +352,7 @@
         <parameter name="position"/>
         <body>
           this.scrollBoxObject.scrollTo(0, position);
+          this._storeSession();
         </body>
       </method>
       
@@ -357,18 +360,21 @@
         <parameter name="distance"/>
         <body>
           this.scrollBoxObject.scrollByLine(distance);
+          this._storeSession();
         </body>
       </method>
       
       <method name="scrollToStart">
         <body>
           this.scrollBoxObject.scrollTo(0,0);
+          this._storeSession();
         </body>
       </method>
       
       <method name="scrollToEnd">
         <body>
           this.scrollBoxObject.scrollTo(0,this.scrollBoxObject.height);
+          this._storeSession();
         </body>
       </method>
       
@@ -379,11 +385,9 @@
           this.scrollBoxObject.getPosition({}, y);
           var end = y.value+this.scrollBoxObject.height;
           if (this.scrollPanel.boxObject.height<=this.scrollBoxObject.height)
-          {
-            this.scrollBoxObject.scrollTo(0,0);
-          }
+            this.scrollToStart();
           else if (end>this.scrollPanel.boxObject.height)
-            this.scrollBoxObject.scrollTo(0,this.scrollPanel.boxObject.height-this.scrollBoxObject.height);
+            this.scrollToEnd();
         ]]>
         </body>
       </method>

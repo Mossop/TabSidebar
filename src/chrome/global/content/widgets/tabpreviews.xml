@@ -62,6 +62,7 @@
       <field name="_browserHeight">0</field>
       <field name="_browserWidth">0</field>
       <field name="_newTabPosition">null</field>
+      <field name="_seenSessionRestore">false</field>
       
       <constructor>
       <![CDATA[
@@ -85,7 +86,11 @@
         
         this._loadMetrics();
         this.init();
-        this._restore();
+        if (this.window.__SSi)
+        {
+          this._restoreSession();
+          this._seenSessionRestore = true;
+        }
           
         if (this.showPreviews)
           this._updateSize();
@@ -211,6 +216,8 @@
           this.tabbrowser.tabContainer.addEventListener("TabClose", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabMove", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabSelect", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("SSTabRestoring", this._eventListener, false);
+          this.tabbrowser.tabContainer.addEventListener("SSTabRestored", this._eventListener, false);
         </body>
       </method>
       
@@ -227,12 +234,16 @@
         </body>
       </method>
       
-      <method name="_restore">
+      <method name="_restoreSession">
         <body>
+#ifdef ${extension.debug}
+          this._logMessage("Restoring state");
+#endif
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
           var pos = ss.getWindowValue(this.window, "tabsidebar.scrollpos");
-          this.scrollTo(0);
+          if (pos)
+            this.scrollTo(pos);
         </body>
       </method>
       
@@ -248,7 +259,6 @@
         <body>
           if (!this._destroyed)
           {
-            this._persist();
             try
             {
               this._destroyed=true;
@@ -266,6 +276,8 @@
 		          this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
 		          this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
 		          this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
+              this.tabbrowser.tabContainer.removeEventListener("SSTabRestoring", this._eventListener, false);
+              this.tabbrowser.tabContainer.removeEventListener("SSTabRestored", this._eventListener, false);
       
               this.preferences.removeObserver("", this);
               
@@ -295,8 +307,11 @@
         </body>
       </method>
       
-      <method name="_persist">
+      <method name="_storeSession">
         <body>
+          if (!this._seenSessionRestore)
+            return;
+            
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
           ss.setWindowValue(this.window, "tabsidebar.scrollpos", this.getScrollPosition());
@@ -356,6 +371,23 @@
           {
             var newBrowser = this.tabpreviews.tabbrowser.getBrowserForTab(this.tabpreviews.tabbrowser.selectedTab);
             this.tabpreviews.selectPreview(newBrowser);
+          }
+          else if (event.type=="SSTabRestoring")
+          {
+            if (!this.tabpreviews._seenSessionRestore)
+            {
+              this.tabpreviews._restoreSession();
+              this.tabpreviews._seenSessionRestore = true;
+            }
+            var preview = this.tabpreviews.getPreviewForBrowser(event.target.linkedBrowser);
+            if (preview)
+              preview.startRestoringSession();
+          }
+          else if (event.type=="SSTabRestored")
+          {
+            var preview = this.tabpreviews.getPreviewForBrowser(event.target.linkedBrowser);
+            if (preview)
+              preview.endRestoringSession();
           }
         }
       });</field>

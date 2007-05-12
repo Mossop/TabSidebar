@@ -207,6 +207,7 @@
           if (scrollLeft>elleft)
           {
             this.scrollBoxObject.scrollBy(elleft-scrollLeft, 0);
+            this._storeSession();
           }
           else if ((scrollLeft+scrollWidth)<elright)
           {
@@ -216,6 +217,7 @@
               shift=elleft-scrollLeft;
             }
             this.scrollBoxObject.scrollBy(shift,0);
+            this._storeSession();
           }
         ]]>
         </body>
@@ -369,6 +371,7 @@
         <parameter name="position"/>
         <body>
           this.scrollBoxObject.scrollTo(position, 0);
+          this._storeSession();
         </body>
       </method>
       
@@ -376,18 +379,21 @@
         <parameter name="distance"/>
         <body>
           this.scrollBoxObject.scrollBy(distance*15, 0);
+          this._storeSession();
         </body>
       </method>
       
       <method name="scrollToStart">
         <body>
           this.scrollBoxObject.scrollTo(0,0);
+          this._storeSession();
         </body>
       </method>
       
       <method name="scrollToEnd">
         <body>
           this.scrollBoxObject.scrollTo(this.scrollBoxObject.width,0);
+          this._storeSession();
         </body>
       </method>
       
@@ -398,12 +404,9 @@
           this.scrollBoxObject.getPosition(x, {});
           var end = x.value+this.scrollBoxObject.width;
           if (this.scrollPanel.boxObject.width<=this.scrollBoxObject.width)
-          {
-            if (x.value!=0)
-              this.scrollBoxObject.scrollTo(0,0);
-          }
+            this.scrollToStart();
           else if (end>this.scrollPanel.boxObject.width)
-            this.scrollBoxObject.scrollTo(this.scrollPanel.boxObject.width-this.scrollBoxObject.width, 0);
+            this.scrollToEnd();
         ]]>
         </body>
       </method>

@@ -495,6 +495,38 @@
 
       <!-- Methods -->
       
+      <method name="startRestoringSession">
+        <body>
+#ifdef ${extension.debug}
+          this._logMessage("Restoring");
+#endif
+          var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
+                             .getService(Components.interfaces.nsISessionStore);
+        </body>
+      </method>
+      
+      <method name="endRestoringSession">
+        <body>
+#ifdef ${extension.debug}
+          this._logMessage("Restored");
+#endif
+          var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
+                             .getService(Components.interfaces.nsISessionStore);
+          var focused = ss.getTabValue(this.tab, "tabsidebar.focused");
+          if (focused == "true")
+            this.focus();
+        </body>
+      </method>
+      
+      <method name="storeSession">
+        <body>
+          var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
+                             .getService(Components.interfaces.nsISessionStore);
+          if (this.ownerDocument.commandDispatcher.focusedElement && this.ownerDocument.commandDispatcher.focusedElement==this)
+            ss.setTabValue(this.tab, "tabsidebar.focused", "true");
+        </body>
+      </method>
+      
       <method name="checkMiddleClick">
         <parameter name="node"/>
         <parameter name="event"/>
