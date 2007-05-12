@@ -14,7 +14,7 @@ pref("extensions.tabsidebar.unselectedtextdelay", 1000);
 pref("extensions.tabsidebar.unselectedscrolldelay", 1000);
 
 pref("extensions.tabsidebar.loadrefreshrate", 25);
-pref("extensions.tabsidebar.loadrefresh", true);
+pref("extensions.tabsidebar.loadrefresh", false);
 pref("extensions.tabsidebar.validaterate", 100);
 
 pref("extensions.tabsidebar.content.navigation", true);
