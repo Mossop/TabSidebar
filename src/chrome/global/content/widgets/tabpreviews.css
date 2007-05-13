@@ -25,13 +25,9 @@
   display: none !important;
 }
 
-.tbs-tabpreviews-vertical[hide~="preview"] .tbs-container,
-.tbs-tabpreviews-horizontal[hide~="preview"] .tbs-container,
+.tbs-tabpreview[hide~="preview"] .tbs-container,
 .tbs-tabpreviews-vertical[hide~="preview"] .tbs-tooltip-image,
-.tbs-tabpreviews-horizontal[hide~="preview"] .tbs-tooltip-image {
-  display: none !important;
-}
-  
+.tbs-tabpreviews-horizontal[hide~="preview"] .tbs-tooltip-image,
 .tbs-tabpreviews-vertical:not([hide~="preview"]) .tbs-tooltip-canvas,
 .tbs-tabpreviews-horizontal:not([hide~="preview"]) .tbs-tooltip-canvas {
   display: none !important;

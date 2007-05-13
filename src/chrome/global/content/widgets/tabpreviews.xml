@@ -202,7 +202,7 @@
           this._scrollDelay = this.preferences.getIntPref("scrolldelay");
           this._unselectedScrollDelay = this.preferences.getIntPref("unselectedscrolldelay");
           
-          this.updateContent();        
+          this.updateDisplay();        
         </body>
       </method>
       
@@ -763,14 +763,12 @@
         </body>
       </method>
 
-      <method name="updateContent">
+      <method name="updateDisplay">
         <body>
         <![CDATA[
           var hide = "";
           if (!this.showNavigation)
             hide+=" navigation";
-          if (!this.showPreviews)
-            hide+=" preview";
           
           if (hide.length>0)
             hide=hide.substring(1);
@@ -1314,40 +1312,36 @@
           {
             case "content.navigation":
               this._showNavigation = this.preferences.getBoolPref(data);
-              this.updateContent();
+              this.updateDisplay();
               break;
             case "content.previews":
-              for (var i = 0; i < this.previews.length; i++)
-                this.previews[i]._removeListeners();
               this._showPreviews = this.preferences.getBoolPref(data);
-              this.updateContent();
               for (var i = 0; i < this.previews.length; i++)
               {
-                this.previews[i]._addListeners();
-                if (this.updatePreviews)
+                this.previews[i].updateDisplay();
+                if (this.previews[i].showPreview)
+                {
                   this.previews[i]._checkDocuments("");
+                  this.previews[i].redraw();
+                }
+                else
+                  this.previews[i]._emptyDocumentListeners();
               }
-              this._updateSize();
+              if (this.showPreviews)
+                this._updateSize();
               break;
             case "updatepreviews":
-              var previous = this.updatePreviews;
+              this._updatePreviews = this.preferences.getBoolPref(data);
               if (this.showPreviews)
               {
                 for (var i = 0; i < this.previews.length; i++)
                 {
-                  this.previews[i]._removeListeners();
-                  this.previews[i]._emptyDocumentListeners();
-                }
-                this._updatePreviews = this.preferences.getBoolPref(data);
-                for (var i = 0; i < this.previews.length; i++)
-                {
-                  this.previews[i]._addListeners();
                   if (this.updatePreviews)
                     this.previews[i]._checkDocuments("");
+                  else
+                    this.previews[i]._emptyDocumentListeners();
                 }
               }
-              else
-                this._updatePreviews = this.preferences.getBoolPref(data);
               break;
             case "scrollselects":
               this._scrollSelects = this.preferences.getBoolPref(data);

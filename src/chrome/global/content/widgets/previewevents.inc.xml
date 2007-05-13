@@ -194,9 +194,7 @@
         <body>
         <![CDATA[
           while (this._listenedDocuments.length>0)
-          {
             this._removeDocumentListeners(this._listenedDocuments[0]);
-          }
         ]]>
         </body>
       </method>

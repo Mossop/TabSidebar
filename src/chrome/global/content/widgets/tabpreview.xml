@@ -143,6 +143,7 @@
 
       <method name="init">
         <body>
+        <![CDATA[
           // Set up shortcuts;
           this.closeButton.preview = this;
           this.securityIcon.preview = this;
@@ -151,8 +152,11 @@
           this.forwardButton.preview = this;
           this.reloadButton.preview = this;
           
-          if (this.previews.displayHeight>0)
+          this.updateDisplay();
+          
+          if (this.showPreview && (this.previews.displayHeight>0))
             this.previews._resizePreview(this);
+        ]]>
         </body>
       </method>
       
@@ -363,10 +367,13 @@
               {
                 this._setSecurity(this._browser.securityUI.state);
               }
-              var newdocs = [];
-              this._findDocuments(this._browser.contentDocument, newdocs);
-              for (var i=0; i<newdocs.length; i++)
-                this._addDocumentListeners(newdocs[i]);
+              if (this.previews.updatePreviews)
+              {
+                var newdocs = [];
+                this._findDocuments(this._browser.contentDocument, newdocs);
+                for (var i=0; i<newdocs.length; i++)
+                  this._addDocumentListeners(newdocs[i]);
+              }
             }
             this._addListeners();
             
@@ -526,6 +533,21 @@
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
           ss.setTabValue(this.tab, "tabsidebar."+key, value);
+        ]]>
+        </body>
+      </method>
+      
+      <method name="updateDisplay">
+        <body>
+        <![CDATA[
+          var hide = "";
+          if (!this.showPreview)
+            hide+=" preview";
+          
+          if (hide.length>0)
+            hide=hide.substring(1);
+          
+          this.setAttribute("hide",hide);
         ]]>
         </body>
       </method>
