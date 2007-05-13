@@ -1,0 +1,30 @@
+#! /bin/bash
+
+function extractImages() {
+	THISDEST=$DESTDIR/$1
+	THISSOURCE=$SOURCEDIR/$1.png
+	convert $THISSOURCE[8x75+0+0] $THISDEST/top-left.png
+	convert $THISSOURCE[1x75+8+0] $THISDEST/top-middle.png
+	convert $THISSOURCE[8x75+9+0] $THISDEST/top-right.png
+	convert $THISSOURCE[8x1+0+75] $THISDEST/middle-left.png
+	convert $THISSOURCE[1x1+8+75] $THISDEST/middle-middle.png
+	convert $THISSOURCE[8x1+9+75] $THISDEST/middle-right.png
+	convert $THISSOURCE[8x75+0+76] $THISDEST/bottom-left.png
+	convert $THISSOURCE[1x75+8+76] $THISDEST/bottom-middle.png
+	convert $THISSOURCE[8x75+9+76] $THISDEST/bottom-right.png
+}
+
+BASEDIR=`dirname $0`
+SOURCEDIR=$BASEDIR/src/images/mac
+DESTDIR=$BASEDIR/src/chrome/platform/skin/mac/background
+
+extractImages default
+extractImages hover
+extractImages active
+
+SOURCEDIR=$BASEDIR/src/images/default
+DESTDIR=$BASEDIR/src/chrome/global/skin/background
+
+extractImages default
+extractImages hover
+extractImages active

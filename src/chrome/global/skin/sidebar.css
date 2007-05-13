@@ -34,134 +34,53 @@
 }
 
 .tbs-top-middle {
-	background-image: url('chrome://tabsidebar/skin/background/top-middle-bkgnd.png');
 	background-repeat: repeat-x;
 	background-position: top left;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-top-middle {
-	background-image: url('chrome://tabsidebar/skin/background/top-middle.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-top-middle {
-	background-image: url('chrome://tabsidebar/skin/background/top-middle-hover.png');
 }
 
 .tbs-top-left {
 	width: 8px;
-	background-image: url('chrome://tabsidebar/skin/background/top-left-bkgnd.png');
 	background-position: top left;
 	background-repeat: no-repeat;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-top-left {
-	background-image: url('chrome://tabsidebar/skin/background/top-left.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-top-left {
-	background-image: url('chrome://tabsidebar/skin/background/top-left-hover.png');
-}
-
 .tbs-top-right {
 	width: 8px;
-	background-image: url('chrome://tabsidebar/skin/background/top-right-bkgnd.png');
 	background-position: top right;
 	background-repeat: no-repeat;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-top-right {
-	background-image: url('chrome://tabsidebar/skin/background/top-right.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-top-right {
-	background-image: url('chrome://tabsidebar/skin/background/top-right-hover.png');
-}
-
 .tbs-bottom-middle {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-middle-bkgnd.png');
 	background-repeat: repeat-x;
 	background-position: bottom left;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-bottom-middle {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-middle.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom-middle {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-middle-hover.png');
-}
-
 .tbs-bottom-left {
 	width: 8px;
-	background-image: url('chrome://tabsidebar/skin/background/bottom-left-bkgnd.png');
 	background-position: bottom left;
 	background-repeat: no-repeat;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-bottom-left {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-left.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom-left {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-left-hover.png');
-}
-
 .tbs-bottom-right {
 	width: 8px;
-	background-image: url('chrome://tabsidebar/skin/background/bottom-right-bkgnd.png');
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-bottom-right {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-right.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom-right {
-	background-image: url('chrome://tabsidebar/skin/background/bottom-right-hover.png');
-}
-
 .tbs-middle-middle {
-	background-image: url('chrome://tabsidebar/skin/background/middle-middle-bkgnd.png');
 	background-repeat: repeat;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-middle-middle {
-	background-image: url('chrome://tabsidebar/skin/background/middle-middle.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle-middle {
-	background-image: url('chrome://tabsidebar/skin/background/middle-middle-hover.png');
 }
 
 .tbs-middle-left {
 	width: 8px;
-	background-image: url('chrome://tabsidebar/skin/background/middle-left-bkgnd.png');
 	background-position: left;
 	background-repeat: repeat-y;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-middle-left {
-	background-image: url('chrome://tabsidebar/skin/background/middle-left.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle-left {
-	background-image: url('chrome://tabsidebar/skin/background/middle-left-hover.png');
-}
-
 .tbs-middle-right {
 	width: 8px;
-	background-image: url('chrome://tabsidebar/skin/background/middle-right-bkgnd.png');
 	background-position: right;
 	background-repeat: repeat-y;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-middle-right {
-	background-image: url('chrome://tabsidebar/skin/background/middle-right.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle-right {
-	background-image: url('chrome://tabsidebar/skin/background/middle-right-hover.png');
 }
 
 /* Tooltip */

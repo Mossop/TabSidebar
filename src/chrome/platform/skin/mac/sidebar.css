@@ -1,3 +1,7 @@
+%define BG_DEFAULT chrome://tabsidebar-platform/skin/background/default
+%define BG_ACTIVE chrome://tabsidebar-platform/skin/background/active
+%define BG_HOVER chrome://tabsidebar-platform/skin/background/hover
+
 .tbs-tabpreviews-vertical .tbs-scrollbox {
 	background-image: url('chrome://tabsidebar-platform/skin/background/bkgnd-vertical.png') !important;
 }
@@ -34,109 +38,109 @@ tabpreviews .tbs-tabpreview[selected="true"] .tbs-favicon {
 }
 
 .tbs-top-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-middle-bkgnd.png');
+	background-image: url('BG_DEFAULT/top-middle.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-top-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-middle.png') !important;
+	background-image: url('BG_ACTIVE/top-middle.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-top-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-middle-hover.png');
+	background-image: url('BG_HOVER/top-middle.png');
 }
 
 .tbs-top-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-left-bkgnd.png');
+	background-image: url('BG_DEFAULT/top-left.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-top-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-left.png') !important;
+	background-image: url('BG_ACTIVE/top-left.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-top-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-left-hover.png');
+	background-image: url('BG_HOVER/top-left.png');
 }
 
 .tbs-top-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-right-bkgnd.png');
+	background-image: url('BG_DEFAULT/top-right.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-top-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-right.png') !important;
+	background-image: url('BG_ACTIVE/top-right.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-top-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/top-right-hover.png');
+	background-image: url('BG_HOVER/top-right.png');
 }
 
 .tbs-bottom-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-middle-bkgnd.png');
+	background-image: url('BG_DEFAULT/bottom-middle.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-middle.png') !important;
+	background-image: url('BG_ACTIVE/bottom-middle.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-bottom-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-middle-hover.png');
+	background-image: url('BG_HOVER/bottom-middle.png');
 }
 
 .tbs-bottom-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-left-bkgnd.png');
+	background-image: url('BG_DEFAULT/bottom-left.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-left.png') !important;
+	background-image: url('BG_ACTIVE/bottom-left.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-bottom-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-left-hover.png');
+	background-image: url('BG_HOVER/bottom-left.png');
 }
 
 .tbs-bottom-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-right-bkgnd.png');
+	background-image: url('BG_DEFAULT/bottom-right.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-right.png') !important;
+	background-image: url('BG_ACTIVE/bottom-right.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-bottom-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bottom-right-hover.png');
+	background-image: url('BG_HOVER/bottom-right.png');
 }
 
 .tbs-middle-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-middle-bkgnd.png');
+	background-image: url('BG_DEFAULT/middle-middle.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-middle-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-middle.png') !important;
+	background-image: url('BG_ACTIVE/middle-middle.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-middle-middle {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-middle-hover.png');
+	background-image: url('BG_HOVER/middle-middle.png');
 }
 
 .tbs-middle-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-left-bkgnd.png');
+	background-image: url('BG_DEFAULT/middle-left.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-middle-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-left.png') !important;
+	background-image: url('BG_ACTIVE/middle-left.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-middle-left {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-left-hover.png');
+	background-image: url('BG_HOVER/middle-left.png');
 }
 
 .tbs-middle-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-right-bkgnd.png');
+	background-image: url('BG_DEFAULT/middle-right.png');
 }
 
 .tbs-tabpreview[selected="true"] .tbs-middle-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-right.png') !important;
+	background-image: url('BG_ACTIVE/middle-right.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-middle-right {
-	background-image: url('chrome://tabsidebar-platform/skin/background/middle-right-hover.png');
+	background-image: url('BG_HOVER/middle-right.png');
 }

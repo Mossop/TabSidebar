@@ -11,3 +11,4 @@ chrome/global/locale/tr-TR/**
 chrome/global/locale/zh-CN/**
 chrome/global/locale/zh-TW/**
 #endif
+images/**
