@@ -409,7 +409,7 @@
       
       <method name="_documentScrolled">
         <body>
-          if (!this.previews)
+          if (!this.previews || !this.previews.drawScrolled)
             return;
             
           this._invalid = true;

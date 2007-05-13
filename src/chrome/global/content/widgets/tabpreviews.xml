@@ -1088,9 +1088,26 @@
             this._validateMax = this.previews.length;
             if (this._validateMax <= 1)
               return;
-
+  
             this._validatePos = 0;
           }
+          this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        ]]>
+        </body>
+      </method>
+      
+      <method name="_invalidateAll">
+        <body>
+        <![CDATA[
+          for (var i = 0; i< this.previews.length; i++)
+            this.previews[i]._invalid = true;
+
+          this._selected.redraw();
+          this._validateMax = this.previews.length;
+          if (this._validateMax <= 1)
+            return;
+
+          this._validatePos = 0;
           this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         ]]>
         </body>
@@ -1319,11 +1336,8 @@
               for (var i = 0; i < this.previews.length; i++)
               {
                 this.previews[i].updateDisplay();
-                if (this.previews[i].showPreview)
-                {
+                if (this.previews[i].showPreview && this.updatePreviews)
                   this.previews[i]._checkDocuments("");
-                  this.previews[i].redraw();
-                }
                 else
                   this.previews[i]._emptyDocumentListeners();
               }
@@ -1336,7 +1350,7 @@
               {
                 for (var i = 0; i < this.previews.length; i++)
                 {
-                  if (this.updatePreviews)
+                  if (this.previews[i].showPreview && this.updatePreviews)
                     this.previews[i]._checkDocuments("");
                   else
                     this.previews[i]._emptyDocumentListeners();
@@ -1346,7 +1360,10 @@
             case "scrollselects":
               this._scrollSelects = this.preferences.getBoolPref(data);
               break;
-              
+            case "drawscrolled":
+              this._drawScrolled = this.preferences.getBoolPref(data);
+              this._invalidateAll();
+              break;
 #ifdef ${extension.debug}
             case "enablelogging":
               this._enableLogging = this.preferences.getBoolPref(data);
