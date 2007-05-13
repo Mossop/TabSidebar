@@ -21,6 +21,7 @@ DESTDIR=$BASEDIR/src/chrome/platform/skin/mac/background
 extractImages default
 extractImages hover
 extractImages active
+extractImages secure
 
 SOURCEDIR=$BASEDIR/src/images/default
 DESTDIR=$BASEDIR/src/chrome/global/skin/background
@@ -28,3 +29,4 @@ DESTDIR=$BASEDIR/src/chrome/global/skin/background
 extractImages default
 extractImages hover
 extractImages active
+extractImages secure

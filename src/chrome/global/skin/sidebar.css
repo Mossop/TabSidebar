@@ -173,11 +173,6 @@
   font-weight: bold;
 }
 
-.tbs-tabpreview[security="high"][selected="true"],
-.tbs-tabpreview[security="low"][selected="true"] {
-  background-color: #edec7d !important;
-}
-
 .tbs-topbox {
 	padding: 4px 4px 2px 4px;
 }

@@ -1,6 +1,7 @@
 %define BG_DEFAULT chrome://tabsidebar/skin/background/default
 %define BG_ACTIVE chrome://tabsidebar/skin/background/active
 %define BG_HOVER chrome://tabsidebar/skin/background/hover
+%define BG_SECURE chrome://tabsidebar/skin/background/secure
 
 .tbs-top-middle {
 	background-image: url('BG_DEFAULT/top-middle.png');
@@ -8,6 +9,11 @@
 
 .tbs-tabpreview[selected="true"] .tbs-top-middle {
 	background-image: url('BG_ACTIVE/top-middle.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-top-middle,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-top-middle {
+  background-image: url('BG_SECURE/top-middle.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-top-middle {
@@ -22,6 +28,11 @@
 	background-image: url('BG_ACTIVE/top-left.png') !important;
 }
 
+.tbs-tabpreview[security="high"][selected="true"] .tbs-top-left,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-top-left {
+  background-image: url('BG_SECURE/top-left.png') !important;
+}
+
 .tbs-tabpreview:hover .tbs-top-left {
 	background-image: url('BG_HOVER/top-left.png');
 }
@@ -32,6 +43,11 @@
 
 .tbs-tabpreview[selected="true"] .tbs-top-right {
 	background-image: url('BG_ACTIVE/top-right.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-top-right,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-top-right {
+  background-image: url('BG_SECURE/top-right.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-top-right {
@@ -46,6 +62,11 @@
 	background-image: url('BG_ACTIVE/bottom-middle.png') !important;
 }
 
+.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-middle,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom-middle {
+  background-image: url('BG_SECURE/bottom-middle.png') !important;
+}
+
 .tbs-tabpreview:hover .tbs-bottom-middle {
 	background-image: url('BG_HOVER/bottom-middle.png');
 }
@@ -56,6 +77,11 @@
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-left {
 	background-image: url('BG_ACTIVE/bottom-left.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-left,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom-left {
+  background-image: url('BG_SECURE/bottom-left.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-bottom-left {
@@ -70,6 +96,11 @@
 	background-image: url('BG_ACTIVE/bottom-right.png') !important;
 }
 
+.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-right,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-botom-right {
+  background-image: url('BG_SECURE/bottom-right.png') !important;
+}
+
 .tbs-tabpreview:hover .tbs-bottom-right {
 	background-image: url('BG_HOVER/bottom-right.png');
 }
@@ -80,6 +111,11 @@
 
 .tbs-tabpreview[selected="true"] .tbs-middle-middle {
 	background-image: url('BG_ACTIVE/middle-middle.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-middle,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-middle {
+  background-image: url('BG_SECURE/middle-middle.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-middle-middle {
@@ -94,6 +130,11 @@
 	background-image: url('BG_ACTIVE/middle-left.png') !important;
 }
 
+.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-left,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-left {
+  background-image: url('BG_SECURE/middle-left.png') !important;
+}
+
 .tbs-tabpreview:hover .tbs-middle-left {
 	background-image: url('BG_HOVER/middle-left.png');
 }
@@ -104,6 +145,11 @@
 
 .tbs-tabpreview[selected="true"] .tbs-middle-right {
 	background-image: url('BG_ACTIVE/middle-right.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-right,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-right {
+  background-image: url('BG_SECURE/middle-right.png') !important;
 }
 
 .tbs-tabpreview:hover .tbs-middle-right {
