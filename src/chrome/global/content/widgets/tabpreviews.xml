@@ -63,6 +63,7 @@
       <field name="_browserWidth">0</field>
       <field name="_newTabPosition">null</field>
       <field name="_seenSessionRestore">false</field>
+      <field name="_reflowComplete">false</field>
       
       <constructor>
       <![CDATA[
@@ -117,7 +118,7 @@
             }
           }
           var preview = this.addPreview(browsers[selectedpos]);
-          if ((preview._browserWidth > 0) && (preview._browserHeight > 0))
+          if ((preview._browserWidth > MINBROWSERSIZE) && (preview._browserHeight > MINBROWSERSIZE))
             this.browserResized(preview, preview._browserWidth, preview._browserHeight);
           for (var i=selectedpos-1; i>=0; i--)
             this.addPreview(browsers[i]);
@@ -1114,6 +1115,7 @@
             this._contentHeight=(this.displayHeight/this.displayWidth)*this._contentWidth;
             this._resize();
             this.style.visibility=null;
+            this._reflowComplete = true;
             this._selected.redraw();
             this._validateMax = this.previews.length;
             if (this._validateMax <= 1)
@@ -1153,7 +1155,7 @@
 #ifdef ${extension.debug}
             this._logMessage("Got told a new size of "+width+"x"+height);
 #endif
-            if ((width != this._browserWidth) || (height != this._browserHeight))
+            if ((width != this._browserWidth) || (height != this._browserHeight) || !this._reflowComplete)
             {
               this._browserWidth = width;
               this._browserHeight = height;
@@ -1168,7 +1170,7 @@
       <method name="_validate">
         <body>
         <![CDATA[
-          if (this._browserHeight < MINBROWSERSIZE)
+          if (!this._reflowComplete)
             this._updateSize();
           else
           {

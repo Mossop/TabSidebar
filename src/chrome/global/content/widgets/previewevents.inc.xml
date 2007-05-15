@@ -352,9 +352,7 @@
           
           var findbar = this._browser.ownerDocument.getElementById("FindToolbar");
           if (!findbar.hidden)
-          {
             height+=findbar.boxObject.height;
-          }
           
 #ifdef ${extension.debug}
           this._logMessage("new size: "+width+"x"+height);
