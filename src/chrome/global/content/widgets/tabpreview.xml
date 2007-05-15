@@ -276,6 +276,10 @@
         <![CDATA[
           if (this.previews && this.previews._enableLogging)
           {
+            var caller = Components.stack.caller;
+            if (caller)
+              message += " ("+caller.filename+":"+caller.lineNumber+")";
+
             Components.classes['@mozilla.org/consoleservice;1']
                       .getService(Components.interfaces.nsIConsoleService)
                       .logStringMessage("Tab Preview: "+message);
@@ -290,12 +294,25 @@
         <![CDATA[
           if (this.previews && this.previews._enableLogging)
           {
-            var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
-            
+            var caller = Components.stack.caller;
+            var msg = Components.classes["@mozilla.org/scripterror;1"]
+                                .createInstance(Components.interfaces.nsIScriptError);
+            if (caller)
+            {
+              var filename = caller.filename;
+              var sourceLine = caller.sourceLine;
+              var lineNumber = caller.lineNumber;
+            }
+            else
+            {
+              var filename = "chrome://tabsidebar/content/widgets/tabpreview.xml";
+              var sourceLine = "";
+              var lineNumber = 0;
+            }
             msg.init("Tab Preview: "+message,
-                     "chrome://tabsidebar/content/widgets/tabpreview.xml",
-                     "",
-                     0,
+                     filename,
+                     sourceLine,
+                     lineNumber,
                      0,
                      Components.interfaces.nsIScriptError.warningFlag,
                      "XUL JavaScript");
@@ -314,12 +331,25 @@
         <![CDATA[
           if (this.previews && this.previews._enableLogging)
           {
-            var msg = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
-            
+            var caller = Components.stack.caller;
+            var msg = Components.classes["@mozilla.org/scripterror;1"]
+                                .createInstance(Components.interfaces.nsIScriptError);
+            if (caller)
+            {
+              var filename = caller.filename;
+              var sourceLine = caller.sourceLine;
+              var lineNumber = caller.lineNumber;
+            }
+            else
+            {
+              var filename = "chrome://tabsidebar/content/widgets/tabpreview.xml";
+              var sourceLine = "";
+              var lineNumber = 0;
+            }
             msg.init("Tab Preview: "+message,
-                     "chrome://tabsidebar/content/widgets/tabpreview.xml",
-                     "",
-                     0,
+                     filename,
+                     sourceLine,
+                     lineNumber,
                      0,
                      Components.interfaces.nsIScriptError.errorFlag,
                      "XUL JavaScript");
@@ -509,6 +539,14 @@
 #endif
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
+          /*var preview = ss.getTabValue(this.tab, "tabsidebar.preview");
+          if (preview)
+          {
+            ctx = this.canvas.getContext("2d");
+            var image = new Image();
+            image.onload = function() { ctx.drawImage(image, 0, 0); };
+            image.src = preview;
+          }*/
         </body>
       </method>
       
@@ -718,6 +756,7 @@
           {
             ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
           }
+          //this._storeSessionValue("preview", canvas.toDataURL());
         ]]>
         </body>
       </method>
