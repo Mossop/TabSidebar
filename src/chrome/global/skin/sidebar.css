@@ -248,7 +248,7 @@
 
 /* Drag and drop */
 .tbs-drop-indicator-bar {
-  display: none;
+  visibility: hidden;
   position: relative;
 }
 
@@ -282,7 +282,7 @@
 }
 
 .tbs-drop-indicator-bar[dragging="true"] {
-  display: -moz-box
+  visibility: visible;
 }
 
 /* Toolbar like items */
