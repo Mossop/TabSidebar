@@ -1224,26 +1224,34 @@
       	</body>
       </method>
       
+      <method name="onContextMenu">
+        <parameter name="event"/>
+        <body>
+#ifdef ${extension.debug}
+          this._logMessage("onContextMenu "+event.screenX+"x"+event.screenY);
+#endif
+          var x = event.screenX-this.window.document.documentElement.boxObject.screenX;
+          var y = event.screenY-this.window.document.documentElement.boxObject.screenY;
+
+          x+=2;
+          y+=2;
+          
+          if (event.target.localName == "tabpreview")
+            this.displayContextMenu(event.target,x,y);
+          else if (this._selected)
+            this.displayContextMenu(this._selected,x,y);
+          else
+            this.displayContextMenu(this.previews[0],x,y);
+        </body>
+      </method>
+
       <method name="onClick">
         <parameter name="event"/>
         <body>
-        	if (event.button == 2)
-        	{
-	          var x = event.screenX-this.window.document.documentElement.boxObject.screenX;
-	          var y = event.screenY-this.window.document.documentElement.boxObject.screenY;
-	
-	          x+=2;
-	          y+=2;
-	          
-	          if (event.target.localName == "tabpreview")
-	            this.displayContextMenu(event.target,x,y);
-	          else if (this._selected)
-	            this.displayContextMenu(this._selected,x,y);
-	          else
-	            this.displayContextMenu(this.previews[0],x,y);
-	        }
-          else if ((event.target.localName=="separator" || event.target == this.scrollBox))
+        <![CDATA[
+        	if ((event.button != 2) && ((event.target.localName=="separator" || event.target == this.scrollBox)))
 	        	this.dispatchCloneMouseEvent(event);
+        ]]>
         </body>
       </method>
       

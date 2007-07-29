@@ -97,6 +97,7 @@
                        ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
                        ondragdrop="nsDragAndDrop.drop(event, this.parentNode.parentNode); event.stopPropagation();"
                        ondragexit="nsDragAndDrop.dragExit(event, this.parentNode.parentNode); event.stopPropagation();"
+                       oncontextmenu="this.parentNode.parentNode.onContextMenu(event);"
                        onclick="this.parentNode.parentNode.onClick(event);"
                        ondblclick="this.parentNode.parentNode.onDblClick(event);"
                        align="stretch" flex="1" orient="horizontal">
