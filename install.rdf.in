@@ -34,7 +34,7 @@
     <em:homepageURL>http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar</em:homepageURL>
     <em:iconURL>chrome://tabsidebar/skin/icon.png</em:iconURL>
     <em:aboutURL>chrome://tabsidebar/content/about.xul</em:aboutURL>
-    <em:updateURL>http://users.blueprintit.co.uk/~dave/web/firefox/@name@/update.rdf</em:updateURL>
+    <em:updateURL>https://www.oxymoronical.com/web/firefox/@name@/update.rdf?version=%ITEM_VERSION%&amp;status=%ITEM_STATUS%&amp;app=%APP_ID%&amp;appversion=%APP_VERSION%&amp;os=%APP_OS%&amp;abi=%APP_ABI%</em:updateURL>
     
   </Description>      
 </RDF>
