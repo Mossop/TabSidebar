@@ -44,7 +44,7 @@
 
 <!DOCTYPE bindings [
 <!ENTITY % bidiDTD SYSTEM "chrome://global/locale/global.dtd">
-<!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
+<!ENTITY % tabbrowserDTD SYSTEM "chrome://browser/locale/tabbrowser.dtd" >
 <!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
 <!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
 %bidiDTD;

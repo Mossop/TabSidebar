@@ -14,3 +14,5 @@ style 			chrome://browser/content/browser.xul 								chrome://tabsidebar-platfo
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/skin/browser.css
 style 			chrome://browser/content/browser.xul 								chrome://tabsidebar/content/branding/toolbar.css
 style 			chrome://global/content/customizeToolbar.xul 				chrome://tabsidebar/content/branding/toolbar.css
+
+override    chrome://browser/locale/tabbrowser.dtd              chrome://global/locale/tabbrowser/dtd        appversion<3.0a8pre
