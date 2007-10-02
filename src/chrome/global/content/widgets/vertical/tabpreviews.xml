@@ -596,8 +596,8 @@
                 preview=this.previews[0];
               }
 
-              var x = preview.boxObject.screenX-this.window.document.documentElement.boxObject.screenX;
-              var y = preview.boxObject.screenY-this.window.document.documentElement.boxObject.screenY;
+              var x = preview.boxObject.screenX-this.browserWindow.document.documentElement.boxObject.screenX;
+              var y = preview.boxObject.screenY-this.browserWindow.document.documentElement.boxObject.screenY;
     
               x+=2;
               y+=2;

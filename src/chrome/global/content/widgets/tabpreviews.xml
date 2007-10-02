@@ -70,9 +70,9 @@
                              .getInterface(Components.interfaces.nsIWebNavigation)
                              .QueryInterface(Components.interfaces.nsIDocShellTreeItem);
         docshell = docshell.rootTreeItem;
-        this.window = docshell.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                              .getInterface(Components.interfaces.nsIDOMWindow);
-        this.tabbrowser = this.window.document.getElementById("content");
+        this.browserWindow = docshell.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                                     .getInterface(Components.interfaces.nsIDOMWindow);
+        this.tabbrowser = this.browserWindow.document.getElementById("content");
         
         this._initTree();
         this._migrateOldSettings();
@@ -86,7 +86,7 @@
         
         this._loadMetrics();
         this.init();
-        if (this.window.__SSi)
+        if (this.browserWindow.__SSi)
         {
           this._restoreSession();
           this._seenSessionRestore = true;
@@ -241,7 +241,7 @@
 #endif
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
-          var pos = ss.getWindowValue(this.window, "tabsidebar.scrollpos");
+          var pos = ss.getWindowValue(this.browserWindow, "tabsidebar.scrollpos");
           if (pos)
             this.scrollTo(pos);
         </body>
@@ -291,7 +291,7 @@
               this._selected = null;
               this._lastDrop = null;
               this.tabbrowser = null;
-              this.window = null;
+              this.browserWindow = null;
     
 #ifdef ${extension.debug}
               //dump("Tabpreviews destroyed\n");
@@ -316,7 +316,7 @@
             
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
-          ss.setWindowValue(this.window, "tabsidebar."+key, value);
+          ss.setWindowValue(this.browserWindow, "tabsidebar."+key, value);
         </body>
       </method>
       
@@ -438,7 +438,7 @@
 
       <!-- Internal fields and methods -->
 
-      <field name="_selected"/>
+      <field name="_selected" value="null"/>
       
       <method name="_resize">
         <body>
@@ -551,8 +551,8 @@
                   .getService(Components.interfaces.nsIPrefService)
                   .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranchInternal);
       </field>
-      <field name="tabbrowser"/>
-      <field name="window"/>
+      <field name="tabbrowser" value="null"/>
+      <field name="browserWindow" value="null"/>
       
       <property name="previews">
         <getter>
@@ -1216,7 +1216,7 @@
 
 	    		target = this.previews[0].tab.boxObject.parentBox;
 	    		var ev = this.tabbrowser.ownerDocument.createEvent("MouseEvent");
-	    		ev.initMouseEvent(event.type, true, true, this.window,
+	    		ev.initMouseEvent(event.type, true, true, this.browserWindow,
 	    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
 	    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
 	    		target.dispatchEvent(ev);
@@ -1230,8 +1230,8 @@
 #ifdef ${extension.debug}
           this._logMessage("onContextMenu "+event.screenX+"x"+event.screenY);
 #endif
-          var x = event.screenX-this.window.document.documentElement.boxObject.screenX;
-          var y = event.screenY-this.window.document.documentElement.boxObject.screenY;
+          var x = event.screenX-this.browserWindow.document.documentElement.boxObject.screenX;
+          var y = event.screenY-this.browserWindow.document.documentElement.boxObject.screenY;
 
           x+=2;
           y+=2;
