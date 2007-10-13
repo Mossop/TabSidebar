@@ -249,7 +249,7 @@
           diff += parseInt(computed.paddingTop);
           diff += parseInt(computed.paddingBottom);
 
-          newHeight = container.boxObject.height - diff
+          newHeight = container.boxObject.height - diff;
 
           if (newHeight <= 0)
           {

@@ -233,7 +233,7 @@
           diff += parseInt(computed.paddingLeft);
           diff += parseInt(computed.paddingRight);
 
-          newWidth = container.boxObject.width - diff
+          newWidth = container.boxObject.width - diff;
 
           if (newWidth <= 0)
           {
