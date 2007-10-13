@@ -61,7 +61,9 @@
       <field name="_browserHeight">0</field>
       <field name="_browserWidth">0</field>
       <field name="_newTabPosition">null</field>
+#ifdef ${extension.enablesessionstore}
       <field name="_seenSessionRestore">false</field>
+#endif
       <field name="_reflowComplete">false</field>
       <field name="_selected">null</field>
       
@@ -85,13 +87,17 @@
 #endif
         this._initEvents();
         
+#ifdef ${extension.enablemetrics}
         this._loadMetrics();
+#endif
         this.init();
+#ifdef ${extension.enablesessionstore}
         if (this.browserWindow.__SSi)
         {
           this._restoreSession();
           this._seenSessionRestore = true;
         }
+#endif
           
         if (this.showPreviews)
           this._updateSize();
@@ -179,11 +185,14 @@
           this.tabbrowser.tabContainer.addEventListener("TabClose", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabMove", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabSelect", this._eventListener, false);
+#ifdef ${extension.enablesessionstore}
           this.tabbrowser.tabContainer.addEventListener("SSTabRestoring", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("SSTabRestored", this._eventListener, false);
+#endif
         </body>
       </method>
       
+#ifdef ${extension.enablemetrics}
       <method name="_loadMetrics">
         <body>
           if (this.preferences.prefHasUserValue("metrics.browserwidth"))
@@ -197,6 +206,8 @@
         </body>
       </method>
       
+#endif
+#ifdef ${extension.enablesessionstore}
       <method name="_restoreSession">
         <body>
 #ifdef ${extension.debug}
@@ -210,6 +221,7 @@
         </body>
       </method>
       
+#endif
       <destructor>
 #ifdef ${extension.debug}
         dump("Tabpreviews destructor\n");
@@ -239,8 +251,10 @@
 		          this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
 		          this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
 		          this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
+#ifdef ${extension.enablesessionstore}
               this.tabbrowser.tabContainer.removeEventListener("SSTabRestoring", this._eventListener, false);
               this.tabbrowser.tabContainer.removeEventListener("SSTabRestored", this._eventListener, false);
+#endif
       
               this.preferences.removeObserver("", this);
               
@@ -278,6 +292,7 @@
 #include "tabpreviews/logging.inc.xml"
 
 #endif
+#ifdef ${extension.enablesessionstore}
       <method name="_storeSessionValue">
         <parameter name="key"/>
         <parameter name="value"/>
@@ -291,6 +306,8 @@
         </body>
       </method>
       
+#endif
+#ifdef ${extension.enablemetrics}
       <method name="_saveMetrics">
         <body>
           this.preferences.setIntPref("metrics.browserwidth", this._browserWidth);
@@ -300,6 +317,7 @@
         </body>
       </method>
       
+#endif
       <!-- Event handling gubbins -->
 
       <field name="_eventListener">({
@@ -345,6 +363,7 @@
             var newBrowser = this.tabpreviews.tabbrowser.getBrowserForTab(this.tabpreviews.tabbrowser.selectedTab);
             this.tabpreviews.selectPreview(newBrowser);
           }
+#ifdef ${extension.enablesessionstore}
           else if (event.type=="SSTabRestoring")
           {
             if (!this.tabpreviews._seenSessionRestore)
@@ -362,6 +381,7 @@
             if (preview)
               preview.endRestoringSession();
           }
+#endif
         }
       });</field>
 

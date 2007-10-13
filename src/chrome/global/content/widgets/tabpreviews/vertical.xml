@@ -199,7 +199,9 @@
           if (scrollTop>eltop)
           {
             this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
+#ifdef ${extension.enablesessionstore}
             this._storeSessionValue("scrollpos", this.getScrollPosition());
+#endif
           }
           else if ((scrollTop+scrollHeight)<elbottom)
           {
@@ -209,7 +211,9 @@
               shift=eltop-scrollTop;
             }
             this.scrollBoxObject.scrollBy(0,shift);
+#ifdef ${extension.enablesessionstore}
             this._storeSessionValue("scrollpos", this.getScrollPosition());
+#endif
           }
         ]]>
         </body>
@@ -247,7 +251,9 @@
           {
             this._displayWidth=newWidth;
             this._displayHeight=newHeight;
+#ifdef ${extension.enablemetrics}
             this._saveMetrics();
+#endif
           }
           return true;
         ]]>
@@ -356,7 +362,9 @@
         <parameter name="position"/>
         <body>
           this.scrollBoxObject.scrollTo(0, position);
+#ifdef ${extension.enablesessionstore}
           this._storeSessionValue("scrollpos", position);
+#endif
         </body>
       </method>
       
@@ -364,7 +372,9 @@
         <parameter name="distance"/>
         <body>
           this.scrollBoxObject.scrollByLine(distance);
+#ifdef ${extension.enablesessionstore}
           this._storeSessionValue("scrollpos", this.getScrollPosition());
+#endif
         </body>
       </method>
       

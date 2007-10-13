@@ -442,6 +442,7 @@
 
       <!-- Methods -->
       
+#ifdef ${extension.enablesessionstore}
       <method name="startRestoringSession">
         <body>
 #ifdef ${extension.debug}
@@ -485,6 +486,7 @@
         </body>
       </method>
       
+#endif
       <method name="updateDisplay">
         <body>
         <![CDATA[
@@ -522,7 +524,9 @@
       <method name="setfocus">
         <body>
           this.focus();
+#ifdef ${extension.enablesessionstore}
           this._storeSessionValue("focused", "true");
+#endif
         </body>
       </method>
       
@@ -666,7 +670,9 @@
           {
             ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
           }
+#ifdef ${extension.enablesessionstore}
           //this._storeSessionValue("preview", canvas.toDataURL());
+#endif
         ]]>
         </body>
       </method>
