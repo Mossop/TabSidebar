@@ -40,6 +40,10 @@
 % $Date$
 % $Revision$
 %
+tabbrowser[hidetabs] .tabbrowser-tabs {
+  visibility: collapse !important;
+}
+
 window[chromehidden~="toolbar"] #tabsidebar-left-container,
 window[chromehidden~="toolbar"] #tabsidebar-left-splitter,
 window[chromehidden~="toolbar"] #tabsidebar-right-container,

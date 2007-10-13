@@ -215,8 +215,7 @@ showTabbar: function()
 	if (this.hidden)
 	{
 	 	var tabbrowser = this.doc.getElementById("content");
-	 	var tabstrip = this.doc.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
-	 	tabstrip.collapsed=false;
+    tabbrowser.removeAttribute("hidetabs");
 	 	this.hidden=false;
 	}
 },
@@ -226,8 +225,7 @@ hideTabbar: function()
 	if (!this.hidden)
 	{
 	  var tabbrowser = this.doc.getElementById("content");
-	  var tabstrip = this.doc.getAnonymousElementByAttribute(tabbrowser,"class","tabbrowser-tabs");
-	  tabstrip.collapsed=true;
+    tabbrowser.setAttribute("hidetabs", "true");
 	  this.hidden=true;
   }
 },
