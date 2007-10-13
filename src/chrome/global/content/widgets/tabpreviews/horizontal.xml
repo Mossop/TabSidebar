@@ -35,10 +35,10 @@
 #
 # ***** END LICENSE BLOCK *****
 #
-# $HeadURL$
-# $LastChangedBy$
-# $Date$
-# $Revision$
+# $HeadURL: http://svn.oxymoronical.com/dave/mozilla/firefox/TabSidebar/trunk/src/chrome/global/content/widgets/horizontal/tabpreviews.xml $
+# $LastChangedBy: dave $
+# $Date: 2007-10-02 13:46:13 +0100 (Tue, 02 Oct 2007) $
+# $Revision: 1192 $
 #
 <?xml version="1.0"?>
 
@@ -61,13 +61,12 @@
 
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
-      <stylesheet src="chrome://tabsidebar-platform/content/widgets/tabpreviews.css"/>
     </resources>
     
-    <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="horizontal" style="visibility: hidden">
+    <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="vertical" style="visibility: hidden">
       <xul:popupset>
       
-        <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="center" onpopupshowing="this.parentNode.parentNode.onPreviewTooltipShowing(event);">
+        <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="left" onpopupshowing="this.parentNode.parentNode.onPreviewTooltipShowing(event);">
           <xul:label class="tbs-tooltip-title" crop="end" value="Title"/>
           <xul:label class="tbs-tooltip-uri" crop="end" value="URI"/>
           <xul:image class="tbs-tooltip-image"/>
@@ -76,23 +75,23 @@
         
       </xul:popupset>
         
-      <xul:vbox class="tbs-drop-indicator-bar">
-        <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
-      </xul:vbox>          
+      <xul:hbox class="tbs-drop-indicator-bar">
+        <xul:vbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
+      </xul:hbox>          
 
       <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
       
-      <xul:vbox flex="1" align="stretch">
-        <xul:toolbar class="tbs-scrolltoolbar">
+      <xul:hbox flex="1" align="stretch">
+        <xul:toolbar class="tbs-scrolltoolbar" orient="vertical">
           <xul:toolbarbutton class="tbs-scrollstart" tooltiptext="&tabsidebar.scrollstart;" oncommand="this.parentNode.parentNode.parentNode.scrollToStart();"/>
-          <xul:toolbarbutton class="tbs-scrollup" flex="1" tooltiptext="&tabsidebar.scrollup;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(-3);"/>
+          <xul:toolbarbutton class="tbs-scrollleft" flex="1" tooltiptext="&tabsidebar.scrollleft;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(-3);"/>
           <xul:toolbarbutton class="tbs-startoverflow" type="menu">
-            <xul:menupopup popupanchor="topright" popupalign="topleft"
+            <xul:menupopup popupanchor="bottomleft" popupalign="topleft"
                            onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showFirstTabs(this);"
                            oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
           </xul:toolbarbutton>
         </xul:toolbar>
-        
+
         <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
                        ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode.parentNode); event.stopPropagation();"
                        ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
@@ -101,22 +100,22 @@
                        oncontextmenu="this.parentNode.parentNode.onContextMenu(event);"
                        onclick="this.parentNode.parentNode.onClick(event);"
                        ondblclick="this.parentNode.parentNode.onDblClick(event);"
-                       align="stretch" flex="1" orient="vertical">
+                       align="stretch" flex="1" orient="horizontal">
           
           <children/>
   
         </xul:scrollbox>
 
-        <xul:toolbar class="tbs-scrolltoolbar">
+        <xul:toolbar class="tbs-scrolltoolbar" orient="vertical">
           <xul:toolbarbutton class="tbs-scrollend" tooltiptext="&tabsidebar.scrollend;" oncommand="this.parentNode.parentNode.parentNode.scrollToEnd();"/>
-          <xul:toolbarbutton class="tbs-scrolldown" flex="1" tooltiptext="&tabsidebar.scrolldown;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(3);"/>
+          <xul:toolbarbutton class="tbs-scrollright" flex="1" tooltiptext="&tabsidebar.scrollright;" oncommand="this.parentNode.parentNode.parentNode.scrollBy(3);"/>
           <xul:toolbarbutton class="tbs-endoverflow" type="menu">
-            <xul:menupopup popupanchor="bottomright" popupalign="bottomleft"
+            <xul:menupopup popupanchor="bottomright" popupalign="topright"
                            onpopupshowing="return this.parentNode.parentNode.parentNode.parentNode.showLastTabs(this);"
                            oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
           </xul:toolbarbutton>
         </xul:toolbar>
-      </xul:vbox>
+      </xul:hbox>
     </content>
     
     <implementation>
@@ -130,7 +129,7 @@
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
       <field name="scrollStartToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[0]</field>
       <field name="scrollEndToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[2]</field>
-      
+
       <field name="_startScrollDisabled">false</field>
       <field name="_endScrollDisabled">false</field>
       
@@ -138,16 +137,13 @@
         <parameter name="preview"/>
         <body>
         <![CDATA[
-          if (this.displayHeight<0)
+          if (this.displayWidth<=0)
           {
 #ifdef ${extension.debug}
             this._logWarning("Attempt to resize preview before size has been calculated");
 #endif
             return;
           }
-#ifdef ${extension.debug}
-          this._logMessage("Sizing preview to "+this.displayWidth+"x"+this.displayHeight);
-#endif
 
           var canvas = preview.canvas;
           canvas.style.height=this.displayHeight+"px";
@@ -158,11 +154,24 @@
           canvas.style.maxWidth=this.displayWidth+"px";
           
           var container = canvas.parentNode.parentNode;
+          var mainbox = preview;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
-          diff += parseInt(computed.paddingTop);
-          diff += parseInt(computed.paddingBottom);
-          container.style.height = (this.displayHeight+diff)+"px";
+          while (container != mainbox)
+          {
+            diff += parseInt(computed.borderLeftWidth);
+            diff += parseInt(computed.borderRightWidth);
+            diff += parseInt(computed.paddingLeft);
+            diff += parseInt(computed.paddingRight);
+            container = container.parentNode;
+            computed = window.getComputedStyle(container,null);
+          }
+          diff += parseInt(computed.paddingLeft);
+          diff += parseInt(computed.paddingRight);
+          container.style.width = (this.displayWidth+diff)+"px";
+          
+          var offset = (canvas.parentNode.parentNode.boxObject.width-this.displayWidth)/2;
+          canvas.setAttribute("left", offset);
           
           preview._invalid=true;          
           try
@@ -181,34 +190,34 @@
         <parameter name="last"/>
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          var scrollTop = y.value;
-          var scrollHeight = this.scrollBoxObject.height;
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var scrollLeft = x.value;
+          var scrollWidth = this.scrollBox.boxObject.width;
 
-          var eltop = first.boxObject.y;
+          var elleft = first.boxObject.x;
           var style = window.getComputedStyle(first,null);
-          eltop-=parseInt(style.marginTop)+parseInt(style.borderTopWidth);
-          eltop-=this.scrollBoxObject.y;
+          elleft-=parseInt(style.marginLeft)+parseInt(style.borderLeftWidth);
+          elleft-=this.scrollBoxObject.x;
           
-          var elbottom = last.boxObject.y+last.boxObject.height;
+          var elright = last.boxObject.x+last.boxObject.width;
           style = window.getComputedStyle(last,null);
-          elbottom+=parseInt(style.marginBottom)+parseInt(style.borderBottomWidth);
-          elbottom-=this.scrollBoxObject.y;
+          elright+=parseInt(style.marginRight)+parseInt(style.borderRightWidth);
+          elright-=this.scrollBoxObject.x;
 
-          if (scrollTop>eltop)
+          if (scrollLeft>elleft)
           {
-            this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
+            this.scrollBoxObject.scrollBy(elleft-scrollLeft, 0);
             this._storeSessionValue("scrollpos", this.getScrollPosition());
           }
-          else if ((scrollTop+scrollHeight)<elbottom)
+          else if ((scrollLeft+scrollWidth)<elright)
           {
-            var shift = elbottom-(scrollTop+scrollHeight);
-            if ((scrollTop+shift)>eltop)
+            var shift = elright-(scrollLeft+scrollWidth);
+            if ((scrollLeft+shift)>elleft)
             {
-              shift=eltop-scrollTop;
+              shift=elleft-scrollLeft;
             }
-            this.scrollBoxObject.scrollBy(0,shift);
+            this.scrollBoxObject.scrollBy(shift,0);
             this._storeSessionValue("scrollpos", this.getScrollPosition());
           }
         ]]>
@@ -218,27 +227,34 @@
       <method name="_calculateSize">
         <body>
         <![CDATA[
+          if (!this.showPreviews)
+          {
+            this._displayHeight = 0;
+            this._displayWidth = 100;
+            return true;
+          }
+          
           var newWidth=0;
           var newHeight=0;
 
           var container = this._selected.canvas.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
-          diff += parseInt(computed.borderLeftWidth);
-          diff += parseInt(computed.borderRightWidth);
-          diff += parseInt(computed.paddingLeft);
-          diff += parseInt(computed.paddingRight);
+          diff += parseInt(computed.borderTopWidth);
+          diff += parseInt(computed.borderBottomWidth);
+          diff += parseInt(computed.paddingTop);
+          diff += parseInt(computed.paddingBottom);
 
-          newWidth = container.boxObject.width - diff
+          newHeight = container.boxObject.height - diff
 
-          if (newWidth <= 0)
+          if (newHeight <= 0)
           {
 #ifdef ${extension.debug}
             this._logWarning("Invalid sizes - retrying in a few");
 #endif
             return false;
           }
-          newHeight = parseInt((this._browserHeight/this._browserWidth)*newWidth);
+          newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
 
 #ifdef ${extension.debug}
           this._logMessage("New sizes: "+newWidth+"x"+newHeight+" "+this._browserWidth+"x"+this._browserHeight);
@@ -260,16 +276,16 @@
           if (drop!=this._lastDrop)
           {
             this.ensureElementsAreVisible(drop,drop);
-            var y = {};
-            this.scrollBoxObject.getPosition({}, y);
+            var x = {};
+            this.scrollBoxObject.getPosition(x, {});
             var dropel = drop;
             if (drop.localName == "tabpreview")
             {
               dropel = drop.canvas.parentNode;
             }
-            var pos = dropel.boxObject.y+(dropel.boxObject.height/2)-this.boxObject.y;
-            pos = pos - y.value - 5;
-            this.dragDropIndicator.style.marginTop = pos + "px";
+            var pos = dropel.boxObject.x+(dropel.boxObject.width/2)-this.boxObject.x;
+            pos = pos - x.value - 5;
+            this.dragDropIndicator.style.marginLeft = pos + "px";
             if (!this._lastDrop)
             {
               this.dragDropBar.setAttribute("dragging","true");
@@ -284,9 +300,9 @@
         <parameter name="external"/>
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          var ypos = aEvent.clientY+y.value;
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var xpos = aEvent.clientX+x.value;
           var diff = 0;
           var previews = this.previews;
           for (var i=0; i<previews.length; i++)
@@ -294,18 +310,18 @@
             var bo = previews[i].boxObject;
             if (external)
             {
-              if (bo.y>ypos)
+              if (bo.x>xpos)
               {
                 return previews[i].previousSibling;
               }
-              else if ((bo.y+bo.height)>=ypos)
+              else if ((bo.x+bo.width)>=xpos)
               {
                 return previews[i];
               }
             }
             else
             {
-              if ((bo.y+(bo.height/2))>ypos)
+              if ((bo.x+(bo.width/2))>xpos)
               {
                 return previews[i].previousSibling;
               }
@@ -320,21 +336,21 @@
         <parameter name="aEvent"/>
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
 
-          if (y.value>0 && aEvent.clientY<10)
+          if (x.value>0 && aEvent.clientX<10)
           {
-            this.scrollBoxObject.scrollBy(0,-20);
+            this.scrollBoxObject.scrollBy(-20,0);
             this._hideDropIndicator();
             return true;
           }
           
-          var bottom = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.height-this.scrollBox.boxObject.height;
+          var right = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.width-this.scrollBox.boxObject.width;
           
-          if ((this.scrollBox.boxObject.height-aEvent.clientY)<10 && y.value<bottom)
+          if ((this.scrollBox.boxObject.width-aEvent.clientX)<10 && x.value<right)
           {
-            this.scrollBoxObject.scrollBy(0,20);
+            this.scrollBoxObject.scrollBy(20,0);
             this._hideDropIndicator();
             return true;
           }
@@ -347,7 +363,7 @@
       <method name="getScrollPosition">
         <body>
           var value = {};
-          this.scrollBoxObject.getPosition({}, value);
+          this.scrollBoxObject.getPosition(value, {});
           return value.value;
         </body>
       </method>
@@ -355,7 +371,7 @@
       <method name="scrollTo">
         <parameter name="position"/>
         <body>
-          this.scrollBoxObject.scrollTo(0, position);
+          this.scrollBoxObject.scrollTo(position, 0);
           this._storeSessionValue("scrollpos", position);
         </body>
       </method>
@@ -363,32 +379,32 @@
       <method name="scrollBy">
         <parameter name="distance"/>
         <body>
-          this.scrollBoxObject.scrollByLine(distance);
+          this.scrollBoxObject.scrollBy(distance*15, 0);
           this._storeSessionValue("scrollpos", this.getScrollPosition());
         </body>
       </method>
       
       <method name="scrollToStart">
         <body>
-        	this.scrollTo(0);
+          this.scrollTo(0);
         </body>
       </method>
       
       <method name="scrollToEnd">
         <body>
-        	this.scrollTo(this.scrollBoxObject.height);
+        	this.scrollTo(this.scrollBoxObject.width);
         </body>
       </method>
       
       <method name="_checkScrollPosition">
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          var end = y.value+this.scrollBoxObject.height;
-          if (this.scrollPanel.boxObject.height<=this.scrollBoxObject.height)
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var end = x.value+this.scrollBoxObject.width;
+          if (this.scrollPanel.boxObject.width<=this.scrollBoxObject.width)
             this.scrollToStart();
-          else if (end>this.scrollPanel.boxObject.height)
+          else if (end>this.scrollPanel.boxObject.width)
             this.scrollToEnd();
         ]]>
         </body>
@@ -397,9 +413,9 @@
       <method name="_updateScrollButtons">
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          var state = (y.value <= 0);
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          var state = (x.value <= 0);
           if (state != this._startScrollDisabled)
           {
             var button = this.scrollStartToolbar.firstChild;
@@ -411,8 +427,8 @@
             this._startScrollDisabled = state;
           }
 
-          var height = this.scrollPanel.boxObject.height;
-          state = ((y.value+this.scrollBoxObject.height) >= height);
+          var width = this.scrollPanel.boxObject.width;
+          state = ((x.value+this.scrollBoxObject.width) >= width);
           if (state != this._endScrollDisabled)
           {
             button = this.scrollEndToolbar.firstChild;
@@ -434,10 +450,10 @@
           while (menupopup.firstChild)
             menupopup.removeChild(menupopup.firstChild);
 
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
           var node = this.firstChild;
-          while ((node.boxObject.y-this.scrollBoxObject.y)<y.value)
+          while ((node.boxObject.x-this.scrollBoxObject.x)<x.value)
           {
             if (node.localName == "tabpreview")
             {
@@ -462,11 +478,11 @@
           while (menupopup.firstChild)
             menupopup.removeChild(menupopup.firstChild);
 
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          y.value+=this.scrollBoxObject.height;
+          var x = {};
+          this.scrollBoxObject.getPosition(x, {});
+          x.value+=this.scrollBoxObject.width;
           var node = this.lastChild;
-          while ((node.boxObject.y-this.scrollBoxObject.y+node.boxObject.height)>y.value)
+          while ((node.boxObject.x-this.scrollBoxObject.x+node.boxObject.width)>x.value)
           {
             if (node.localName == "tabpreview")
             {
@@ -498,7 +514,7 @@
           }
           else if (event.ctrlKey)
           {
-            if (event.keyCode==event.DOM_VK_UP)
+            if (event.keyCode==event.DOM_VK_LEFT)
             {
               var newpreview = preview.previousSibling.previousSibling;
               if (newpreview)
@@ -507,7 +523,7 @@
               }
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_DOWN)
+            else if (event.keyCode==event.DOM_VK_RIGHT)
             {
               var newpreview = preview.nextSibling.nextSibling;
               if (newpreview)
@@ -519,7 +535,7 @@
           }
           else
           {
-            if (event.keyCode==event.DOM_VK_UP)
+            if (event.keyCode==event.DOM_VK_LEFT)
             {
               var newpreview = preview.previousSibling.previousSibling;
               if (newpreview)
@@ -530,7 +546,7 @@
               }
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_DOWN)
+            else if (event.keyCode==event.DOM_VK_RIGHT)
             {
               var newpreview = preview.nextSibling.nextSibling;
               if (newpreview)
@@ -538,48 +554,6 @@
                 preview.tab.focus();
                 this.tabbrowser.selectedTab=newpreview.tab;
                 newpreview.setfocus();
-              }
-              event.preventDefault();
-            }
-            else if (event.keyCode==event.DOM_VK_PAGE_UP)
-            {
-              var compare = preview.previousSibling.previousSibling;
-              if (compare)
-              {
-                var diff = preview.boxObject.y-compare.boxObject.y;
-                var height = this.scrollBox.boxObject.height;
-                var jump = height/diff;
-                var current = preview;
-                var count = 1;
-                while ((count<=jump)&&(current.previousSibling.previousSibling))
-                {
-                  current=current.previousSibling.previousSibling;
-                  count++;
-                }
-                preview.tab.focus();
-                this.tabbrowser.selectedTab=current.tab;
-                current.setfocus();
-              }
-              event.preventDefault();
-            }
-            else if (event.keyCode==event.DOM_VK_PAGE_DOWN)
-            {
-              var compare = preview.nextSibling.nextSibling;
-              if (compare)
-              {
-                var diff = compare.boxObject.y-preview.boxObject.y;
-                var height = this.scrollBox.boxObject.height;
-                var jump = height/diff;
-                var current = preview;
-                var count = 1;
-                while ((count<=jump)&&(current.nextSibling.nextSibling))
-                {
-                  current=current.nextSibling.nextSibling;
-                  count++;
-                }
-                preview.tab.focus();
-                this.tabbrowser.selectedTab=current.tab;
-                current.setfocus();
               }
               event.preventDefault();
             }

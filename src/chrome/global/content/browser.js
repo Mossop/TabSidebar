@@ -70,7 +70,7 @@ init: function()
 	
 	this.position=this.prefs.getIntPref("position");
 
-  this.prefs.addObserver("",this,false);
+  this.prefs.addObserver("", this, false);
   
 },
 
@@ -180,9 +180,7 @@ sidebarLoad: function(event)
 	if (sidebar.contentDocument == event.target)
 	{
 		if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
-		{
 			sidebar.contentDocument.documentElement.style.backgroundColor = "-moz-dialog";
-		}
 	}
 },
 
@@ -190,9 +188,7 @@ sidebarLoad: function(event)
 sidebarInitialise: function()
 {
   if (this.prefs.getBoolPref("hidetabs"))
-  {
   	this.hideTabbar();
-  }
 },
 
 sidebarDestroy: function()
@@ -240,7 +236,7 @@ hideTabbar: function()
 load: function(event)
 {
   window.removeEventListener("load", TabSidebarHandler.load, false);
-	if ((TabSidebarHandler.position!=0)&&(TabSidebarHandler.isOpen()))
+	if ((TabSidebarHandler.position != 0) && (TabSidebarHandler.isOpen()))
 	{
 		var command = document.getElementById("viewTabSidebar");
 		var container = TabSidebarHandler.getContainer();
@@ -259,13 +255,9 @@ observe: function (subject, topic, data)
 		if (this.isOpen())
 		{
 		  if (this.prefs.getBoolPref(data))
-		  {
 		  	this.hideTabbar();
-		  }
 		  else
-		  {
 		  	this.showTabbar();
-		  }
 		}
 	}
 	else if (data=="position")
@@ -305,23 +297,10 @@ attributeListener: function(event)
 		if (event.attrName=="sidebarcommand")
 		{
 			if (event.newValue == "viewTabSidebar")
-			{
-#ifdef ${extension.debug}
-				//dump("sidebar open\n");
-#endif
 				TabSidebarHandler.sidebarInitialise();
-			}
 			else if (event.prevValue == "viewTabSidebar")
-			{
-#ifdef ${extension.debug}
-				//dump("sidebar close\n");
-#endif
 				TabSidebarHandler.sidebarDestroy();
-			}
 		}
-#ifdef ${extension.debug}
-		//dump(event.attrName+" "+event.prevValue+" -> "+event.newValue+"\n");
-#endif
 	}
 }
 

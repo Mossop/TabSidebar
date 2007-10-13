@@ -1,0 +1,258 @@
+      <!-- Start of DnD implementation -->
+
+      <field name="_lastDrop"/>
+      
+      <method name="_hideDropIndicator">
+        <body>
+          if (this._lastDrop)
+          {
+            this._lastDrop = null;
+            this.dragDropBar.setAttribute("dragging", "false");
+          }
+        </body>
+      </method>
+      
+      <method name="onDragStart">
+        <parameter name="aEvent"/>
+        <parameter name="aXferData"/>
+        <parameter name="aDragAction"/>
+        <body>
+        <![CDATA[
+          try
+          {
+            if (aEvent.target.localName == "tabpreview" &&
+                aEvent.originalTarget.localName != "toolbarbutton")
+            {
+              aXferData.data = new TransferData();
+              
+              var URI = aEvent.target._browser.currentURI;
+              if (URI)
+              {
+                aXferData.data.addDataForFlavour("text/unicode", URI.spec);
+                aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.title);
+                aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.title + '</a>');
+              }
+              else
+                aXferData.data.addDataForFlavour("text/unicode", "about:blank");
+            }
+          }
+          catch (e)
+          {
+#ifdef ${extension.debug}
+            dump(e);
+#endif
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="onDragOver">
+        <parameter name="aEvent"/>
+        <parameter name="aFlavour"/>
+        <parameter name="aDragSession"/>
+        <body>
+        <![CDATA[
+          try
+          {
+            if (this.checkDragScroll(aEvent))
+              return;
+              
+            if (!aDragSession.canDrop)
+            {
+              this._hideDropIndicator();
+              return;
+            }
+              
+            if (aDragSession.sourceNode &&
+               (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
+            {
+              var newpos = this.getDropElement(aEvent,false);
+
+              var preview = null;
+              if (aDragSession.sourceNode.parentNode == this)
+                preview = aDragSession.sourceNode;              
+              else
+                preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
+              
+              if (newpos == preview.previousSibling || newpos == preview.nextSibling)
+              {
+                aDragSession.canDrop=false;
+                this._hideDropIndicator();
+              }
+              else
+                this._drawDropIndicator(newpos);
+            }
+            else
+            {
+              if (aEvent.target.localName=="tabpreview")
+                this._drawDropIndicator(aEvent.target);
+              else
+              {
+                var newpos = this.getDropElement(aEvent,true);
+                this._drawDropIndicator(newpos);
+              }
+            }
+          }
+          catch (e)
+          {
+#ifdef ${extension.debug}
+            dump(e+"\n");
+#endif
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="movePreview">
+        <parameter name="preview"/>
+        <parameter name="insertBefore"/>
+        <body>
+        <![CDATA[
+          var newIndex = this.previews.length;
+          if (insertBefore)
+            newIndex = insertBefore.tab._tPos;
+          
+          var oldIndex = preview.tab._tPos;
+          
+          if (newIndex>oldIndex)
+            newIndex--;
+            
+          if (newIndex==oldIndex)
+            return;
+
+          var focus=false;
+          if (this.ownerDocument.commandDispatcher.focusedElement && this.ownerDocument.commandDispatcher.focusedElement==preview)
+            focus=true;
+          
+          this.tabbrowser.moveTabTo(preview.tab, newIndex);
+          preview.setfocus();
+        ]]>
+        </body>
+      </method>
+      
+      <method name="onDrop">
+        <parameter name="aEvent"/>
+        <parameter name="aXferData"/>
+        <parameter name="aDragSession"/>
+        <body>
+        <![CDATA[
+          try
+          {
+            this._hideDropIndicator();
+            if (aDragSession.sourceNode && 
+               (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
+            {
+              var preview = null
+              if (aDragSession.sourceNode.parentNode == this)
+                preview = aDragSession.sourceNode;              
+              else
+                preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
+              
+              var target = this.getDropElement(aEvent,false);
+              this.movePreview(preview,target.nextSibling);
+            }
+            else
+            {
+              var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
+  
+              // valid urls don't contain spaces ' '; if we have a space it isn't a valid url.
+              // Also disallow dropping javascript: or data: urls--bail out
+              if (!url || !url.length || url.indexOf(" ", 0) != -1 ||
+                  /^\s*(javascript|data):/.test(url))
+                return;
+  
+              this.tabbrowser.dragDropSecurityCheck(aEvent, aDragSession, url);
+  
+              var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                                    .getService(Components.interfaces.nsIPrefBranch);
+              var bgLoad = true;
+              try
+              {
+                bgLoad = prefs.getBoolPref("browser.tabs.loadInBackground");
+              }
+              catch (e) { }
+  
+              if (aEvent.shiftKey)
+                bgLoad = !bgLoad;
+  
+              if (aEvent.target.localName != "tabpreview")
+              {
+#ifdef ${extension.debug}
+                this._logMessage("Adding new tab: "+bgLoad);
+                
+#endif
+                // We're adding a new tab.
+                var move = false;
+                var newIndex = this.previews.length;
+                var target = this.getDropElement(aEvent,false);
+                if (target.nextSibling)
+                {
+                  target = target.nextSibling;
+                  newIndex = target.tab._tPos;
+                  move = true;
+                }
+  
+                var newtab = this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
+                
+                if (move)
+                  this.tabbrowser.moveTabTo(newtab, newIndex);
+                
+                if (bgLoad)
+                {
+                  var preview = this.getPreviewForBrowser(newtab.linkedBrowser);
+                  
+                  this.ensureElementsAreVisible(preview,preview);
+                }
+              }
+              else
+              {
+                // Load in an existing tab.
+                var preview = aEvent.target;
+                preview.browser.loadURI(url);
+  
+                if (!bgLoad)
+                  this.tabbrowser.selectedTab = preview.tab;
+              }
+            }
+          }
+          catch (e)
+          {
+#ifdef ${extension.debug}
+            this._logError(e);
+#endif
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="onDragExit">
+        <parameter name="aEvent"/>
+        <parameter name="aDragSession"/>
+        <body>
+        <![CDATA[
+          try
+          {
+            if (!aEvent.relatedTarget && this._lastDrop)
+              this._hideDropIndicator();
+          }
+          catch (e)
+          {
+#ifdef ${extension.debug}
+            dump(e);
+#endif
+          }
+        ]]>
+        </body>
+      </method>
+
+      <method name="getSupportedFlavours">
+        <body>
+        <![CDATA[
+          var flavourSet = new FlavourSet();
+          flavourSet.appendFlavour("text/x-moz-url");
+          flavourSet.appendFlavour("text/unicode");
+          flavourSet.appendFlavour("application/x-moz-file", "nsIFile");
+          return flavourSet;
+        ]]>
+        </body>
+      </method>

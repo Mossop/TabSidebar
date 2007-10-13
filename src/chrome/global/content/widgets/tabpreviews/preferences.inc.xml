@@ -1,0 +1,111 @@
+      <method name="_initSettings">
+        <body>
+#ifdef ${extension.debug}
+          try
+          {
+            this._enableLogging = this.preferences.getBoolPref("enablelogging");
+          }
+          catch (e)
+          {
+          }
+
+#endif
+          this._showNavigation = this.preferences.getBoolPref("content.navigation");
+          this._showPreviews = this.preferences.getBoolPref("content.previews");
+          this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
+          this._scrollSelects = this.preferences.getBoolPref("scrollselects");
+
+          this._drawScrolled = this.preferences.getBoolPref("drawscrolled");
+          this._validateRate = this.preferences.getIntPref("validaterate");
+          this._loadRefresh = this.preferences.getBoolPref("loadrefresh");
+          this._loadRefreshRate = this.preferences.getIntPref("loadrefreshrate");
+          this._loadErrorDelay = this.preferences.getIntPref("loaderrordelay");
+          this._unselectedLoadErrorDelay = this.preferences.getIntPref("unselectedloaderrordelay");
+          this._loadDelay = this.preferences.getIntPref("loaddelay");
+          this._unselectedLoadDelay = this.preferences.getIntPref("unselectedloaddelay");
+          this._textDelay = this.preferences.getIntPref("textdelay");
+          this._unselectedTextDelay = this.preferences.getIntPref("unselectedtextdelay");
+          this._changeDelay = this.preferences.getIntPref("changedelay");
+          this._unselectedChangeDelay = this.preferences.getIntPref("unselectedchangedelay");
+          this._scrollDelay = this.preferences.getIntPref("scrolldelay");
+          this._unselectedScrollDelay = this.preferences.getIntPref("unselectedscrolldelay");
+
+          this.preferences.addObserver("", this, false);
+          
+          this.updateDisplay();
+        </body>
+      </method>
+      
+      <!-- Configuration options -->
+
+#ifdef ${extension.debug}
+      <field name="_enableLogging">false</field>
+      <property name="enableLogging" onget="return this._enableLogging;"/>
+      
+#endif
+      <field name="_scrollSelects">false</field>
+      <property name="scrollSelects" onget="return this._scrollSelects;"/>
+      
+      <field name="_showPreviews">false</field>
+      <property name="showPreviews" onget="return this._showPreviews;"/>
+      
+      <field name="_updatePreviews">false</field>
+      <property name="updatePreviews" onget="return (this._updatePreviews &amp;&amp; this._showPreviews);"/>
+      
+      <field name="_showNavigation">false</field>
+      <property name="showNavigation" onget="return this._showNavigation;"/>
+      
+      <field name="_displayWidth">-1</field>
+      <property name="displayWidth" onget="return this._displayWidth;"/>
+      
+      <field name="_displayHeight">-1</field>
+      <property name="displayHeight" onget="return this._displayHeight;"/>
+      
+      <field name="_contentWidth">-1</field>
+      <property name="contentWidth" onget="return this._contentWidth;"/>
+      
+      <field name="_contentHeight">-1</field>
+      <property name="contentHeight" onget="return this._contentHeight;"/>
+      
+      <field name="_loadRefresh"/>
+      <property name="loadRefresh" onget="return (this._loadRefresh &amp;&amp; this.updatePreviews);"/>
+      
+      <field name="_loadRefreshRate"/>
+      <property name="loadRefreshRate">
+        <getter>
+          return Math.max(100,this._loadRefreshRate);
+        </getter>
+      </property>
+      
+      <field name="_loadErrorDelay"/>
+      <property name="loadErrorDelay" onget="return this._loadErrorDelay;"/>
+      
+      <field name="_unselectedLoadErrorDelay"/>
+      <property name="unselectedLoadErrorDelay" onget="return this._unselectedLoadErrorDelay;"/>
+      
+      <field name="_loadDelay"/>
+      <property name="loadDelay" onget="return this._loadDelay;"/>
+      
+      <field name="_unselectedLoadDelay"/>
+      <property name="unselectedLoadDelay" onget="return this._unselectedLoadDelay;"/>
+      
+      <field name="_changeDelay"/>
+      <property name="changeDelay" onget="return this._changeDelay;"/>
+      
+      <field name="_unselectedChangeDelay"/>
+      <property name="unselectedChangeDelay" onget="return this._unselectedChangeDelay;"/>
+      
+      <field name="_textDelay"/>
+      <property name="textDelay" onget="return this._textDelay;"/>
+      
+      <field name="_unselectedTextDelay"/>
+      <property name="unselectedTextDelay" onget="return this._unselectedTextDelay;"/>
+      
+      <field name="_scrollDelay"/>
+      <property name="scrollDelay" onget="return this._scrollDelay;"/>
+      
+      <field name="_unselectedScrollDelay"/>
+      <property name="unselectedScrollDelay" onget="return this._unselectedScrollDelay;"/>
+      
+      <field name="_drawScrolled"/>
+      <property name="drawScrolled" onget="return this._drawScrolled;"/>

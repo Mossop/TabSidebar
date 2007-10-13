@@ -35,10 +35,10 @@
 #
 # ***** END LICENSE BLOCK *****
 #
-# $HeadURL$
-# $LastChangedBy$
-# $Date$
-# $Revision$
+# $HeadURL: http://svn.oxymoronical.com/dave/mozilla/firefox/TabSidebar/trunk/src/chrome/global/content/widgets/previewevents.inc.xml $
+# $LastChangedBy: dave $
+# $Date: 2007-07-12 09:58:08 +0100 (Thu, 12 Jul 2007) $
+# $Revision: 1136 $
 #
       <field name="CHANGE_LOAD">1</field>
       <field name="CHANGE_TEXT">2</field>
