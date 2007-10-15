@@ -134,8 +134,13 @@
                 else
                   this.previews[i]._emptyDocumentListeners();
               }
-              if (this.showPreviews)
-                this._updateSize();
+              if (this._showPreviews)
+              {
+                this._browserWidth = this._selected._browserWidth;
+                this._browserHeight = this._selected._browserHeight;
+                this._reflowComplete = false;
+                this._checkReflow();
+              }
               break;
             case "updatepreviews":
               this._updatePreviews = this.preferences.getBoolPref(data);

@@ -40,7 +40,7 @@
 # $Date$
 # $Revision$
 #
-#define MINBROWSERSIZE 20
+#define MINSIZE 20
 <?xml version="1.0"?>
 
 <bindings id="TabSidebarBindings" xmlns="http://www.mozilla.org/xbl">
@@ -77,20 +77,16 @@
                                      .getInterface(Components.interfaces.nsIDOMWindow);
         this.tabbrowser = this.browserWindow.document.getElementById("content");
         
-        this._initTree();
         this._migrateOldSettings();
         this._initSettings();
 
 #ifdef ${extension.debug}
         this._logMessage("Tab Sidebar Startup");
-        
+
 #endif
-        this._initEvents();
-        
 #ifdef ${extension.enablemetrics}
         this._loadMetrics();
 #endif
-        this.init();
 #ifdef ${extension.enablesessionstore}
         if (this.browserWindow.__SSi)
         {
@@ -100,7 +96,7 @@
 #endif
           
         if (this.showPreviews)
-          this._updateSize();
+          this._checkReflow();
         else
           this.style.visibility=null;
       ]]>
@@ -123,13 +119,13 @@
               break;
             }
           }
-          var preview = this.addPreview(browsers[selectedpos]);
-          if ((preview._browserWidth > MINBROWSERSIZE) && (preview._browserHeight > MINBROWSERSIZE))
-            this.browserResized(preview, preview._browserWidth, preview._browserHeight);
+          this.addPreview(browsers[selectedpos]);
           for (var i=selectedpos-1; i>=0; i--)
             this.addPreview(browsers[i]);
           for (var i=selectedpos+1; i<browsers.length; i++)
             this.addPreview(browsers[i]);
+          
+          this._initEvents();
         ]]>
         </body>
       </method>
@@ -653,41 +649,49 @@
         </body>
       </method>
       
-      <method name="_updateSize">
+      <method name="_checkReflow">
         <body>
         <![CDATA[
-          this._validateTimer.cancel();
-#ifdef ${extension.debug}
-          this._logMessage("Checking for new size");
-#endif
-          if (this._selected && ((this._browserWidth <= MINBROWSERSIZE) || (this._browserHeight <= MINBROWSERSIZE)))
+          if (!this._browserWidth)
           {
-            this._selected._browserResized();
-            this._browserWidth = this._selected._browserWidth;
-            this._browserHeight = this._selected._browserHeight;
+            var size = Math.min(this.browserWindow.innerWidth,
+                                this.browserWindow.innerHeight,
+                                this.tabbrowser.boxObject.height,
+                                this.tabbrowser.boxObject.width,
+                                this.tabbrowser.selectedBrowser.boxObject.height,
+                                this.tabbrowser.selectedBrowser.boxObject.width);
+
 #ifdef ${extension.debug}
-            this._logMessage("Found a browser size of "+this._browserWidth+"x"+this._browserHeight);
+            this._logMessage("Checking new size of " + size + "px");
 #endif
-          }
-          if (this._selected && (this._browserWidth > MINBROWSERSIZE) && (this._browserHeight > MINBROWSERSIZE) && this._calculateSize())
-          {
-            this._contentWidth=Math.max(this.displayWidth, 500);
-            this._contentHeight=(this.displayHeight/this.displayWidth)*this._contentWidth;
-            this._resize();
-            this.style.visibility=null;
-            this._reflowComplete = true;
-            this._selected.redraw();
-            this._validateMax = this.previews.length;
-            if (this._validateMax <= 1)
+
+            if (size <= MINSIZE)
+            {
+              this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
               return;
-  
-            this._validatePos = 0;
+            }
+
+            this._initTree();
+            this.init();
+        	  this._browserWidth = this._selected._browserWidth;
+            this._browserHeight = this._selected._browserHeight;
           }
-          this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+
+          if (!this._calculateSize())
+          {
+            this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            return;
+          }
+
+          this._reflowComplete = true;
+          this._resize();
+          this._invalidateAll();
+          this.style.visibility = null;
+          return;
         ]]>
         </body>
       </method>
-      
+
       <method name="_invalidateAll">
         <body>
         <![CDATA[
@@ -710,18 +714,22 @@
         <parameter name="width"/>
         <parameter name="height"/>
         <body>
+          if (!this._reflowComplete || !this.showPreviews)
+            return;
           if (preview == this._selected)
           {
-#ifdef ${extension.debug}
-            this._logMessage("Got told a new size of "+width+"x"+height);
-#endif
-            if ((width != this._browserWidth) || (height != this._browserHeight) || !this._reflowComplete)
+            if ((width != this._browserWidth) || (height != this._browserHeight))
             {
+#ifdef ${extension.debug}
+              this._logMessage("Got told a new size of "+width+"x"+height);
+#endif
               this._browserWidth = width;
               this._browserHeight = height;
-              this._updateSize();
+              this._calculateSize();
+              this._resize();
+              this._invalidateAll();
             }
-            else if (this.showPreviews)
+            else
               preview.redraw();
           }
         </body>
@@ -731,10 +739,12 @@
         <body>
         <![CDATA[
           if (!this._reflowComplete)
-            this._updateSize();
+            this._checkReflow();
           else
           {
-            while ((this._validatePos < this._validateMax) && (!this.previews[this._validatePos]._invalid))
+            var previews = this.previews;
+
+            while ((this._validatePos < this._validateMax) && (!previews[this._validatePos]._invalid))
               this._validatePos++;
             
             if (this._validatePos >= this._validateMax)
@@ -743,10 +753,9 @@
 #ifdef ${extension.debug}
             this._logMessage("Updating "+this._validatePos);
 #endif
-            this.previews[this._validatePos].redraw();
+            previews[this._validatePos].redraw();
             this._validatePos++;
             
-            this._validateTimer.cancel();
             this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
           }
         ]]>

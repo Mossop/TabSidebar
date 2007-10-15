@@ -258,15 +258,17 @@
 #endif
             return false;
           }
-          newWidth = parseInt((this._browserWidth/this._browserHeight)*newHeight);
+          newWidth = parseInt((this._browserWidth / this._browserHeight) * newHeight);
 
 #ifdef ${extension.debug}
           this._logMessage("New sizes: "+newWidth+"x"+newHeight+" "+this._browserWidth+"x"+this._browserHeight);
 #endif
-          if (this._displayWidth!=newWidth || this._displayHeight!=newHeight)
+          if (this._displayWidth != newWidth || this._displayHeight != newHeight)
           {
             this._displayWidth=newWidth;
             this._displayHeight=newHeight;
+            this._contentWidth = Math.max(this.displayWidth, 500);
+            this._contentHeight = (this.displayHeight / this.displayWidth) * this._contentWidth;
 #ifdef ${extension.enablemetrics}
             this._saveMetrics();
 #endif
