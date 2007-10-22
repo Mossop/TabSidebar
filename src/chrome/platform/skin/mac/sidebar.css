@@ -44,6 +44,12 @@
 %define BG_ACTIVE chrome://tabsidebar-platform/skin/background/active
 %define BG_SECURE chrome://tabsidebar-platform/skin/background/secure
 %define BG_HOVER chrome://tabsidebar-platform/skin/background/hover
+.tabsidebar-splitter {
+  border-right: 1px solid #8e8e8e;
+  border-left: 1px solid #bebebe;
+  background-color: #ececec;
+}
+
 .tbs-tabpreviews-vertical .tbs-scrollbox {
 	background-image: url('chrome://tabsidebar-platform/skin/background/bkgnd-vertical.png') !important;
 }
