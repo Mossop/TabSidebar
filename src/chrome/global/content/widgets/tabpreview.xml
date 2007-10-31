@@ -640,12 +640,13 @@
           }
           if ((this._browser)&&(this._browser.docShell))
           {
+            var zoom = this._browser.markupDocumentViewer.fullZoom;
             var win = this._browser.contentWindow;
-            var width = this._browserWidth;
-            var scaling = this.previews.contentWidth/width;
-            var height = Math.round(this.previews.contentHeight/scaling);
+            var width = this._browserWidth / zoom;
+            var scaling = this.previews.contentWidth / width;
+            var height = Math.round(this.previews.contentHeight / scaling);
             ctx.save();
-            ctx.scale(scaling,this.previews.contentHeight/height);
+            ctx.scale(scaling, this.previews.contentHeight / height);
             try
             {
               var top = 0;
@@ -655,13 +656,15 @@
                 top=win.scrollY;
                 left=win.scrollX;
               }
-              ctx.drawWindow(win,left,top,width,height,"rgba(255,255,255,255)");
+#ifdef ${extension.debug}
+              this._logMessage("Painting area " + width + "x" + height + " at " + left + "x" + top);
+#endif
+              ctx.drawWindow(win, left, top, width, height, "rgba(255,255,255,255)");
             }
             catch (e)
             {
 #ifdef ${extension.debug}
-              dump(e+"\n");
-              dump(win+" "+width+"x"+height+"\n");
+              dump(win + " " + width + "x" + height + "\n" + e + "\n");
 #endif
             }
             ctx.restore();
