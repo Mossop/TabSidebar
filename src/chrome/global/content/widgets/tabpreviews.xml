@@ -96,7 +96,7 @@
 #endif
           
         if (this.showPreviews)
-          this._checkReflow();
+          this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         else
           this.style.visibility=null;
       ]]>
