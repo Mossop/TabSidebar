@@ -63,7 +63,6 @@
 
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
-      <stylesheet src="chrome://tabsidebar-platform/content/widgets/tabpreviews.css"/>
     </resources>
     
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
