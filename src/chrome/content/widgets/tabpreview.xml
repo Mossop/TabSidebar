@@ -60,7 +60,7 @@
     </resources>
     
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
-    	<xul:stack flex="1">
+    	<xul:stack flex="1" class="tbs-background">
     		<xul:vbox>
 	    		<xul:hbox flex="1000" align="stretch" style="max-height: 75px">
 			      <xul:box class="tbs-top-left"/>
@@ -78,7 +78,8 @@
 		      	<xul:box class="tbs-bottom-right"/>
 		      </xul:hbox>
 	    	</xul:vbox>
-	    	<xul:vbox flex="1">
+
+	    	<xul:vbox flex="1" class="tbs-foreground">
 		      <xul:hbox class="tbs-topbox" align="center">
 		        <xul:hbox flex="1" align="center">
 		          <xul:image class="tbs-favicon" validate="never" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
@@ -111,7 +112,7 @@
 		                             oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
 		                             onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
 		            </xul:toolbarbutton>
-		            <xul:spacer flex="1"/>
+		            <xul:spacer flex="1" class="tbs-bfspacer"/>
 		            <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
 		                               onclick="this.preview.checkMiddleClick(this,event);"
 		                               oncommand="this.preview.goForward(event)">

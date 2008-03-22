@@ -1,0 +1,192 @@
+% ***** BEGIN LICENSE BLOCK *****
+% Version: MPL 1.1/GPL 2.0/LGPL 2.1
+%
+% The contents of this file are subject to the Mozilla Public License Version
+% 1.1 (the "License"); you may not use this file except in compliance with
+% the License. You may obtain a copy of the License at
+% http://www.mozilla.org/MPL/
+%
+% Software distributed under the License is distributed on an "AS IS" basis,
+% WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+% for the specific language governing rights and limitations under the
+% License.
+%
+% The Original Code is Tab Sidebar Display.
+%
+% The Initial Developer of the Original Code is
+%      Dave Townsend <dtownsend@oxymoronical.com>.
+%
+% Portions created by the Initial Developer are Copyright (C) 2007
+% the Initial Developer. All Rights Reserved.
+%
+% Contributor(s):
+%
+% Alternatively, the contents of this file may be used under the terms of
+% either the GNU General Public License Version 2 or later (the "GPL"), or
+% the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+% in which case the provisions of the GPL or the LGPL are applicable instead
+% of those above. If you wish to allow use of your version of this file only
+% under the terms of either the GPL or the LGPL, and not to allow others to
+% use your version of this file under the terms of the MPL, indicate your
+% decision by deleting the provisions above and replace them with the notice
+% and other provisions required by the GPL or the LGPL. If you do not delete
+% the provisions above, a recipient may use your version of this file under
+% the terms of any one of the MPL, the GPL or the LGPL.
+%
+% ***** END LICENSE BLOCK *****
+%define BG_DEFAULT background/default
+%define BG_ACTIVE background/active
+%define BG_HOVER background/hover
+%define BG_SECURE background/secure
+.tbs-top-middle {
+	background-image: url('BG_DEFAULT/top-middle.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-top-middle {
+	background-image: url('BG_ACTIVE/top-middle.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-top-middle,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-top-middle {
+  background-image: url('BG_SECURE/top-middle.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-top-middle {
+	background-image: url('BG_HOVER/top-middle.png');
+}
+
+.tbs-top-left {
+	background-image: url('BG_DEFAULT/top-left.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-top-left {
+	background-image: url('BG_ACTIVE/top-left.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-top-left,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-top-left {
+  background-image: url('BG_SECURE/top-left.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-top-left {
+	background-image: url('BG_HOVER/top-left.png');
+}
+
+.tbs-top-right {
+	background-image: url('BG_DEFAULT/top-right.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-top-right {
+	background-image: url('BG_ACTIVE/top-right.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-top-right,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-top-right {
+  background-image: url('BG_SECURE/top-right.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-top-right {
+	background-image: url('BG_HOVER/top-right.png');
+}
+
+.tbs-bottom-middle {
+	background-image: url('BG_DEFAULT/bottom-middle.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-bottom-middle {
+	background-image: url('BG_ACTIVE/bottom-middle.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-middle,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom-middle {
+  background-image: url('BG_SECURE/bottom-middle.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-bottom-middle {
+	background-image: url('BG_HOVER/bottom-middle.png');
+}
+
+.tbs-bottom-left {
+	background-image: url('BG_DEFAULT/bottom-left.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-bottom-left {
+	background-image: url('BG_ACTIVE/bottom-left.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-left,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom-left {
+  background-image: url('BG_SECURE/bottom-left.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-bottom-left {
+	background-image: url('BG_HOVER/bottom-left.png');
+}
+
+.tbs-bottom-right {
+	background-image: url('BG_DEFAULT/bottom-right.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-bottom-right {
+	background-image: url('BG_ACTIVE/bottom-right.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-right,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-botom-right {
+  background-image: url('BG_SECURE/bottom-right.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-bottom-right {
+	background-image: url('BG_HOVER/bottom-right.png');
+}
+
+.tbs-middle-middle {
+	background-image: url('BG_DEFAULT/middle-middle.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-middle-middle {
+	background-image: url('BG_ACTIVE/middle-middle.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-middle,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-middle {
+  background-image: url('BG_SECURE/middle-middle.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-middle-middle {
+	background-image: url('BG_HOVER/middle-middle.png');
+}
+
+.tbs-middle-left {
+	background-image: url('BG_DEFAULT/middle-left.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-middle-left {
+	background-image: url('BG_ACTIVE/middle-left.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-left,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-left {
+  background-image: url('BG_SECURE/middle-left.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-middle-left {
+	background-image: url('BG_HOVER/middle-left.png');
+}
+
+.tbs-middle-right {
+	background-image: url('BG_DEFAULT/middle-right.png');
+}
+
+.tbs-tabpreview[selected="true"] .tbs-middle-right {
+	background-image: url('BG_ACTIVE/middle-right.png') !important;
+}
+
+.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-right,
+.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-right {
+  background-image: url('BG_SECURE/middle-right.png') !important;
+}
+
+.tbs-tabpreview:hover .tbs-middle-right {
+	background-image: url('BG_HOVER/middle-right.png');
+}

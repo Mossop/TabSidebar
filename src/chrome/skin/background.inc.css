@@ -34,27 +34,52 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-%include "background.inc.css"
-.tbs-tabpreviews-vertical .tbs-scrollbox {
-	background-image: url('background/bkgnd-vertical.png') !important;
+.tbs-top-middle {
+	background-repeat: repeat-x;
+	background-position: top left;
 }
 
-.tbs-tabpreviews-horizontal .tbs-scrollbox {
-	background-image: url('background/bkgnd-horizontal.png') !important;
+.tbs-top-left {
+	width: 8px;
+	background-position: top left;
+	background-repeat: no-repeat;
 }
 
-.tbs-loading {
-  list-style-image: url("Throbber-small.gif");
+.tbs-top-right {
+	width: 8px;
+	background-position: top right;
+	background-repeat: no-repeat;
 }
 
-.tbs-favicon {
-  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
+.tbs-bottom-middle {
+	background-repeat: repeat-x;
+	background-position: bottom left;
 }
 
-.tbs-scrolltoolbar menuitem {
-  list-style-image: url("favicon.png");
+.tbs-bottom-left {
+	width: 8px;
+	background-position: bottom left;
+	background-repeat: no-repeat;
 }
 
-.tbs-icon, .tbs-icon .toolbarbutton-menubutton-button {
-  list-style-image: url("Icons.png");
+.tbs-bottom-right {
+	width: 8px;
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
+.tbs-middle-middle {
+	background-repeat: repeat;
+}
+
+.tbs-middle-left {
+	width: 8px;
+	background-position: left;
+	background-repeat: repeat-y;
+}
+
+.tbs-middle-right {
+	width: 8px;
+	background-position: right;
+	background-repeat: repeat-y;
 }

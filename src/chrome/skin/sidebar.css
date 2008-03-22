@@ -67,55 +67,7 @@
 	border: 1px dotted black;
 }
 
-.tbs-top-middle {
-	background-repeat: repeat-x;
-	background-position: top left;
-}
-
-.tbs-top-left {
-	width: 8px;
-	background-position: top left;
-	background-repeat: no-repeat;
-}
-
-.tbs-top-right {
-	width: 8px;
-	background-position: top right;
-	background-repeat: no-repeat;
-}
-
-.tbs-bottom-middle {
-	background-repeat: repeat-x;
-	background-position: bottom left;
-}
-
-.tbs-bottom-left {
-	width: 8px;
-	background-position: bottom left;
-	background-repeat: no-repeat;
-}
-
-.tbs-bottom-right {
-	width: 8px;
-	background-position: bottom right;
-	background-repeat: no-repeat;
-}
-
-.tbs-middle-middle {
-	background-repeat: repeat;
-}
-
-.tbs-middle-left {
-	width: 8px;
-	background-position: left;
-	background-repeat: repeat-y;
-}
-
-.tbs-middle-right {
-	width: 8px;
-	background-position: right;
-	background-repeat: repeat-y;
-}
+%include "background.inc.css"
 
 /* Tooltip */
 
@@ -204,11 +156,11 @@
 }
 
 .tbs-topbox {
-	padding: 4px 4px 2px 4px;
+	margin: 0px 1px 2px 1px;
 }
 
 .tbs-stack {
-	margin: 0 4px 5px 4px;
+  margin: 0px 2px 1px 2px;
 }
 
 .tbs-toolbar {
@@ -301,187 +253,16 @@
 
 /* Defaults for all icons */
 .tbs-icon, .tbs-icon .toolbarbutton-menubutton-button {
-  list-style-image: url("default/Icons.png");
   -moz-appearance: none;
   border: none !important;
   padding: 0px !important;
 }
 
-/* Drop markers */
-
-.tbs-icon .toolbarbutton-menubutton-dropmarker {
-  list-style-image: url("default/Icons.png");
-  -moz-image-region: rect(6px, 125px, 11px, 116px);
-}
-
-.tbs-icon .toolbarbutton-menubutton-dropmarker:hover {
-  -moz-image-region: rect(22px, 125px, 27px, 116px);
-}
-
-.tbs-icon .toolbarbutton-menubutton-dropmarker:hover:active {
-  -moz-image-region: rect(38px, 125px, 43px, 116px);
-}
-
-.tbs-icon .toolbarbutton-menubutton-dropmarker[disabled="true"] {
-  list-style-image: url("default/Icons.png") !important;
-  -moz-image-region: rect(54px, 125px, 59px, 116px) !important;
-}
-
-/* Back button */
-.tbs-back {
-  list-style-image: inherit;
-}
-
-.tbs-back .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(0px, 96px, 16px, 80px);
-}
-
-.tbs-back .toolbarbutton-menubutton-button:hover {
-  -moz-image-region: rect(16px, 96px, 32px, 80px);
-}
-
-.tbs-back .toolbarbutton-menubutton-button:hover:active {
-  -moz-image-region: rect(32px, 96px, 48px, 80px);
-}
-
-.tbs-back[disabled="true"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
-}
-
-.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(0px, 112px, 16px, 96px);
-}
-
-.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button:hover {
-  -moz-image-region: rect(16px, 112px, 32px, 96px);
-}
-
-.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button:hover:active {
-  -moz-image-region: rect(32px, 112px, 48px, 96px);
-}
-
-.tbs-back[chromedir="rtl"][disabled="true"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
-}
-
-/* Forward button */
-.tbs-forward {
-  list-style-image: inherit;
-}
-
-.tbs-forward .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(0px, 112px, 16px, 96px);
-}
-
-.tbs-forward .toolbarbutton-menubutton-button:hover {
-  -moz-image-region: rect(16px, 112px, 32px, 96px);
-}
-
-.tbs-forward .toolbarbutton-menubutton-button:hover:active {
-  -moz-image-region: rect(32px, 112px, 48px, 96px);
-}
-
-.tbs-forward[disabled="true"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
-}
-
-.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(0px, 96px, 16px, 80px);
-}
-
-.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button:hover {
-  -moz-image-region: rect(16px, 96px, 32px, 80px);
-}
-
-.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button:hover:active {
-  -moz-image-region: rect(32px, 96px, 48px, 80px);
-}
-
-.tbs-forward[chromedir="rtl"][disabled="true"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
-}
-
-/* Stop button */
-.tbs-stop {
-  -moz-image-region: rect(0px, 80px, 16px, 64px);
-}
-
-.tbs-stop:hover {
-  -moz-image-region: rect(16px, 80px, 32px, 64px);
-}
-
-.tbs-stop:hover:active {
-  -moz-image-region: rect(32px, 80px, 48px, 64px);
-}
-
-.tbs-stop[disabled="true"] {
-  -moz-image-region: rect(48px, 80px, 64px, 64px) !important;
-}
-
-/* Reload button */
-.tbs-reload {
-  -moz-image-region: rect(0px, 32px, 16px, 16px);
-}
-
-.tbs-reload:hover {
-  -moz-image-region: rect(16px, 32px, 32px, 16px);
-}
-
-.tbs-reload:hover:active {
-  -moz-image-region: rect(32px, 32px, 48px, 16px);
-}
-
-.tbs-reload[disabled="true"] {
-  -moz-image-region: rect(48px, 32px, 64px, 16px) !important;
-}
-
-/* Close button */
-.tbs-tabpreview[selected="true"] .tbs-close {
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
-}
-
 .tbs-tabpreview .tbs-close {
-  -moz-image-region: rect(48px, 16px, 64px, 0px);
   opacity: 1 !important;
 }
 
-.tbs-tabpreview .tbs-close:hover {
-  -moz-image-region: rect(16px, 16px, 32px, 0px);
-}
-
-.tbs-tabpreview .tbs-close:hover:active {
-  -moz-image-region: rect(32px, 16px, 48px, 0px) !important;
-}
-
-/* Security button */
 .tbs-security[security="none"] {
   visibility: hidden;
 }
-
-.tbs-tabpreview[security="high"] .tbs-security,
-.tbs-tabpreview[security="low"] .tbs-security {
-  -moz-image-region: rect(0px, 48px, 16px, 32px);
-}
-
-.tbs-tabpreview[security="high"] .tbs-security:hover,
-.tbs-tabpreview[security="low"] .tbs-security:hover {
-  -moz-image-region: rect(16px, 48px, 32px, 32px);
-}
-
-.tbs-tabpreview[security="high"] .tbs-security:hover:active,
-.tbs-tabpreview[security="low"] .tbs-security:hover:active {
-  -moz-image-region: rect(32px, 48px, 48px, 32px);
-}
-
-/* Broken security */
-.tbs-tabpreview[security="broken"] .tbs-security {
-  -moz-image-region: rect(0px, 64px, 16px, 48px);
-}
-
-.tbs-tabpreview[security="broken"] .tbs-security:hover {
-  -moz-image-region: rect(16px, 64px, 32px, 48px);
-}
-
-.tbs-tabpreview[security="broken"] .tbs-security:hover:active {
-  -moz-image-region: rect(32px, 64px, 48px, 48px);
-}
+%include "iconregions.inc.css"

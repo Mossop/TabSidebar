@@ -20,8 +20,6 @@ DESTDIR=$BASEDIR/src/chrome/skin/pinstripe/background
 
 extractImages default
 extractImages hover
-extractImages active
-extractImages secure
 
 SOURCEDIR=$BASEDIR/images/default
 DESTDIR=$BASEDIR/src/chrome/skin/default/background
