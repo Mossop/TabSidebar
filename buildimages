@@ -15,7 +15,7 @@ function extractImages() {
 }
 
 BASEDIR=`dirname $0`
-SOURCEDIR=$BASEDIR/src/images/mac
+SOURCEDIR=$BASEDIR/images/mac
 DESTDIR=$BASEDIR/src/chrome/platform/skin/mac/background
 
 extractImages default
@@ -23,7 +23,7 @@ extractImages hover
 extractImages active
 extractImages secure
 
-SOURCEDIR=$BASEDIR/src/images/default
+SOURCEDIR=$BASEDIR/images/default
 DESTDIR=$BASEDIR/src/chrome/global/skin/background
 
 extractImages default
