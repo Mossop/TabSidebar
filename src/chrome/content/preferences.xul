@@ -56,8 +56,7 @@
             title="&tabsidebar.options.title;" style="&tabsidebar.options.style;"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
-  <prefpane id="paneGeneral"
-            helpTopic="options-general" helpURI="chrome://tabsidebar/locale/help/help.rdf">
+  <prefpane id="paneGeneral">
   
     <script src="preferences.js"/>
   

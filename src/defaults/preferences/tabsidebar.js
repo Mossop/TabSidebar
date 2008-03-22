@@ -24,4 +24,3 @@ pref("extensions.tabsidebar.updatepreviews", true);
 pref("extensions.tabsidebar.scrollselects", false);
 
 pref("extensions.tabsidebar.showoptions", false);
-pref("extensions.tabsidebar.showhelp", false);

@@ -53,11 +53,9 @@
 <?xml-stylesheet href="chrome://tabsidebar/skin/about.css" type="text/css"?>
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        title="&dialog.title;" buttons="accept,help" defaultButton="accept" buttonlabelaccept="&dialog.accept;"
-        ondialoghelp="help.openHelp()" style="width: 30em; height: 30em;">
+        title="&dialog.title;" buttons="accept" defaultButton="accept" buttonlabelaccept="&dialog.accept;"
+        style="width: 30em; height: 30em;">
 
-  <script src="chrome://tabsidebar/content/help.js"/>
-  
   <vbox pack="start" align="stretch" flex="1">
   
     <hbox id="header" align="center">

@@ -59,9 +59,8 @@
     onload="sidebar.init()"
     onunload="sidebar.destroy()"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  
-	<script src="help.js"/>
-	<script src="sidebar.js"/>
+
+  <script src="sidebar.js"/>
   <script src="chrome://global/content/nsDragAndDrop.js"/>
   <script src="chrome://global/content/nsTransferable.js"/>
   <script src="chrome://browser/content/utilityOverlay.js"/>

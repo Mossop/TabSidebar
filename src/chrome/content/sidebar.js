@@ -63,11 +63,6 @@ showOptions: function()
 	}
 },
 
-showHelp: function()
-{
-	help.openHelp();
-},
-
 init: function()
 {
 	var topwin = window;
@@ -102,15 +97,6 @@ init: function()
 		header.insertBefore(optionsBtn,pos);
 		optionsBtn.addEventListener("command",sidebar.showOptions,false);
 	}
-	
-	if (prefs.getBoolPref("showhelp"))
-	{
-		var helpBtn = topwin.document.createElement("toolbarbutton");
-		helpBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.help.tooltip"));
-		helpBtn.id = "tabsidebar-help";
-		header.insertBefore(helpBtn,pos);
-		helpBtn.addEventListener("command",sidebar.showHelp,false);
-	}
 },
  
 destroy: function()
@@ -118,9 +104,6 @@ destroy: function()
 	var topwin = sidebar.topwindow;
 
 	var button = topwin.document.getElementById("tabsidebar-options");
-	if (button)
-		button.parentNode.removeChild(button);
-	button = topwin.document.getElementById("tabsidebar-help");
 	if (button)
 		button.parentNode.removeChild(button);
 },

@@ -54,15 +54,6 @@ sidebarheader {
   margin: 0;
 }
 
-#tabsidebar-help {
-  list-style-image: url("chrome://tabsidebar/skin/help.png");
-}
-
-#tabsidebar-help image {
-  padding: 0;
-  margin: 0;
-}
-
 tabbrowser menupopup[anonid="tabContextMenu"] {
   visibility: visible !important;
 }
