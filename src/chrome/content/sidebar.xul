@@ -45,7 +45,6 @@
 <?xml-stylesheet href="chrome://global/skin/global.css"?>
 <?xml-stylesheet href="chrome://tabsidebar/content/bindings.css" type="text/css"?>
 <?xml-stylesheet href="chrome://tabsidebar/skin/sidebar.css" type="text/css"?>
-<?xml-stylesheet href="chrome://tabsidebar-platform/skin/sidebar.css" type="text/css"?>
 
 <!DOCTYPE page [
 <!ENTITY % brandDTD SYSTEM "chrome://tabsidebar/locale/brand.dtd">

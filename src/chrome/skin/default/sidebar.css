@@ -40,10 +40,30 @@
 % $Date$
 % $Revision$
 %
-%define BG_DEFAULT chrome://tabsidebar/skin/background/default
-%define BG_ACTIVE chrome://tabsidebar/skin/background/active
-%define BG_HOVER chrome://tabsidebar/skin/background/hover
-%define BG_SECURE chrome://tabsidebar/skin/background/secure
+%define BG_DEFAULT background/default
+%define BG_ACTIVE background/active
+%define BG_HOVER background/hover
+%define BG_SECURE background/secure
+.tbs-tabpreviews-vertical .tbs-scrollbox {
+	background-image: url('background/bkgnd-vertical.png') !important;
+}
+
+.tbs-tabpreviews-horizontal .tbs-scrollbox {
+	background-image: url('background/bkgnd-horizontal.png') !important;
+}
+
+.tbs-loading {
+  list-style-image: url("Throbber-small.gif");
+}
+
+.tbs-favicon {
+  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
+}
+
+.tbs-scrolltoolbar menuitem {
+  list-style-image: url("favicon.png");
+}
+
 .tbs-top-middle {
 	background-image: url('BG_DEFAULT/top-middle.png');
 }

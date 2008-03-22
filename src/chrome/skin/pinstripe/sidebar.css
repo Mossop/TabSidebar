@@ -40,10 +40,10 @@
 % $Date$
 % $Revision$
 %
-%define BG_DEFAULT chrome://tabsidebar-platform/skin/background/default
-%define BG_ACTIVE chrome://tabsidebar-platform/skin/background/active
-%define BG_SECURE chrome://tabsidebar-platform/skin/background/secure
-%define BG_HOVER chrome://tabsidebar-platform/skin/background/hover
+%define BG_DEFAULT background/default
+%define BG_ACTIVE background/active
+%define BG_SECURE background/secure
+%define BG_HOVER background/hover
 .tabsidebar-splitter {
   border-right: 1px solid #8e8e8e;
   border-left: 1px solid #bebebe;
@@ -51,38 +51,38 @@
 }
 
 .tbs-tabpreviews-vertical .tbs-scrollbox {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bkgnd-vertical.png') !important;
+	background-image: url('background/bkgnd-vertical.png') !important;
 }
 
 .tbs-tabpreviews-horizontal .tbs-scrollbox {
-	background-image: url('chrome://tabsidebar-platform/skin/background/bkgnd-horizontal.png') !important;
+	background-image: url('background/bkgnd-horizontal.png') !important;
 }
 
 .tbs-tabpreview:focus .tbs-title {
 	border: 1px solid -moz-mac-focusring !important;
 }
 
-.tbs-tabpreview .tbs-loading {
-  list-style-image: url("chrome://tabsidebar-platform/skin/Throbber-small.gif");
+.tbs-loading {
+  list-style-image: url("Throbber-small.gif");
 }
 
-tabpreviews .tbs-scrolltoolbar menuitem {
-  list-style-image: url("chrome://tabsidebar-platform/skin/favicon.png");
+.tbs-scrolltoolbar menuitem {
+  list-style-image: url("favicon.png");
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-.tbs-tabpreview .tbs-favicon {
-  list-style-image: url("chrome://tabsidebar-platform/skin/favicon.png");
+.tbs-favicon {
+  list-style-image: url("favicon.png");
   -moz-image-region: rect(0px, 16px, 16px, 0px);
 }
 
-tabpreviews .tbs-tabpreview[selected="true"] .tbs-favicon {
+.tbs-tabpreview[selected="true"] .tbs-favicon {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
 .tbs-tabpreview .tbs-close {
   margin-right: 0px;
-  list-style-image: url("chrome://tabsidebar-platform/skin/Icons.png");
+  list-style-image: url("Icons.png");
 }
 
 .tbs-top-middle {

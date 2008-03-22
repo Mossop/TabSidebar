@@ -42,14 +42,12 @@
 %
 /* Generic layout */
 .tbs-tabpreviews-vertical .tbs-scrollbox {
-	background-image: url('chrome://tabsidebar/skin/background/bkgnd-vertical.png');
 	background-repeat: repeat-y;
 	background-position: left;
   padding: 0px 2px 0px 2px;
 }
 
 .tbs-tabpreviews-horizontal .tbs-scrollbox {
-	background-image: url('chrome://tabsidebar/skin/background/bkgnd-horizontal.png');
 	background-repeat: repeat-x;
 	background-position: top;
   padding: 2px 0px 2px 0px;
@@ -206,10 +204,6 @@
   -moz-image-region: rect(8px, 37px, 16px, 32px);
 }
 
-.tbs-scrolltoolbar menuitem {
-  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
-}
-
 /* Tab settings */
 .tbs-tabpreview[selected="true"] .tbs-title {
   font-weight: bold;
@@ -293,13 +287,11 @@
 }
   
 .tbs-loading {
-  list-style-image: url("chrome://tabsidebar/skin/Throbber-small.gif");
   opacity: 0.5;
   -moz-margin-end: 2px;
 }
 
 .tbs-favicon {
-  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
   -moz-margin-end: 2px;
   height: 16px !important;
   max-height: 16px !important;
@@ -315,7 +307,7 @@
 
 /* Defaults for all icons */
 .tbs-icon, .tbs-icon .toolbarbutton-menubutton-button {
-  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
+  list-style-image: url("default/Icons.png");
   -moz-appearance: none;
   border: none !important;
   padding: 0px !important;
@@ -324,7 +316,7 @@
 /* Drop markers */
 
 .tbs-icon .toolbarbutton-menubutton-dropmarker {
-  list-style-image: url("chrome://tabsidebar/skin/Icons.png");
+  list-style-image: url("default/Icons.png");
   -moz-image-region: rect(6px, 125px, 11px, 116px);
 }
 
@@ -337,7 +329,7 @@
 }
 
 .tbs-icon .toolbarbutton-menubutton-dropmarker[disabled="true"] {
-  list-style-image: url("chrome://tabsidebar/skin/Icons.png") !important;
+  list-style-image: url("default/Icons.png") !important;
   -moz-image-region: rect(54px, 125px, 59px, 116px) !important;
 }
 
