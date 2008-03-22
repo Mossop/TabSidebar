@@ -34,12 +34,6 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-#
-# $HeadURL$
-# $LastChangedBy$
-# $Date$
-# $Revision$
-#
 <!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; Options">
 <!ENTITY tabsidebar.options.style                 "width: 30em; height: 35em;">
 <!ENTITY tabsidebar.options.version               "Version: ">

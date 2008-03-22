@@ -34,12 +34,6 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-%
-% $HeadURL$
-% $LastChangedBy$
-% $Date$
-% $Revision$
-%
 /* fix the missing border below sidebarheader on trunk after silvers (James Ross) theme checkin bug 243078 on 20051007 */
 sidebarheader {
   border-bottom: 1px ThreeDShadow solid !important;
