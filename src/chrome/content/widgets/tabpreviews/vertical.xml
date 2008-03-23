@@ -298,10 +298,11 @@
         <parameter name="aEvent"/>
         <body>
         <![CDATA[
+          var pos = aEvent.clientY - this.scrollBoxObject.y;
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
 
-          if (y.value > 0 && aEvent.clientY < 10) {
+          if (y.value > 0 && pos < 10) {
             this.scrollBoxObject.scrollBy(0, -20);
             this._hideDropIndicator();
             return true;
@@ -309,7 +310,7 @@
 
           var bottom = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.height - this.scrollBox.boxObject.height;
 
-          if ((this.scrollBox.boxObject.height - aEvent.clientY) < 10 && y.value < bottom) {
+          if ((this.scrollBox.boxObject.height - pos) < 10 && (y.value < bottom)) {
             this.scrollBoxObject.scrollBy(0, 20);
             this._hideDropIndicator();
             return true;
