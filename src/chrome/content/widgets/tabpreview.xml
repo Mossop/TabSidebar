@@ -62,17 +62,17 @@
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
     	<xul:stack flex="1" class="tbs-background">
     		<xul:vbox>
-	    		<xul:hbox flex="1000" align="stretch" style="max-height: 75px">
+	    		<xul:hbox flex="1000" align="stretch" style="max-height: 75px" class="tbs-top">
 			      <xul:box class="tbs-top-left"/>
 		      	<xul:box flex="1" class="tbs-top-middle"/>
 			      <xul:box class="tbs-top-right"/>
 	    		</xul:hbox>
-      		<xul:hbox flex="1" align="stretch">
+      		<xul:hbox flex="1" align="stretch" class="tbs-middle">
 		     	 	<xul:box class="tbs-middle-left"/>
 		     	 	<xul:box flex="1" class="tbs-middle-middle"/>
 		      	<xul:box class="tbs-middle-right"/>
       		</xul:hbox>
-		     	<xul:hbox flex="1000" align="stretch" style="max-height: 75px">
+		     	<xul:hbox flex="1000" align="stretch" style="max-height: 75px" class="tbs-bottom">
 		     	 	<xul:box class="tbs-bottom-left"/>
 		     	 	<xul:box flex="1" class="tbs-bottom-middle"/>
 		      	<xul:box class="tbs-bottom-right"/>

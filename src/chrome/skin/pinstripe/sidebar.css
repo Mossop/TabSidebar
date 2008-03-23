@@ -45,6 +45,10 @@
   background-color: #616161;
 }
 
+.tbs-foreground {
+  margin: 5px 4px 5px 3px;
+}
+
 .tbs-tabpreview:focus .tbs-title {
 	border: 1px solid -moz-mac-focusring !important;
 }
@@ -78,10 +82,6 @@
 
 .tbs-close {
   margin-right: 0px;
-}
-
-.tbs-foreground {
-  margin: 5px 4px 5px 3px;
 }
 
 .tbs-bfspacer {

@@ -35,20 +35,20 @@
 %
 % ***** END LICENSE BLOCK *****
 %include "background.inc.css"
-.tbs-tabpreviews-vertical .tbs-scrollbox {
-	background-image: url('background/bkgnd-vertical.png') !important;
+.tbs-scrollbox {
+  background-color: -moz-dialog;
 }
 
-.tbs-tabpreviews-horizontal .tbs-scrollbox {
-	background-image: url('background/bkgnd-horizontal.png') !important;
+.tbs-foreground {
+  margin: 3px;
 }
 
 .tbs-loading {
-  list-style-image: url("Throbber-small.gif");
+  list-style-image: url("loading.gif");
 }
 
 .tbs-favicon {
-  list-style-image: url("chrome://tabsidebar/skin/favicon.png");
+  list-style-image: url("favicon.png");
 }
 
 .tbs-scrolltoolbar menuitem {

@@ -40,6 +40,8 @@
 %define BG_HOVER background/default
 .tbs-top-middle {
 	background-image: url('BG_DEFAULT/top-middle.png');
+	background-repeat: repeat-x;
+	background-position: top left;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-top-middle {
@@ -56,7 +58,10 @@
 }
 
 .tbs-top-left {
+	width: 8px;
 	background-image: url('BG_DEFAULT/top-left.png');
+	background-position: top left;
+	background-repeat: no-repeat;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-top-left {
@@ -73,7 +78,10 @@
 }
 
 .tbs-top-right {
+	width: 8px;
 	background-image: url('BG_DEFAULT/top-right.png');
+	background-position: top right;
+	background-repeat: no-repeat;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-top-right {
@@ -91,6 +99,8 @@
 
 .tbs-bottom-middle {
 	background-image: url('BG_DEFAULT/bottom-middle.png');
+	background-repeat: repeat-x;
+	background-position: bottom left;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-middle {
@@ -107,7 +117,10 @@
 }
 
 .tbs-bottom-left {
+	width: 8px;
 	background-image: url('BG_DEFAULT/bottom-left.png');
+	background-position: bottom left;
+	background-repeat: no-repeat;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-left {
@@ -124,7 +137,10 @@
 }
 
 .tbs-bottom-right {
+	width: 8px;
 	background-image: url('BG_DEFAULT/bottom-right.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-bottom-right {
@@ -142,6 +158,7 @@
 
 .tbs-middle-middle {
 	background-image: url('BG_DEFAULT/middle-middle.png');
+	background-repeat: repeat;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-middle-middle {
@@ -158,7 +175,10 @@
 }
 
 .tbs-middle-left {
+	width: 8px;
 	background-image: url('BG_DEFAULT/middle-left.png');
+	background-position: left;
+	background-repeat: repeat-y;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-middle-left {
@@ -175,7 +195,10 @@
 }
 
 .tbs-middle-right {
+	width: 8px;
 	background-image: url('BG_DEFAULT/middle-right.png');
+	background-position: right;
+	background-repeat: repeat-y;
 }
 
 .tbs-tabpreview[selected="true"] .tbs-middle-right {
