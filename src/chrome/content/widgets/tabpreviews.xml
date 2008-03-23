@@ -623,7 +623,7 @@
           var tab = preview.tab;
           this.tabbrowser.ownerDocument.popupNode = tab;
           var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
-          context.showPopup(tab,x,y,"context");
+          context.openPopupAtScreen(x, y, true);
         </body>
       </method>
       
@@ -794,12 +794,9 @@
 #ifdef ${extension.debug}
           this._logMessage("onContextMenu "+event.screenX+"x"+event.screenY);
 #endif
-          var x = event.screenX-this.browserWindow.document.documentElement.boxObject.screenX;
-          var y = event.screenY-this.browserWindow.document.documentElement.boxObject.screenY;
+          var x = event.screenX + 2;
+          var y = event.screenY + 2;
 
-          x+=2;
-          y+=2;
-          
           if (event.target.localName == "tabpreview")
             this.displayContextMenu(event.target,x,y);
           else if (this._selected)
