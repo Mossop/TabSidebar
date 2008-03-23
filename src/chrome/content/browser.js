@@ -45,255 +45,226 @@ oldToggleAffectedChrome: null,
 lastState: false,
 
 // Constructor and destructor
-init: function()
-{
+init: function() {
   window.addEventListener("load", TabSidebarHandler.load, false);
   window.addEventListener("unload", TabSidebarHandler.unload, false);
 
-	this.doc = document;
-	
-	this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+  this.doc = document;
+  
+  this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
                         .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
 
-	var sidebarBox = this.doc.getElementById("sidebar-box");
-	var sidebar = this.doc.getElementById("sidebar");
+  var sidebarBox = this.doc.getElementById("sidebar-box");
+  var sidebar = this.doc.getElementById("sidebar");
 
-	sidebarBox.addEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
-	sidebar.addEventListener("load", TabSidebarHandler.sidebarLoad, true);
-	
-	this.position=this.prefs.getIntPref("position");
+  sidebarBox.addEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
+  sidebar.addEventListener("load", TabSidebarHandler.sidebarLoad, true);
+  
+  this.position=this.prefs.getIntPref("position");
 
   this.prefs.addObserver("", this, false);
   
 },
 
-unload: function()
-{
+unload: function() {
   window.removeEventListener("unload", TabSidebarHandler.unload, false);
-  TabSidebarHandler.prefs.removeObserver("",TabSidebarHandler);
-	if (TabSidebarHandler.isOpen())
-	{
-		var previews = TabSidebarHandler.getPreviews();
-		TabSidebarHandler.sidebarDestroy();
-		previews._destroy();
-	}
-	TabSidebarHandler.doc = null;
-	TabSidebarHandler.prefs = null;
+  TabSidebarHandler.prefs.removeObserver("", TabSidebarHandler);
+  if (TabSidebarHandler.isOpen()) {
+    var previews = TabSidebarHandler.getPreviews();
+    TabSidebarHandler.sidebarDestroy();
+    previews._destroy();
+  }
+  TabSidebarHandler.doc = null;
+  TabSidebarHandler.prefs = null;
 },
 
-getPreviews: function()
-{
+getPreviews: function() {
   if (this.position == 0)
     return sidebar.contentDocument.documentElement;
   else
     return this.getContainer().firstChild;
 },
 
-getContainer: function()
-{
-	var container = null;
-	
-	switch (this.position)
-	{
-		case 1:	container = document.getElementById("tabsidebar-top-container");
-						break;
-		case 2:	container = document.getElementById("tabsidebar-bottom-container");
-						break;
-		case 3:	container = document.getElementById("tabsidebar-left-container");
-						break;
-		case 4:	container = document.getElementById("tabsidebar-right-container");
-						break;
-	}
-	return container;
+getContainer: function() {
+  var container = null;
+  
+  switch (this.position) {
+    case 1:
+      container = document.getElementById("tabsidebar-top-container");
+      break;
+    case 2:
+      container = document.getElementById("tabsidebar-bottom-container");
+      break;
+    case 3: 
+      container = document.getElementById("tabsidebar-left-container");
+      break;
+    case 4: 
+      container = document.getElementById("tabsidebar-right-container");
+      break;
+  }
+  return container;
 },
 
-getSplitter: function()
-{
-	var splitter = null;
-	
-	switch (this.position)
-	{
-		case 1:	splitter = document.getElementById("tabsidebar-top-splitter");
-						break;
-		case 2:	splitter = document.getElementById("tabsidebar-bottom-splitter");
-						break;
-		case 3:	splitter = document.getElementById("tabsidebar-left-splitter");
-						break;
-		case 4:	splitter = document.getElementById("tabsidebar-right-splitter");
-						break;
-	}
-	return splitter;
+getSplitter: function() {
+  var splitter = null;
+  
+  switch (this.position) {
+    case 1:
+      splitter = document.getElementById("tabsidebar-top-splitter");
+      break;
+    case 2:
+      splitter = document.getElementById("tabsidebar-bottom-splitter");
+      break;
+    case 3:
+      splitter = document.getElementById("tabsidebar-left-splitter");
+      break;
+    case 4:
+      splitter = document.getElementById("tabsidebar-right-splitter");
+      break;
+  }
+  return splitter;
 },
 
-createPreviews: function(container)
-{
-	var previews = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreviews");
-	if (this.position>2)
-		previews.setAttribute("class","tbs-tabpreviews-vertical");
-	else
-		previews.setAttribute("class","tbs-tabpreviews-horizontal");
-	previews.setAttribute("flex","1");
-	previews.setAttribute("id","tabsidebar-previews");
-	container.appendChild(previews);
+createPreviews: function(container) {
+  var previews = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "tabpreviews");
+  if (this.position > 2)
+    previews.setAttribute("class", "tbs-tabpreviews-vertical");
+  else
+    previews.setAttribute("class", "tbs-tabpreviews-horizontal");
+  previews.setAttribute("flex", "1");
+  previews.setAttribute("id", "tabsidebar-previews");
+  container.appendChild(previews);
 },
 
-toggleSidebar: function()
-{
-	if (this.position==0)
-		toggleSidebar('viewTabSidebar');
-	else
-	{
-		var command = document.getElementById("viewTabSidebar");
-		var container = this.getContainer();
-    var previews = this.getPreviews();
-		var splitter = this.getSplitter();
-		if (this.isOpen())
-		{
-			this.sidebarDestroy();
-			previews._destroy();
-			container.removeChild(container.firstChild);
-			container.setAttribute("hidden","true");
-			splitter.setAttribute("hidden","true");
-			command.setAttribute("checked","false");
-		}
-		else
-		{
-			container.setAttribute("hidden","false");
-			splitter.setAttribute("hidden","false");
-			this.createPreviews(container);
-			this.sidebarInitialise();
-			command.setAttribute("checked","true");
-		}
-	}
-},
-
-sidebarLoad: function(event)
-{
-	var sidebar = TabSidebarHandler.doc.getElementById("sidebar");
-	if (sidebar.contentDocument == event.target)
-	{
-		if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
-			sidebar.contentDocument.documentElement.style.backgroundColor = "-moz-dialog";
-	}
-},
-
-// Sidebar opening and closing
-sidebarInitialise: function()
-{
-  if (this.prefs.getBoolPref("hidetabs"))
-  	this.hideTabbar();
-},
-
-sidebarDestroy: function()
-{
-	this.showTabbar();
-},
-
-isOpen: function()
-{
-	if (this.position==0)
-	{
-		var sidebarBox = this.doc.getElementById("sidebar-box");
-		return sidebarBox.getAttribute("sidebarcommand") == "viewTabSidebar";
-	}
-	else
-	{
-		var container = this.getContainer();
-		return !container.hidden;
-	}
-},
-
-showTabbar: function()
-{
-	if (this.hidden)
-	{
-	 	var tabbrowser = this.doc.getElementById("content");
-    tabbrowser.removeAttribute("hidetabs");
-	 	this.hidden=false;
-	}
-},
-
-hideTabbar: function()
-{
-	if (!this.hidden)
-	{
-	  var tabbrowser = this.doc.getElementById("content");
-    tabbrowser.setAttribute("hidetabs", "true");
-	  this.hidden=true;
+toggleSidebar: function() {
+  if (this.position == 0) {
+    toggleSidebar('viewTabSidebar');
+    return;
+  }
+  var command = document.getElementById("viewTabSidebar");
+  var container = this.getContainer();
+  var previews = this.getPreviews();
+  var splitter = this.getSplitter();
+  if (this.isOpen()) {
+    this.sidebarDestroy();
+    previews._destroy();
+    container.removeChild(container.firstChild);
+    container.setAttribute("hidden", "true");
+    splitter.setAttribute("hidden", "true");
+    command.setAttribute("checked", "false");
+  }
+  else {
+    container.setAttribute("hidden", "false");
+    splitter.setAttribute("hidden", "false");
+    this.createPreviews(container);
+    this.sidebarInitialise();
+    command.setAttribute("checked", "true");
   }
 },
 
+sidebarLoad: function(event) {
+  var sidebar = TabSidebarHandler.doc.getElementById("sidebar");
+  if (sidebar.contentDocument == event.target) {
+    if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
+      sidebar.contentDocument.documentElement.style.backgroundColor = "-moz-dialog";
+  }
+},
+
+// Sidebar opening and closing
+sidebarInitialise: function() {
+  if (this.prefs.getBoolPref("hidetabs"))
+    this.hideTabbar();
+},
+
+sidebarDestroy: function() {
+  this.showTabbar();
+},
+
+isOpen: function() {
+  if (this.position == 0) {
+    var sidebarBox = this.doc.getElementById("sidebar-box");
+    return sidebarBox.getAttribute("sidebarcommand") == "viewTabSidebar";
+  }
+  else {
+    var container = this.getContainer();
+    return !container.hidden;
+  }
+},
+
+showTabbar: function() {
+  if (!this.hidden)
+    return;
+  var tabbrowser = this.doc.getElementById("content");
+  tabbrowser.removeAttribute("hidetabs");
+  this.hidden = false;
+},
+
+hideTabbar: function() {
+  if (this.hidden)
+    return;
+  var tabbrowser = this.doc.getElementById("content");
+  tabbrowser.setAttribute("hidetabs", "true");
+  this.hidden = true;
+},
+
 // Event observers
-load: function(event)
-{
+load: function(event) {
   window.removeEventListener("load", TabSidebarHandler.load, false);
-	if ((TabSidebarHandler.position != 0) && (TabSidebarHandler.isOpen()))
-	{
-		var command = document.getElementById("viewTabSidebar");
-		var container = TabSidebarHandler.getContainer();
-		TabSidebarHandler.createPreviews(container);
-		TabSidebarHandler.sidebarInitialise();
-		command.setAttribute("checked","true");
-	}
-	TabSidebarHandler.oldToggleAffectedChrome = window.toggleAffectedChrome;
-	window.toggleAffectedChrome = TabSidebarHandler.toggleAffectedChrome;
+  if ((TabSidebarHandler.position != 0) && (TabSidebarHandler.isOpen())) {
+    var command = document.getElementById("viewTabSidebar");
+    var container = TabSidebarHandler.getContainer();
+    TabSidebarHandler.createPreviews(container);
+    TabSidebarHandler.sidebarInitialise();
+    command.setAttribute("checked", "true");
+  }
+  TabSidebarHandler.oldToggleAffectedChrome = window.toggleAffectedChrome;
+  window.toggleAffectedChrome = TabSidebarHandler.toggleAffectedChrome;
 },
 
-observe: function (subject, topic, data)
-{
-	if (data=="hidetabs")
-	{
-		if (this.isOpen())
-		{
-		  if (this.prefs.getBoolPref(data))
-		  	this.hideTabbar();
-		  else
-		  	this.showTabbar();
-		}
-	}
-	else if (data=="position")
-	{
-		var open = this.isOpen();
-		if (open)
-			this.toggleSidebar();
-		this.position=this.prefs.getIntPref(data);
-		if (open)
-			this.toggleSidebar();
-	}
+observe: function (subject, topic, data) {
+  if (data == "hidetabs") {
+    if (this.isOpen()) {
+      if (this.prefs.getBoolPref(data))
+        this.hideTabbar();
+      else
+        this.showTabbar();
+    }
+  }
+  else if (data == "position") {
+    var open = this.isOpen();
+    if (open)
+      this.toggleSidebar();
+    this.position = this.prefs.getIntPref(data);
+    if (open)
+      this.toggleSidebar();
+  }
 },
 
-toggleAffectedChrome: function(aHide)
-{
+toggleAffectedChrome: function(aHide) {
   TabSidebarHandler.oldToggleAffectedChrome(aHide);
-  if (TabSidebarHandler.position != 0)
-  {
-    if (aHide)
-    {
+  if (TabSidebarHandler.position != 0) {
+    if (aHide) {
       TabSidebarHandler.lastState = TabSidebarHandler.isOpen();
       if (TabSidebarHandler.lastState)
         TabSidebarHandler.toggleSidebar();
     }
-    else
-    {
+    else {
       if (TabSidebarHandler.lastState)
         TabSidebarHandler.toggleSidebar();
     }
   }
 },
 
-attributeListener: function(event)
-{
-	if (event.eventPhase==Event.AT_TARGET)
-	{
-		if (event.attrName=="sidebarcommand")
-		{
-			if (event.newValue == "viewTabSidebar")
-				TabSidebarHandler.sidebarInitialise();
-			else if (event.prevValue == "viewTabSidebar")
-				TabSidebarHandler.sidebarDestroy();
-		}
-	}
+attributeListener: function(event) {
+  if (event.eventPhase == Event.AT_TARGET) {
+    if (event.attrName == "sidebarcommand") {
+      if (event.newValue == "viewTabSidebar")
+        TabSidebarHandler.sidebarInitialise();
+      else if (event.prevValue == "viewTabSidebar")
+        TabSidebarHandler.sidebarDestroy();
+    }
+  }
 }
 
 }

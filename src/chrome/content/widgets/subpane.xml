@@ -44,65 +44,54 @@
     </content>
 
     <implementation>
-    
+
       <property name="action">
         <getter>
           return this.getAttribute("action");
         </getter>
       </property>
-      
+
       <property name="_attribute">
         <getter>
           if (this.action == "hide")
-          {
             return "hidden";
-          }
-          else if (this.action == "disable")
-          {
+          if (this.action == "disable")
             return "disabled";
-          }
           return "";
         </getter>
       </property>
-      
+
       <property name="_invert">
         <getter>
         <![CDATA[
           var invert = false;
-          
+
           if (this.action == "hide")
-          {
             invert=true;
-          }
           else if (this.action == "disable")
-          {
             invert=true;
-          }
-          
+
           if (this.hasAttribute("invert") && this.getAttribute("invert") == "true")
             invert=!invert;
-            
+
           return invert;
         ]]>
         </getter>
       </property>
-      
+
       <field name="_value"/>
-      <property name="value">
+      <property name="value" onget="return this._value">
         <setter>
           if (val == this._value)
             return val;
 
           this._value = val;
           this._updateElements(val);
-          
+
           return val;
         </setter>
-        <getter>
-          return this._value;
-        </getter>
       </property>
-      
+
       <method name="_setElementState">
         <parameter name="element"/>
         <parameter name="state"/>
@@ -120,24 +109,21 @@
       <method name="_updateElements">
         <parameter name="state"/>
         <body>
-          if (this.action=="hide")
-          {
+          if (this.action == "hide") {
             this.hidden = this._invert ? !state : state;
           }
-          else
-          {
+          else {
             var element = this.firstChild;
-            while (element)
-            {
-              this._setElementState(element,state);
+            while (element) {
+              this._setElementState(element, state);
               element = element.nextSibling;
             }
           }
         </body>
       </method>
-      
+
     </implementation>
-    
+
   </binding>
 
 </bindings>

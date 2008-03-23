@@ -6,33 +6,30 @@
           {
             var caller = Components.stack.caller;
             if (caller)
-              message += " ("+caller.filename+":"+caller.lineNumber+")";
+              message += " (" + caller.filename + ":" + caller.lineNumber + ")";
 
             Components.classes['@mozilla.org/consoleservice;1']
                       .getService(Components.interfaces.nsIConsoleService)
-                      .logStringMessage("Tab Preview: "+message);
+                      .logStringMessage("Tab Preview: " + message);
           }
         ]]>
         </body>
       </method>
-      
+
       <method name="_logWarning">
         <parameter name="message"/>
         <body>
         <![CDATA[
-          if (this.previews && this.previews._enableLogging)
-          {
+          if (this.previews && this.previews._enableLogging) {
             var caller = Components.stack.caller;
             var msg = Components.classes["@mozilla.org/scripterror;1"]
                                 .createInstance(Components.interfaces.nsIScriptError);
-            if (caller)
-            {
+            if (caller) {
               var filename = caller.filename;
               var sourceLine = caller.sourceLine;
               var lineNumber = caller.lineNumber;
             }
-            else
-            {
+            else {
               var filename = "chrome://tabsidebar/content/widgets/tabpreview.xml";
               var sourceLine = "";
               var lineNumber = 0;
@@ -44,7 +41,7 @@
                      0,
                      Components.interfaces.nsIScriptError.warningFlag,
                      "XUL JavaScript");
-            
+
             var console = Components.classes["@mozilla.org/consoleservice;1"]
                                     .getService(Components.interfaces.nsIConsoleService);
             console.logMessage(msg);
@@ -52,24 +49,21 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_logError">
         <parameter name="message"/>
         <body>
         <![CDATA[
-          if (this.previews && this.previews._enableLogging)
-          {
+          if (this.previews && this.previews._enableLogging) {
             var caller = Components.stack.caller;
             var msg = Components.classes["@mozilla.org/scripterror;1"]
                                 .createInstance(Components.interfaces.nsIScriptError);
-            if (caller)
-            {
+            if (caller) {
               var filename = caller.filename;
               var sourceLine = caller.sourceLine;
               var lineNumber = caller.lineNumber;
             }
-            else
-            {
+            else {
               var filename = "chrome://tabsidebar/content/widgets/tabpreview.xml";
               var sourceLine = "";
               var lineNumber = 0;
@@ -81,7 +75,7 @@
                      0,
                      Components.interfaces.nsIScriptError.errorFlag,
                      "XUL JavaScript");
-            
+
             var console = Components.classes["@mozilla.org/consoleservice;1"]
                                     .getService(Components.interfaces.nsIConsoleService);
             console.logMessage(msg);

@@ -36,11 +36,10 @@
 # ***** END LICENSE BLOCK *****
 var prefs = {
 
-updateNav: function()
-{
-	var value = document.getElementById('content.reload').value;
-	document.getElementById('content.stop').value=value;
-	document.getElementById('content.forward').value=value;
-	document.getElementById('content.back').value=value;
+updateNav: function() {
+  var value = document.getElementById('content.reload').value;
+  document.getElementById('content.stop').value = value;
+  document.getElementById('content.forward').value = value;
+  document.getElementById('content.back').value = value;
 }
 }

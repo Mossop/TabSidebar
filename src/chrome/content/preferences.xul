@@ -49,11 +49,11 @@
 <prefwindow id="TabSidebarOptions" windowtype="TabSidebar:Options"
             title="&tabsidebar.options.title;" style="&tabsidebar.options.style;"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  
-  <prefpane id="paneGeneral">
-  
+
+    <prefpane id="paneGeneral">
+
     <script src="preferences.js"/>
-  
+
     <preferences>
       <preference type="bool" id="hidetabs"
       name="extensions.tabsidebar.hidetabs"/>
@@ -70,49 +70,49 @@
     </preferences>
 
     <hbox align="start" flex="1">
-    
+
       <image src="chrome://tabsidebar/content/branding/logo.png"/>
-      
+
       <vbox flex="1">
-      
+
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
           <label class="bold version" value="&tabsidebar.options.version; ${extension.version}"/>
         </hbox>
 
         <separator class="groove-thin"/>
-      
+
       </vbox>
 
     </hbox>
-    
+
     <vbox flex="1" pack="start">
-    
-	    <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
-	  
+
+      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
+
 	    <separator class="thin"/>
-	    
+
 	    <checkbox preference="content.navigation" accesskey="&paneDisplay.content.navigation.accesskey;"
 	                                              label="&paneDisplay.content.navigation.label;"/>
-	
-	    <separator class="thin"/>
-	    
+
+      <separator class="thin"/>
+
 	    <checkbox preference="content.previews" accesskey="&paneDisplay.content.previews.accesskey;" 
 	                                            label="&paneDisplay.content.previews.label;"/>      
-	  
-	    <separator class="thin"/>
-	    
+
+      <separator class="thin"/>
+
 			<subpane preference="content.previews" action="disable">
 		    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
 		                                          label="&paneDisplay.updatepreviews.label;"/>
 			</subpane>
-			
+
 	    <separator class="thin"/>
-	    
+
 	    <checkbox preference="scrollselects" accesskey="&paneDisplay.scrollselects.accesskey;" 
 	                                         label="&paneDisplay.scrollselects.label;"/>      
-	  
-			<groupbox>
+
+      <groupbox>
 				<caption label="&paneDisplay.position.caption;"/>
 		    <radiogroup preference="position" align="center">
 		      <radio label="&paneDisplay.position.top;" value="1"/>
@@ -130,5 +130,5 @@
 	  </vbox>
 
   </prefpane>
-  
+
 </prefwindow>

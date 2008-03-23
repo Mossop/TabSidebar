@@ -44,9 +44,9 @@
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
-    
+
     <implementation implements="nsITimerCallback,nsIObserver">
-    
+
       <field name="_validateTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
@@ -60,7 +60,7 @@
 #endif
       <field name="_reflowComplete">false</field>
       <field name="_selected">null</field>
-      
+
       <constructor>
       <![CDATA[
         var docshell = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -70,7 +70,7 @@
         this.browserWindow = docshell.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                                      .getInterface(Components.interfaces.nsIDOMWindow);
         this.tabbrowser = this.browserWindow.document.getElementById("content");
-        
+
         this._migrateOldSettings();
         this._initSettings();
 
@@ -82,56 +82,53 @@
         this._loadMetrics();
 #endif
 #ifdef ${extension.enablesessionstore}
-        if (this.browserWindow.__SSi)
-        {
+        if (this.browserWindow.__SSi) {
           this._restoreSession();
           this._seenSessionRestore = true;
         }
 #endif
-          
+
         if (this.showPreviews)
           this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         else
-          this.style.visibility=null;
+          this.style.visibility = null;
       ]]>
       </constructor>
-      
+
       <method name="init">
         <body>
         <![CDATA[
 #ifdef ${extension.debug}
           this._logMessage("Tab Sidebar Load");
-          
+
 #endif
           var selectedpos = -1;
           var browsers = this.tabbrowser.browsers;
-          for (var i=0; i<browsers.length; i++)
-          {
-            if (this.tabbrowser.selectedBrowser==browsers[i])
-            {
-              selectedpos=i;
+          for (var i = 0; i < browsers.length; i++) {
+            if (this.tabbrowser.selectedBrowser == browsers[i]) {
+              selectedpos = i;
               break;
             }
           }
           this.addPreview(browsers[selectedpos]);
-          for (var i=selectedpos-1; i>=0; i--)
+          for (var i = selectedpos - 1; i >= 0; i--)
             this.addPreview(browsers[i]);
-          for (var i=selectedpos+1; i<browsers.length; i++)
+          for (var i = selectedpos + 1; i < browsers.length; i++)
             this.addPreview(browsers[i]);
-          
+
           this._initEvents();
         ]]>
         </body>
       </method>
-      
+
       <method name="_initTree">
         <body>
-          var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
-          drop.className="dropindicator groove";
-          if (this.getAttribute("orient")=="vertical")
-            drop.setAttribute("orient","vertical");
+          var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "separator");
+          drop.className = "dropindicator groove";
+          if (this.getAttribute("orient") == "vertical")
+            drop.setAttribute("orient", "vertical");
           else
-            drop.setAttribute("orient","horizontal");
+            drop.setAttribute("orient", "horizontal");
           this.previewContainer.appendChild(drop);
         </body>
       </method>
@@ -142,14 +139,11 @@
           var oprefs = Components.classes["@mozilla.org/preferences-service;1"]
                                  .getService(Components.interfaces.nsIPrefService)
                                  .getBranch("tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch);
-          var list = oprefs.getChildList("",{});
-          for (var i=0; i<list.length; i++)
-          {
-            if (oprefs.prefHasUserValue(list[i]))
-            {
+          var list = oprefs.getChildList("", {});
+          for (var i = 0; i < list.length; i++) {
+            if (oprefs.prefHasUserValue(list[i])) {
               var type = oprefs.getPrefType(list[i]);
-              switch (type)
-              {
+              switch (type) {
                 case Components.interfaces.nsIPrefBranch.PREF_STRING:
                   this.preferences.setStringPref(list[i],oprefs.getStringPref(list[i]));
                   break;
@@ -181,7 +175,7 @@
 #endif
         </body>
       </method>
-      
+
 #ifdef ${extension.enablemetrics}
       <method name="_loadMetrics">
         <body>
@@ -195,7 +189,7 @@
             this._displayHeight = this.preferences.getIntPref("metrics.displayheight");
         </body>
       </method>
-      
+
 #endif
 #ifdef ${extension.enablesessionstore}
       <method name="_restoreSession">
@@ -210,7 +204,7 @@
             this.scrollTo(pos);
         </body>
       </method>
-      
+
 #endif
       <destructor>
 #ifdef ${extension.debug}
@@ -218,62 +212,58 @@
 #endif
         this._destroy();
       </destructor>
-      
+
       <field name="_destroyed" value="false"/>
       <method name="_destroy">
         <body>
-          if (!this._destroyed)
-          {
-            try
-            {
-              this._destroyed=true;
-  
-              this.tabbrowser.removeProgressListener(this._progressListener);
-  
-              while (this.firstChild)
-              {
-                if (this.firstChild.localName == "tabpreview")
-                  this.firstChild._destroy();
-                this.removeChild(this.firstChild);
-              }
-      
-		          this.tabbrowser.tabContainer.removeEventListener("TabOpen", this._eventListener, false);
-		          this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
-		          this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
-		          this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
+          if (this.destroyed)
+            return;
+          try {
+            this._destroyed = true;
+
+            this.tabbrowser.removeProgressListener(this._progressListener);
+
+            while (this.firstChild) {
+              if (this.firstChild.localName == "tabpreview")
+                this.firstChild._destroy();
+              this.removeChild(this.firstChild);
+            }
+
+            this.tabbrowser.tabContainer.removeEventListener("TabOpen", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
 #ifdef ${extension.enablesessionstore}
-              this.tabbrowser.tabContainer.removeEventListener("SSTabRestoring", this._eventListener, false);
-              this.tabbrowser.tabContainer.removeEventListener("SSTabRestored", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("SSTabRestoring", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("SSTabRestored", this._eventListener, false);
 #endif
-      
-              this.preferences.removeObserver("", this);
-              
-              this.preferences = null;
-              this._eventListener.tabpreviews = null;
-              this._eventListener = null;
-              this._validateTimer.cancel();
-              this._validateTimer = null;
-              this._progressListener.tabpreviews = null;
-              this._progressListener = null;
-              this._selected = null;
-              this._lastDrop = null;
-              this.tabbrowser = null;
-              this.browserWindow = null;
-    
+
+            this.preferences.removeObserver("", this);
+
+            this.preferences = null;
+            this._eventListener.tabpreviews = null;
+            this._eventListener = null;
+            this._validateTimer.cancel();
+            this._validateTimer = null;
+            this._progressListener.tabpreviews = null;
+            this._progressListener = null;
+            this._selected = null;
+            this._lastDrop = null;
+            this.tabbrowser = null;
+            this.browserWindow = null;
+  
 #ifdef ${extension.debug}
-              //dump("Tabpreviews destroyed\n");
+            //dump("Tabpreviews destroyed\n");
 #endif
-            }
-            catch (e)
-            {
+          }
+          catch (e) {
 #ifdef ${extension.debug}
-              dump(e+"\n");
+            dump(e+"\n");
 #endif
-            }
           }
         </body>
       </method>
-      
+
 #include "tabpreviews/preferences.inc.xml"
 
 #include "tabpreviews/dragdrop.inc.xml"
@@ -289,10 +279,10 @@
         <body>
           if (!this._seenSessionRestore)
             return;
-            
+
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
-          ss.setWindowValue(this.browserWindow, "tabsidebar."+key, value);
+          ss.setWindowValue(this.browserWindow, "tabsidebar." + key, value);
         </body>
       </method>
       
@@ -306,22 +296,20 @@
           this.preferences.setIntPref("metrics.displayheight", this._displayHeight);
         </body>
       </method>
-      
+
 #endif
       <!-- Event handling gubbins -->
 
-      <field name="_eventListener">({
+      <field name="_eventListener">
+      ({
         tabpreviews: this,
-        
-        handleEvent: function(event)
-        {
+
+        handleEvent: function(event) {
 #ifdef ${extension.debug}
-        	this.tabpreviews._logMessage("Event - "+event.type);
+          this.tabpreviews._logMessage("Event - " + event.type);
 #endif
-          if (event.type=="TabOpen")
-          {
-            if (this.tabpreviews._newTabPosition)
-            {
+          if (event.type == "TabOpen") {
+            if (this.tabpreviews._newTabPosition) {
 #ifdef ${extension.debug}
               this.tabpreviews._logMessage("New tab that needs moving to " + this.tabpreviews._newTabPosition.tab._tPos);
 #endif
@@ -335,29 +323,24 @@
             if (this.tabpreviews.showPreviews)
               preview.redraw();
           }
-          else if (event.type=="TabClose")
-          {
+          else if (event.type == "TabClose") {
             var browser = event.target.linkedBrowser;
             this.tabpreviews.removePreview(browser);
           }
-          else if (event.type=="TabMove")
-          {
+          else if (event.type == "TabMove") {
             var browser = event.target.linkedBrowser;
             this.tabpreviews.removePreview(browser);
             var preview = this.tabpreviews.addPreview(browser);
             if (this.tabpreviews.showPreviews)
               preview.redraw();
           }
-          else if (event.type=="TabSelect")
-          {
+          else if (event.type == "TabSelect") {
             var newBrowser = this.tabpreviews.tabbrowser.getBrowserForTab(this.tabpreviews.tabbrowser.selectedTab);
             this.tabpreviews.selectPreview(newBrowser);
           }
 #ifdef ${extension.enablesessionstore}
-          else if (event.type=="SSTabRestoring")
-          {
-            if (!this.tabpreviews._seenSessionRestore)
-            {
+          else if (event.type == "SSTabRestoring") {
+            if (!this.tabpreviews._seenSessionRestore) {
               this.tabpreviews._restoreSession();
               this.tabpreviews._seenSessionRestore = true;
             }
@@ -365,74 +348,66 @@
             if (preview)
               preview.startRestoringSession();
           }
-          else if (event.type=="SSTabRestored")
-          {
+          else if (event.type == "SSTabRestored") {
             var preview = this.tabpreviews.getPreviewForBrowser(event.target.linkedBrowser);
             if (preview)
               preview.endRestoringSession();
           }
 #endif
         }
-      });</field>
+      });
+      </field>
 
-      <field name="_progressListener">({
-          tabpreviews: this,
+      <field name="_progressListener">
+      ({
+        tabpreviews: this,
 
-          onProgressChange : function (aWebProgress, aRequest,
-                                       aCurSelfProgress, aMaxSelfProgress,
-                                       aCurTotalProgress, aMaxTotalProgress)
-          {
-          },
+        onProgressChange : function (aWebProgress, aRequest,
+                                     aCurSelfProgress, aMaxSelfProgress,
+                                     aCurTotalProgress, aMaxTotalProgress) {
+        },
 
-          onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
-          {
-          },
+        onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+        },
 
-          onLocationChange : function(aWebProgress, aRequest, aLocation)
-          {
-          },
+        onLocationChange : function(aWebProgress, aRequest, aLocation) {
+        },
 
-          onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage)
-          {
-          },
+        onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {
+        },
 
-          onSecurityChange : function(aWebProgress, aRequest, aState)
-          {
-          },
+        onSecurityChange : function(aWebProgress, aRequest, aState) {
+        },
 
-          onLinkIconAvailable : function(browser)
-          {
-            var preview = this.tabpreviews.getPreviewForBrowser(browser);
-            if (preview)
-              preview.onLinkIconAvailable();
-          },
-          
-          QueryInterface : function(aIID)
-          {
-            if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-                aIID.equals(Components.interfaces.nsISupports))
-              return this;
-            throw Components.results.NS_NOINTERFACE;
-          }
-        });</field>
+        onLinkIconAvailable : function(browser) {
+          var preview = this.tabpreviews.getPreviewForBrowser(browser);
+          if (preview)
+            preview.onLinkIconAvailable();
+        },
+        
+        QueryInterface : function(aIID) {
+          if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+              aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+              aIID.equals(Components.interfaces.nsISupports))
+            return this;
+          throw Components.results.NS_NOINTERFACE;
+        }
+      });
+      </field>
 
       <!-- Helper properties -->
 
       <field name="preferences">
         Components.classes["@mozilla.org/preferences-service;1"]
                   .getService(Components.interfaces.nsIPrefService)
-                  .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranchInternal);
+                  .getBranch("extensions.tabsidebar.")
+                  .QueryInterface(Components.interfaces.nsIPrefBranchInternal);
       </field>
       <field name="tabbrowser" value="null"/>
       <field name="browserWindow" value="null"/>
-      
-      <property name="previews">
-        <getter>
-          return this.getElementsByTagName("tabpreview");
-        </getter>
-      </property>
-      
+
+      <property name="previews" onget="return this.getElementsByTagName('tabpreview')"/>
+
       <!-- Methods -->
 
       <method name="getPreviewForBrowser">
@@ -441,14 +416,12 @@
         <![CDATA[
           var id=browser.parentNode.id;
           var preview = this.getElementsByAttribute("browser", id);
-          if (preview.length>0)
+          if (preview.length > 0)
             return preview[0];
           var previews = this.previews;
-          for (var i=0; i<previews.length; i++)
-          {
+          for (var i = 0; i < previews.length; i++) {
             var preview = previews[i];
-            if (preview.browser==browser)
-            {
+            if (preview.browser == browser) {
               if (id)
                 preview.setAttribute("browser", id);
               return preview;
@@ -458,75 +431,70 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="getTabForPreview">
         <parameter name="preview"/>
         <body>
           var tabbrowser = this.tabbrowser;
           var panel = preview._browser.parentNode.id;
-          return tabbrowser.ownerDocument.getAnonymousElementByAttribute(tabbrowser,"linkedpanel",panel);
+          return tabbrowser.ownerDocument.getAnonymousElementByAttribute(tabbrowser, "linkedpanel", panel);
         </body>
       </method>
-      
+
       <method name="addPreview">
         <parameter name="browser"/>
         <body>
         <![CDATA[
           var preview = this.getPreviewForBrowser(browser);
           var drop = null;
-          if (preview)
-          {
+          if (preview) {
 #ifdef ${extension.debug}
-            this._logMessage("Found preview: "+preview);
+            this._logMessage("Found preview: " + preview);
 #endif
             preview._destroy();
             var drop = preview.nextSibling;
           }
-          else
-          {
-            preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","tabpreview");
-            drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","separator");
-            drop.className="dropindicator groove";
-            if (this.getAttribute("orient")=="vertical")
-              drop.setAttribute("orient","vertical");
+          else {
+            preview = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "tabpreview");
+            drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "separator");
+            drop.className = "dropindicator groove";
+            if (this.getAttribute("orient") == "vertical")
+              drop.setAttribute("orient", "vertical");
             else
-              drop.setAttribute("orient","horizontal");
+              drop.setAttribute("orient", "horizontal");
           }
           var id=browser.parentNode.id;
           if (id)
             preview.setAttribute("browser", id);
           var panel = browser.parentNode.id;
-          var tab = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"linkedpanel",panel);
+          var tab = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser, "linkedpanel", panel);
           var next = null;
           if (tab && tab.nextSibling)
             next = this.getPreviewForBrowser(tab.nextSibling.linkedBrowser);
-          this.previewContainer.insertBefore(preview,next);
-          this.previewContainer.insertBefore(drop,next);
+          this.previewContainer.insertBefore(preview, next);
+          this.previewContainer.insertBefore(drop, next);
 
           preview.init();
 
-          if (this.tabbrowser.selectedBrowser==browser)
-          {
+          if (this.tabbrowser.selectedBrowser == browser)
             this.selectPreview(browser);
-          }
           else if (tab && tab.hasAttribute("selected"))
-            preview.selected=(tab.getAttribute("selected")=="true");
-          
-          preview.browser=browser;
+            preview.selected = (tab.getAttribute("selected") == "true");
+
+          preview.browser = browser;
           this._updateScrollButtons();
           return preview;
         ]]>
         </body>
       </method>
-      
+
       <method name="removePreview">
         <parameter name="browser"/>
         <body>
           var preview = this.getPreviewForBrowser(browser);
-          if (preview)
-          {
-            if (this._selected==preview)
-              this._selected=null;
+          if (preview) {
+            if (this._selected == preview)
+              this._selected = null;
               
             var drop = preview.nextSibling;
             preview._destroy();
@@ -536,21 +504,20 @@
             this._updateScrollButtons();
           }
 #ifdef ${extension.debug}
-          else if (!this._newTabPosition)
-          {
-          	this._logWarning("Attempt to remove an unknown preview");
+          else if (!this._newTabPosition) {
+            this._logWarning("Attempt to remove an unknown preview");
           }
 #endif
         </body>
       </method>
-      
+
       <method name="scrollToPreview">
         <parameter name="preview"/>
         <body>
-          this.ensureElementsAreVisible(preview.previousSibling,preview.nextSibling);
+          this.ensureElementsAreVisible(preview.previousSibling, preview.nextSibling);
         </body>
       </method>
-      
+
       <method name="selectPreview">
         <parameter name="browser"/>
         <body>
@@ -558,16 +525,15 @@
           var preview = this.getPreviewForBrowser(browser);
           if (this._selected)
             this._selected.selected=false;
-          if (preview)
-          {
+          if (preview) {
             preview.selected=true;
             this.scrollToPreview(preview);
           }
-          this._selected=preview;
+          this._selected = preview;
         ]]>
         </body>
       </method>
-            
+
       <method name="updatePreview">
         <parameter name="browser"/>
         <body>
@@ -575,13 +541,13 @@
           preview.update();
         </body>
       </method>
-      
+
       <method name="redrawPreview">
         <parameter name="browser"/>
         <body>
           if (!this.showPreviews)
             return;
-            
+
           var preview = this.getPreviewForBrowser(browser);
           preview.redraw();
         </body>
@@ -590,14 +556,10 @@
       <method name="updateDisplay">
         <body>
         <![CDATA[
-          var hide = "";
           if (!this.showNavigation)
-            hide+=" navigation";
-          
-          if (hide.length>0)
-            hide=hide.substring(1);
-          
-          this.setAttribute("hide",hide);
+            this.setAttribute("hide", "navigation");
+          else
+            this.removeAttribute("hide");
         ]]>
         </body>
       </method>
@@ -607,14 +569,14 @@
         <![CDATA[
           if (!this.showPreviews)
             return;
-            
+
           var previews = this.previews;
           for (var i = 0; i < previews.length; i++)
             previews[i].redraw();
         ]]>
         </body>
       </method>
-      
+
       <method name="displayContextMenu">
         <parameter name="preview"/>
         <parameter name="x"/>
@@ -622,32 +584,31 @@
         <body>
           var tab = preview.tab;
           this.tabbrowser.ownerDocument.popupNode = tab;
-          var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser,"anonid","tabContextMenu");
+          var context = this.tabbrowser.ownerDocument.getAnonymousElementByAttribute(this.tabbrowser, "anonid", "tabContextMenu");
           context.openPopupAtScreen(x, y, true);
         </body>
       </method>
-      
+
       <method name="_resize">
         <body>
         <![CDATA[
           var previews = this.previews;
 #ifdef ${extension.debug}
-          if (previews.length>0)
-            this._logMessage("Resizing to "+this.displayWidth+"x"+this.displayHeight);
+          if (previews.length > 0)
+            this._logMessage("Resizing to " + this.displayWidth + "x" + this.displayHeight);
 #endif
-          for (var i=0; i<previews.length; i++)
+          for (var i = 0; i < previews.length; i++)
             this._resizePreview(previews[i]);
           this._checkScrollPosition();
           this._updateScrollButtons();
         ]]>
         </body>
       </method>
-      
+
       <method name="_checkReflow">
         <body>
         <![CDATA[
-          if (!this._browserWidth)
-          {
+          if (!this._browserWidth) {
             var size = Math.min(this.browserWindow.innerWidth,
                                 this.browserWindow.innerHeight,
                                 this.tabbrowser.boxObject.height,
@@ -659,20 +620,18 @@
             this._logMessage("Checking new size of " + size + "px");
 #endif
 
-            if (size <= MINSIZE)
-            {
+            if (size <= MINSIZE) {
               this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
               return;
             }
 
             this._initTree();
             this.init();
-        	  this._browserWidth = this._selected._browserWidth;
+            this._browserWidth = this._selected._browserWidth;
             this._browserHeight = this._selected._browserHeight;
           }
 
-          if (!this._calculateSize())
-          {
+          if (!this._calculateSize()) {
             this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
             return;
           }
@@ -689,7 +648,7 @@
       <method name="_invalidateAll">
         <body>
         <![CDATA[
-          for (var i = 0; i< this.previews.length; i++)
+          for (var i = 0; i < this.previews.length; i++)
             this.previews[i]._invalid = true;
 
           this._selected.redraw();
@@ -702,7 +661,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="browserResized">
         <parameter name="preview"/>
         <parameter name="width"/>
@@ -710,12 +669,10 @@
         <body>
           if (!this._reflowComplete || !this.showPreviews)
             return;
-          if (preview == this._selected)
-          {
-            if ((width != this._browserWidth) || (height != this._browserHeight))
-            {
+          if (preview == this._selected) {
+            if ((width != this._browserWidth) || (height != this._browserHeight)) {
 #ifdef ${extension.debug}
-              this._logMessage("Got told a new size of "+width+"x"+height);
+              this._logMessage("Got told a new size of " + width + "x" + height);
 #endif
               this._browserWidth = width;
               this._browserHeight = height;
@@ -723,8 +680,9 @@
               this._resize();
               this._invalidateAll();
             }
-            else
+            else {
               preview.redraw();
+            }
           }
         </body>
       </method>
@@ -732,30 +690,29 @@
       <method name="_validate">
         <body>
         <![CDATA[
-          if (!this._reflowComplete)
+          if (!this._reflowComplete) {
             this._checkReflow();
-          else
-          {
-            var previews = this.previews;
-
-            while ((this._validatePos < this._validateMax) && (!previews[this._validatePos]._invalid))
-              this._validatePos++;
-            
-            if (this._validatePos >= this._validateMax)
-              return;
-            
-#ifdef ${extension.debug}
-            this._logMessage("Updating "+this._validatePos);
-#endif
-            previews[this._validatePos].redraw();
-            this._validatePos++;
-            
-            this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+            return;
           }
+          var previews = this.previews;
+
+          while ((this._validatePos < this._validateMax) && (!previews[this._validatePos]._invalid))
+            this._validatePos++;
+
+          if (this._validatePos >= this._validateMax)
+            return;
+
+#ifdef ${extension.debug}
+          this._logMessage("Updating "+this._validatePos);
+#endif
+          previews[this._validatePos].redraw();
+          this._validatePos++;
+
+          this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
         ]]>
         </body>
       </method>
-      
+
       <method name="onPreviewSelect">
         <parameter name="preview"/>
         <body>
@@ -765,29 +722,28 @@
             this.ensureElementsAreVisible(preview.previousSibling, preview.nextSibling);
         </body>
       </method>
-      
+
       <method name="dispatchCloneMouseEvent">
-      	<parameter name="event"/>
-      	<body>
+        <parameter name="event"/>
+        <body>
           var target = this.getDropElement(event, false);
-          if (target.nextSibling)
-          {
+          if (target.nextSibling) {
             this._newTabPosition = target.nextSibling;
 #ifdef ${extension.debug}
             this._logMessage("Potential new tab open at "+this._newTabPosition.tab._tPos);
 #endif
           }
 
-	    		target = this.previews[0].tab.boxObject.parentBox;
-	    		var ev = this.tabbrowser.ownerDocument.createEvent("MouseEvent");
-	    		ev.initMouseEvent(event.type, true, true, this.browserWindow,
-	    		                  event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
-	    		                  event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
-	    		target.dispatchEvent(ev);
+          target = this.previews[0].tab.boxObject.parentBox;
+          var ev = this.tabbrowser.ownerDocument.createEvent("MouseEvent");
+          ev.initMouseEvent(event.type, true, true, this.browserWindow,
+                            event.detail, event.screenX, event.screenY, event.clientX, event.clientY,
+                            event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, event.button, null);
+          target.dispatchEvent(ev);
           this._newTabPosition = null;
-      	</body>
+        </body>
       </method>
-      
+
       <method name="onContextMenu">
         <parameter name="event"/>
         <body>
@@ -798,11 +754,11 @@
           var y = event.screenY + 2;
 
           if (event.target.localName == "tabpreview")
-            this.displayContextMenu(event.target,x,y);
+            this.displayContextMenu(event.target, x, y);
           else if (this._selected)
-            this.displayContextMenu(this._selected,x,y);
+            this.displayContextMenu(this._selected, x, y);
           else
-            this.displayContextMenu(this.previews[0],x,y);
+            this.displayContextMenu(this.previews[0], x, y);
         </body>
       </method>
 
@@ -810,96 +766,89 @@
         <parameter name="event"/>
         <body>
         <![CDATA[
-        	if ((event.button != 2) && ((event.target.localName=="separator" || event.target == this.scrollBox)))
-	        	this.dispatchCloneMouseEvent(event);
+          if ((event.button != 2) && ((event.target.localName=="separator" || event.target == this.scrollBox)))
+            this.dispatchCloneMouseEvent(event);
         ]]>
         </body>
       </method>
-      
+
       <method name="onDblClick">
         <parameter name="event"/>
         <body>
         <![CDATA[
-          if ((event.target.localName=="separator" || event.target == this.scrollBox))
-          	this.dispatchCloneMouseEvent(event);
+          if ((event.target.localName == "separator" || event.target == this.scrollBox))
+            this.dispatchCloneMouseEvent(event);
         ]]>
         </body>
       </method>
-      
+
       <method name="onPreviewTooltipShowing">
         <parameter name="event"/>
         <body>
         <![CDATA[
           var preview = this.ownerDocument.tooltipNode;
-          while (preview.localName!="tabpreview")
-            preview=preview.parentNode;
-          event.originalTarget.childNodes[0].value=preview.title;
-          event.originalTarget.childNodes[1].value=preview.uri;
-          
+          while (preview.localName != "tabpreview")
+            preview = preview.parentNode;
+          event.originalTarget.childNodes[0].value = preview.title;
+          event.originalTarget.childNodes[1].value = preview.uri;
+
           var width = 300;
-          if (this.showPreviews && preview.canvas.toDataURL)
-          {
+          if (this.showPreviews && preview.canvas.toDataURL) {
             var image = event.originalTarget.childNodes[2];
-            image.width=width;
-            image.height=(this.contentHeight/this.contentWidth)*width;
-            image.src=preview.canvas.toDataURL();
+            image.width = width;
+            image.height = (this.contentHeight / this.contentWidth) * width;
+            image.src = preview.canvas.toDataURL();
           }
-          else
-          {
-            var height = (this._browserHeight/this._browserWidth)*width;
-            
+          else {
+            var height = (this._browserHeight / this._browserWidth) * width;
+
             var canvas = event.originalTarget.childNodes[3];
-            canvas.width=width;
-            canvas.style.width=width+"px";
-            canvas.style.minWidth=width+"px";
-            canvas.style.maxWidth=width+"px";
-            canvas.height=height;
-            canvas.style.height=height+"px";
-            canvas.style.minHeight=height+"px";
-            canvas.style.maxHeight=height+"px";
-            
+            canvas.width = width;
+            canvas.style.width = width + "px";
+            canvas.style.minWidth = width + "px";
+            canvas.style.maxWidth = width + "px";
+            canvas.height = height;
+            canvas.style.height = height + "px";
+            canvas.style.minHeight = height + "px";
+            canvas.style.maxHeight = height + "px";
+
             var ctx = null;
-            try
-            {
+            try {
               ctx = canvas.getContext("2d");
             }
-            catch (e)
-            {
-              canvas.style.display="none";
+            catch (e) {
+              canvas.style.display = "none";
               return;
             }
-            if ((preview._browser)&&(preview._browser.docShell))
-            {
+            if ((preview._browser) && (preview._browser.docShell)) {
               var win = preview._browser.contentWindow;
               var winwidth = this._browserWidth;
-              var scaling = width/winwidth;
-              var winheight = Math.round(height/scaling);
+              var scaling = width / winwidth;
+              var winheight = Math.round(height / scaling);
               ctx.save();
-              ctx.scale(scaling,height/winheight);
-              try
-              {
+              ctx.scale(scaling,height / winheight);
+              try {
                 var top = 0;
                 var left = 0;
-                if (this.previews.drawScrolled)
-                {
-                  top=win.scrollY;
-                  left=win.scrollX;
+                if (this.previews.drawScrolled) {
+                  top = win.scrollY;
+                  left = win.scrollX;
                 }
-                ctx.drawWindow(win,left,top,winwidth,winheight,"rgba(255,255,255,255)");
-                canvas.style.display="";
+                ctx.drawWindow(win, left, top, winwidth, winheight, "rgba(255,255,255,255)");
+                canvas.style.display = "";
               }
-              catch (e)
-              {
-                canvas.style.display="none";
+              catch (e) {
+                canvas.style.display = "none";
 #ifdef ${extension.debug}
-                dump(e+"\n");
-                dump(win+" "+width+"x"+height+"\n");
+                dump(e + "\n");
+                dump(win + " " + width + "x" + height + "\n");
 #endif
               }
               ctx.restore();
             }
-            else
-              canvas.style.display="none";
+            else {
+              canvas.style.display = "none";
+            }
           }
         ]]>
         </body>
@@ -911,55 +860,55 @@
         <parameter name="timer"/>
         <body>
         <![CDATA[
-          if (timer==this._validateTimer)
+          if (timer == this._validateTimer)
             this._validate();
         ]]>
         </body>
       </method>
-      
+
     </implementation>
-    
+
     <handlers>
-      
+
       <handler event="DOMMouseScroll">
       <![CDATA[
-      	if (this.scrollSelects)
-      	{
-	      	var target;
-      		if (event.detail<0)
-	          target = this._selected.previousSibling.previousSibling;
-	        else
-	          target = this._selected.nextSibling.nextSibling;
-	        
-	        if (target)
-	        	this.tabbrowser.selectedTab = target.tab;
-      	}
-      	else
-	        this.scrollBy(event.detail);
-	    ]]>
+        if (this.scrollSelects) {
+          var target;
+          if (event.detail < 0)
+            target = this._selected.previousSibling.previousSibling;
+          else
+            target = this._selected.nextSibling.nextSibling;
+          
+          if (target)
+            this.tabbrowser.selectedTab = target.tab;
+        }
+        else {
+          this.scrollBy(event.detail);
+        }
+      ]]>
       </handler>
-      
+
       <handler event="scroll">
         this._updateScrollButtons();
       </handler>
-      
+
       <handler event="focus">
-        if (event.originalTarget==this.focusDetector)
-        {
+        if (event.originalTarget == this.focusDetector) {
           if (this._selected)
             this._selected.setfocus();
         }
-        else if (event.target.parentNode==this)
-          this.focusDetector.style.MozUserFocus="ignore";
+        else if (event.target.parentNode == this) {
+          this.focusDetector.style.MozUserFocus = "ignore";
+        }
       </handler>
-      
+
       <handler event="blur">
-        if (event.target.parentNode==this)
-          this.focusDetector.style.MozUserFocus="normal";
+        if (event.target.parentNode == this)
+          this.focusDetector.style.MozUserFocus = "normal";
       </handler>
-      
+
     </handlers>
 
   </binding>
-  
+
 </bindings>

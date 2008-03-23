@@ -51,11 +51,11 @@
         style="width: 30em; height: 30em;">
 
   <vbox pack="start" align="stretch" flex="1">
-  
+
     <hbox id="header" align="center">
-    
+
       <image src="chrome://tabsidebar/content/branding/logo.png"/>
-      
+
       <vbox flex="1">
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
@@ -66,46 +66,33 @@
           <label class="bold author" value="&dialog.author; Mossop"/>
         </hbox>
       </vbox>
-    
+
     </hbox>
-    
+
     <separator class="groove-thin"/>
 
     <vbox id="body" flex="1">
-    
+
       <description>&dialog.description;</description>
-  
+
       <separator class="thin"/>
-  
+
       <hbox pack="end">
         <label class="text-link" onclick="window.opener.open('http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar', '_blank')" value="&dialog.homepage;"/>
       </hbox>
-  
+
       <separator class="thin"/>
-  
+
       <label class="bold" value="&dialog.contributors;"/>
-      
+
       <separator class="thin"/>
-  
+
       <vbox flex="1" style="overflow: auto">
         <description>Peter van der Woude: Extensive testing, suggestions and contributions.</description>
-#ifdef ${release}
-        <description>ReinekeFux: German localisation.</description>
-        <description>Xavier Robin &amp; Dagobert_78: French localisation.</description>
-        <description>MatrixIsAllOver: Italian localisation.</description>
-        <description>Urko: Spanish localisation.</description>
-        <description>Peter van der Woude &amp; Ton: Dutch localisation.</description>
-        <description>Erkan Kaplan: Turkish localisation.</description>
-        <description>SION: Japanese localisation.</description>
-        <description>Alexander L. Slovesnik &amp; Modex: Russian localisation.</description>
-        <description>fiag: Chinese (Simplified) localisation.</description>
-        <description>Jose Sun: Chinese (Traditional) localisation.</description>
-        <description>SlovakSoft: Slovak localisation.</description>
-#endif
       </vbox>
-      
+
     </vbox>
-      
+
   </vbox>
 
 </dialog>

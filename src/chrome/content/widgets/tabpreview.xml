@@ -58,7 +58,7 @@
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
-    
+
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
     	<xul:stack flex="1" class="tbs-background">
     		<xul:vbox>
@@ -145,61 +145,57 @@
           this.backButton.preview = this;
           this.forwardButton.preview = this;
           this.reloadButton.preview = this;
-          
+
           this.updateDisplay();
-          
-          if (this.showPreview && (this.previews.displayHeight>0))
+
+          if (this.showPreview && (this.previews.displayHeight > 0))
             this.previews._resizePreview(this);
         ]]>
         </body>
       </method>
-      
+
       <destructor>
 #ifdef ${extension.debug}
         dump("Tabpreview destructor\n");
 #endif
         this._destroy();
       </destructor>
-      
+
       <field name="_destroyed" value="false"/>
       <method name="_destroy">
         <body>
-          if (!this._destroyed)
-          {
-            try
-            {
-              this._destroyed=true;
-              
+          if (!this._destroyed) {
+            try {
+              this._destroyed = true;
+
               this._emptyDocumentListeners();
-              if (this._browser)
-              {
+              if (this._browser) {
                 this._removeListeners();
                 this._browser = null;
               }
-  
+
               //this.loading = false;
-  
+
               this._changeTimer.cancel();
               this._changeTime = 0;
               this._changeReason = 0;
               this._changeTimer = null;
               this._updateTimer.cancel();
               this._updateTimer = null;
-              
+
               this._timerListener.tabpreview = null;
-              this._timerListener=null;
-              
+              this._timerListener = null;
+
               this._eventListener.tabpreview = null;
               this._eventListener = null;
               this._progressListener.tabpreview = null;
               this._progressListener = null;
-              
+
 #ifdef ${extension.debug}
               //dump("Tabpreview destroyed\n");
 #endif
             }
-            catch (e)
-            {
+            catch (e) {
 #ifdef ${extension.debug}
               dump(e+"\n");
 #endif
@@ -207,60 +203,60 @@
           }
         </body>
       </method>
-      
+
       <!-- Quick access to anonymous nodes -->
-      
+
       <field name="_anonymousNodes">this.ownerDocument.getAnonymousNodes(this)[0].childNodes[1].childNodes;</field>
-      
+
       <field name="_topbox">
         this._anonymousNodes[0].firstChild;
       </field>
-      
+
       <field name="titleField">
         this._topbox.childNodes[2];
       </field>
-      
+
       <field name="faviconIcon">
         this._topbox.firstChild;
       </field>
-      
+
       <field name="closeButton">
         this._topbox.nextSibling;
       </field>
-      
+
       <field name="_stack">
         this._anonymousNodes[1]
       </field>
-      
+
       <field name="reloadButton">
         this._stack.lastChild.lastChild.lastChild;
       </field>
-      
+
       <field name="stopButton">
         this._stack.lastChild.lastChild.firstChild;
       </field>
-      
+
       <field name="backButton">
         this.stopButton.nextSibling.nextSibling;
       </field>
-      
+
       <field name="forwardButton">
         this.backButton.nextSibling.nextSibling;
       </field>
-      
+
       <field name="securityIcon">
         this._stack.lastChild.firstChild.lastChild;
       </field>
-      
+
       <field name="canvas">
         this._stack.firstChild.firstChild.firstChild;
       </field>
-      
+
 #include "tabpreview/events.inc.xml"
 #include "tabpreview/progress.inc.xml"
-      
+
       <!-- Internal fields and methods -->
-      
+
       <field name="_invalid">false</field>
 
 #ifdef ${extension.debug}
@@ -269,43 +265,30 @@
 #endif
       <field name="_browserWidth">-1</field>
       <field name="_browserHeight">-1</field>
-      
+
       <field name="_browser"></field>
-      <property name="browser">
-        <getter>
-          return this._browser;
-        </getter>
+      <property name="browser" onget="return this._browser">
         <setter>
         <![CDATA[
-          if (this._browser)
-          {
+          if (this._browser) {
             this._removeListeners();
             this._emptyDocumentListeners();
           }
-          this._browser=val;
-          if (val)
-          {
+          this._browser = val;
+          if (val) {
             var tab = this.tab;
             if (tab && tab.getAttribute("busy") == "true")
-            {
               this._loadStarted();
-            }
             else
-            {
-              this.loading=false;
-            }
+              this.loading = false;
 
-            if (this._browser.docShell)
-            {
+            if (this._browser.docShell) {
               if (this._browser.securityUI)
-              {
                 this._setSecurity(this._browser.securityUI.state);
-              }
-              if (this.previews.updatePreviews)
-              {
+              if (this.previews.updatePreviews) {
                 var newdocs = [];
                 this._findDocuments(this._browser.contentDocument, newdocs);
-                for (var i=0; i<newdocs.length; i++)
+                for (var i = 0; i < newdocs.length; i++)
                   this._addDocumentListeners(newdocs[i]);
               }
             }
@@ -322,104 +305,74 @@
       </property>
 
       <!-- Helper properties -->
-      
-      <property name="showPreview">
-        <getter>
-          return this.previews.showPreviews;
-        </getter>
-      </property>
-      
-      <property name="previews">
-        <getter>
-          return this.parentNode;
-        </getter>
-      </property>
-      
-      <property name="tab">
-        <getter>
-          return this.previews.getTabForPreview(this);
-        </getter>
-      </property>
-      
+
+      <property name="showPreview" onget="return this.previews.showPreviews"/>
+      <property name="previews" onget="return this.parentNode"/>
+      <property name="tab" onget="return this.previews.getTabForPreview(this)"/>
+
       <!-- Attribute based properties -->
-      
+
       <property name="loading">
         <getter>
         <![CDATA[
-          return this.hasAttribute("loading") && (this.getAttribute("loading")=="true");
+          return this.hasAttribute("loading") && (this.getAttribute("loading") == "true");
         ]]>
         </getter>
         <setter>
         <![CDATA[
           if (!val)
-          {
-            this.setAttribute("loading","false");
-          }
+            this.setAttribute("loading", "false");
           else
-          {
-            this.setAttribute("loading","true");
-          }
+            this.setAttribute("loading", "true");
           return val;
         ]]>
         </setter>
       </property>
-      
+
       <property name="selected">
         <getter>
         <![CDATA[
-          return this.hasAttribute("checked") && (this.getAttribute("checked")=="true");
+          return this.hasAttribute("checked") && (this.getAttribute("checked") == "true");
         ]]>
         </getter>
         <setter>
         <![CDATA[
-          if (!val)
-          {
-            this.setAttribute("selected","false");
-            this.setAttribute("checked","false");
+          if (!val) {
+            this.setAttribute("selected", "false");
+            this.setAttribute("checked", "false");
           }
-          else
-          {
-            this.setAttribute("selected","true");
-            this.setAttribute("checked","true");
+          else {
+            this.setAttribute("selected", "true");
+            this.setAttribute("checked", "true");
           }
           return val;
         ]]>
         </setter>
       </property>
-      
+
       <!-- Properties generated from the browser -->
-      
+
       <property name="title">
         <getter>
-          if ((!this._browser)||(!this._browser.docShell))
+          if ((!this._browser) || (!this._browser.docShell))
             return "";
 
           var title = this._browser.contentTitle;
           if (title &amp;&amp; title.length&gt;0)
-          {
             return title;
-          }
-          else
-          {
-            return "&untitledTab;";
-          }
+          return "&untitledTab;";
         </getter>
       </property>
 
       <property name="uri">
         <getter>
-          if ((!this._browser)||(!this._browser.docShell))
+          if ((!this._browser) || (!this._browser.docShell))
             return "";
 
           var uri = this._browser.currentURI;
           if (uri)
-          {
             return uri.spec;
-          }
-          else
-          {
-            return "";
-          }
+          return "";
         </getter>
       </property>
 
@@ -435,7 +388,7 @@
       </property>
 
       <!-- Methods -->
-      
+
 #ifdef ${extension.enablesessionstore}
       <method name="startRestoringSession">
         <body>
@@ -445,16 +398,17 @@
           var ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
                              .getService(Components.interfaces.nsISessionStore);
           /*var preview = ss.getTabValue(this.tab, "tabsidebar.preview");
-          if (preview)
-          {
+          if (preview) {
             ctx = this.canvas.getContext("2d");
             var image = new Image();
-            image.onload = function() { ctx.drawImage(image, 0, 0); };
+            image.onload = function() {
+              ctx.drawImage(image, 0, 0);
+            };
             image.src = preview;
           }*/
         </body>
       </method>
-      
+
       <method name="endRestoringSession">
         <body>
 #ifdef ${extension.debug}
@@ -467,7 +421,7 @@
             this.focus();
         </body>
       </method>
-      
+
       <method name="_storeSessionValue">
         <parameter name="key"/>
         <parameter name="value"/>
@@ -479,32 +433,31 @@
         ]]>
         </body>
       </method>
-      
+
 #endif
       <method name="updateDisplay">
         <body>
         <![CDATA[
           var hide = "";
           if (!this.showPreview)
-            hide+=" preview";
+            hide += " preview";
           
-          if (hide.length>0)
-            hide=hide.substring(1);
+          if (hide.length > 0)
+            hide = hide.substring(1);
           
-          this.setAttribute("hide",hide);
+          this.setAttribute("hide", hide);
         ]]>
         </body>
       </method>
-      
+
       <method name="checkMiddleClick">
         <parameter name="node"/>
         <parameter name="event"/>
         <body>
         <![CDATA[
-          if (event.button == 1)
-          {
-            var func = new Function("event",node.getAttribute("oncommand"));
-            func.call(node,event);
+          if (event.button == 1) {
+            var func = new Function("event", node.getAttribute("oncommand"));
+            func.call(node, event);
             while (node && (node.localName != "menupopup") && (node.localName != "popup"))
               node = node.parentNode;
             if (node)
@@ -514,7 +467,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="setfocus">
         <body>
           this.focus();
@@ -523,22 +476,20 @@
 #endif
         </body>
       </method>
-      
+
       <method name="reload">
         <parameter name="event"/>
         <body>
         <![CDATA[
-          if ((!this._browser)||(!this._browser.docShell))
+          if ((!this._browser) || (!this._browser.docShell))
             return;
 
-          if (event && event.shiftKey)
-          {
+          if (event && event.shiftKey) {
             var reloadFlags = Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_PROXY | 
                               Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE;
             this._browser.reloadWithFlags(reloadFlags);
           }
-          else
-          {
+          else {
             this._browser.reload();
           }
         ]]>
@@ -548,7 +499,7 @@
       <method name="stop">
         <body>
         <![CDATA[
-          if ((this._browser)&&(this._browser.docShell))
+          if ((this._browser) && (this._browser.docShell))
             this._browser.stop();
         ]]>
         </body>
@@ -560,10 +511,8 @@
         <body>
           var tabbrowser = this.previews.tabbrowser;
           if (tabbrowser.selectedTab!=this.tab)
-          {
             tabbrowser.selectedTab=this.tab;
-          }
-          
+
           this.previews.browserWindow.setTimeout(this.previews.browserWindow.displaySecurityInfo,10);
         </body>
       </method>
@@ -577,21 +526,18 @@
       <method name="update">
         <body>
           this.onLocationChange();
-
           this.onLinkIconAvailable();
-
           this.onTitleChange();
         </body>
       </method>
-      
+
       <method name="redraw">
         <body>
         <![CDATA[
-          if ((!this.previews)||(!this._invalid)||(!this.showPreview))
+          if ((!this.previews) || (!this._invalid) || (!this.showPreview))
             return;
-          
-          if (this.previews.displayHeight==0)
-          {
+
+          if (this.previews.displayHeight == 0) {
 #ifdef ${extension.debug}
             this._logWarning("Sizes not yet worked out - cancelling redraw");
 #endif
@@ -599,15 +545,13 @@
           }
           
           var canvas = this.canvas;
-          if (!canvas)
-          {
+          if (!canvas) {
 #ifdef ${extension.debug}
             this._logError("Canvas doesnt exist.");
 #endif
             return;
           }
-          if (!canvas.hasAttribute("style"))
-          {
+          if (!canvas.hasAttribute("style")) {
 #ifdef ${extension.debug}
             this._logWarning("Attempt to redraw before resize");
 #endif
@@ -621,19 +565,16 @@
           canvas.width = this.previews.contentWidth;
           canvas.height = this.previews.contentHeight;
           var ctx = null;
-          try
-          {
+          try {
             ctx = canvas.getContext("2d");
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             dump(e+"\n");
 #endif
             return;
           }
-          if ((this._browser)&&(this._browser.docShell))
-          {
+          if ((this._browser) && (this._browser.docShell)) {
             var zoom = this._browser.markupDocumentViewer.fullZoom;
             var win = this._browser.contentWindow;
             var width = this._browserWidth / zoom;
@@ -641,30 +582,26 @@
             var height = Math.round(this.previews.contentHeight / scaling);
             ctx.save();
             ctx.scale(scaling, this.previews.contentHeight / height);
-            try
-            {
+            try {
               var top = 0;
               var left = 0;
-              if (this.previews.drawScrolled)
-              {
-                top=win.scrollY;
-                left=win.scrollX;
+              if (this.previews.drawScrolled) {
+                top = win.scrollY;
+                left = win.scrollX;
               }
 #ifdef ${extension.debug}
               this._logMessage("Painting area " + width + "x" + height + " at " + left + "x" + top);
 #endif
               ctx.drawWindow(win, left, top, width, height, "rgba(255,255,255,255)");
             }
-            catch (e)
-            {
+            catch (e) {
 #ifdef ${extension.debug}
               dump(win + " " + width + "x" + height + "\n" + e + "\n");
 #endif
             }
             ctx.restore();
           }
-          else
-          {
+          else {
             ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
           }
 #ifdef ${extension.enablesessionstore}
@@ -673,7 +610,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="dispatchCloneMouseEvent">
       	<parameter name="event"/>
       	<body>
@@ -685,7 +622,7 @@
 	    		target.dispatchEvent(ev);
       	</body>
       </method>
-      
+
       <method name="isToolbarButtonEvent">
       	<parameter name="event"/>
       	<body>
@@ -693,73 +630,72 @@
       		var node = event.originalTarget;
       		while (node && (node.localName != "tabpreview") && (node.localName != "toolbarbutton"))
       			node = node.parentNode;
-      		
-      		return node && node.localName == "toolbarbutton";
+
+          return node && node.localName == "toolbarbutton";
       	]]>
       	</body>
       </method>
-      
+
     </implementation>
 
     <handlers>
     	<handler event="mouseover">
     		this.dispatchCloneMouseEvent(event);
     	</handler>
-    	
+
     	<handler event="mouseout">
     		this.dispatchCloneMouseEvent(event);
     	</handler>
-    	
+
       <handler event="mousedown">
       <![CDATA[
       	if (this.isToolbarButtonEvent(event))
       		return;
-      		
-        if (event.button==0)
-        {
+
+        if (event.button == 0) {
 	        var tabbrowser = this.previews.tabbrowser;
-          if (tabbrowser.selectedTab != this.tab)
-          {
+          if (tabbrowser.selectedTab != this.tab) {
             var focus = false;
-            if (document.commandDispatcher.focusedElement && document.commandDispatcher.focusedElement.parentNode==this.parentNode)
-            {
+            if (document.commandDispatcher.focusedElement &&
+                document.commandDispatcher.focusedElement.parentNode == this.parentNode) {
               focus=true;
               this.tab.focus();
             }
-            tabbrowser.selectedTab=this.tab;
+            tabbrowser.selectedTab = this.tab;
             if (focus)
               this.setfocus();
           }
           else
             this.setfocus();
         }
-        else
+        else {
         	this.dispatchCloneMouseEvent(event);
+        }
       ]]>
       </handler>
-    	
+
       <handler event="mouseup">
       	if (this.isToolbarButtonEvent(event))
       		return;
-      		
-	   		this.dispatchCloneMouseEvent(event);
+
+        this.dispatchCloneMouseEvent(event);
       </handler>
-    	
+
       <handler event="click">
       	if (this.isToolbarButtonEvent(event))
       		return;
-      		
-    		this.dispatchCloneMouseEvent(event);
+
+        this.dispatchCloneMouseEvent(event);
       </handler>
-    	
+
       <handler event="dblclick">
       	if (this.isToolbarButtonEvent(event))
       		return;
-      		
-    		this.dispatchCloneMouseEvent(event);
+
+        this.dispatchCloneMouseEvent(event);
       </handler>
     </handlers>
-      
+
   </binding>
 
 </bindings>

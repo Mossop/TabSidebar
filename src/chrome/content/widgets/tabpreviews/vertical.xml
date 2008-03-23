@@ -56,25 +56,25 @@
     <resources>
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
-    
+
     <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="horizontal" style="visibility: hidden">
       <xul:popupset>
-      
+
         <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="center" onpopupshowing="this.parentNode.parentNode.onPreviewTooltipShowing(event);">
           <xul:label class="tbs-tooltip-title" crop="end" value="Title"/>
           <xul:label class="tbs-tooltip-uri" crop="end" value="URI"/>
           <xul:image class="tbs-tooltip-image"/>
           <xhtml:canvas class="tbs-tooltip-canvas"/>
         </xul:tooltip>
-        
+
       </xul:popupset>
-        
+
       <xul:vbox class="tbs-drop-indicator-bar">
         <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
       </xul:vbox>          
 
       <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
-      
+
       <xul:vbox flex="1" align="stretch">
         <xul:toolbar class="tbs-scrolltoolbar">
           <xul:toolbarbutton class="tbs-scrollstart" tooltiptext="&tabsidebar.scrollstart;" oncommand="this.parentNode.parentNode.parentNode.scrollToStart();"/>
@@ -85,7 +85,7 @@
                            oncommand="this.parentNode.parentNode.parentNode.parentNode.onPreviewSelect(event.target.tabpreview);"/>
           </xul:toolbarbutton>
         </xul:toolbar>
-        
+
         <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
                        ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode.parentNode); event.stopPropagation();"
                        ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
@@ -95,9 +95,9 @@
                        onclick="this.parentNode.parentNode.onClick(event);"
                        ondblclick="this.parentNode.parentNode.onDblClick(event);"
                        align="stretch" flex="1" orient="vertical">
-          
+
           <children/>
-  
+
         </xul:scrollbox>
 
         <xul:toolbar class="tbs-scrolltoolbar">
@@ -111,7 +111,7 @@
         </xul:toolbar>
       </xul:vbox>
     </content>
-    
+
     <implementation>
 
       <field name="previewContainer">this</field>
@@ -123,16 +123,15 @@
       <field name="dragDropIndicator">this.dragDropBar.firstChild;</field>
       <field name="scrollStartToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[0]</field>
       <field name="scrollEndToolbar">this.ownerDocument.getAnonymousNodes(this)[3].childNodes[2]</field>
-      
+
       <field name="_startScrollDisabled">false</field>
       <field name="_endScrollDisabled">false</field>
-      
+
       <method name="_resizePreview">
         <parameter name="preview"/>
         <body>
         <![CDATA[
-          if (this.displayHeight<0)
-          {
+          if (this.displayHeight<0) {
 #ifdef ${extension.debug}
             this._logWarning("Attempt to resize preview before size has been calculated");
 #endif
@@ -143,32 +142,29 @@
 #endif
 
           var canvas = preview.canvas;
-          canvas.style.height=this.displayHeight+"px";
-          canvas.style.minHeight=this.displayHeight+"px";
-          canvas.style.maxHeight=this.displayHeight+"px";
-          canvas.style.width=this.displayWidth+"px";
-          canvas.style.minWidth=this.displayWidth+"px";
-          canvas.style.maxWidth=this.displayWidth+"px";
-          
+          canvas.style.height = this.displayHeight + "px";
+          canvas.style.minHeight = this.displayHeight + "px";
+          canvas.style.maxHeight = this.displayHeight + "px";
+          canvas.style.width = this.displayWidth + "px";
+          canvas.style.minWidth = this.displayWidth + "px";
+          canvas.style.maxWidth = this.displayWidth + "px";
+
           var container = canvas.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
           var diff = 0;
           diff += parseInt(computed.paddingTop);
           diff += parseInt(computed.paddingBottom);
-          container.style.height = (this.displayHeight+diff)+"px";
-          
-          preview._invalid=true;          
-          try
-          {
+          container.style.height = (this.displayHeight + diff) + "px";
+
+          preview._invalid = true;          
+          try {
             canvas.getContext("2d");
           }
-          catch (e)
-          {
-          }
+          catch (e) { }
         ]]>
         </body>
       </method>
-      
+
       <method name="ensureElementsAreVisible">
         <parameter name="first"/>
         <parameter name="last"/>
@@ -180,30 +176,26 @@
           var scrollHeight = this.scrollBoxObject.height;
 
           var eltop = first.boxObject.y;
-          var style = window.getComputedStyle(first,null);
-          eltop-=parseInt(style.marginTop)+parseInt(style.borderTopWidth);
-          eltop-=this.scrollBoxObject.y;
-          
-          var elbottom = last.boxObject.y+last.boxObject.height;
-          style = window.getComputedStyle(last,null);
-          elbottom+=parseInt(style.marginBottom)+parseInt(style.borderBottomWidth);
-          elbottom-=this.scrollBoxObject.y;
+          var style = window.getComputedStyle(first, null);
+          eltop -= parseInt(style.marginTop) + parseInt(style.borderTopWidth);
+          eltop -= this.scrollBoxObject.y;
 
-          if (scrollTop>eltop)
-          {
-            this.scrollBoxObject.scrollBy(0,eltop-scrollTop);
+          var elbottom = last.boxObject.y+last.boxObject.height;
+          style = window.getComputedStyle(last, null);
+          elbottom+=parseInt(style.marginBottom) + parseInt(style.borderBottomWidth);
+          elbottom -= this.scrollBoxObject.y;
+
+          if (scrollTop>eltop) {
+            this.scrollBoxObject.scrollBy(0, eltop - scrollTop);
 #ifdef ${extension.enablesessionstore}
             this._storeSessionValue("scrollpos", this.getScrollPosition());
 #endif
           }
-          else if ((scrollTop+scrollHeight)<elbottom)
-          {
-            var shift = elbottom-(scrollTop+scrollHeight);
-            if ((scrollTop+shift)>eltop)
-            {
+          else if ((scrollTop + scrollHeight) < elbottom) {
+            var shift = elbottom - (scrollTop + scrollHeight);
+            if ((scrollTop + shift) > eltop)
               shift=eltop-scrollTop;
-            }
-            this.scrollBoxObject.scrollBy(0,shift);
+            this.scrollBoxObject.scrollBy(0, shift);
 #ifdef ${extension.enablesessionstore}
             this._storeSessionValue("scrollpos", this.getScrollPosition());
 #endif
@@ -211,12 +203,12 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_calculateSize">
         <body>
         <![CDATA[
-          var newWidth=0;
-          var newHeight=0;
+          var newWidth = 0;
+          var newHeight = 0;
 
           var container = this._selected.canvas.parentNode.parentNode;
           var computed = window.getComputedStyle(container,null);
@@ -228,8 +220,7 @@
 
           newWidth = container.boxObject.width - diff;
 
-          if (newWidth <= 0)
-          {
+          if (newWidth <= 0) {
 #ifdef ${extension.debug}
             this._logWarning("Invalid sizes - retrying in a few");
 #endif
@@ -238,12 +229,11 @@
           newHeight = parseInt((this._browserHeight / this._browserWidth) * newWidth);
 
 #ifdef ${extension.debug}
-          this._logMessage("New sizes: "+newWidth+"x"+newHeight+" "+this._browserWidth+"x"+this._browserHeight);
+          this._logMessage("New sizes: " + newWidth + "x" + newHeight + " " + this._browserWidth + "x" + this._browserHeight);
 #endif
-          if (this._displayWidth != newWidth || this._displayHeight != newHeight)
-          {
-            this._displayWidth=newWidth;
-            this._displayHeight=newHeight;
+          if (this._displayWidth != newWidth || this._displayHeight != newHeight) {
+            this._displayWidth = newWidth;
+            this._displayHeight = newHeight;
             this._contentWidth = Math.max(this.displayWidth, 500);
             this._contentHeight = (this.displayHeight / this.displayWidth) * this._contentWidth;
 #ifdef ${extension.enablemetrics}
@@ -254,32 +244,28 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_drawDropIndicator">
         <parameter name="drop"/>
         <body>
-          if (drop!=this._lastDrop)
-          {
-            this.ensureElementsAreVisible(drop,drop);
+          if (drop!=this._lastDrop) {
+            this.ensureElementsAreVisible(drop, drop);
             var y = {};
             this.scrollBoxObject.getPosition({}, y);
             var dropel = drop;
             if (drop.localName == "tabpreview")
-            {
               dropel = drop.canvas.parentNode;
-            }
-            var pos = dropel.boxObject.y+(dropel.boxObject.height/2)-this.boxObject.y;
+
+            var pos = dropel.boxObject.y + (dropel.boxObject.height / 2) - this.boxObject.y;
             pos = pos - y.value - 5;
             this.dragDropIndicator.style.marginTop = pos + "px";
             if (!this._lastDrop)
-            {
-              this.dragDropBar.setAttribute("dragging","true");
-            }
-            this._lastDrop=drop;
+              this.dragDropBar.setAttribute("dragging", "true");
+            this._lastDrop = drop;
           }
         </body>
       </method>
-      
+
       <method name="getDropElement">
         <parameter name="aEvent"/>
         <parameter name="external"/>
@@ -287,36 +273,27 @@
         <![CDATA[
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
-          var ypos = aEvent.clientY+y.value;
+          var ypos = aEvent.clientY + y.value;
           var diff = 0;
           var previews = this.previews;
-          for (var i=0; i<previews.length; i++)
-          {
+          for (var i = 0; i < previews.length; i++) {
             var bo = previews[i].boxObject;
-            if (external)
-            {
-              if (bo.y>ypos)
-              {
+            if (external) {
+              if (bo.y > ypos)
                 return previews[i].previousSibling;
-              }
-              else if ((bo.y+bo.height)>=ypos)
-              {
+              else if ((bo.y + bo.height) >= ypos)
                 return previews[i];
-              }
             }
-            else
-            {
-              if ((bo.y+(bo.height/2))>ypos)
-              {
+            else {
+              if ((bo.y + (bo.height / 2)) > ypos)
                 return previews[i].previousSibling;
-              }
             }
           }
-          return previews[previews.length-1].nextSibling;
+          return previews[previews.length - 1].nextSibling;
         ]]>
         </body>
       </method>
-      
+
       <method name="checkDragScroll">
         <parameter name="aEvent"/>
         <body>
@@ -324,27 +301,25 @@
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
 
-          if (y.value>0 && aEvent.clientY<10)
-          {
-            this.scrollBoxObject.scrollBy(0,-20);
+          if (y.value > 0 && aEvent.clientY < 10) {
+            this.scrollBoxObject.scrollBy(0, -20);
             this._hideDropIndicator();
             return true;
           }
-          
-          var bottom = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.height-this.scrollBox.boxObject.height;
-          
-          if ((this.scrollBox.boxObject.height-aEvent.clientY)<10 && y.value<bottom)
-          {
-            this.scrollBoxObject.scrollBy(0,20);
+
+          var bottom = this.ownerDocument.getAnonymousNodes(this.scrollBox)[0].boxObject.height - this.scrollBox.boxObject.height;
+
+          if ((this.scrollBox.boxObject.height - aEvent.clientY) < 10 && y.value < bottom) {
+            this.scrollBoxObject.scrollBy(0, 20);
             this._hideDropIndicator();
             return true;
           }
-          
+
           return false;
         ]]>
         </body>
       </method>
-      
+
       <method name="getScrollPosition">
         <body>
           var value = {};
@@ -352,7 +327,7 @@
           return value.value;
         </body>
       </method>
-      
+
       <method name="scrollTo">
         <parameter name="position"/>
         <body>
@@ -362,7 +337,7 @@
 #endif
         </body>
       </method>
-      
+
       <method name="scrollBy">
         <parameter name="distance"/>
         <body>
@@ -372,44 +347,42 @@
 #endif
         </body>
       </method>
-      
+
       <method name="scrollToStart">
         <body>
         	this.scrollTo(0);
         </body>
       </method>
-      
+
       <method name="scrollToEnd">
         <body>
         	this.scrollTo(this.scrollBoxObject.height);
         </body>
       </method>
-      
+
       <method name="_checkScrollPosition">
         <body>
         <![CDATA[
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
-          var end = y.value+this.scrollBoxObject.height;
-          if (this.scrollPanel.boxObject.height<=this.scrollBoxObject.height)
+          var end = y.value + this.scrollBoxObject.height;
+          if (this.scrollPanel.boxObject.height <= this.scrollBoxObject.height)
             this.scrollToStart();
-          else if (end>this.scrollPanel.boxObject.height)
+          else if (end > this.scrollPanel.boxObject.height)
             this.scrollToEnd();
         ]]>
         </body>
       </method>
-      
+
       <method name="_updateScrollButtons">
         <body>
         <![CDATA[
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
           var state = (y.value <= 0);
-          if (state != this._startScrollDisabled)
-          {
+          if (state != this._startScrollDisabled) {
             var button = this.scrollStartToolbar.firstChild;
-            while (button)
-            {
+            while (button) {
               button.disabled = state;
               button = button.nextSibling;
             }
@@ -417,12 +390,10 @@
           }
 
           var height = this.scrollPanel.boxObject.height;
-          state = ((y.value+this.scrollBoxObject.height) >= height);
-          if (state != this._endScrollDisabled)
-          {
+          state = ((y.value + this.scrollBoxObject.height) >= height);
+          if (state != this._endScrollDisabled) {
             button = this.scrollEndToolbar.firstChild;
-            while (button)
-            {
+            while (button) {
               button.disabled = state;
               button = button.nextSibling;
             }
@@ -431,7 +402,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="showFirstTabs">
         <parameter name="menupopup"/>
         <body>
@@ -442,10 +413,8 @@
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
           var node = this.firstChild;
-          while ((node.boxObject.y-this.scrollBoxObject.y)<y.value)
-          {
-            if (node.localName == "tabpreview")
-            {
+          while ((node.boxObject.y - this.scrollBoxObject.y) < y.value) {
+            if (node.localName == "tabpreview") {
               var item = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "menuitem");
               item.setAttribute("label", node.title);
               item.setAttribute("class", "menuitem-iconic");
@@ -469,18 +438,16 @@
 
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
-          y.value+=this.scrollBoxObject.height;
+          y.value += this.scrollBoxObject.height;
           var node = this.lastChild;
-          while ((node.boxObject.y-this.scrollBoxObject.y+node.boxObject.height)>y.value)
-          {
-            if (node.localName == "tabpreview")
-            {
+          while ((node.boxObject.y - this.scrollBoxObject.y + node.boxObject.height) > y.value) {
+            if (node.localName == "tabpreview") {
               var item = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "menuitem");
               item.setAttribute("label", node.title);
               item.setAttribute("class", "menuitem-iconic");
               if (node.faviconIcon.src != null)
                 item.setAttribute("image", node.faviconIcon.src);
-              menupopup.insertBefore(item,menupopup.firstChild);
+              menupopup.insertBefore(item, menupopup.firstChild);
               item.tabpreview = node;
             }
             node = node.previousSibling;
@@ -488,98 +455,77 @@
           return (menupopup.firstChild != null);
         </body>
       </method>
-      
+
     </implementation>
-    
+
     <handlers>
       <handler event="keypress">
       <![CDATA[
-        if (event.target.parentNode==this)
-        {
+        if (event.target.parentNode == this) {
           var preview = event.target;
-          if (event.altKey||event.shiftKey||event.metaKey)
-          {
+          if (event.altKey || event.shiftKey || event.metaKey)
             return;
-          }
-          else if (event.ctrlKey)
-          {
-            if (event.keyCode==event.DOM_VK_UP)
-            {
+          if (event.ctrlKey) {
+            if (event.keyCode == event.DOM_VK_UP) {
               var newpreview = preview.previousSibling.previousSibling;
               if (newpreview)
-              {
-                this.movePreview(preview,newpreview);
-              }
+                this.movePreview(preview, newpreview);
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_DOWN)
-            {
+            else if (event.keyCode == event.DOM_VK_DOWN) {
               var newpreview = preview.nextSibling.nextSibling;
               if (newpreview)
-              {
-                this.movePreview(preview,newpreview.nextSibling.nextSibling);
-              }
+                this.movePreview(preview, newpreview.nextSibling.nextSibling);
               event.preventDefault();
             }
           }
-          else
-          {
-            if (event.keyCode==event.DOM_VK_UP)
-            {
+          else {
+            if (event.keyCode == event.DOM_VK_UP) {
               var newpreview = preview.previousSibling.previousSibling;
-              if (newpreview)
-              {
+              if (newpreview) {
                 preview.tab.focus();
-                this.tabbrowser.selectedTab=newpreview.tab;
+                this.tabbrowser.selectedTab = newpreview.tab;
                 newpreview.setfocus();
               }
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_DOWN)
-            {
+            else if (event.keyCode == event.DOM_VK_DOWN) {
               var newpreview = preview.nextSibling.nextSibling;
-              if (newpreview)
-              {
+              if (newpreview) {
                 preview.tab.focus();
-                this.tabbrowser.selectedTab=newpreview.tab;
+                this.tabbrowser.selectedTab = newpreview.tab;
                 newpreview.setfocus();
               }
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_PAGE_UP)
-            {
+            else if (event.keyCode == event.DOM_VK_PAGE_UP) {
               var compare = preview.previousSibling.previousSibling;
-              if (compare)
-              {
-                var diff = preview.boxObject.y-compare.boxObject.y;
+              if (compare) {
+                var diff = preview.boxObject.y - compare.boxObject.y;
                 var height = this.scrollBox.boxObject.height;
-                var jump = height/diff;
+                var jump = height / diff;
                 var current = preview;
                 var count = 1;
-                while ((count<=jump)&&(current.previousSibling.previousSibling))
-                {
-                  current=current.previousSibling.previousSibling;
+                while ((count <= jump) && (current.previousSibling.previousSibling)) {
+                  current = current.previousSibling.previousSibling;
                   count++;
                 }
                 preview.tab.focus();
-                this.tabbrowser.selectedTab=current.tab;
+                this.tabbrowser.selectedTab = current.tab;
                 current.setfocus();
               }
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_PAGE_DOWN)
-            {
+            else if (event.keyCode == event.DOM_VK_PAGE_DOWN) {
               var compare = preview.nextSibling.nextSibling;
-              if (compare)
-              {
-                var diff = compare.boxObject.y-preview.boxObject.y;
+              if (compare) {
+                var diff = compare.boxObject.y - preview.boxObject.y;
                 var height = this.scrollBox.boxObject.height;
-                var jump = height/diff;
+                var jump = height / diff;
                 var current = preview;
                 var count = 1;
-                while ((count<=jump)&&(current.nextSibling.nextSibling))
-                {
-                  current=current.nextSibling.nextSibling;
+                while ((count <= jump) && (current.nextSibling.nextSibling)) {
+                  current = current.nextSibling.nextSibling;
                   count++;
                 }
                 preview.tab.focus();
@@ -588,26 +534,21 @@
               }
               event.preventDefault();
             }
-            else if (event.keyCode==event.DOM_VK_CONTEXT_MENU)
-            {
+            else if (event.keyCode == event.DOM_VK_CONTEXT_MENU) {
               var preview = null;
 
               if (this._selected)
-              {
-                preview=this._selected;
-              }
+                preview = this._selected;
               else
-              {
-                preview=this.previews[0];
-              }
+                preview = this.previews[0];
 
-              var x = preview.boxObject.screenX-this.browserWindow.document.documentElement.boxObject.screenX;
-              var y = preview.boxObject.screenY-this.browserWindow.document.documentElement.boxObject.screenY;
-    
+              var x = preview.boxObject.screenX - this.browserWindow.document.documentElement.boxObject.screenX;
+              var y = preview.boxObject.screenY - this.browserWindow.document.documentElement.boxObject.screenY;
+
               x+=2;
               y+=2;
-              
-              this.displayContextMenu(preview,x,y);
+
+              this.displayContextMenu(preview, x, y);
             }
           }
         }

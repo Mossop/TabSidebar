@@ -37,53 +37,49 @@
       <field name="_updateTimer">
         Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
       </field>
-      
-      <field name="_progressListener">({
-          tabpreview: this,
 
-          onProgressChange : function (aWebProgress, aRequest,
-                                       aCurSelfProgress, aMaxSelfProgress,
-                                       aCurTotalProgress, aMaxTotalProgress)
-          {
-            this.tabpreview.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
-          },
+      <field name="_progressListener">
+      ({
+        tabpreview: this,
 
-          onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
-          {
-            this.tabpreview.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
-          },
+        onProgressChange : function (aWebProgress, aRequest,
+                                     aCurSelfProgress, aMaxSelfProgress,
+                                     aCurTotalProgress, aMaxTotalProgress) {
+          this.tabpreview.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
+        },
 
-          onLocationChange : function(aWebProgress, aRequest, aLocation)
-          {
-            this.tabpreview.onLocationChange(aWebProgress, aRequest, aLocation);
-          },
+        onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+          this.tabpreview.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
+        },
 
-          onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage)
-          {
-            this.tabpreview.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
-          },
+        onLocationChange : function(aWebProgress, aRequest, aLocation) {
+          this.tabpreview.onLocationChange(aWebProgress, aRequest, aLocation);
+        },
 
-          onSecurityChange : function(aWebProgress, aRequest, aState)
-          {
-            this.tabpreview.onSecurityChange(aWebProgress, aRequest, aState);
-          },
+        onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {
+          this.tabpreview.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
+        },
 
-          QueryInterface : function(aIID)
-          {
-            if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-                aIID.equals(Components.interfaces.nsISupports))
-              return this;
-            throw Components.results.NS_NOINTERFACE;
-          }
-        });</field>
+        onSecurityChange : function(aWebProgress, aRequest, aState) {
+          this.tabpreview.onSecurityChange(aWebProgress, aRequest, aState);
+        },
+
+        QueryInterface : function(aIID) {
+          if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+              aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+              aIID.equals(Components.interfaces.nsISupports))
+            return this;
+          throw Components.results.NS_NOINTERFACE;
+        }
+      });
+      </field>
 
       <method name="_loadStarted">
         <body>
         <![CDATA[
 #ifdef ${extension.debug}
           this._logMessage("loadStarted");
-          
+
 #endif
           this.loading=true;
           this._invalid=true;
@@ -91,12 +87,11 @@
 
           //this._emptyDocumentListeners();
           this._changeTimer.cancel();
-          this._changeTime=0;
-          this._changeReason=0;
+          this._changeTime = 0;
+          this._changeReason = 0;
           
           this._updateTimer.cancel();
-          if ((this.previews)&&(this.previews.loadRefresh))
-          {
+          if ((this.previews) && (this.previews.loadRefresh)) {
             this._updateTimer.initWithCallback(this._timerListener, 
                                              this.previews.loadRefreshRate, 
                                              Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
@@ -104,36 +99,35 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_loadComplete">
         <parameter name="status"/>
         <body>
 #ifdef ${extension.debug}
           this._logMessage("loadComplete");
-          
+
 #endif
-          this.loading=false;
-          this.stopButton.disabled=true;
+          this.loading = false;
+          this.stopButton.disabled = true;
           this._updateTimer.cancel();
 
           if (!this.showPreview)
             return;
-            
-          if (status==0)
+
+          if (status == 0)
             this._documentLoaded();
           else
             this._documentLoadError();
         </body>
       </method>
-      
+
       <method name="_setSecurity">
         <parameter name="state"/>
         <body>
         <![CDATA[
           const WPL = Components.interfaces.nsIWebProgressListener;
-                       
-          switch (state)
-          {
+
+          switch (state) {
             case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_HIGH:
               this.setAttribute("security", "high");
               break;
@@ -148,20 +142,16 @@
               this.setAttribute("security", "none");
               break;
           }
-          
+
           var icon = this.securityIcon;
-          if ((this._browser.docShell)&&(this._browser.securityUI))
-          {
-            icon.setAttribute("tooltiptext",this._browser.securityUI.tooltipText);
-          }
+          if ((this._browser.docShell) && (this._browser.securityUI))
+            icon.setAttribute("tooltiptext", this._browser.securityUI.tooltipText);
           else
-          {
             icon.removeAttribute("tooltiptext");
-          }
         ]]>
         </body>
       </method>
-      
+
       <!--  Start of nsIWebProgressListener implementation -->
 
       <method name="onLocationChange">
@@ -175,7 +165,7 @@
 #endif
 
           var reload = this.reloadButton;
-          reload.disabled=(uri=="about:blank" || uri=="");
+          reload.disabled = (uri == "about:blank" || uri == "");
 
           this.historyChange();
             
@@ -183,7 +173,7 @@
             this._checkDocuments("location");
         </body>
       </method>
-      
+
       <method name="onStateChange">
         <parameter name="webProgress"/>
         <parameter name="request"/>
@@ -194,21 +184,16 @@
 #ifdef ${extension.debug}
           //this._logMessage("onStateChange "+stateFlags+" "+status);
 #endif
-          if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK)
-          {
-            if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
-            {
+          if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) {
+            if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP) {
               if (this.loading)
-              {
                 this._loadComplete(status);
-              }
 #ifdef ${extension.debug}
               else
                 this._logWarning("Received repeat load complete - "+stateFlags);
 #endif
             }
-            else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START)
-            {
+            else if (stateFlags & Components.interfaces.nsIWebProgressListener.STATE_START) {
               if (!this.loading)
                 this._loadStarted();
 #ifdef ${extension.debug}
@@ -220,7 +205,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="onStatusChange">
         <parameter name="webProgress"/>
         <parameter name="request"/>
@@ -232,7 +217,7 @@
 #endif
         </body>
       </method>
-      
+
       <method name="onProgressChange">
         <parameter name="webProgress"/>
         <parameter name="request"/>
@@ -244,10 +229,10 @@
 #ifdef ${extension.debug}
           //this._logMessage("onProgressChange ");
 #endif
-          this._invalid=true;
+          this._invalid = true;
         </body>
       </method>
-      
+
       <method name="onSecurityChange">
         <parameter name="webProgress"/>
         <parameter name="request"/>
@@ -259,7 +244,7 @@
           this._setSecurity(state);
         </body>
       </method>
-      
+
       <method name="onLinkIconAvailable">
         <body>
 #ifdef ${extension.debug}
@@ -267,8 +252,8 @@
 #endif
           var el = this.faviconIcon;
           if (el)
-            el.src=this.icon;
-            
+            el.src = this.icon;
+
           if (!this.loading)
             this._checkDocuments("icon");
         </body>
@@ -281,12 +266,12 @@
           this._logMessage("onTitleChange -> "+title);
 #endif
           var el = this.titleField;
-      
+
           if (el)
-            el.value=title;
-            
+            el.value = title;
+
           if (!this.loading)
             this._checkDocuments("title");
         </body>
       </method>
-            
+

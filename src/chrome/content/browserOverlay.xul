@@ -81,7 +81,7 @@
   <keyset id="mainKeyset">
     <key id="tabsidebar-key" key="e" modifiers="accel,shift" observes="viewTabSidebar"/>
   </keyset>
-  
+
   <hbox id="browser">
     <vbox id="tabsidebar-left-container" persist="hidden width" hidden="true" insertbefore="appcontent" width="200px"/>
     <splitter id="tabsidebar-left-splitter" class="tabsidebar-splitter" persist="hidden" hidden="true" insertbefore="appcontent"/>
@@ -94,7 +94,7 @@
     <vbox id="tabsidebar-right-container" persist="hidden width" hidden="true" insertafter="appcontent" width="200px"/>
     <splitter id="tabsidebar-right-splitter" class="tabsidebar-splitter" persist="hidden" hidden="true" insertafter="appcontent"/>
   </hbox>
-  
+
   <script src="chrome://tabsidebar/content/browser.js"/>
-  
+
 </overlay>

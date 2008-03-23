@@ -44,25 +44,25 @@
       <field name="_changeTime">0</field>
       <field name="_changeReason">0</field>
       <field name="_listenedDocuments">[]</field>
-                  
-      <field name="_timerListener">({
-          tabpreview: this,
 
-          notify : function(timer)
-          {
-            if (this.tabpreview)
-              this.tabpreview.notify(timer);
-          },
+      <field name="_timerListener">
+      ({
+        tabpreview: this,
 
-          QueryInterface : function(aIID)
-          {
-            if (aIID.equals(Components.interfaces.nsITimerCallback) ||
-                aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-                aIID.equals(Components.interfaces.nsISupports))
-              return this;
-            throw Components.results.NS_NOINTERFACE;
-          }
-        });</field>
+        notify : function(timer) {
+          if (this.tabpreview)
+            this.tabpreview.notify(timer);
+        },
+
+        QueryInterface : function(aIID) {
+          if (aIID.equals(Components.interfaces.nsITimerCallback) ||
+              aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+              aIID.equals(Components.interfaces.nsISupports))
+            return this;
+          throw Components.results.NS_NOINTERFACE;
+        }
+      });
+      </field>
             
       <method name="_addListeners">
         <body>
@@ -74,64 +74,49 @@
           if (this.showPreview)
             this._browser.addEventListener("resize",               this._eventListener, false);
 
-          if (this.previews.updatePreviews)
-          {
+          if (this.previews.updatePreviews) {
             this._browser.addEventListener("scroll",               this._eventListener, true);
             this._browser.addEventListener("load",                 this._eventListener, true);
             this._browser.addEventListener("pageshow",             this._eventListener, true);
             this._browser.addEventListener("pagehide",             this._eventListener, true);
           }
 
-          var WP = Components.interfaces.nsIWebProgress;
-          var mask = WP.NOTIFY_ALL;
+          const mask = Components.interfaces.nsIWebProgress.NOTIFY_ALL;
           if (this._browser.docShell)
-          {
-            this._browser.webProgress.addProgressListener(this._progressListener,mask);
-          }
+            this._browser.webProgress.addProgressListener(this._progressListener, mask);
 #ifdef ${extension.debug}
           else
-          {
             this._logError("Could not register browser progress listener");
-          }
 #endif
-          WP=null;
-          mask=null;
         </body>
       </method>
-      
+
       <method name="_removeListeners">
         <body>
-          try
-          {
+          try {
 #ifdef ${extension.debug}
             this._logMessage("Remove browser listeners");
-          
+
 #endif
             this._browser.removeEventListener("DOMTitleChanged",   this._eventListener, false);
             if (this.showPreview)
               this._browser.removeEventListener("resize",          this._eventListener, false);
-            
-            if (this.previews.updatePreviews)
-            {
+
+            if (this.previews.updatePreviews) {
               this._browser.removeEventListener("scroll",          this._eventListener, true);
               this._browser.removeEventListener("load",            this._eventListener, true);
               this._browser.removeEventListener("pageshow",        this._eventListener, true);
               this._browser.removeEventListener("pagehide",        this._eventListener, true);
             }
-            
+
             if (this._browser.docShell)
-            {
               this._browser.webProgress.removeProgressListener(this._progressListener);
-            }
 #ifdef ${extension.debug}
             else
-            {
               this._logWarning("Could not unregister browser progress listener");
-            }
 #endif
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             this._logError("Error removing listeners from tab: "+e);
             dump(e+"\n");
@@ -144,17 +129,17 @@
         <parameter name="doc"/>
         <body>
         <![CDATA[
-          if (!this.previews.updatePreviews)
-            return;
-          
           var pos = this._listenedDocuments.indexOf(doc);
-          if (pos<0)
-          {
-#ifdef ${extension.debug}
-            this._logMessage("Adding document "+doc.location.href);
+          if (pos >= 0)
+            return;
 
+#ifdef ${extension.debug}
+          this._logMessage("Adding document "+doc.location.href);
+          this._logMessage("Now listening to "+this._listenedDocuments.length+" documents");
 #endif
-            this._listenedDocuments.push(doc);
+          this._listenedDocuments.push(doc);
+
+          if (this.previews.updatePreviews) {
             doc.addEventListener("DOMNodeInserted",                this._eventListener, true);
             doc.addEventListener("DOMNodeRemoved",                 this._eventListener, true);
             doc.addEventListener("DOMNodeRemovedFromDocument",     this._eventListener, true);
@@ -168,35 +153,32 @@
             doc.addEventListener("DOMFocusOut",                    this._eventListener, true);
             doc.addEventListener("DOMSubtreeModified",             this._eventListener, true);
             doc.addEventListener("scroll",                         this._eventListener, true);
-#ifdef ${extension.debug}
-            
-            this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
-#endif
           }
-#ifdef ${extension.debug}
-          else
-          {
-            //this._logMessage("Listeners already added\n");
-          }
-#endif
         ]]>
         </body>
       </method>
-      
+
       <method name="_removeDocumentListeners">
         <parameter name="doc"/>
         <body>
         <![CDATA[
           var pos = this._listenedDocuments.indexOf(doc);
-          if (pos>=0)
-          {
+          if (pos < 0)
+            return;
+
 #ifdef ${extension.debug}
-          	if (doc.location)
-	            this._logMessage("Removing document "+doc.location.href);
-	          else
-	          	this._logWarning("Removing expired document");
-            
+          if (doc.location)
+            this._logMessage("Removing document "+doc.location.href);
+          else
+            this._logWarning("Removing expired document");
+
 #endif
+          this._listenedDocuments.splice(pos,1);
+#ifdef ${extension.debug}
+          this._logMessage("Now listening to "+this._listenedDocuments.length+" documents");
+#endif
+
+          if (this.previews.updatePreviews) {
             doc.removeEventListener("DOMNodeInserted",             this._eventListener, true);
             doc.removeEventListener("DOMNodeRemoved",              this._eventListener, true);
             doc.removeEventListener("DOMNodeRemovedFromDocument",  this._eventListener, true);
@@ -210,18 +192,7 @@
             doc.removeEventListener("DOMFocusOut",                 this._eventListener, true);
             doc.removeEventListener("DOMSubtreeModified",          this._eventListener, true);
             doc.removeEventListener("scroll",                      this._eventListener, true);
-            this._listenedDocuments.splice(pos,1);
-#ifdef ${extension.debug}
-            
-            this._logMessage("Listening to "+this._listenedDocuments.length+" documents");
-#endif
           }
-#ifdef ${extension.debug}
-          else
-          {
-            //this._logMessage("Listeners already removed\n");
-          }
-#endif
         ]]>
         </body>
       </method>
@@ -229,100 +200,90 @@
       <method name="_emptyDocumentListeners">
         <body>
         <![CDATA[
-          while (this._listenedDocuments.length>0)
+          while (this._listenedDocuments.length > 0)
             this._removeDocumentListeners(this._listenedDocuments[0]);
         ]]>
         </body>
       </method>
-      
+
       <method name="_findDocuments">
         <parameter name="doc"/>
         <parameter name="newdocs"/>
         <body>
         <![CDATA[
-          if (doc)
-          {
-            if (doc.contentDocument && (doc.contentDocument instanceof Document))
-              doc=doc.contentDocument;
+          if (!doc) {
+#ifdef ${extension.debug}
+            this._logWarning("Attempt to add null doc");
+#endif
+            return;
+          }
 
-            if ((doc instanceof Document)&&(newdocs.indexOf(doc)==-1))
-              newdocs.push(doc);
+          if (doc.contentDocument && (doc.contentDocument instanceof Document))
+            doc=doc.contentDocument;
 
-            if (doc.getElementsByTagName)
-            {
-              var subdocs = doc.getElementsByTagName("frame");
-              for (var pos = 0; pos<subdocs.length; pos++)
-              {
+          if ((doc instanceof Document) && (newdocs.indexOf(doc) == -1))
+            newdocs.push(doc);
+
+          if (doc.getElementsByTagName) {
+            var subdocs = doc.getElementsByTagName("frame");
+            for (var pos = 0; pos < subdocs.length; pos++) {
 #ifdef ${extension.debug}
-                this._logMessage("Adding new frame");
+              this._logMessage("Adding new frame");
 #endif
-                this._findDocuments(subdocs[pos].contentDocument, newdocs);
-              }
-              subdocs = doc.getElementsByTagName("iframe");
-              for (var pos = 0; pos<subdocs.length; pos++)
-              {
+              this._findDocuments(subdocs[pos].contentDocument, newdocs);
+            }
+            subdocs = doc.getElementsByTagName("iframe");
+            for (var pos = 0; pos < subdocs.length; pos++) {
 #ifdef ${extension.debug}
-                this._logMessage("Adding new iframe");
+              this._logMessage("Adding new iframe");
 #endif
-                this._findDocuments(subdocs[pos].contentDocument, newdocs);
-              }
-              subdocs = doc.getElementsByTagName("browser");
-              for (var pos = 0; pos<subdocs.length; pos++)
-              {
+              this._findDocuments(subdocs[pos].contentDocument, newdocs);
+            }
+            subdocs = doc.getElementsByTagName("browser");
+            for (var pos = 0; pos < subdocs.length; pos++) {
 #ifdef ${extension.debug}
-                this._logMessage("Adding new browser");
+              this._logMessage("Adding new browser");
 #endif
-                this._findDocuments(subdocs[pos].contentDocument, newdocs);
-              }
+              this._findDocuments(subdocs[pos].contentDocument, newdocs);
             }
           }
-#ifdef ${extension.debug}
-          else
-          {
-            this._logWarning("Attempt to add null doc");
-          }
-#endif
         ]]>
         </body>
       </method>
-      
+
       <method name="_checkDocuments">
         <parameter name="reason"/>
         <body>
         <![CDATA[
-          if ((!this._browser) || (!this._browser.docShell) || (!this.previews.updatePreviews))
+          if ((!this._browser) || (!this._browser.docShell))
             return;
-            
-          if (this._listenedDocuments.length>0)
-          {
+
+          if (this._listenedDocuments.length > 0) {
             if (this._listenedDocuments.indexOf(this._browser.contentDocument)>=0)
               return;
           }
-          
+
           var newdocs = [];
           this._findDocuments(this._browser.contentDocument, newdocs);
-          
+
           var target = newdocs.length;
-          
+
 #ifdef ${extension.debug}
           this._logMessage("checkDocuments");
-          
+
 #endif
           var lost = this._listenedDocuments.length;
           var pos=0;
-          while (pos<this._listenedDocuments.length)
-          {
+          while (pos < this._listenedDocuments.length) {
             var fpos = newdocs.indexOf(this._listenedDocuments[pos]);
-            if (fpos>=0)
-            {
+            if (fpos >= 0) {
 #ifdef ${extension.debug}
               this._logMessage("kept "+this._listenedDocuments[pos].location);
 #endif
               newdocs.splice(fpos,1);
               pos++;
             }
-            else
-            {
+            else {
 #ifdef ${extension.debug}
               this._logMessage("lost "+this._listenedDocuments[pos].location);
 #endif
@@ -330,31 +291,28 @@
             }
           }
 
-          lost-=this._listenedDocuments.length;
+          lost -= this._listenedDocuments.length;
 #ifdef ${extension.debug}
           this._logWarning("Bad document tree detected from "+reason+": lost "+lost+" documents, gained "+newdocs.length+" documents, kept "+this._listenedDocuments.length+" documents.");
 #endif
 
-          for (var i=0; i<newdocs.length; i++)
-          {
+          for (var i = 0; i < newdocs.length; i++) {
             this._addDocumentListeners(newdocs[i]);
 #ifdef ${extension.debug}
-            this._logMessage("gained "+newdocs[i].location.href);
+            this._logMessage("gained " + newdocs[i].location.href);
 #endif
           }
-          
+
 #ifdef ${extension.debug}
-          if (this._listenedDocuments.length!=target)
-          {
-            this._logWarning("checkDocuments failure: "+target+" -> "+this._listenedDocuments.length);
-          }
-          
+          if (this._listenedDocuments.length != target)
+            this._logWarning("checkDocuments failure: " + target + " -> " + this._listenedDocuments.length);
+
 #endif
           this._documentLoaded();
         ]]>
         </body>
       </method>
-      
+
       <method name="_startTimer">
         <parameter name="reason"/>
         <parameter name="selectedDelay"/>
@@ -362,36 +320,35 @@
         <body>
         <![CDATA[
           var delay = selectedDelay;
-          
+
           if (!this.selected)
             delay = unselectedDelay;
 
-          var date = Date.now()+delay;
-          
-          this._changeReason|=reason;
+          var date = Date.now() + delay;
 
-          if (date>this._changeTime)
-          {
+          this._changeReason |= reason;
+
+          if (date > this._changeTime) {
             this._changeTimer.cancel();
             this._changeTimer.initWithCallback(this._timerListener, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-            this._changeTime=date;
+            this._changeTime = date;
           }
         ]]>
         </body>
       </method>
-      
+
       <method name="_browserResized">
         <body>
         <![CDATA[
           var width = this._browser.parentNode.parentNode.boxObject.width;
           var height = this._browser.parentNode.parentNode.boxObject.height;
-          
+
           var findbar = this._browser.ownerDocument.getElementById("FindToolbar");
           if (!findbar.hidden)
-            height+=findbar.boxObject.height;
-          
+            height += findbar.boxObject.height;
+
 #ifdef ${extension.debug}
-          this._logMessage("new size: "+width+"x"+height);
+          this._logMessage("new size: " + width + "x" + height);
 
 #endif
           this._invalid = true;
@@ -400,66 +357,64 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_documentLoaded">
         <body>
           if (!this.previews)
             return;
-            
+
           this._invalid = true;
           this._startTimer(this.CHANGE_LOAD, this.previews.loadDelay, this.previews.unselectedLoadDelay);
         </body>
       </method>
-      
+
       <method name="_documentLoadError">
         <body>
           if (!this.previews)
             return;
-            
+
           this._invalid = true;
           this._startTimer(this.CHANGE_LOAD, this.previews.loadErrorDelay, this.previews.unselectedLoadErrorDelay);
         </body>
       </method>
-      
+
       <method name="_documentTextInput">
         <body>
           if (!this.previews)
             return;
-            
+
           this._invalid = true;
           this._startTimer(this.CHANGE_TEXT, this.previews.textDelay, this.previews.unselectedTextDelay);
         </body>
       </method>
-      
+
       <method name="_documentChanged">
         <body>
           if (!this.previews)
             return;
-            
+
           this._invalid = true;
           this._startTimer(this.CHANGE_OTHER, this.previews.changeDelay, this.previews.unselectedChangeDelay);
         </body>
       </method>
-      
+
       <method name="_documentScrolled">
         <body>
           if (!this.previews || !this.previews.drawScrolled)
             return;
-            
+
           this._invalid = true;
           this._startTimer(this.CHANGE_SCROLL, this.previews.scrollDelay, this.previews.unselectedScrollDelay);
         </body>
       </method>
-      
+
       <field name="_eventListener">
       <![CDATA[
       ({
         tabpreview: this,
-        
-        getDocumentForEvent: function(event)
-        {
-          if (event.target)
-          {
+
+        getDocumentForEvent: function(event) {
+          if (event.target) {
             if (event.target instanceof Document)
               return event.target;
             else if (event.target.document)
@@ -471,22 +426,19 @@
           }
           return null;
         },
-        
-        handleEvent: function(event)
-        {
+
+        handleEvent: function(event) {
           if (this._destroyed)
             return;
-            
+
           if (!this.tabpreview.previews)
             return;
-          
-          try
-          {
+
+          try {
 #ifdef ${extension.debug}
             //this.tabpreview._logMessage("Event - "+event.type);
 #endif
-            switch (event.type)
-            {
+            switch (event.type) {
               case "DOMTitleChanged":
                 this.tabpreview.onTitleChange();
                 return;
@@ -525,43 +477,40 @@
 #endif
                 return;
             }
-                        
+
             if (this.tabpreview.loading)
               return;
-            
+
             var sourcedoc;
             if (event.target instanceof Document)
               sourcedoc = event.target;
             else
               sourcedoc = event.target.ownerDocument;
-            
-            if (event.type == "scroll")
+
+            if (event.type == "scroll") {
               this.tabpreview._documentScrolled();
-            else if (this.tabpreview._listenedDocuments.indexOf(sourcedoc)>=0)
-            {
-              if (event.type.substring(0,3)=="DOM")
-              {
-                if (event.type=="DOMAttrModified")
-                {
-                  if ((event.attrName=="maxpos")||(event.attrName=="pageincrement"))
+            }
+            else if (this.tabpreview._listenedDocuments.indexOf(sourcedoc)>=0) {
+              if (event.type.substring(0,3)=="DOM") {
+                if (event.type=="DOMAttrModified") {
+                  if ((event.attrName == "maxpos") ||
+                      (event.attrName == "pageincrement")) {
                     return;
-                  else if (event.attrName=="curpos")
-                  {
+                  }
+                  else if (event.attrName=="curpos") {
                     this.tabpreview._documentScrolled();
                     return;
                   }
                 }
-                else if ((event.type=="DOMNodeInserted")||(event.type=="DOMNodeInsertedIntoDocument")||(event.type=="DOMCharacterDataModified"))
-                {
-                  if (event.target instanceof HTMLTextAreaElement)
-                  {
+                else if ((event.type == "DOMNodeInserted") ||
+                         (event.type == "DOMNodeInsertedIntoDocument") ||
+                         (event.type == "DOMCharacterDataModified")) {
+                  if (event.target instanceof HTMLTextAreaElement) {
                     this.tabpreview._documentTextInput();
                     return;
                   }
-                  if (event.target instanceof HTMLInputElement)
-                  {
-                    if ((event.target.type=="text")||(event.target.type=="password"))
-                    {
+                  if (event.target instanceof HTMLInputElement) {
+                    if ((event.target.type=="text")||(event.target.type=="password")) {
                       this.tabpreview._documentTextInput();
                       return;
                     }
@@ -573,17 +522,18 @@
                 this.tabpreview._documentChanged();
               }
 #ifdef ${extension.debug}
-              else
+              else {
                 this.tabpreview._logWarning("Received an unknown event: "+event.type);
+              }
 #endif
             }
 #ifdef ${extension.debug}
-            else
+            else {
               this.tabpreview._logWarning("Received an event for an unknown document: "+sourcedoc.location.href+" "+event.type);
+            }
 #endif
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             this.tabpreview._logWarning(e);
 #endif
@@ -599,34 +549,31 @@
         <parameter name="timer"/>
         <body>
         <![CDATA[
-          if ((!this.previews)||(!this._browser))
+          if ((!this.previews) || (!this._browser))
             return;
-          
-          if (timer==this._updateTimer)
-          {
+
+          if (timer == this._updateTimer) {
             this.update();
             this.redraw();
             this._changeTimer.cancel();
-            this._changeTime=0;
-            this._changeReason=0;
+            this._changeTime = 0;
+            this._changeReason = 0;
             return;
           }
-          
-          if (this._changeReason)
-          {
+
+          if (this._changeReason) {
 #ifdef ${extension.debug}
-            this._logMessage("Timer fired - "+this._changeReason);
-            
+            this._logMessage("Timer fired - " + this._changeReason);
+
 #endif
             this.redraw();
-  
+
             if (this._changeReason & this.CHANGE_LOAD)
               this.update();
-              
-            this._changeReason=0;
+
+            this._changeReason = 0;
           }
         ]]>
         </body>
       </method>
-      
-      
+

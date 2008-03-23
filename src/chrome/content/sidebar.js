@@ -36,8 +36,7 @@
 # ***** END LICENSE BLOCK *****
 var sidebar = {
 
-showOptions: function()
-{
+showOptions: function() {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService);
   var instantApply = prefs.getBoolPref("browser.preferences.instantApply", false);
@@ -46,73 +45,63 @@ showOptions: function()
   var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                      .getService(Components.interfaces.nsIWindowMediator);
   var win = wm.getMostRecentWindow("TabSidebar:Options");
-  if (win)
-  {
+  if (win) {
     win.focus();
   }
-  else
-  {
+  else {
     window.openDialog("chrome://tabsidebar/content/preferences.xul",
                       "Preferences", features);
-	}
+  }
 },
 
-init: function()
-{
-	var topwin = window;
-	while (topwin.parent && topwin != topwin.parent)
-		topwin=topwin.parent;
-	sidebar.topwindow=topwin;
-	
+init: function() {
+  var topwin = window;
+  while (topwin.parent && topwin != topwin.parent)
+    topwin=topwin.parent;
+  sidebar.topwindow=topwin;
+
   var sbs = Components.classes["@mozilla.org/intl/stringbundle;1"]
                       .getService(Components.interfaces.nsIStringBundleService);
   var bundle = sbs.createBundle("chrome://tabsidebar/locale/tabsidebar.properties");
 
-	var pos = topwin.document.getElementById("sidebar-throbber");
-	var header = pos.parentNode;
-	
-	if (pos.nextSibling)
-	{
-		pos=pos.nextSibling;
-	}
-	else
-	{
-		pos=null;
-	}
-	
+  var pos = topwin.document.getElementById("sidebar-throbber");
+  var header = pos.parentNode;
+
+  if (pos.nextSibling)
+    pos = pos.nextSibling;
+  else
+    pos = null;
+
   var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService).getBranch("extensions.tabsidebar.");
-                        
-  if (prefs.getBoolPref("showoptions"))
-  {
-		var optionsBtn = topwin.document.createElement("toolbarbutton");
-		optionsBtn.setAttribute("tooltiptext",bundle.GetStringFromName("tabsidebar.options.tooltip"));
-		optionsBtn.id = "tabsidebar-options";
-		header.insertBefore(optionsBtn,pos);
-		optionsBtn.addEventListener("command",sidebar.showOptions,false);
-	}
+                        .getService(Components.interfaces.nsIPrefService)
+                        .getBranch("extensions.tabsidebar.");
+
+  if (prefs.getBoolPref("showoptions")) {
+    var optionsBtn = topwin.document.createElement("toolbarbutton");
+    optionsBtn.setAttribute("tooltiptext", bundle.GetStringFromName("tabsidebar.options.tooltip"));
+    optionsBtn.id = "tabsidebar-options";
+    header.insertBefore(optionsBtn, pos);
+    optionsBtn.addEventListener("command", sidebar.showOptions, false);
+  }
 },
  
-destroy: function()
-{
-	var topwin = sidebar.topwindow;
+destroy: function() {
+  var topwin = sidebar.topwindow;
 
-	var button = topwin.document.getElementById("tabsidebar-options");
-	if (button)
-		button.parentNode.removeChild(button);
+  var button = topwin.document.getElementById("tabsidebar-options");
+  if (button)
+    button.parentNode.removeChild(button);
 },
 
-load: function(event)
-{
-	//document.getElementById("previews").init();
+load: function(event) {
+  //document.getElementById("previews").init();
 },
 
-unload: function(event)
-{
-	if ((event.type=="pagehide")&&(event.persisted))
-		return;
-		
-	document.getElementById("previews")._destroy();
+unload: function(event) {
+  if ((event.type == "pagehide") && (event.persisted))
+    return;
+
+  document.getElementById("previews")._destroy();
 }
 }
 

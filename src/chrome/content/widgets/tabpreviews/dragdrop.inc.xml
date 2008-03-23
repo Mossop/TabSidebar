@@ -1,11 +1,10 @@
       <!-- Start of DnD implementation -->
 
       <field name="_lastDrop"/>
-      
+
       <method name="_hideDropIndicator">
         <body>
-          if (this._lastDrop)
-          {
+          if (this._lastDrop) {
             this._lastDrop = null;
             this.dragDropBar.setAttribute("dragging", "false");
           }
@@ -18,26 +17,23 @@
         <parameter name="aDragAction"/>
         <body>
         <![CDATA[
-          try
-          {
+          try {
             if (aEvent.target.localName == "tabpreview" &&
-                aEvent.originalTarget.localName != "toolbarbutton")
-            {
+                aEvent.originalTarget.localName != "toolbarbutton") {
               aXferData.data = new TransferData();
               
               var URI = aEvent.target._browser.currentURI;
-              if (URI)
-              {
+              if (URI) {
                 aXferData.data.addDataForFlavour("text/unicode", URI.spec);
                 aXferData.data.addDataForFlavour("text/x-moz-url", URI.spec + "\n" + aEvent.target.title);
                 aXferData.data.addDataForFlavour("text/html", '<a href="' + URI.spec + '">' + aEvent.target.title + '</a>');
               }
-              else
+              else {
                 aXferData.data.addDataForFlavour("text/unicode", "about:blank");
+              }
             }
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             dump(e);
 #endif
@@ -52,20 +48,18 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          try
-          {
+          try {
             if (this.checkDragScroll(aEvent))
               return;
-              
-            if (!aDragSession.canDrop)
-            {
+
+            if (!aDragSession.canDrop) {
               this._hideDropIndicator();
               return;
             }
-              
+
             if (aDragSession.sourceNode &&
-               (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
-            {
+                (aDragSession.sourceNode.parentNode == this ||
+                 aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer)) {
               var newpos = this.getDropElement(aEvent,false);
 
               var preview = null;
@@ -73,28 +67,26 @@
                 preview = aDragSession.sourceNode;              
               else
                 preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
-              
-              if (newpos == preview.previousSibling || newpos == preview.nextSibling)
-              {
+
+              if (newpos == preview.previousSibling || newpos == preview.nextSibling) {
                 aDragSession.canDrop=false;
                 this._hideDropIndicator();
               }
-              else
+              else {
                 this._drawDropIndicator(newpos);
+              }
             }
-            else
-            {
-              if (aEvent.target.localName=="tabpreview")
+            else {
+              if (aEvent.target.localName=="tabpreview") {
                 this._drawDropIndicator(aEvent.target);
-              else
-              {
+              }
+              else {
                 var newpos = this.getDropElement(aEvent,true);
                 this._drawDropIndicator(newpos);
               }
             }
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             dump(e+"\n");
 #endif
@@ -111,37 +103,36 @@
           var newIndex = this.previews.length;
           if (insertBefore)
             newIndex = insertBefore.tab._tPos;
-          
+
           var oldIndex = preview.tab._tPos;
-          
-          if (newIndex>oldIndex)
+
+          if (newIndex > oldIndex)
             newIndex--;
-            
+
           if (newIndex==oldIndex)
             return;
 
           var focus=false;
-          if (this.ownerDocument.commandDispatcher.focusedElement && this.ownerDocument.commandDispatcher.focusedElement==preview)
+          if (this.ownerDocument.commandDispatcher.focusedElement == preview)
             focus=true;
-          
+
           this.tabbrowser.moveTabTo(preview.tab, newIndex);
           preview.setfocus();
         ]]>
         </body>
       </method>
-      
+
       <method name="onDrop">
         <parameter name="aEvent"/>
         <parameter name="aXferData"/>
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          try
-          {
+          try {
             this._hideDropIndicator();
             if (aDragSession.sourceNode && 
-               (aDragSession.sourceNode.parentNode == this || aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer))
-            {
+                (aDragSession.sourceNode.parentNode == this ||
+                 aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer)) {
               var preview = null
               if (aDragSession.sourceNode.parentNode == this)
                 preview = aDragSession.sourceNode;              
@@ -151,72 +142,65 @@
               var target = this.getDropElement(aEvent,false);
               this.movePreview(preview,target.nextSibling);
             }
-            else
-            {
+            else {
               var url = transferUtils.retrieveURLFromData(aXferData.data, aXferData.flavour.contentType);
-  
+
               // valid urls don't contain spaces ' '; if we have a space it isn't a valid url.
               // Also disallow dropping javascript: or data: urls--bail out
               if (!url || !url.length || url.indexOf(" ", 0) != -1 ||
                   /^\s*(javascript|data):/.test(url))
                 return;
-  
+
               this.tabbrowser.dragDropSecurityCheck(aEvent, aDragSession, url);
-  
+
               var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                                     .getService(Components.interfaces.nsIPrefBranch);
               var bgLoad = true;
-              try
-              {
+              try {
                 bgLoad = prefs.getBoolPref("browser.tabs.loadInBackground");
               }
               catch (e) { }
-  
+
               if (aEvent.shiftKey)
                 bgLoad = !bgLoad;
-  
-              if (aEvent.target.localName != "tabpreview")
-              {
+
+              if (aEvent.target.localName != "tabpreview") {
 #ifdef ${extension.debug}
                 this._logMessage("Adding new tab: "+bgLoad);
-                
+
 #endif
                 // We're adding a new tab.
                 var move = false;
                 var newIndex = this.previews.length;
                 var target = this.getDropElement(aEvent,false);
-                if (target.nextSibling)
-                {
+                if (target.nextSibling) {
                   target = target.nextSibling;
                   newIndex = target.tab._tPos;
                   move = true;
                 }
   
                 var newtab = this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
-                
+
                 if (move)
                   this.tabbrowser.moveTabTo(newtab, newIndex);
-                
-                if (bgLoad)
-                {
+
+                if (bgLoad) {
                   var preview = this.getPreviewForBrowser(newtab.linkedBrowser);
-                  
+
                   this.ensureElementsAreVisible(preview,preview);
                 }
               }
-              else
-              {
+              else {
                 // Load in an existing tab.
                 var preview = aEvent.target;
                 preview.browser.loadURI(url);
-  
+
                 if (!bgLoad)
                   this.tabbrowser.selectedTab = preview.tab;
               }
             }
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             this._logError(e);
 #endif
@@ -230,13 +214,11 @@
         <parameter name="aDragSession"/>
         <body>
         <![CDATA[
-          try
-          {
+          try {
             if (!aEvent.relatedTarget && this._lastDrop)
               this._hideDropIndicator();
           }
-          catch (e)
-          {
+          catch (e) {
 #ifdef ${extension.debug}
             dump(e);
 #endif
