@@ -7,7 +7,7 @@ overlay     chrome://browser/content/browser.xul                chrome://tabside
 
 style       chrome://global/content/customizeToolbar.xul        chrome://tabsidebar/content/branding/toolbar.css
 
-style       chrome://browser/content/browser.xul                chrome://tabsidebar/skin/default/sidebar.css         os=darwin
-style       chrome://tabsidebar/content/sidebar.xul             chrome://tabsidebar/skin/default/sidebar.css         os=darwin
-style       chrome://browser/content/browser.xul                chrome://tabsidebar/skin/pinstripe/sidebar.css       os!=darwin
-style       chrome://tabsidebar/content/sidebar.xul             chrome://tabsidebar/skin/pinstripe/sidebar.css       os!=darwin
+style       chrome://browser/content/browser.xul                chrome://tabsidebar/skin/default/sidebar.css         os!=darwin
+style       chrome://tabsidebar/content/sidebar.xul             chrome://tabsidebar/skin/default/sidebar.css         os!=darwin
+style       chrome://browser/content/browser.xul                chrome://tabsidebar/skin/pinstripe/sidebar.css       os=darwin
+style       chrome://tabsidebar/content/sidebar.xul             chrome://tabsidebar/skin/pinstripe/sidebar.css       os=darwin
