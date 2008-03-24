@@ -81,9 +81,9 @@
           this._logMessage("loadStarted");
 
 #endif
-          this.loading=true;
-          this._invalid=true;
-          this.stopButton.disabled=false;
+          this.loading = true;
+          this._invalid = true;
+          this.stopButton.disabled = false;
 
           //this._emptyDocumentListeners();
           this._changeTimer.cancel();
@@ -91,11 +91,6 @@
           this._changeReason = 0;
           
           this._updateTimer.cancel();
-          if ((this.previews) && (this.previews.loadRefresh)) {
-            this._updateTimer.initWithCallback(this._timerListener, 
-                                             this.previews.loadRefreshRate, 
-                                             Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
-          }
         ]]>
         </body>
       </method>
@@ -109,7 +104,6 @@
 #endif
           this.loading = false;
           this.stopButton.disabled = true;
-          this._updateTimer.cancel();
 
           if (!this.showPreview)
             return;

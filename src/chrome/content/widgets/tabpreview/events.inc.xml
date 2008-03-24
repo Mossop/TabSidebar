@@ -70,16 +70,13 @@
           this._logMessage("Add browser listeners");
 
 #endif
-          this._browser.addEventListener("DOMTitleChanged",        this._eventListener, false);
-          if (this.showPreview)
-            this._browser.addEventListener("resize",               this._eventListener, false);
+          this._browser.addEventListener("DOMTitleChanged",        this._browserListener, false);
+          this._browser.addEventListener("load",                   this._browserListener, true);
+          this._browser.addEventListener("pageshow",               this._browserListener, true);
+          this._browser.addEventListener("pagehide",               this._browserListener, true);
 
-          if (this.previews.updatePreviews) {
-            this._browser.addEventListener("scroll",               this._eventListener, true);
-            this._browser.addEventListener("load",                 this._eventListener, true);
-            this._browser.addEventListener("pageshow",             this._eventListener, true);
-            this._browser.addEventListener("pagehide",             this._eventListener, true);
-          }
+          if (this.showPreview)
+            this._browser.addEventListener("resize",               this._browserListener, false);
 
           const mask = Components.interfaces.nsIWebProgress.NOTIFY_ALL;
           if (this._browser.docShell)
@@ -98,16 +95,13 @@
             this._logMessage("Remove browser listeners");
 
 #endif
-            this._browser.removeEventListener("DOMTitleChanged",   this._eventListener, false);
-            if (this.showPreview)
-              this._browser.removeEventListener("resize",          this._eventListener, false);
+            this._browser.removeEventListener("DOMTitleChanged",   this._browserListener, false);
+            this._browser.removeEventListener("load",              this._browserListener, true);
+            this._browser.removeEventListener("pageshow",          this._browserListener, true);
+            this._browser.removeEventListener("pagehide",          this._browserListener, true);
 
-            if (this.previews.updatePreviews) {
-              this._browser.removeEventListener("scroll",          this._eventListener, true);
-              this._browser.removeEventListener("load",            this._eventListener, true);
-              this._browser.removeEventListener("pageshow",        this._eventListener, true);
-              this._browser.removeEventListener("pagehide",        this._eventListener, true);
-            }
+            if (this.showPreview)
+              this._browser.removeEventListener("resize",          this._browserListener, false);
 
             if (this._browser.docShell)
               this._browser.webProgress.removeProgressListener(this._progressListener);
@@ -133,11 +127,14 @@
           if (pos >= 0)
             return;
 
-#ifdef ${extension.debug}
-          this._logMessage("Adding document "+doc.location.href);
-          this._logMessage("Now listening to "+this._listenedDocuments.length+" documents");
-#endif
           this._listenedDocuments.push(doc);
+#ifdef ${extension.debug}
+          this._logMessage("Adding document " + doc.location.href);
+          this._logMessage("Now listening to " + this._listenedDocuments.length + " documents");
+#endif
+
+          if (!this.showPreview)
+            return;
 
           if (this.previews.updatePreviews) {
             doc.addEventListener("DOMNodeInserted",                this._eventListener, true);
@@ -178,21 +175,19 @@
           this._logMessage("Now listening to "+this._listenedDocuments.length+" documents");
 #endif
 
-          if (this.previews.updatePreviews) {
-            doc.removeEventListener("DOMNodeInserted",             this._eventListener, true);
-            doc.removeEventListener("DOMNodeRemoved",              this._eventListener, true);
-            doc.removeEventListener("DOMNodeRemovedFromDocument",  this._eventListener, true);
-            doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
-            doc.removeEventListener("DOMAttrModified",             this._eventListener, true);
-            doc.removeEventListener("DOMCharacterDataModified",    this._eventListener, true);
-            doc.removeEventListener("DOMElementNameChanged",       this._eventListener, true);
-            doc.removeEventListener("DOMAttributeNameChanged",     this._eventListener, true);
-            doc.removeEventListener("DOMActivate",                 this._eventListener, true);
-            doc.removeEventListener("DOMFocusIn",                  this._eventListener, true);
-            doc.removeEventListener("DOMFocusOut",                 this._eventListener, true);
-            doc.removeEventListener("DOMSubtreeModified",          this._eventListener, true);
-            doc.removeEventListener("scroll",                      this._eventListener, true);
-          }
+          doc.removeEventListener("DOMNodeInserted",             this._eventListener, true);
+          doc.removeEventListener("DOMNodeRemoved",              this._eventListener, true);
+          doc.removeEventListener("DOMNodeRemovedFromDocument",  this._eventListener, true);
+          doc.removeEventListener("DOMNodeInsertedIntoDocument", this._eventListener, true);
+          doc.removeEventListener("DOMAttrModified",             this._eventListener, true);
+          doc.removeEventListener("DOMCharacterDataModified",    this._eventListener, true);
+          doc.removeEventListener("DOMElementNameChanged",       this._eventListener, true);
+          doc.removeEventListener("DOMAttributeNameChanged",     this._eventListener, true);
+          doc.removeEventListener("DOMActivate",                 this._eventListener, true);
+          doc.removeEventListener("DOMFocusIn",                  this._eventListener, true);
+          doc.removeEventListener("DOMFocusOut",                 this._eventListener, true);
+          doc.removeEventListener("DOMSubtreeModified",          this._eventListener, true);
+          doc.removeEventListener("scroll",                      this._eventListener, true);
         ]]>
         </body>
       </method>
@@ -202,6 +197,17 @@
         <![CDATA[
           while (this._listenedDocuments.length > 0)
             this._removeDocumentListeners(this._listenedDocuments[0]);
+        ]]>
+        </body>
+      </method>
+
+      <method name="updateDocumentListeners">
+        <body>
+        <![CDATA[
+          var docs = this._listenedDocuments.slice(0);
+          this._emptyDocumentListeners();
+          for (var i = 0; i < docs.length; i++)
+            this._addDocumentListeners(docs[i]);
         ]]>
         </body>
       </method>
@@ -315,15 +321,11 @@
 
       <method name="_startTimer">
         <parameter name="reason"/>
-        <parameter name="selectedDelay"/>
-        <parameter name="unselectedDelay"/>
+        <parameter name="delay"/>
         <body>
         <![CDATA[
-          var delay = selectedDelay;
-
-          if (!this.selected)
-            delay = unselectedDelay;
-
+          this.invalid = true;
+          var delay = this.selected ? delay.selected : delay.unselected;
           var date = Date.now() + delay;
 
           this._changeReason |= reason;
@@ -362,9 +364,7 @@
         <body>
           if (!this.previews)
             return;
-
-          this._invalid = true;
-          this._startTimer(this.CHANGE_LOAD, this.previews.loadDelay, this.previews.unselectedLoadDelay);
+          this._startTimer(this.CHANGE_LOAD, this.previews.delays.load);
         </body>
       </method>
 
@@ -372,9 +372,7 @@
         <body>
           if (!this.previews)
             return;
-
-          this._invalid = true;
-          this._startTimer(this.CHANGE_LOAD, this.previews.loadErrorDelay, this.previews.unselectedLoadErrorDelay);
+          this._startTimer(this.CHANGE_LOAD, this.previews.delays.loadError);
         </body>
       </method>
 
@@ -382,9 +380,7 @@
         <body>
           if (!this.previews)
             return;
-
-          this._invalid = true;
-          this._startTimer(this.CHANGE_TEXT, this.previews.textDelay, this.previews.unselectedTextDelay);
+          this._startTimer(this.CHANGE_TEXT, this.previews.delays.text);
         </body>
       </method>
 
@@ -392,9 +388,7 @@
         <body>
           if (!this.previews)
             return;
-
-          this._invalid = true;
-          this._startTimer(this.CHANGE_OTHER, this.previews.changeDelay, this.previews.unselectedChangeDelay);
+          this._startTimer(this.CHANGE_OTHER, this.previews.delays.change);
         </body>
       </method>
 
@@ -402,13 +396,11 @@
         <body>
           if (!this.previews || !this.previews.drawScrolled)
             return;
-
-          this._invalid = true;
-          this._startTimer(this.CHANGE_SCROLL, this.previews.scrollDelay, this.previews.unselectedScrollDelay);
+          this._startTimer(this.CHANGE_SCROLL, this.previews.delays.scroll);
         </body>
       </method>
 
-      <field name="_eventListener">
+      <field name="_browserListener">
       <![CDATA[
       ({
         tabpreview: this,
@@ -428,7 +420,7 @@
         },
 
         handleEvent: function(event) {
-          if (this._destroyed)
+          if (this.tabpreview._destroyed)
             return;
 
           if (!this.tabpreview.previews)
@@ -441,14 +433,14 @@
             switch (event.type) {
               case "DOMTitleChanged":
                 this.tabpreview.onTitleChange();
-                return;
+                break;
               case "resize":
 #ifdef ${extension.debug}
                 this.tabpreview._logMessage("Browser resized");
 #endif
                 this.tabpreview._browserResized();
                 this.tabpreview.previews.browserResized(this.tabpreview, this.tabpreview._browserWidth, this.tabpreview._browserHeight);
-                return;
+                break;
               case "load":
               case "pageshow":
 #ifdef ${extension.debug}
@@ -462,7 +454,7 @@
                   this.tabpreview._logWarning(event.type+" from unknown place: "+event.target+" "+event.originalTarget);
 #endif
                 this.tabpreview._documentLoaded();
-                return;
+                break;
               case "unload":
               case "pagehide":
 #ifdef ${extension.debug}
@@ -475,9 +467,35 @@
                 else
                   this.tabpreview._logWarning(event.type+" from unknown place: "+event.target);
 #endif
-                return;
+                break;
             }
+          }
+          catch (e) {
+#ifdef ${extension.debug}
+            this.tabpreview._logWarning(e);
+#endif
+          }
+        }
+      })
+      ]]>
+      </field>
 
+      <field name="_eventListener">
+      <![CDATA[
+      ({
+        tabpreview: this,
+
+        handleEvent: function(event) {
+          if (this.tabpreview_destroyed)
+            return;
+
+          if (!this.tabpreview.previews)
+            return;
+
+          try {
+#ifdef ${extension.debug}
+            //this.tabpreview._logMessage("Event - "+event.type);
+#endif
             if (this.tabpreview.loading)
               return;
 
@@ -490,14 +508,14 @@
             if (event.type == "scroll") {
               this.tabpreview._documentScrolled();
             }
-            else if (this.tabpreview._listenedDocuments.indexOf(sourcedoc)>=0) {
-              if (event.type.substring(0,3)=="DOM") {
-                if (event.type=="DOMAttrModified") {
+            else if (this.tabpreview._listenedDocuments.indexOf(sourcedoc) >= 0) {
+              if (event.type.substring(0,3) == "DOM") {
+                if (event.type == "DOMAttrModified") {
                   if ((event.attrName == "maxpos") ||
                       (event.attrName == "pageincrement")) {
                     return;
                   }
-                  else if (event.attrName=="curpos") {
+                  else if (event.attrName == "curpos") {
                     this.tabpreview._documentScrolled();
                     return;
                   }
