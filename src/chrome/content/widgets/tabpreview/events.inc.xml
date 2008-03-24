@@ -324,7 +324,7 @@
         <parameter name="delay"/>
         <body>
         <![CDATA[
-          this.invalid = true;
+          this._invalid = true;
           var delay = this.selected ? delay.selected : delay.unselected;
           var date = Date.now() + delay;
 
