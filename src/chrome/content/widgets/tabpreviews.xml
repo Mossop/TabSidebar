@@ -830,7 +830,7 @@
               try {
                 var top = 0;
                 var left = 0;
-                if (this.previews.drawScrolled) {
+                if (this.drawScrolled) {
                   top = win.scrollY;
                   left = win.scrollX;
                 }

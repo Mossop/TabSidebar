@@ -65,11 +65,13 @@
       name="extensions.tabsidebar.updatepreviews"/>
       <preference type="bool" id="scrollselects"
       name="extensions.tabsidebar.scrollselects"/>
+      <preference type="bool" id="drawscrolled" inverted="true"
+      name="extensions.tabsidebar.drawscrolled"/>
       <preference type="int" id="position" 
       name="extensions.tabsidebar.position"/>
     </preferences>
 
-    <hbox align="start" flex="1">
+    <hbox align="start">
 
       <image src="chrome://tabsidebar/content/branding/logo.png"/>
 
@@ -86,7 +88,9 @@
 
     </hbox>
 
-    <vbox flex="1" pack="start">
+    <separator/>
+
+    <vbox pack="start">
 
       <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
 
@@ -105,6 +109,8 @@
 			<subpane preference="content.previews" action="disable">
 		    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
 		                                          label="&paneDisplay.updatepreviews.label;"/>
+		    <checkbox preference="drawscrolled" accesskey="&paneDisplay.drawscrolled.accesskey;"
+		                                         label="&paneDisplay.drawscrolled.label;"/>
 			</subpane>
 
 	    <separator class="thin"/>

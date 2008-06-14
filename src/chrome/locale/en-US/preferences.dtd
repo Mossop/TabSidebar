@@ -35,7 +35,7 @@
 #
 # ***** END LICENSE BLOCK *****
 <!ENTITY tabsidebar.options.title                 "&tabsidebar.brand; Options">
-<!ENTITY tabsidebar.options.style                 "width: 30em; height: 35em;">
+<!ENTITY tabsidebar.options.style                 "width: 30em;">
 <!ENTITY tabsidebar.options.version               "Version: ">
 
 <!ENTITY paneGeneral.hidetabs.label               "Hide the tab bar when the sidebar is open.">
@@ -49,6 +49,8 @@
 
 <!ENTITY paneDisplay.updatepreviews.label         "Keep previews up to date.">
 <!ENTITY paneDisplay.updatepreviews.accesskey     "u">
+<!ENTITY paneDisplay.drawscrolled.label           "Always preview the start of the page.">
+<!ENTITY paneDisplay.drawscrolled.accesskey       "s">
 
 <!ENTITY paneDisplay.scrollselects.label          "Mouse wheel changes tab.">
 <!ENTITY paneDisplay.scrollselects.accesskey      "m">
