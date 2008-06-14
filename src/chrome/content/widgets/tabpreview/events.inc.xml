@@ -74,9 +74,7 @@
           this._browser.addEventListener("load",                   this._browserListener, true);
           this._browser.addEventListener("pageshow",               this._browserListener, true);
           this._browser.addEventListener("pagehide",               this._browserListener, true);
-
-          if (this.showPreview)
-            this._browser.addEventListener("resize",               this._browserListener, false);
+          this._browser.addEventListener("resize",                 this._browserListener, false);
 
           const mask = Components.interfaces.nsIWebProgress.NOTIFY_ALL;
           if (this._browser.docShell)
@@ -99,9 +97,7 @@
             this._browser.removeEventListener("load",              this._browserListener, true);
             this._browser.removeEventListener("pageshow",          this._browserListener, true);
             this._browser.removeEventListener("pagehide",          this._browserListener, true);
-
-            if (this.showPreview)
-              this._browser.removeEventListener("resize",          this._browserListener, false);
+            this._browser.removeEventListener("resize",            this._browserListener, false);
 
             if (this._browser.docShell)
               this._browser.webProgress.removeProgressListener(this._progressListener);

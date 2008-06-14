@@ -124,6 +124,7 @@
                 this.previews[i].updateDocumentListeners();
               }
               if (this._showPreviews) {
+                this._selected._browserResized();
                 this._browserWidth = this._selected._browserWidth;
                 this._browserHeight = this._selected._browserHeight;
                 this._reflowComplete = false;

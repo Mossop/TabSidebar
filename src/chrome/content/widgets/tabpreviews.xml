@@ -88,10 +88,13 @@
         }
 #endif
 
-        if (this.showPreviews)
+        if (this.showPreviews) {
           this._validateTimer.initWithCallback(this, this._validateRate, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-        else
+        }
+        else {
           this.style.visibility = null;
+          this.init();
+        }
       ]]>
       </constructor>
 
@@ -102,6 +105,14 @@
           this._logMessage("Tab Sidebar Load");
 
 #endif
+          var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "separator");
+          drop.className = "dropindicator groove";
+          if (this.getAttribute("orient") == "vertical")
+            drop.setAttribute("orient", "vertical");
+          else
+            drop.setAttribute("orient", "horizontal");
+          this.previewContainer.appendChild(drop);
+
           var selectedpos = -1;
           var browsers = this.tabbrowser.browsers;
           for (var i = 0; i < browsers.length; i++) {
@@ -118,18 +129,6 @@
 
           this._initEvents();
         ]]>
-        </body>
-      </method>
-
-      <method name="_initTree">
-        <body>
-          var drop = this.ownerDocument.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "separator");
-          drop.className = "dropindicator groove";
-          if (this.getAttribute("orient") == "vertical")
-            drop.setAttribute("orient", "vertical");
-          else
-            drop.setAttribute("orient", "horizontal");
-          this.previewContainer.appendChild(drop);
         </body>
       </method>
 
@@ -625,7 +624,6 @@
               return;
             }
 
-            this._initTree();
             this.init();
             this._browserWidth = this._selected._browserWidth;
             this._browserHeight = this._selected._browserHeight;
