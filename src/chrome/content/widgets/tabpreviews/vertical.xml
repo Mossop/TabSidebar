@@ -71,7 +71,7 @@
 
       <xul:vbox class="tbs-drop-indicator-bar">
         <xul:hbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
-      </xul:vbox>          
+      </xul:vbox>
 
       <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
 
@@ -156,7 +156,7 @@
           diff += parseInt(computed.paddingBottom);
           container.style.height = (this.displayHeight + diff) + "px";
 
-          preview._invalid = true;          
+          preview._invalid = true;
           try {
             canvas.getContext("2d");
           }
@@ -351,13 +351,13 @@
 
       <method name="scrollToStart">
         <body>
-        	this.scrollTo(0);
+          this.scrollTo(0);
         </body>
       </method>
 
       <method name="scrollToEnd">
         <body>
-        	this.scrollTo(this.scrollBoxObject.height);
+          this.scrollTo(this.scrollBoxObject.height);
         </body>
       </method>
 
@@ -430,7 +430,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="showLastTabs">
         <parameter name="menupopup"/>
         <body>

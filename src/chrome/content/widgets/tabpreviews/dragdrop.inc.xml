@@ -10,7 +10,7 @@
           }
         </body>
       </method>
-      
+
       <method name="onDragStart">
         <parameter name="aEvent"/>
         <parameter name="aXferData"/>
@@ -21,7 +21,7 @@
             if (aEvent.target.localName == "tabpreview" &&
                 aEvent.originalTarget.localName != "toolbarbutton") {
               aXferData.data = new TransferData();
-              
+
               var URI = aEvent.target._browser.currentURI;
               if (URI) {
                 aXferData.data.addDataForFlavour("text/unicode", URI.spec);
@@ -64,7 +64,7 @@
 
               var preview = null;
               if (aDragSession.sourceNode.parentNode == this)
-                preview = aDragSession.sourceNode;              
+                preview = aDragSession.sourceNode;
               else
                 preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
 
@@ -130,15 +130,15 @@
         <![CDATA[
           try {
             this._hideDropIndicator();
-            if (aDragSession.sourceNode && 
+            if (aDragSession.sourceNode &&
                 (aDragSession.sourceNode.parentNode == this ||
                  aDragSession.sourceNode.parentNode == this.tabbrowser.mTabContainer)) {
               var preview = null
               if (aDragSession.sourceNode.parentNode == this)
-                preview = aDragSession.sourceNode;              
+                preview = aDragSession.sourceNode;
               else
                 preview = this.getPreviewForBrowser(aDragSession.sourceNode.linkedBrowser);
-              
+
               var target = this.getDropElement(aEvent,false);
               this.movePreview(preview,target.nextSibling);
             }
@@ -178,7 +178,7 @@
                   newIndex = target.tab._tPos;
                   move = true;
                 }
-  
+
                 var newtab = this.tabbrowser.loadOneTab(url, null, null, null, bgLoad);
 
                 if (move)

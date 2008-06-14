@@ -99,13 +99,13 @@
           var attribute = this._attribute;
           state = this._invert ? !state : state;
 
-          if (attribute in element) 
+          if (attribute in element)
             element[attribute] = state;
           else
             element.setAttribute(attribute, state);
         </body>
       </method>
-      
+
       <method name="_updateElements">
         <parameter name="state"/>
         <body>

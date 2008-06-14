@@ -67,7 +67,7 @@
       name="extensions.tabsidebar.scrollselects"/>
       <preference type="bool" id="drawscrolled" inverted="true"
       name="extensions.tabsidebar.drawscrolled"/>
-      <preference type="int" id="position" 
+      <preference type="int" id="position"
       name="extensions.tabsidebar.position"/>
     </preferences>
 
@@ -94,48 +94,48 @@
 
     <vbox pack="start">
 
-      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>      
-
-	    <separator class="thin"/>
-
-	    <checkbox preference="content.navigation" accesskey="&paneDisplay.content.navigation.accesskey;"
-	                                              label="&paneDisplay.content.navigation.label;"/>
+      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>
 
       <separator class="thin"/>
 
-	    <checkbox preference="content.previews" accesskey="&paneDisplay.content.previews.accesskey;" 
-	                                            label="&paneDisplay.content.previews.label;"/>      
+      <checkbox preference="content.navigation" accesskey="&paneDisplay.content.navigation.accesskey;"
+                                                label="&paneDisplay.content.navigation.label;"/>
 
       <separator class="thin"/>
 
-			<subpane preference="content.previews" action="disable">
-		    <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
-		                                          label="&paneDisplay.updatepreviews.label;"/>
-		    <checkbox preference="drawscrolled" accesskey="&paneDisplay.drawscrolled.accesskey;"
-		                                         label="&paneDisplay.drawscrolled.label;"/>
-			</subpane>
+      <checkbox preference="content.previews" accesskey="&paneDisplay.content.previews.accesskey;"
+                                              label="&paneDisplay.content.previews.label;"/>
 
-	    <separator class="thin"/>
+      <separator class="thin"/>
 
-	    <checkbox preference="scrollselects" accesskey="&paneDisplay.scrollselects.accesskey;" 
-	                                         label="&paneDisplay.scrollselects.label;"/>      
+      <subpane preference="content.previews" action="disable">
+        <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
+                                              label="&paneDisplay.updatepreviews.label;"/>
+        <checkbox preference="drawscrolled" accesskey="&paneDisplay.drawscrolled.accesskey;"
+                                             label="&paneDisplay.drawscrolled.label;"/>
+      </subpane>
+
+      <separator class="thin"/>
+
+      <checkbox preference="scrollselects" accesskey="&paneDisplay.scrollselects.accesskey;"
+                                           label="&paneDisplay.scrollselects.label;"/>
 
       <groupbox>
-				<caption label="&paneDisplay.position.caption;"/>
-		    <radiogroup preference="position" align="center">
-		      <radio label="&paneDisplay.position.top;" value="1"/>
-		      <hbox flex="1" align="center">
-		        <vbox flex="1" pack="center">
-	  	        <radio label="&paneDisplay.position.sidebar;" value="0"/>
-	  	        <radio label="&paneDisplay.position.left;" value="3"/>
-		        </vbox>
-		        <radio label="&paneDisplay.position.right;" value="4"/>
-		      </hbox>
-		      <radio label="&paneDisplay.position.bottom;" value="2"/>
-		    </radiogroup>
-		  </groupbox>
+        <caption label="&paneDisplay.position.caption;"/>
+        <radiogroup preference="position" align="center">
+          <radio label="&paneDisplay.position.top;" value="1"/>
+          <hbox flex="1" align="center">
+            <vbox flex="1" pack="center">
+              <radio label="&paneDisplay.position.sidebar;" value="0"/>
+              <radio label="&paneDisplay.position.left;" value="3"/>
+            </vbox>
+            <radio label="&paneDisplay.position.right;" value="4"/>
+          </hbox>
+          <radio label="&paneDisplay.position.bottom;" value="2"/>
+        </radiogroup>
+      </groupbox>
 
-	  </vbox>
+    </vbox>
 
   </prefpane>
 

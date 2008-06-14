@@ -71,7 +71,7 @@
 
       <xul:hbox class="tbs-drop-indicator-bar">
         <xul:vbox chromedir="&locale.dir;" class="tbs-drop-indicator"/>
-      </xul:hbox>          
+      </xul:hbox>
 
       <xul:box class="tbs-focusdetector" style="-moz-user-focus: normal"/>
 
@@ -111,7 +111,7 @@
         </xul:toolbar>
       </xul:hbox>
     </content>
-    
+
     <implementation>
 
       <field name="previewContainer">this</field>
@@ -165,7 +165,7 @@
           var offset = (canvas.parentNode.parentNode.boxObject.width - this.displayWidth) / 2;
           canvas.setAttribute("left", offset);
 
-          preview._invalid = true;          
+          preview._invalid = true;
           try {
             canvas.getContext("2d");
           }
@@ -173,7 +173,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="ensureElementsAreVisible">
         <parameter name="first"/>
         <parameter name="last"/>
@@ -259,7 +259,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_drawDropIndicator">
         <parameter name="drop"/>
         <body>
@@ -372,7 +372,7 @@
 
       <method name="scrollToEnd">
         <body>
-        	this.scrollTo(this.scrollBoxObject.width);
+          this.scrollTo(this.scrollBoxObject.width);
         </body>
       </method>
 

@@ -250,7 +250,7 @@
             this._lastDrop = null;
             this.tabbrowser = null;
             this.browserWindow = null;
-  
+
 #ifdef ${extension.debug}
             //dump("Tabpreviews destroyed\n");
 #endif
@@ -284,7 +284,7 @@
           ss.setWindowValue(this.browserWindow, "tabsidebar." + key, value);
         </body>
       </method>
-      
+
 #endif
 #ifdef ${extension.enablemetrics}
       <method name="_saveMetrics">
@@ -383,7 +383,7 @@
           if (preview)
             preview.onLinkIconAvailable();
         },
-        
+
         QueryInterface : function(aIID) {
           if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
               aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
@@ -494,7 +494,7 @@
           if (preview) {
             if (this._selected == preview)
               this._selected = null;
-              
+
             var drop = preview.nextSibling;
             preview._destroy();
             preview.parentNode.removeChild(preview);
@@ -876,7 +876,7 @@
             target = this._selected.previousSibling.previousSibling;
           else
             target = this._selected.nextSibling.nextSibling;
-          
+
           if (target)
             this.tabbrowser.selectedTab = target.tab;
         }

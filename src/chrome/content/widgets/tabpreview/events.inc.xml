@@ -63,7 +63,7 @@
         }
       });
       </field>
-            
+
       <method name="_addListeners">
         <body>
 #ifdef ${extension.debug}
@@ -114,7 +114,7 @@
           }
         </body>
       </method>
-      
+
       <method name="_addDocumentListeners">
         <parameter name="doc"/>
         <body>
@@ -187,7 +187,7 @@
         ]]>
         </body>
       </method>
-      
+
       <method name="_emptyDocumentListeners">
         <body>
         <![CDATA[
@@ -440,7 +440,7 @@
               case "load":
               case "pageshow":
 #ifdef ${extension.debug}
-              	this.tabpreview._logMessage("Event - "+event.type);
+                this.tabpreview._logMessage("Event - "+event.type);
 #endif
                 var doc = this.getDocumentForEvent(event);
                 if (doc)
@@ -454,7 +454,7 @@
               case "unload":
               case "pagehide":
 #ifdef ${extension.debug}
-              	this.tabpreview._logMessage("Event - "+event.type);
+                this.tabpreview._logMessage("Event - "+event.type);
 #endif
                 var doc = this.getDocumentForEvent(event);
                 if (doc)
@@ -556,7 +556,7 @@
       });
       ]]>
       </field>
-      
+
       <!--  Start of nsITimerCallback implementation -->
 
       <method name="notify">

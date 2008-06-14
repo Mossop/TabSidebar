@@ -59,7 +59,7 @@
   <!-- Sidebar -->
   <broadcasterset id="mainBroadcasterSet">
     <broadcaster id="viewTabSidebar"
-          autoCheck="false" 
+          autoCheck="false"
           label="&tabsidebar.menu.label;"
           type="checkbox"
           group="sidebar"

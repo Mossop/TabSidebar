@@ -50,7 +50,7 @@ init: function() {
   window.addEventListener("unload", TabSidebarHandler.unload, false);
 
   this.doc = document;
-  
+
   this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
                         .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
@@ -60,11 +60,11 @@ init: function() {
 
   sidebarBox.addEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
   sidebar.addEventListener("load", TabSidebarHandler.sidebarLoad, true);
-  
+
   this.position=this.prefs.getIntPref("position");
 
   this.prefs.addObserver("", this, false);
-  
+
 },
 
 unload: function() {
@@ -88,7 +88,7 @@ getPreviews: function() {
 
 getContainer: function() {
   var container = null;
-  
+
   switch (this.position) {
     case 1:
       container = document.getElementById("tabsidebar-top-container");
@@ -96,10 +96,10 @@ getContainer: function() {
     case 2:
       container = document.getElementById("tabsidebar-bottom-container");
       break;
-    case 3: 
+    case 3:
       container = document.getElementById("tabsidebar-left-container");
       break;
-    case 4: 
+    case 4:
       container = document.getElementById("tabsidebar-right-container");
       break;
   }
@@ -108,7 +108,7 @@ getContainer: function() {
 
 getSplitter: function() {
   var splitter = null;
-  
+
   switch (this.position) {
     case 1:
       splitter = document.getElementById("tabsidebar-top-splitter");
