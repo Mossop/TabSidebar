@@ -43,6 +43,10 @@ doc: null,
 position: 0,
 oldToggleAffectedChrome: null,
 lastState: false,
+showPreviews: true,
+
+ORIENTATION_VERTICAL: 0,
+ORIENTATION_HORIZONTAL: 1,
 
 // Constructor and destructor
 init: function() {
@@ -53,7 +57,8 @@ init: function() {
 
   this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
                         .getService(Components.interfaces.nsIPrefService)
-                        .getBranch("extensions.tabsidebar.").QueryInterface(Components.interfaces.nsIPrefBranch2);
+                        .getBranch("extensions.tabsidebar.")
+                        .QueryInterface(Components.interfaces.nsIPrefBranch2);
 
   var sidebarBox = this.doc.getElementById("sidebar-box");
   var sidebar = this.doc.getElementById("sidebar");
@@ -61,10 +66,10 @@ init: function() {
   sidebarBox.addEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
   sidebar.addEventListener("load", TabSidebarHandler.sidebarLoad, true);
 
-  this.position=this.prefs.getIntPref("position");
+  this.position = this.prefs.getIntPref("position");
+  this.showPreviews = this.prefs.getBoolPref("content.previews");
 
   this.prefs.addObserver("", this, false);
-
 },
 
 unload: function() {
@@ -77,6 +82,12 @@ unload: function() {
   }
   TabSidebarHandler.doc = null;
   TabSidebarHandler.prefs = null;
+},
+
+getOrientation: function() {
+  if (this.position == 0 || this.position > 2)
+    return this.ORIENTATION_VERTICAL;
+  return this.ORIENTATION_HORIZONTAL;
 },
 
 getPreviews: function() {
@@ -128,7 +139,7 @@ getSplitter: function() {
 
 createPreviews: function(container) {
   var previews = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "tabpreviews");
-  if (this.position > 2)
+  if (this.getOrientation() == this.ORIENTATION_VERTICAL)
     previews.setAttribute("class", "tbs-tabpreviews-vertical");
   else
     previews.setAttribute("class", "tbs-tabpreviews-horizontal");
@@ -156,7 +167,14 @@ toggleSidebar: function() {
   }
   else {
     container.setAttribute("hidden", "false");
-    splitter.setAttribute("hidden", "false");
+    if (this.showPreviews || (this.getOrientation() == this.ORIENTATION_VERTICAL)) {
+      splitter.setAttribute("hidden", "false");
+      container.style.minHeight = null;
+    }
+    else {
+      container.removeAttribute("height");
+      container.style.minHeight = "0px";
+    }
     this.createPreviews(container);
     this.sidebarInitialise();
     command.setAttribute("checked", "true");
@@ -166,7 +184,8 @@ toggleSidebar: function() {
 sidebarLoad: function(event) {
   var sidebar = TabSidebarHandler.doc.getElementById("sidebar");
   if (sidebar.contentDocument == event.target) {
-    if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" && sidebar.currentURI.spec == "about:blank")
+    if (sidebar.parentNode.getAttribute("sidebarcommand") == "viewTabSidebar" &&
+        sidebar.currentURI.spec == "about:blank")
       sidebar.contentDocument.documentElement.style.backgroundColor = "-moz-dialog";
   }
 },
@@ -210,6 +229,8 @@ hideTabbar: function() {
 
 // Event observers
 load: function(event) {
+  var sidebarBox = TabSidebarHandler.doc.getElementById("sidebar-box");
+  sidebarBox.removeEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
   window.removeEventListener("load", TabSidebarHandler.load, false);
   if ((TabSidebarHandler.position != 0) && (TabSidebarHandler.isOpen())) {
     var command = document.getElementById("viewTabSidebar");
@@ -238,6 +259,24 @@ observe: function (subject, topic, data) {
     this.position = this.prefs.getIntPref(data);
     if (open)
       this.toggleSidebar();
+  }
+  else if (data == "content.previews") {
+    this.showPreviews = this.prefs.getBoolPref(data);
+    if (this.isOpen() && (this.getOrientation() == this.ORIENTATION_HORIZONTAL)) {
+      var container = this.getContainer();
+      var splitter = this.getSplitter();
+      splitter.setAttribute("hidden", this.showPreviews ? "false" : "true");
+      if (!this.showPreviews) {
+        container.removeAttribute("height");
+        container.style.minHeight = "0px";
+        var previews = this.getPreviews().previews;
+        for (var i = 0; i < previews.length; i++)
+          previews[i].style.width = null;
+      }
+      else {
+        container.style.minHeight = null;
+      }
+    }
   }
 },
 

@@ -60,7 +60,7 @@
     </resources>
 
     <content class="tbs-tabpreview" orient="vertical" align="stretch" loading="false" security="none">
-      <xul:stack flex="1" class="tbs-background">
+      <xul:stack class="tbs-background">
         <xul:vbox>
           <xul:hbox flex="1000" align="stretch" style="max-height: 75px" class="tbs-top">
             <xul:box class="tbs-top-left"/>

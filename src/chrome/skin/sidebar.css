@@ -57,6 +57,10 @@
   width: 0px !important;
 }
 
+.tbs-tabpreviews-horizontal .tbs-tabpreview[hide~="preview"] {
+  width: 150px;
+}
+
 .tbs-title {
   margin: 0 2px 0 2px;
   font: message-box;

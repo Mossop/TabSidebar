@@ -42,12 +42,12 @@
   overflow-x: hidden;
 }
 
-.tbs-tabpreview {
-  -moz-box-align: center;
-}
-
 .tbs-tabpreview[security="none"] .tbs-security {
   display: none;
+}
+
+.tbs-tabpreview:not([hide~="previews"]) .tbs-background {
+  -moz-box-flex: 1;
 }
 
 .tbs-tabpreviews-vertical[hide~="navigation"] .tbs-forward,

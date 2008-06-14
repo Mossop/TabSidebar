@@ -49,6 +49,10 @@
   margin: 5px 4px 5px 3px;
 }
 
+.tbs-tabpreview .tbs-title {
+  text-align: center;
+}
+
 .tbs-tabpreview:focus .tbs-title {
 	border: 1px solid -moz-mac-focusring !important;
 }
