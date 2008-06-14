@@ -75,6 +75,8 @@
 
       <image src="chrome://tabsidebar/content/branding/logo.png"/>
 
+      <separator orient="vertical"/>
+
       <vbox flex="1">
 
         <label class="title" value="&tabsidebar.brand;"/>
