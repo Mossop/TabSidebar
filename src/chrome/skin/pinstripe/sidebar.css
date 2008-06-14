@@ -80,21 +80,25 @@
   list-style-image: url("Icons.png");
 }
 
-.tbs-icon .toolbarbutton-menubutton-dropmarker {
-  display: none;
-}
-
 .tbs-close {
   margin-right: 0px;
 }
 
-.tbs-bfspacer {
-  display: none;
-}
-
 .tbs-back,
-.tbs-forward,
-.tbs-icon .toolbarbutton-menubutton-button {
+.tbs-forward {
   -moz-margin-end: 0px;
   -moz-margin-start: 0px;
+}
+
+.tbs-history .menuitem-iconic {
+  list-style-image: url("favicon.png");
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
+}
+
+.tbs-history-back[_moz-menuactive] {
+  list-style-image: url("menu-back.png") !important;
+}
+
+.tbs-history-forward[_moz-menuactive] {
+  list-style-image: url("menu-forward.png") !important;
 }

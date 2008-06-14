@@ -267,4 +267,8 @@
 .tbs-security[security="none"] {
   visibility: hidden;
 }
+
+.tbs-history-current {
+  font-weight: bold;
+}
 %include "iconregions.inc.css"

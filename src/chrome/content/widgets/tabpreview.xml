@@ -105,21 +105,17 @@
                 <xul:toolbarbutton class="tbs-stop tbs-icon" disabled="true" tooltiptext="&stopButton.tooltip;"
                                    oncommand="this.preview.stop()"/>
                 <xul:spacer flex="1"/>
-                <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
-                                   onclick="this.preview.checkMiddleClick(this,event);"
-                                   oncommand="this.preview.goBack(event)">
-                  <xul:menupopup onpopupshowing="this.parentNode.preview.populateBackMenu(event);"
+                <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
+                                   onclick="this.preview.checkMiddleClick(this, event);"
+                                   oncommand="this.preview.goBack(event)"/>
+                <xul:toolbarbutton type="menu" class="tbs-history tbs-icon" disabled="true">
+                  <xul:menupopup onpopupshowing="this.parentNode.preview.populateHistoryMenu(event);"
                                  oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
-                                 onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
+                                 onclick="this.parentNode.preview.checkMiddleClick(this, event);"/>
                 </xul:toolbarbutton>
-                <xul:spacer flex="1" class="tbs-bfspacer"/>
-                <xul:toolbarbutton chromedir="&locale.dir;" type="menu-button" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
-                                   onclick="this.preview.checkMiddleClick(this,event);"
-                                   oncommand="this.preview.goForward(event)">
-                  <xul:menupopup onpopupshowing="this.parentNode.preview.populateForwardMenu(event);"
-                                 oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
-                                 onclick="this.parentNode.preview.checkMiddleClick(this,event);" tooltiptext=""/>
-                </xul:toolbarbutton>
+                <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-forward tbs-icon" disabled="true" tooltiptext="&forwardButton.tooltip;"
+                                   onclick="this.preview.checkMiddleClick(this, event);"
+                                   oncommand="this.preview.goForward(event)"/>
                 <xul:spacer flex="1"/>
                 <xul:toolbarbutton class="tbs-reload tbs-icon" tooltiptext="&reloadButton.tooltip;"
                                    oncommand="this.preview.reload(event)"/>
@@ -143,6 +139,7 @@
           this.securityIcon.preview = this;
           this.stopButton.preview = this;
           this.backButton.preview = this;
+          this.historyButton.preview = this;
           this.forwardButton.preview = this;
           this.reloadButton.preview = this;
 
@@ -240,8 +237,12 @@
         this.stopButton.nextSibling.nextSibling;
       </field>
 
+      <field name="historyButton">
+        this.backButton.nextSibling;
+      </field>
+
       <field name="forwardButton">
-        this.backButton.nextSibling.nextSibling;
+        this.historyButton.nextSibling;
       </field>
 
       <field name="securityIcon">

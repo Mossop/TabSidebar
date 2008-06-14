@@ -36,7 +36,7 @@
 % ***** END LICENSE BLOCK *****
 %include "background.inc.css"
 .tbs-scrollbox {
-  background-color: -moz-dialog;
+  background-color: #d2d1d4;
 }
 
 .tbs-foreground {
@@ -44,7 +44,7 @@
 }
 
 .tbs-loading {
-  list-style-image: url("loading.gif");
+  list-style-image: url("loading.png");
 }
 
 .tbs-favicon {
@@ -57,4 +57,16 @@
 
 .tbs-icon, .tbs-icon .toolbarbutton-menubutton-button {
   list-style-image: url("Icons.png");
+}
+
+.tbs-history .menuitem-iconic {
+  list-style-image: url("favicon.png");
+}
+
+.tbs-history-back[_moz-menuactive] {
+  list-style-image: url("menu-back.png") !important;
+}
+
+.tbs-history-forward[_moz-menuactive] {
+  list-style-image: url("menu-forward.png") !important;
 }

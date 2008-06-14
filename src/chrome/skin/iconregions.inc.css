@@ -35,87 +35,90 @@
 %
 % ***** END LICENSE BLOCK *****
 /* Drop markers */
-.tbs-icon .toolbarbutton-menubutton-dropmarker {
-  list-style-image: url("default/Icons.png");
-  -moz-image-region: rect(6px, 125px, 11px, 116px);
+.tbs-history .toolbarbutton-menu-dropmarker {
+  display: none;
 }
 
-.tbs-icon .toolbarbutton-menubutton-dropmarker:hover {
-  -moz-image-region: rect(22px, 125px, 27px, 116px);
+.tbs-history {
+  margin: 0;
+  -moz-image-region: rect(0px, 105px, 16px, 96px);
 }
 
-.tbs-icon .toolbarbutton-menubutton-dropmarker:hover:active {
-  -moz-image-region: rect(38px, 125px, 43px, 116px);
+.tbs-history:hover {
+  -moz-image-region: rect(16px, 105px, 32px, 96px);
 }
 
-.tbs-icon .toolbarbutton-menubutton-dropmarker[disabled="true"] {
-  list-style-image: url("default/Icons.png") !important;
-  -moz-image-region: rect(54px, 125px, 59px, 116px) !important;
+.tbs-history:hover:active {
+  -moz-image-region: rect(32px, 105px, 48px, 96px);
+}
+
+.tbs-history[disabled="true"] {
+  -moz-image-region: rect(48px, 105px, 64px, 96px) !important;
 }
 
 /* Back button */
-.tbs-back .toolbarbutton-menubutton-button {
+.tbs-back {
   -moz-image-region: rect(0px, 96px, 16px, 80px);
 }
 
-.tbs-back .toolbarbutton-menubutton-button:hover {
+.tbs-back:hover {
   -moz-image-region: rect(16px, 96px, 32px, 80px);
 }
 
-.tbs-back .toolbarbutton-menubutton-button:hover:active {
+.tbs-back:hover:active {
   -moz-image-region: rect(32px, 96px, 48px, 80px);
 }
 
-.tbs-back[disabled="true"] .toolbarbutton-menubutton-button {
+.tbs-back[disabled="true"] {
   -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
 }
 
-.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(0px, 112px, 16px, 96px);
+.tbs-back[chromedir="rtl"] {
+  -moz-image-region: rect(0px, 121px, 16px, 105px);
 }
 
-.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button:hover {
-  -moz-image-region: rect(16px, 112px, 32px, 96px);
+.tbs-back[chromedir="rtl"]:hover {
+  -moz-image-region: rect(16px, 121px, 32px, 105px);
 }
 
-.tbs-back[chromedir="rtl"] .toolbarbutton-menubutton-button:hover:active {
-  -moz-image-region: rect(32px, 112px, 48px, 96px);
+.tbs-back[chromedir="rtl"]:hover:active {
+  -moz-image-region: rect(32px, 121px, 48px, 105px);
 }
 
-.tbs-back[chromedir="rtl"][disabled="true"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
+.tbs-back[chromedir="rtl"][disabled="true"] {
+  -moz-image-region: rect(48px, 121px, 64px, 105px) !important;
 }
 
 /* Forward button */
-.tbs-forward .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(0px, 112px, 16px, 96px);
+.tbs-forward {
+  -moz-image-region: rect(0px, 121px, 16px, 105px);
 }
 
-.tbs-forward .toolbarbutton-menubutton-button:hover {
-  -moz-image-region: rect(16px, 112px, 32px, 96px);
+.tbs-forward:hover {
+  -moz-image-region: rect(16px, 121px, 32px, 105px);
 }
 
-.tbs-forward .toolbarbutton-menubutton-button:hover:active {
-  -moz-image-region: rect(32px, 112px, 48px, 96px);
+.tbs-forward:hover:active {
+  -moz-image-region: rect(32px, 121px, 48px, 105px);
 }
 
-.tbs-forward[disabled="true"] .toolbarbutton-menubutton-button {
-  -moz-image-region: rect(48px, 112px, 64px, 96px) !important;
+.tbs-forward[disabled="true"] {
+  -moz-image-region: rect(48px, 121px, 64px, 105px) !important;
 }
 
-.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button {
+.tbs-forward[chromedir="rtl"] {
   -moz-image-region: rect(0px, 96px, 16px, 80px);
 }
 
-.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button:hover {
+.tbs-forward[chromedir="rtl"]:hover {
   -moz-image-region: rect(16px, 96px, 32px, 80px);
 }
 
-.tbs-forward[chromedir="rtl"] .toolbarbutton-menubutton-button:hover:active {
+.tbs-forward[chromedir="rtl"]:hover:active {
   -moz-image-region: rect(32px, 96px, 48px, 80px);
 }
 
-.tbs-forward[chromedir="rtl"][disabled="true"] .toolbarbutton-menubutton-button {
+.tbs-forward[chromedir="rtl"][disabled="true"] {
   -moz-image-region: rect(48px, 96px, 64px, 80px) !important;
 }
 
