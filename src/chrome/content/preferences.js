@@ -36,5 +36,10 @@
 # ***** END LICENSE BLOCK *****
 function openPrefsHelp() {
   var topic = document.documentElement.currentPane.helpTopic;
-  openUILinkIn("http://www.oxymoronical.com/web/firefox/TabSidebar/" + topic, "tab");
+  var url = "http://addons.oxymoronical.com/TabSidebar/${extension.version}/%APP%/%VERSION%/%LOCALE%/%OS%/%XPCOMABI%/help/" + topic
+  url = Components.classes["@mozilla.org/toolkit/URLFormatterService;1"]
+                  .getService(Components.interfaces.nsIURLFormatter)
+                  .formatURL(url);
+
+  openUILinkIn(url, "tab");
 }
