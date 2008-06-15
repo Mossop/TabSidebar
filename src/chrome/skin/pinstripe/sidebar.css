@@ -63,17 +63,11 @@
 
 .tbs-scrolltoolbar menuitem {
   list-style-image: url("favicon.png");
-  -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
 .tbs-favicon {
   margin-top: 1px;
   list-style-image: url("favicon.png");
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
-}
-
-.tbs-tabpreview[selected="true"] .tbs-favicon {
-  -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
 .tbs-icon {
@@ -92,13 +86,14 @@
 
 .tbs-history .menuitem-iconic {
   list-style-image: url("favicon.png");
-  -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-.tbs-history-back[_moz-menuactive] {
+.tbs-history-back[_moz-menuactive],
+.tbs-history[chromedir="rtl"] .tbs-history-forward[_moz-menuactive] {
   list-style-image: url("menu-back.png") !important;
 }
 
-.tbs-history-forward[_moz-menuactive] {
+.tbs-history-forward[_moz-menuactive],
+.tbs-history[chromedir="rtl"] .tbs-history-back[_moz-menuactive] {
   list-style-image: url("menu-forward.png") !important;
 }

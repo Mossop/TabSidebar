@@ -108,7 +108,7 @@
                 <xul:toolbarbutton chromedir="&locale.dir;" class="tbs-back tbs-icon" disabled="true" tooltiptext="&backButton.tooltip;"
                                    onclick="this.preview.checkMiddleClick(this, event);"
                                    oncommand="this.preview.goBack(event)"/>
-                <xul:toolbarbutton type="menu" class="tbs-history tbs-icon" disabled="true">
+                <xul:toolbarbutton type="menu" chromedir="&locale.dir;" class="tbs-history tbs-icon" disabled="true">
                   <xul:menupopup onpopupshowing="this.parentNode.preview.populateHistoryMenu(event);"
                                  oncommand="this.parentNode.preview.gotoHistoryIndex(event); event.stopPropagation()"
                                  onclick="this.parentNode.preview.checkMiddleClick(this, event);"/>

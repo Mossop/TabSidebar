@@ -123,12 +123,10 @@
                   menuitem.setAttribute("checked", "true");
                 }
                 else {
-                  if (pos > sessionHistory.index) {
+                  if (pos > sessionHistory.index)
                     menuitem.setAttribute("class", "menuitem-iconic tbs-history-forward");
-                  }
-                  else if (pos < sessionHistory.index) {
+                  else
                     menuitem.setAttribute("class", "menuitem-iconic tbs-history-back");
-                  }
 
                   try {
                     var iconURL = fis.getFaviconForPage(entry.URI).spec;
