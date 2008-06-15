@@ -105,3 +105,18 @@
 .tbs-tabpreview:hover .tbs-middle {
 	background-image: url('BG_HOVER/middle.png');
 }
+
+.tbs-tabpreview[security="extended"] .tbs-top,
+.tbs-tabpreview[security="extended"] .tbs-middle,
+.tbs-tabpreview[security="extended"] .tbs-bottom {
+  background-color: rgba(44, 124, 45, 0.6);
+}
+
+.tbs-tabpreview[security="high"] .tbs-top,
+.tbs-tabpreview[security="low"] .tbs-top,
+.tbs-tabpreview[security="high"] .tbs-middle,
+.tbs-tabpreview[security="low"] .tbs-middle,
+.tbs-tabpreview[security="high"] .tbs-bottom,
+.tbs-tabpreview[security="low"] .tbs-bottom {
+  background-color: rgba(30, 122, 214, 0.6);
+}

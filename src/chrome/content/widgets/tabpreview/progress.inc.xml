@@ -121,20 +121,17 @@
         <![CDATA[
           const WPL = Components.interfaces.nsIWebProgressListener;
 
-          switch (state) {
-            case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_HIGH:
+          if (state & WPL.STATE_IS_BROKEN)
+            this.setAttribute("security", "broken");
+          else if (state & WPL.STATE_IS_INSECURE)
+            this.setAttribute("security", "none");
+          else if (state & WPL.STATE_IS_SECURE) {
+            if (state & WPL.STATE_IDENTITY_EV_TOPLEVEL)
+              this.setAttribute("security", "extended");
+            else if (state & WPL.STATE_SECURE_HIGH)
               this.setAttribute("security", "high");
-              break;
-            case WPL.STATE_IS_SECURE | WPL.STATE_SECURE_LOW:
+            else
               this.setAttribute("security", "low");
-              break;
-            case WPL.STATE_IS_BROKEN:
-              this.setAttribute("security", "broken");
-              break;
-            case WPL.STATE_IS_INSECURE:
-            default:
-              this.setAttribute("security", "none");
-              break;
           }
 
           var icon = this.securityIcon;

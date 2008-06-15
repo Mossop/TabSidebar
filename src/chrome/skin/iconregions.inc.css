@@ -174,16 +174,19 @@
 }
 
 /* Security button */
+.tbs-tabpreview[security="extended"] .tbs-security,
 .tbs-tabpreview[security="high"] .tbs-security,
 .tbs-tabpreview[security="low"] .tbs-security {
   -moz-image-region: rect(0px, 48px, 16px, 32px);
 }
 
+.tbs-tabpreview[security="extended"] .tbs-security:hover,
 .tbs-tabpreview[security="high"] .tbs-security:hover,
 .tbs-tabpreview[security="low"] .tbs-security:hover {
   -moz-image-region: rect(16px, 48px, 32px, 32px);
 }
 
+.tbs-tabpreview[security="extended"] .tbs-security:hover:active,
 .tbs-tabpreview[security="high"] .tbs-security:hover:active,
 .tbs-tabpreview[security="low"] .tbs-security:hover:active {
   -moz-image-region: rect(32px, 48px, 48px, 32px);
