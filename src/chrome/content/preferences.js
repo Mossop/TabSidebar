@@ -34,12 +34,7 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-var prefs = {
-
-updateNav: function() {
-  var value = document.getElementById('content.reload').value;
-  document.getElementById('content.stop').value = value;
-  document.getElementById('content.forward').value = value;
-  document.getElementById('content.back').value = value;
-}
+function openPrefsHelp() {
+  var topic = document.documentElement.currentPane.helpTopic;
+  openUILinkIn("http://www.oxymoronical.com/web/firefox/TabSidebar/" + topic, "tab");
 }

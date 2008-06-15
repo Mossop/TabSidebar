@@ -6,8 +6,8 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>${extension.guid}</em:id>
     <em:version>${extension.fullversion}</em:version>
-    
-    <!-- Firefox version --> 
+
+    <!-- Firefox version -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
@@ -15,20 +15,19 @@
         <em:maxVersion>3.1a1pre</em:maxVersion>
       </Description>
     </em:targetApplication>
-    
+
     <!-- Front End MetaData -->
     <em:name>Tab Sidebar</em:name>
-    <em:description>Displays previews of your tabs in your sidebar.</em:description>
+    <em:description>Displays previews of your tabs at the side of the browser.</em:description>
     <em:creator>Mossop</em:creator>
-    
+
     <em:contributor>Peter van der Woude</em:contributor>
-    
+
     <em:optionsURL>chrome://tabsidebar/content/preferences.xul</em:optionsURL>
     <em:iconURL>chrome://tabsidebar/content/branding/icon.png</em:iconURL>
     <em:aboutURL>chrome://tabsidebar/content/about.xul</em:aboutURL>
 
     <em:homepageURL>http://www.oxymoronical.com/web/firefox/${extension.name}</em:homepageURL>
-    <em:updateURL>https://www.oxymoronical.com/web/firefox/${extension.name}/update.rdf?version=%ITEM_VERSION%&amp;status=%ITEM_STATUS%&amp;app=%APP_ID%&amp;appversion=%APP_VERSION%&amp;os=%APP_OS%&amp;abi=%APP_ABI%</em:updateURL>
-    
-  </Description>      
+
+  </Description>
 </RDF>

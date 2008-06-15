@@ -48,10 +48,12 @@
 
 <prefwindow id="TabSidebarOptions" windowtype="TabSidebar:Options"
             title="&tabsidebar.options.title;" style="&tabsidebar.options.style;"
+            ondialoghelp="openPrefsHelp()"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-    <prefpane id="paneGeneral">
+    <prefpane id="paneGeneral" helpTopic="options">
 
+    <script type="application/javascript" src="chrome://browser/content/utilityOverlay.js"/>
     <script src="preferences.js"/>
 
     <preferences>
