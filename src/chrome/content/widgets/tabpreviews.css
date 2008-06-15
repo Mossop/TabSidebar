@@ -51,10 +51,12 @@
 }
 
 .tbs-tabpreviews-vertical[hide~="navigation"] .tbs-forward,
+.tbs-tabpreviews-vertical[hide~="navigation"] .tbs-history,
 .tbs-tabpreviews-vertical[hide~="navigation"] .tbs-back,
 .tbs-tabpreviews-vertical[hide~="navigation"] .tbs-reload,
 .tbs-tabpreviews-vertical[hide~="navigation"] .tbs-stop,
 .tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-forward,
+.tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-history,
 .tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-back,
 .tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-reload,
 .tbs-tabpreviews-horizontal[hide~="navigation"] .tbs-stop {
