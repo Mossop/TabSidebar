@@ -163,6 +163,7 @@
 
 .tbs-stack {
   margin: 0px 2px 1px 2px;
+  background-color: white;
 }
 
 .tbs-toolbar {
@@ -185,7 +186,7 @@
 }
 
 .tbs-tabpreview .tbs-canvas {
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
 /* Drag and drop */
