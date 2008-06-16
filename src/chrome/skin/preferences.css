@@ -74,7 +74,7 @@ label.bold {
 #positionBottom {
   width: 140px;
   height: 30px;
-  border: 1px solid ActiveBorder;
+  border: 1px solid WindowText;
 }
 
 #positionSidebar,
@@ -85,12 +85,12 @@ label.bold {
 
 #positionLeft,
 #positionRight {
-  -moz-border-start: 1px solid ActiveBorder;
-  -moz-border-end: 1px solid ActiveBorder;
+  -moz-border-start: 1px solid WindowText;
+  -moz-border-end: 1px solid WindowText;
 }
 
 #positionSidebar {
   height: 140px;
-  border: 1px solid ActiveBorder;
+  border: 1px solid WindowText;
   -moz-margin-end: 5px !important;
 }
