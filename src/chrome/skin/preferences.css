@@ -62,8 +62,8 @@ label.bold {
   margin: 0;
 }
 
-#positionSelector radio .radio-check {
-  -moz-appearance: none;
+#positionSelector radio > * {
+  display: none;
 }
 
 #positionSelector radio[selected] {
