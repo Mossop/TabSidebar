@@ -122,18 +122,30 @@
       <checkbox preference="scrollselects" accesskey="&paneDisplay.scrollselects.accesskey;"
                                            label="&paneDisplay.scrollselects.label;"/>
 
-      <groupbox>
+      <groupbox align="center">
         <caption label="&paneDisplay.position.caption;"/>
-        <radiogroup preference="position" align="center">
-          <radio label="&paneDisplay.position.top;" value="1"/>
-          <hbox flex="1" align="center">
-            <vbox flex="1" pack="center">
-              <radio label="&paneDisplay.position.sidebar;" value="0"/>
-              <radio label="&paneDisplay.position.left;" value="3"/>
-            </vbox>
-            <radio label="&paneDisplay.position.right;" value="4"/>
-          </hbox>
-          <radio label="&paneDisplay.position.bottom;" value="2"/>
+        <menulist preference="position">
+          <menupopup>
+            <menuitem label="&paneDisplay.position.sidebar;" value="0"/>
+            <menuitem label="&paneDisplay.position.left;" value="3"/>
+            <menuitem label="&paneDisplay.position.right;" value="4"/>
+            <menuitem label="&paneDisplay.position.top;" value="1"/>
+            <menuitem label="&paneDisplay.position.bottom;" value="2"/>
+          </menupopup>
+        </menulist>
+
+        <radiogroup id="positionSelector" preference="position" align="stretch"
+                    orient="horizontal">
+          <radio id="positionSidebar" value="0"/>
+          <vbox align="stretch" orient="stretch">
+            <radio id="positionTop" value="1"/>
+            <hbox flex="1">
+              <radio id="positionLeft" value="3"/>
+              <spacer flex="1"/>
+              <radio id="positionRight" value="4"/>
+            </hbox>
+            <radio id="positionBottom" value="2"/>
+          </vbox>
         </radiogroup>
       </groupbox>
 

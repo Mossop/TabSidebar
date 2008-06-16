@@ -55,3 +55,42 @@ label.version {
 label.bold {
   font-weight: bold;
 }
+
+#positionSelector radio {
+  -moz-appearance: none;
+  background-color: transparent;
+  margin: 0;
+}
+
+#positionSelector radio .radio-check {
+  -moz-appearance: none;
+}
+
+#positionSelector radio[selected] {
+  background-color: Highlight;
+}
+
+#positionTop,
+#positionBottom {
+  width: 140px;
+  height: 30px;
+  border: 1px solid ActiveBorder;
+}
+
+#positionSidebar,
+#positionLeft,
+#positionRight {
+  width: 30px;
+}
+
+#positionLeft,
+#positionRight {
+  -moz-border-start: 1px solid ActiveBorder;
+  -moz-border-end: 1px solid ActiveBorder;
+}
+
+#positionSidebar {
+  height: 140px;
+  border: 1px solid ActiveBorder;
+  -moz-margin-end: 5px !important;
+}
