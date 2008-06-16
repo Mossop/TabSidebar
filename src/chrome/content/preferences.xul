@@ -65,8 +65,6 @@
       name="extensions.tabsidebar.content.previews"/>
       <preference type="bool" id="updatepreviews"
       name="extensions.tabsidebar.updatepreviews"/>
-      <preference type="bool" id="scrollselects"
-      name="extensions.tabsidebar.scrollselects"/>
       <preference type="bool" id="drawscrolled" inverted="true"
       name="extensions.tabsidebar.drawscrolled"/>
       <preference type="int" id="position"
@@ -118,9 +116,6 @@
       </subpane>
 
       <separator class="thin"/>
-
-      <checkbox preference="scrollselects" accesskey="&paneDisplay.scrollselects.accesskey;"
-                                           label="&paneDisplay.scrollselects.label;"/>
 
       <groupbox align="center">
         <caption label="&paneDisplay.position.caption;"/>
