@@ -48,51 +48,38 @@
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="&dialog.title;" buttons="accept" defaultButton="accept" buttonlabelaccept="&dialog.accept;"
-        style="width: 30em; height: 30em;">
+        style="width: 30em;">
 
-  <vbox pack="start" align="stretch" flex="1">
+  <vbox pack="start" align="stretch">
 
-    <hbox id="header" align="center">
-
+    <hbox align="start">
       <image src="chrome://tabsidebar/content/branding/logo.png"/>
-
+      <separator orient="vertical"/>
       <vbox flex="1">
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
-          <label class="bold version" value="&dialog.version; ${extension.fullversion}"/>
+          <label class="bold version" value="&dialog.version;"/>
         </hbox>
         <separator class="groove-thin"/>
         <hbox>
-          <label class="bold author" value="&dialog.author; Mossop"/>
+          <label class="bold author" value="&dialog.author;"/>
         </hbox>
       </vbox>
-
     </hbox>
 
-    <separator class="groove-thin"/>
+    <separator/>
 
-    <vbox id="body" flex="1">
-
+    <vbox id="body">
       <description>&dialog.description;</description>
-
       <separator class="thin"/>
-
       <hbox pack="end">
         <label class="text-link" onclick="window.opener.open('http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar', '_blank')" value="&dialog.homepage;"/>
       </hbox>
-
       <separator class="thin"/>
-
       <label class="bold" value="&dialog.contributors;"/>
-
       <separator class="thin"/>
-
-      <vbox flex="1" style="overflow: auto">
-        <description>Peter van der Woude: Extensive testing, suggestions and contributions.</description>
-      </vbox>
-
+      <description>Peter van der Woude: Extensive testing, suggestions and contributions.</description>
     </vbox>
-
   </vbox>
 
 </dialog>

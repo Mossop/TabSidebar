@@ -34,21 +34,6 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-dialog {
-  height: 25em;
-  width: 30em;
-  padding: 0;
-}
-
-#header {
-  background-color: window;
-  padding: 8px;
-}
-
-#body {
-  padding: 8px;
-}
-
 label.title {
   font-weight: bold;
   font-size: large;
@@ -63,10 +48,4 @@ label.author {
 
 label.bold {
   font-weight: bold;
-}
-
-.dialog-button-box {
-  padding-right: 8px;
-  padding-left: 8px;
-  padding-bottom: 8px;
 }

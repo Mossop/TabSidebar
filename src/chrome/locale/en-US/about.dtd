@@ -35,8 +35,8 @@
 #
 # ***** END LICENSE BLOCK *****
 <!ENTITY dialog.title             "About &tabsidebar.brand;">
-<!ENTITY dialog.version           "Version: ">
-<!ENTITY dialog.author            "Author: ">
+<!ENTITY dialog.version           "Version: ${extension.version}">
+<!ENTITY dialog.author            "Author: Mossop">
 <!ENTITY dialog.description       "&tabsidebar.brand; provides you with a quick thumbnail preview of every tab you have
                                   open.">
 <!ENTITY dialog.homepage          "Visit home page">
