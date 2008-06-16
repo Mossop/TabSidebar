@@ -163,7 +163,6 @@
 
 .tbs-stack {
   margin: 0px 2px 1px 2px;
-  background-color: white;
 }
 
 .tbs-toolbar {
@@ -173,6 +172,7 @@
 /* Canvas style */
 .tbs-container {
   border: 1px solid ThreeDShadow;
+  background-color: white;
 }
 
 .tbs-tabpreview:hover .tbs-container,
