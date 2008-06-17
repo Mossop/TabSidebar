@@ -151,6 +151,7 @@ createPreviews: function(container) {
 toggleSidebar: function() {
   if (this.position == 0) {
     toggleSidebar('viewTabSidebar');
+    this.sidebarInitialise();
     return;
   }
   var command = document.getElementById("viewTabSidebar");
