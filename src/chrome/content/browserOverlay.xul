@@ -86,9 +86,9 @@
     <vbox id="tabsidebar-left-container" persist="hidden width" hidden="true" insertbefore="appcontent" width="200px"/>
     <splitter id="tabsidebar-left-splitter" class="tabsidebar-splitter" persist="hidden" hidden="true" insertbefore="appcontent"/>
     <vbox id="appcontent">
-      <hbox id="tabsidebar-top-container" persist="hidden height style" hidden="true" insertbefore="content" height="200px"/>
+      <hbox id="tabsidebar-top-container" persist="hidden height" hidden="true" insertbefore="content" height="200px"/>
       <splitter id="tabsidebar-top-splitter" class="tabsidebar-splitter" persist="hidden" hidden="true" insertbefore="content"/>
-      <hbox id="tabsidebar-bottom-container" persist="hidden height style" hidden="true" insertafter="content" height="200px"/>
+      <hbox id="tabsidebar-bottom-container" persist="hidden height" hidden="true" insertafter="content" height="200px"/>
       <splitter id="tabsidebar-bottom-splitter" class="tabsidebar-splitter" persist="hidden" hidden="true" insertafter="content"/>
     </vbox>
     <vbox id="tabsidebar-right-container" persist="hidden width" hidden="true" insertafter="appcontent" width="200px"/>

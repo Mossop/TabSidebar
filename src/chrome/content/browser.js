@@ -234,8 +234,13 @@ load: function(event) {
   sidebarBox.removeEventListener("DOMAttrModified", TabSidebarHandler.attributeListener, false);
   window.removeEventListener("load", TabSidebarHandler.load, false);
   if ((TabSidebarHandler.position != 0) && (TabSidebarHandler.isOpen())) {
-    var command = document.getElementById("viewTabSidebar");
     var container = TabSidebarHandler.getContainer();
+    if ((TabSidebarHandler.getOrientation() == TabSidebarHandler.ORIENTATION_HORIZONTAL) &&
+        !TabSidebarHandler.showPreviews) {
+      container.removeAttribute("height");
+      container.style.minHeight = "0px";
+    }
+    var command = document.getElementById("viewTabSidebar");
     TabSidebarHandler.createPreviews(container);
     TabSidebarHandler.sidebarInitialise();
     command.setAttribute("checked", "true");
