@@ -171,11 +171,8 @@
                 this._browser = null;
               }
 
-              //this.loading = false;
-
               this._changeTimer.cancel();
               this._changeTime = 0;
-              this._changeReason = 0;
               this._changeTimer = null;
               this._updateTimer.cancel();
               this._updateTimer = null;
@@ -183,8 +180,6 @@
               this._timerListener.tabpreview = null;
               this._timerListener = null;
 
-              this._eventListener.tabpreview = null;
-              this._eventListener = null;
               this._progressListener.tabpreview = null;
               this._progressListener = null;
 
@@ -258,7 +253,7 @@
 
       <!-- Internal fields and methods -->
 
-      <field name="_invalid">false</field>
+      <field name="_invalid">null</field>
 
 #ifdef ${extension.debug}
 #include "tabpreview/logging.inc.xml"
@@ -286,12 +281,6 @@
             if (this._browser.docShell) {
               if (this._browser.securityUI)
                 this._setSecurity(this._browser.securityUI.state);
-              if (this.previews.updatePreviews) {
-                var newdocs = [];
-                this._findDocuments(this._browser.contentDocument, newdocs);
-                for (var i = 0; i < newdocs.length; i++)
-                  this._addDocumentListeners(newdocs[i]);
-              }
             }
             this._addListeners();
 
@@ -532,6 +521,72 @@
         </body>
       </method>
 
+      <method name="_invalidate">
+        <parameter name="region"/>
+        <body>
+        <![CDATA[
+          var display;
+          var zoom = this._browser.markupDocumentViewer.fullZoom;
+          if (this.previews.drawScrolled) {
+            var win = this._browser.contentWindow;
+            display = {
+              left:   win.scrollX,
+              top:    win.scrollY,
+              right:  this._browserWidth / zoom + win.scrollX,
+              bottom: this._browserHeight / zoom + win.scrollY
+            };
+          }
+          else {
+            display = {
+              left:   0,
+              top:    0,
+              right:  this._browserWidth / zoom,
+              bottom: this._browserHeight / zoom
+            };
+          }
+
+          //if (region) {
+          if (false) {
+            if (region.left >= display.right ||
+                region.top >= display.bottom ||
+                region.right <= display.left ||
+                region.bottom <= display.top) {
+#ifdef ${extension.debug}
+              this._logMessage("Ignoring off-screen invalidation");
+#endif
+              return;
+            }
+
+            if (this._invalid) {
+              // Sum the two areas
+              region = {
+                left:   Math.min(this._invalid.left,   region.left),
+                top:    Math.min(this._invalid.top,    region.top),
+                right:  Math.max(this._invalid.right,  region.right),
+                bottom: Math.max(this._invalid.bottom, region.bottom)
+              };
+            }
+
+            // Intersect with the display area
+            this._invalid = {
+              left:   Math.max(region.left,   display.left),
+              top:    Math.max(region.top,    display.top),
+              right:  Math.min(region.right,  display.right),
+              bottom: Math.min(region.bottom, display.bottom)
+            };
+          }
+          else {
+            this._invalid = display;
+          }
+#ifdef ${extension.debug}
+          this._logMessage("New invalid region is " +
+                           this._invalid.left + "x" + this._invalid.top + " - " +
+                           this._invalid.right + "x" + this._invalid.bottom);
+#endif
+        ]]>
+        </body>
+      </method>
+
       <method name="redraw">
         <body>
         <![CDATA[
@@ -559,7 +614,6 @@
             return;
           }
 
-          this._invalid = false;
 #ifdef ${extension.debug}
           this._logMessage("redraw");
 #endif
@@ -578,22 +632,28 @@
           if ((this._browser) && (this._browser.docShell)) {
             var zoom = this._browser.markupDocumentViewer.fullZoom;
             var win = this._browser.contentWindow;
-            var width = this._browserWidth / zoom;
-            var scaling = this.previews.contentWidth / width;
-            var height = Math.round(this.previews.contentHeight / scaling);
-            ctx.save();
-            ctx.scale(scaling, this.previews.contentHeight / height);
-            try {
-              var top = 0;
-              var left = 0;
-              if (this.previews.drawScrolled) {
-                top = win.scrollY;
-                left = win.scrollX;
-              }
+            var top = this._invalid.top;
+            var left = this._invalid.left;
+            var width = (this._invalid.right - this._invalid.left);
+            var height = (this._invalid.bottom - this._invalid.top);
+            var scaling = zoom * this.previews.contentWidth / this._browserWidth;
+            var transx = this._invalid.left;
+            var transy = this._invalid.top;
+            if (this.previews.drawScrolled) {
+              transx -= win.scrollX;
+              transy -= win.scrollY;
+            }
 #ifdef ${extension.debug}
-              this._logMessage("Painting area " + width + "x" + height + " at " + left + "x" + top);
+            this._logMessage("Painting:\nposition " + left + "x" + top +
+                             "\narea " + width + "x" + height +
+                             "\ntranslation " + transx + "x" + transy +
+                             "\nscaling " + scaling);
 #endif
-              ctx.drawWindow(win, left, top, width, height, "rgba(255,255,255,255)");
+            ctx.save();
+            ctx.scale(scaling, scaling);
+            ctx.translate(transx, transy);
+            try {
+              ctx.drawWindow(win, left, top, width, height, "white");
             }
             catch (e) {
 #ifdef ${extension.debug}
@@ -605,6 +665,7 @@
           else {
             ctx.clearRect(0, 0, this.previews.contentWidth, this.previews.contentHeight);
           }
+          this._invalid = null;
 #ifdef ${extension.enablesessionstore}
           //this._storeSessionValue("preview", canvas.toDataURL());
 #endif

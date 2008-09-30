@@ -15,16 +15,8 @@
           this._drawScrolled = this.preferences.getBoolPref("drawscrolled");
           this._validateRate = this.preferences.getIntPref("validaterate");
 
-          this._getDelayPref("loaderrordelay", "loadError", true);
-          this._getDelayPref("unselectedloaderrordelay", "loadError", false);
-          this._getDelayPref("loaddelay", "load", true);
-          this._getDelayPref("unselectedloaddelay", "load", false);
-          this._getDelayPref("scrolldelay", "scroll", true);
-          this._getDelayPref("unselectedscrolldelay", "scroll", false);
-          this._getDelayPref("textdelay", "text", true);
-          this._getDelayPref("unselectedtextdelay", "text", false);
-          this._getDelayPref("changedelay", "change", true);
-          this._getDelayPref("unselectedchangedelay", "change", false);
+          this.delay.selected = this.preferences.getIntPref("selecteddelay");
+          this.delay.unselected = this.preferences.getIntPref("unselecteddelay");
 
           this.preferences.addObserver("", this, false);
 
@@ -63,46 +55,15 @@
       <field name="_contentHeight">-1</field>
       <property name="contentHeight" onget="return this._contentHeight;"/>
 
-      <field name="delays">
+      <field name="delay">
       ({
-        load: {
-          selected: 0,
-          unselected: 0
-        },
-        loadError: {
-          selected: 0,
-          unselected: 0
-        },
-        change: {
-          selected: 0,
-          unselected: 0
-        },
-        text: {
-          selected: 0,
-          unselected: 0
-        },
-        scroll: {
-          selected: 0,
-          unselected: 0
-        }
+        selected: 0,
+        unselected: 0
       })
       </field>
 
       <field name="_drawScrolled"/>
       <property name="drawScrolled" onget="return this._drawScrolled;"/>
-
-      <method name="_getDelayPref">
-        <parameter name="pref"/>
-        <parameter name="type"/>
-        <parameter name="selected"/>
-        <body>
-          var value = this.preferences.getIntPref(pref);
-          if (selected)
-            this.delays[type].selected = value;
-          else
-            this.delays[type].unselected = value;
-        </body>
-      </method>
 
       <!-- Start of nsIObserver implementation -->
 
@@ -121,8 +82,9 @@
               this._showPreviews = this.preferences.getBoolPref(data);
               for (var i = 0; i < this.previews.length; i++) {
                 this.previews[i].updateDisplay();
-                this.previews[i].updateDocumentListeners();
+                this.previews[i]._updatePaintListener();
               }
+
               if (this._showPreviews) {
                 this._selected._browserResized();
                 this._browserWidth = this._selected._browserWidth;
@@ -134,7 +96,7 @@
             case "updatepreviews":
               this._updatePreviews = this.preferences.getBoolPref(data);
               for (var i = 0; i < this.previews.length; i++)
-                this.previews[i].updateDocumentListeners();
+                this.previews[i]._updatePaintListener();
               break;
             case "scrollselects":
               this._scrollSelects = this.preferences.getBoolPref(data);
@@ -151,35 +113,11 @@
             case "validaterate":
               this._validateRate = this.preferences.getIntPref(data);
               break;
-            case "loaderrordelay":
-              this._getDelayPref(data, "loadError", true);
+            case "selecteddelay":
+              this.delay.selected = this.preferences.getIntPref(data);
               break;
-            case "unselectedloaderrordelay":
-              this._getDelayPref(data, "loadError", false);
-              break;
-            case "loaddelay":
-              this._getDelayPref(data, "load", true);
-              break;
-            case "unselectedloaddelay":
-              this._getDelayPref(data, "load", false);
-              break;
-            case "scrolldelay":
-              this._getDelayPref(data, "scroll", true);
-              break;
-            case "unselectedscrolldelay":
-              this._getDelayPref(data, "scroll", false);
-              break;
-            case "textdelay":
-              this._getDelayPref(data, "text", true);
-              break;
-            case "unselectedtextdelay":
-              this._getDelayPref(data, "text", false);
-              break;
-            case "changedelay":
-              this._getDelayPref(data, "change", true);
-              break;
-            case "unselectedchangedelay":
-              this._getDelayPref(data, "change", false);
+            case "unselecteddelay":
+              this.delay.selected = this.preferences.getIntPref(data);
               break;
           }
         ]]>

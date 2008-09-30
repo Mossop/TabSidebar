@@ -156,7 +156,6 @@
           diff += parseInt(computed.paddingBottom);
           container.style.height = (this.displayHeight + diff) + "px";
 
-          preview._invalid = true;
           try {
             canvas.getContext("2d");
           }

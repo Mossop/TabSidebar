@@ -165,7 +165,6 @@
           var offset = (canvas.parentNode.parentNode.boxObject.width - this.displayWidth) / 2;
           canvas.setAttribute("left", offset);
 
-          preview._invalid = true;
           try {
             canvas.getContext("2d");
           }

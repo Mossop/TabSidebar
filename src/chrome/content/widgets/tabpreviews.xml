@@ -647,7 +647,7 @@
         <body>
         <![CDATA[
           for (var i = 0; i < this.previews.length; i++)
-            this.previews[i]._invalid = true;
+            this.previews[i]._invalidate();
 
           this._selected.redraw();
           this._validateMax = this.previews.length;

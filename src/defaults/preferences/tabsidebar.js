@@ -2,16 +2,8 @@ pref("extensions.TabSidebar@blueprintit.co.uk.description", "chrome://tabsidebar
 pref("extensions.tabsidebar.hidetabs", true);
 pref("extensions.tabsidebar.position", 0);
 
-pref("extensions.tabsidebar.loaddelay", 50);
-pref("extensions.tabsidebar.loaderrordelay", 1000);
-pref("extensions.tabsidebar.changedelay", 50);
-pref("extensions.tabsidebar.textdelay", 200);
-pref("extensions.tabsidebar.scrolldelay", 200);
-pref("extensions.tabsidebar.unselectedloaddelay", 50);
-pref("extensions.tabsidebar.unselectedloaderrordelay", 1000);
-pref("extensions.tabsidebar.unselectedchangedelay", 1000);
-pref("extensions.tabsidebar.unselectedtextdelay", 1000);
-pref("extensions.tabsidebar.unselectedscrolldelay", 1000);
+pref("extensions.tabsidebar.selecteddelay", 200);
+pref("extensions.tabsidebar.unselecteddelay", 1000);
 
 pref("extensions.tabsidebar.validaterate", 100);
 

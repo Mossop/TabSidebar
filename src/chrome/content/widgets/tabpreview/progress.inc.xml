@@ -82,13 +82,10 @@
 
 #endif
           this.loading = true;
-          this._invalid = true;
           this.stopButton.disabled = false;
 
-          //this._emptyDocumentListeners();
           this._changeTimer.cancel();
           this._changeTime = 0;
-          this._changeReason = 0;
 
           this._updateTimer.cancel();
         ]]>
@@ -98,20 +95,16 @@
       <method name="_loadComplete">
         <parameter name="status"/>
         <body>
+        <![CDATA[
 #ifdef ${extension.debug}
           this._logMessage("loadComplete");
 
 #endif
           this.loading = false;
           this.stopButton.disabled = true;
-
-          if (!this.showPreview)
-            return;
-
-          if (status == 0)
-            this._documentLoaded();
-          else
-            this._documentLoadError();
+          if (this.showPreview && !this.previews.updatePreviews)
+            this._documentPainted(null);
+        ]]>
         </body>
       </method>
 
@@ -159,9 +152,6 @@
           reload.disabled = (uri == "about:blank" || uri == "");
 
           this.historyChange();
-
-          if (!this.loading)
-            this._checkDocuments("location");
         </body>
       </method>
 
@@ -220,7 +210,6 @@
 #ifdef ${extension.debug}
           //this._logMessage("onProgressChange ");
 #endif
-          this._invalid = true;
         </body>
       </method>
 
@@ -244,9 +233,6 @@
           var el = this.faviconIcon;
           if (el)
             el.src = this.icon;
-
-          if (!this.loading)
-            this._checkDocuments("icon");
         </body>
       </method>
 
@@ -260,9 +246,6 @@
 
           if (el)
             el.value = title;
-
-          if (!this.loading)
-            this._checkDocuments("title");
         </body>
       </method>
 
