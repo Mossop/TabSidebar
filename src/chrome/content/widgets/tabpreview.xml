@@ -545,8 +545,7 @@
             };
           }
 
-          //if (region) {
-          if (false) {
+          if (region) {
             if (region.left >= display.right ||
                 region.top >= display.bottom ||
                 region.right <= display.left ||
@@ -617,8 +616,10 @@
 #ifdef ${extension.debug}
           this._logMessage("redraw");
 #endif
-          canvas.width = this.previews.contentWidth;
-          canvas.height = this.previews.contentHeight;
+          if (canvas.width != this.previews.contentWidth)
+            canvas.width = this.previews.contentWidth;
+          if (canvas.height != this.previews.contentHeight)
+            canvas.height = this.previews.contentHeight;
           var ctx = null;
           try {
             ctx = canvas.getContext("2d");

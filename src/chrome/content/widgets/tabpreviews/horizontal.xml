@@ -248,8 +248,8 @@
           if (this._displayWidth != newWidth || this._displayHeight != newHeight) {
             this._displayWidth = newWidth;
             this._displayHeight = newHeight;
-            this._contentWidth = Math.max(this.displayWidth, 500);
-            this._contentHeight = (this.displayHeight / this.displayWidth) * this._contentWidth;
+            this._contentWidth = Math.floor(Math.max(this.displayWidth, 500));
+            this._contentHeight = Math.floor((this.displayHeight / this.displayWidth) * this._contentWidth);
 #ifdef ${extension.enablemetrics}
             this._saveMetrics();
 #endif
