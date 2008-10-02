@@ -126,9 +126,9 @@
           var region = null;
           if (clientRect) {
 #ifdef ${extension.debug}
-            this._logMessage("MozAfterPaint " +
+            /*this._logMessage("MozAfterPaint " +
                              clientRect.left + "x" + clientRect.top + " - " +
-                             clientRect.right + "x" + clientRect.bottom);
+                             clientRect.right + "x" + clientRect.bottom);*/
 #endif
             var win = this._browser.contentWindow;
             var region = {
@@ -166,8 +166,7 @@
             height += findbar.boxObject.height;
 
 #ifdef ${extension.debug}
-          this._logMessage("new size: " + width + "x" + height);
-
+          //this._logMessage("Browser resized to " + width + "x" + height);
 #endif
           this._browserHeight = height;
           this._browserWidth = width;
@@ -200,9 +199,6 @@
                 this.tabpreview.onTitleChange();
                 break;
               case "resize":
-#ifdef ${extension.debug}
-                this.tabpreview._logMessage("Browser resized");
-#endif
                 this.tabpreview._browserResized();
                 this.tabpreview.previews.browserResized(this.tabpreview, this.tabpreview._browserWidth, this.tabpreview._browserHeight);
                 break;
@@ -231,20 +227,7 @@
           if ((!this.previews) || (!this._browser))
             return;
 
-          if (timer == this._updateTimer) {
-            this.update();
-            this.redraw();
-            this._changeTimer.cancel();
-            this._changeTime = 0;
-            return;
-          }
-
-#ifdef ${extension.debug}
-          this._logMessage("Timer fired");
-
-#endif
           this.redraw();
-          this.update();
         ]]>
         </body>
       </method>

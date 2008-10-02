@@ -34,10 +34,6 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-      <field name="_updateTimer">
-        Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-      </field>
-
       <field name="_progressListener">
       ({
         tabpreview: this,
@@ -86,8 +82,6 @@
 
           this._changeTimer.cancel();
           this._changeTime = 0;
-
-          this._updateTimer.cancel();
         ]]>
         </body>
       </method>
@@ -144,6 +138,8 @@
         <parameter name="location"/>
         <body>
           var uri = this.uri;
+          if (this.getAttribute("href") == uri)
+            return;
 #ifdef ${extension.debug}
           this._logMessage("onLocationChange -> "+uri);
 #endif
@@ -227,12 +223,12 @@
 
       <method name="onLinkIconAvailable">
         <body>
+          var icon = this.icon;
 #ifdef ${extension.debug}
-          this._logMessage("onLinkIconAvailable");
+          if (icon != this.getAttribute("icon"))
+            this._logMessage("onLinkIconAvailable");
 #endif
-          var el = this.faviconIcon;
-          if (el)
-            el.src = this.icon;
+          this.setAttribute("icon", icon);
         </body>
       </method>
 
@@ -240,12 +236,10 @@
         <body>
           var title = this.title;
 #ifdef ${extension.debug}
-          this._logMessage("onTitleChange -> "+title);
+          if (title != this.getAttribute("title"))
+            this._logMessage("onTitleChange -> "+title);
 #endif
-          var el = this.titleField;
-
-          if (el)
-            el.value = title;
+          this.setAttribute("title", title);
         </body>
       </method>
 

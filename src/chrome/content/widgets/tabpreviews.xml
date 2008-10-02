@@ -669,9 +669,6 @@
             return;
           if (preview == this._selected) {
             if ((width != this._browserWidth) || (height != this._browserHeight)) {
-#ifdef ${extension.debug}
-              this._logMessage("Got told a new size of " + width + "x" + height);
-#endif
               this._browserWidth = width;
               this._browserHeight = height;
               this._calculateSize();

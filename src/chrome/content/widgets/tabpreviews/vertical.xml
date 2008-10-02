@@ -137,9 +137,6 @@
 #endif
             return;
           }
-#ifdef ${extension.debug}
-          this._logMessage("Sizing preview to "+this.displayWidth+"x"+this.displayHeight);
-#endif
 
           var canvas = preview.canvas;
           canvas.style.height = this.displayHeight + "px";
@@ -418,8 +415,8 @@
               var item = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "menuitem");
               item.setAttribute("label", node.title);
               item.setAttribute("class", "menuitem-iconic");
-              if (node.faviconIcon.src != null)
-                item.setAttribute("image", node.faviconIcon.src);
+              if (node.icon != null)
+                item.setAttribute("image", node.icon);
               menupopup.appendChild(item);
               item.tabpreview = node;
             }
@@ -445,8 +442,8 @@
               var item = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "menuitem");
               item.setAttribute("label", node.title);
               item.setAttribute("class", "menuitem-iconic");
-              if (node.faviconIcon.src != null)
-                item.setAttribute("image", node.faviconIcon.src);
+              if (node.icon != null)
+                item.setAttribute("image", node.icon);
               menupopup.insertBefore(item, menupopup.firstChild);
               item.tabpreview = node;
             }

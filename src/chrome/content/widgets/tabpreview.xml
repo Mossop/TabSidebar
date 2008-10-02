@@ -82,9 +82,11 @@
         <xul:vbox flex="1" class="tbs-foreground">
           <xul:hbox class="tbs-topbox" align="center">
             <xul:hbox flex="1" align="center">
-              <xul:image class="tbs-favicon" validate="never" tooltip="tabpreview_tooltip" onerror="this.src=null;"/>
+              <xul:image class="tbs-favicon" validate="never" tooltip="tabpreview_tooltip"
+                         onerror="this.src=null;" xbl:inherits="src=icon"/>
               <xul:image class="tbs-loading" tooltip="tabpreview_tooltip"/>
-              <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1" crop="end"/>
+              <xul:label class="tbs-title" tooltip="tabpreview_tooltip" flex="1"
+                         crop="end" xbl:inherits="value=title"/>
             </xul:hbox>
             <xul:toolbarbutton class="tbs-close tbs-icon" tooltiptext="&closeTab.label;"
                                oncommand="this.preview.close()"/>
@@ -165,7 +167,6 @@
             try {
               this._destroyed = true;
 
-              this._emptyDocumentListeners();
               if (this._browser) {
                 this._removeListeners();
                 this._browser = null;
@@ -174,21 +175,19 @@
               this._changeTimer.cancel();
               this._changeTime = 0;
               this._changeTimer = null;
-              this._updateTimer.cancel();
-              this._updateTimer = null;
 
               this._timerListener.tabpreview = null;
               this._timerListener = null;
 
               this._progressListener.tabpreview = null;
               this._progressListener = null;
-
-#ifdef ${extension.debug}
-              //dump("Tabpreview destroyed\n");
-#endif
             }
             catch (e) {
 #ifdef ${extension.debug}
+              try {
+                this._logError("Error destroying: " + e);
+              }
+              catch (e) { }
               dump(e+"\n");
 #endif
             }
@@ -202,14 +201,6 @@
 
       <field name="_topbox">
         this._anonymousNodes[0].firstChild;
-      </field>
-
-      <field name="titleField">
-        this._topbox.childNodes[2];
-      </field>
-
-      <field name="faviconIcon">
-        this._topbox.firstChild;
       </field>
 
       <field name="closeButton">
@@ -266,10 +257,9 @@
       <property name="browser" onget="return this._browser">
         <setter>
         <![CDATA[
-          if (this._browser) {
+          if (this._browser)
             this._removeListeners();
-            this._emptyDocumentListeners();
-          }
+
           this._browser = val;
           if (val) {
             var tab = this.tab;
@@ -526,7 +516,9 @@
         <body>
         <![CDATA[
           var display;
-          var zoom = this._browser.markupDocumentViewer.fullZoom;
+          var zoom = 1;
+          if (this._browser.docShell.contentViewer)
+            zoom = this._browser.markupDocumentViewer.fullZoom;
           if (this.previews.drawScrolled) {
             var win = this._browser.contentWindow;
             display = {
@@ -578,9 +570,9 @@
             this._invalid = display;
           }
 #ifdef ${extension.debug}
-          this._logMessage("New invalid region is " +
+          /*this._logMessage("New invalid region is " +
                            this._invalid.left + "x" + this._invalid.top + " - " +
-                           this._invalid.right + "x" + this._invalid.bottom);
+                           this._invalid.right + "x" + this._invalid.bottom);*/
 #endif
         ]]>
         </body>
@@ -631,7 +623,9 @@
             return;
           }
           if ((this._browser) && (this._browser.docShell)) {
-            var zoom = this._browser.markupDocumentViewer.fullZoom;
+            var zoom = 1;
+            if (this._browser.docShell.contentViewer)
+              zoom = this._browser.markupDocumentViewer.fullZoom;
             var win = this._browser.contentWindow;
             var top = this._invalid.top;
             var left = this._invalid.left;
@@ -645,10 +639,10 @@
               transy -= win.scrollY;
             }
 #ifdef ${extension.debug}
-            this._logMessage("Painting:\nposition " + left + "x" + top +
+            /*this._logMessage("Painting:\nposition " + left + "x" + top +
                              "\narea " + width + "x" + height +
                              "\ntranslation " + transx + "x" + transy +
-                             "\nscaling " + scaling);
+                             "\nscaling " + scaling);*/
 #endif
             ctx.save();
             ctx.scale(scaling, scaling);
