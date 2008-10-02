@@ -215,7 +215,7 @@
       <field name="_destroyed" value="false"/>
       <method name="_destroy">
         <body>
-          if (this.destroyed)
+          if (this._destroyed)
             return;
           try {
             this._destroyed = true;
@@ -228,15 +228,6 @@
               this.removeChild(this.firstChild);
             }
 
-            this.tabbrowser.tabContainer.removeEventListener("TabOpen", this._eventListener, false);
-            this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
-            this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
-            this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
-#ifdef ${extension.enablesessionstore}
-            this.tabbrowser.tabContainer.removeEventListener("SSTabRestoring", this._eventListener, false);
-            this.tabbrowser.tabContainer.removeEventListener("SSTabRestored", this._eventListener, false);
-#endif
-
             this.preferences.removeObserver("", this);
 
             this.preferences = null;
@@ -248,10 +239,19 @@
             this._progressListener = null;
             this._selected = null;
             this._lastDrop = null;
-            this.tabbrowser = null;
             this.browserWindow = null;
 
+            this.tabbrowser.tabContainer.removeEventListener("TabOpen", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("TabClose", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("TabMove", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("TabSelect", this._eventListener, false);
+#ifdef ${extension.enablesessionstore}
+            this.tabbrowser.tabContainer.removeEventListener("SSTabRestoring", this._eventListener, false);
+            this.tabbrowser.tabContainer.removeEventListener("SSTabRestored", this._eventListener, false);
+#endif
+            this.tabbrowser = null;
 #ifdef ${extension.debug}
+
             //dump("Tabpreviews destroyed\n");
 #endif
           }
