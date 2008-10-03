@@ -198,6 +198,8 @@
 #endif
             switch (event.type) {
               case "MozAfterPaint":
+                if (this.tabpreview.loading)
+                  return;
                 this.tabpreview._documentPainted(event.boundingClientRect);
                 break;
               case "DOMTitleChanged":

@@ -618,7 +618,7 @@
           }
           catch (e) {
 #ifdef ${extension.debug}
-            dump(e+"\n");
+            this._logError("Error during redraw: " + e);
 #endif
             return;
           }

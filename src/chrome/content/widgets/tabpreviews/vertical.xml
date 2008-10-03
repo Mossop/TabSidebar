@@ -87,10 +87,10 @@
         </xul:toolbar>
 
         <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
-                       ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode.parentNode); event.stopPropagation();"
-                       ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
-                       ondragdrop="nsDragAndDrop.drop(event, this.parentNode.parentNode); event.stopPropagation();"
-                       ondragexit="nsDragAndDrop.dragExit(event, this.parentNode.parentNode); event.stopPropagation();"
+                       ondragstart="this.parentNode.parentNode._onDragStart(event); event.stopPropagation();"
+                       ondragover="this.parentNode.parentNode._onDragOver(event); event.stopPropagation();"
+                       ondrop="this.parentNode.parentNode._onDrop(event); event.stopPropagation();"
+                       ondragleave="this.parentNode.parentNode._onDragLeave(event); event.stopPropagation();"
                        oncontextmenu="this.parentNode.parentNode.onContextMenu(event);"
                        onclick="this.parentNode.parentNode.onClick(event);"
                        ondblclick="this.parentNode.parentNode.onDblClick(event);"
@@ -244,7 +244,7 @@
       <method name="_drawDropIndicator">
         <parameter name="drop"/>
         <body>
-          if (drop!=this._lastDrop) {
+          if (drop != this._lastDrop) {
             this.ensureElementsAreVisible(drop, drop);
             var y = {};
             this.scrollBoxObject.getPosition({}, y);
@@ -267,22 +267,18 @@
         <parameter name="external"/>
         <body>
         <![CDATA[
-          var y = {};
-          this.scrollBoxObject.getPosition({}, y);
-          var ypos = aEvent.clientY + y.value;
-          var diff = 0;
+          var ypos = aEvent.screenY;
           var previews = this.previews;
           for (var i = 0; i < previews.length; i++) {
             var bo = previews[i].boxObject;
             if (external) {
-              if (bo.y > ypos)
+              if (bo.screenY > ypos)
                 return previews[i].previousSibling;
-              else if ((bo.y + bo.height) >= ypos)
+              else if ((bo.screenY + bo.height) >= ypos)
                 return previews[i];
             }
-            else {
-              if ((bo.y + (bo.height / 2)) > ypos)
-                return previews[i].previousSibling;
+            else if ((bo.screenY + (bo.height / 2)) > ypos) {
+              return previews[i].previousSibling;
             }
           }
           return previews[previews.length - 1].nextSibling;
@@ -294,13 +290,13 @@
         <parameter name="aEvent"/>
         <body>
         <![CDATA[
+          return false;
           var pos = aEvent.clientY - this.scrollBoxObject.y;
           var y = {};
           this.scrollBoxObject.getPosition({}, y);
 
           if (y.value > 0 && pos < 10) {
             this.scrollBoxObject.scrollBy(0, -20);
-            this._hideDropIndicator();
             return true;
           }
 
@@ -308,7 +304,6 @@
 
           if ((this.scrollBox.boxObject.height - pos) < 10 && (y.value < bottom)) {
             this.scrollBoxObject.scrollBy(0, 20);
-            this._hideDropIndicator();
             return true;
           }
 
