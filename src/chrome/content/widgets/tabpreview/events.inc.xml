@@ -144,6 +144,11 @@
             return;
 
           var delay = this.selected ? this.previews.delay.selected : this.previews.delay.unselected;
+          if (delay < 0) {
+            this.redraw();
+            return;
+          }
+
           var date = Date.now() + delay;
 
           if (date > this._changeTime) {
