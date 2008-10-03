@@ -290,7 +290,6 @@
         <parameter name="aEvent"/>
         <body>
         <![CDATA[
-          return false;
           var pos = aEvent.clientY - this.scrollBoxObject.y;
           var y = {};
           this.scrollBoxObject.getPosition({}, y);

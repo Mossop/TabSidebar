@@ -87,10 +87,10 @@
         </xul:toolbar>
 
         <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
-                       ondraggesture="nsDragAndDrop.startDrag(event, this.parentNode.parentNode); event.stopPropagation();"
-                       ondragover="nsDragAndDrop.dragOver(event, this.parentNode.parentNode); event.stopPropagation();"
-                       ondragdrop="nsDragAndDrop.drop(event, this.parentNode.parentNode); event.stopPropagation();"
-                       ondragexit="nsDragAndDrop.dragExit(event, this.parentNode.parentNode); event.stopPropagation();"
+                       ondragstart="this.parentNode.parentNode._onDragStart(event); event.stopPropagation();"
+                       ondragover="this.parentNode.parentNode._onDragOver(event); event.stopPropagation();"
+                       ondrop="this.parentNode.parentNode._onDrop(event); event.stopPropagation();"
+                       ondragleave="this.parentNode.parentNode._onDragLeave(event); event.stopPropagation();"
                        oncontextmenu="this.parentNode.parentNode.onContextMenu(event);"
                        onclick="this.parentNode.parentNode.onClick(event);"
                        ondblclick="this.parentNode.parentNode.onDblClick(event);"
@@ -262,7 +262,7 @@
       <method name="_drawDropIndicator">
         <parameter name="drop"/>
         <body>
-          if (drop!=this._lastDrop) {
+          if (drop != this._lastDrop) {
             this.ensureElementsAreVisible(drop, drop);
             var x = {};
             this.scrollBoxObject.getPosition(x, {});
@@ -284,22 +284,18 @@
         <parameter name="external"/>
         <body>
         <![CDATA[
-          var x = {};
-          this.scrollBoxObject.getPosition(x, {});
-          var xpos = aEvent.clientX + x.value;
-          var diff = 0;
+          var xpos = aEvent.screenX;
           var previews = this.previews;
           for (var i = 0; i < previews.length; i++) {
             var bo = previews[i].boxObject;
             if (external) {
-              if (bo.x > xpos)
+              if (bo.screenX > xpos)
                 return previews[i].previousSibling;
-              else if ((bo.x + bo.width) >= xpos)
+              else if ((bo.screenX + bo.width) >= xpos)
                 return previews[i];
             }
-            else {
-              if ((bo.x + (bo.width / 2)) > xpos)
-                return previews[i].previousSibling;
+            else if ((bo.screenX + (bo.width / 2)) > xpos) {
+              return previews[i].previousSibling;
             }
           }
           return previews[previews.length-1].nextSibling;
@@ -317,7 +313,6 @@
 
           if (x.value > 0 && pos < 10) {
             this.scrollBoxObject.scrollBy(-20, 0);
-            this._hideDropIndicator();
             return true;
           }
 
@@ -326,7 +321,6 @@
 
           if ((this.scrollBox.boxObject.width - pos) < 10 && (x.value < right)) {
             this.scrollBoxObject.scrollBy(20, 0);
-            this._hideDropIndicator();
             return true;
           }
 
