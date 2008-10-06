@@ -606,7 +606,7 @@
           }
 
 #ifdef ${extension.debug}
-          this._logMessage("redraw");
+          //this._logMessage("redraw");
 #endif
           if (canvas.width != this.previews.contentWidth)
             canvas.width = this.previews.contentWidth;
