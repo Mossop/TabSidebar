@@ -1,3 +1,4 @@
+#define TAB_DROP_TYPE "application/x-moz-tabbrowser-tab"
       <!-- Start of DnD implementation -->
 
       <field name="_lastDrop">null</field>
@@ -17,21 +18,19 @@
             var target = aEvent.target;
             if (target.localName == "tabpreview" &&
                 aEvent.originalTarget.localName != "toolbarbutton") {
+              var tab = this.getTabForPreview(target);
+
               var dt = aEvent.dataTransfer;
-              dt.mozSetDataAt("application/x-moz-node", this.getTabForPreview(target), 0);
-              var URI = target._browser.currentURI;
-              if (URI) {
-                var spec = URI.spec;
-                var title = target.title;
-                dt.mozSetDataAt("text/x-moz-url", spec + "\n" + title, 0);
-                dt.mozSetDataAt("text/uri-list", spec + "\n" + title, 0);
-                dt.mozSetDataAt("text/plain", spec, 0);
-                dt.mozSetDataAt("text/html", '<a href="' + spec + '">' + title + '</a>', 0);
-              }
-              else {
-                dt.mozSetDataAt("text/plain", "about:blank", 0);
-              }
+              dt.mozSetDataAt(TAB_DROP_TYPE, tab, 0);
+
+              var uri = target._browser.currentURI;
+              var spec = uri ? uri.spec : "about:blank";
+              dt.mozSetDataAt("text/plain", spec, 0);
+
+              dt.setDragImage(tabPreviews.capture(tab, false), 0, 0);
+              aEvent.stopPropagation();
             }
+            this.tabbrowser._dragLeftWindow = false;
           }
           catch (e) {
 #ifdef ${extension.debug}
@@ -47,21 +46,24 @@
         <body>
         <![CDATA[
           try {
+            var effects = this.tabbrowser._setEffectAllowedForDataTransfer(aEvent);
+            if (effects == "" || effects == "none") {
+              this._hideDropIndicator();
+              return;
+            }
+
+            aEvent.preventDefault();
+            aEvent.stopPropagation();
+
             if (this.checkDragScroll(aEvent)) {
               this._hideDropIndicator();
               return;
             }
 
-            var effect = this.tabbrowser._setEffectAllowedForDataTransfer(aEvent);
-            if (effect == "none") {
-              this._hideDropIndicator();
-              return;
-            }
+            var drop = this.getDropElement(aEvent, effects != "copyMove");
 
-            var drop = this.getDropElement(aEvent, effect != "copyMove");
-
-            if (effect == "copyMove") {
-              var sourceNode = aEvent.dataTransfer.mozGetDataAt("application/x-moz-node", 0);
+            if (effects == "copyMove") {
+              var sourceNode = aEvent.dataTransfer.mozGetDataAt(TAB_DROP_TYPE, 0);
               var preview = this.getPreviewForTab(sourceNode);
               if (preview &&
                   (drop.nextSibling == preview || drop.previousSibling == preview)) {
@@ -71,7 +73,6 @@
               }
             }
             this._drawDropIndicator(drop);
-            aEvent.preventDefault();
           }
           catch (e) {
 #ifdef ${extension.debug}
@@ -113,13 +114,14 @@
         <body>
         <![CDATA[
           try {
+            aEvent.stopPropagation();
             this._hideDropIndicator();
 
             var dt = aEvent.dataTransfer;
             var effect = dt.dropEffect;
             if (effect != "link") {
               var target = this.getDropElement(aEvent, false);
-              var sourceTab = dt.mozGetDataAt("application/x-moz-node", 0);
+              var sourceTab = dt.mozGetDataAt(TAB_DROP_TYPE, 0);
               if (effect == "move") {
                 var preview = this.getPreviewForTab(sourceTab);
                 if (preview) {
@@ -222,6 +224,24 @@
             this._logError("Error in _onDrop: " + e);
 #endif
           }
+        ]]>
+        </body>
+      </method>
+
+      <method name="_onDragEnd">
+        <parameter name="aEvent"/>
+        <body>
+        <![CDATA[
+          var dt = aEvent.dataTransfer;
+          if (dt.mozUserCancelled || !this.tabbrowser._dragLeftWindow ||
+              this.previews.length == 1)
+            return;
+
+          if (dt.dropEffect == "none") {
+            var draggedTab = dt.mozGetDataAt(TAB_DROP_TYPE, 0);
+            this.tabbrowser.replaceTabWithWindow(draggedTab);
+          }
+          aEvent.stopPropagation();
         ]]>
         </body>
       </method>

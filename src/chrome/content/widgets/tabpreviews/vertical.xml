@@ -87,10 +87,11 @@
         </xul:toolbar>
 
         <xul:scrollbox class="tbs-scrollbox" allowevents="true" anonid="scrollbox"
-                       ondragstart="this.parentNode.parentNode._onDragStart(event); event.stopPropagation();"
-                       ondragover="this.parentNode.parentNode._onDragOver(event); event.stopPropagation();"
-                       ondrop="this.parentNode.parentNode._onDrop(event); event.stopPropagation();"
-                       ondragleave="this.parentNode.parentNode._onDragLeave(event); event.stopPropagation();"
+                       ondragstart="this.parentNode.parentNode._onDragStart(event);"
+                       ondragover="this.parentNode.parentNode._onDragOver(event);"
+                       ondrop="this.parentNode.parentNode._onDrop(event);"
+                       ondragend="this.parentNode.parentNode._onDragEnd(event);"
+                       ondragleave="this.parentNode.parentNode._onDragLeave(event);"
                        oncontextmenu="this.parentNode.parentNode.onContextMenu(event);"
                        onclick="this.parentNode.parentNode.onClick(event);"
                        ondblclick="this.parentNode.parentNode.onDblClick(event);"
