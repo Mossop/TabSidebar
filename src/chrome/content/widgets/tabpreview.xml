@@ -644,11 +644,13 @@
                              "\ntranslation " + transx + "x" + transy +
                              "\nscaling " + scaling);*/
 #endif
+            var flags = Components.interfaces.nsIDOMCanvasRenderingContext2D.DRAWWINDOW_DRAW_CARET |
+                        Components.interfaces.nsIDOMCanvasRenderingContext2D.DRAWWINDOW_DO_NOT_FLUSH;
             ctx.save();
             ctx.scale(scaling, scaling);
             ctx.translate(transx, transy);
             try {
-              ctx.drawWindow(win, left, top, width, height, "white");
+              ctx.drawWindow(win, left, top, width, height, "white", flags);
             }
             catch (e) {
 #ifdef ${extension.debug}
