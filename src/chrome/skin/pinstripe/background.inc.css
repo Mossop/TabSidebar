@@ -34,182 +34,30 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-%define BG_DEFAULT background/default
-%define BG_ACTIVE background/active
-%define BG_SECURE background/active
-%define BG_HOVER background/default
-.tbs-top-middle {
-	background-image: url('BG_DEFAULT/top-middle.png');
-	background-repeat: repeat-x;
-	background-position: top left;
+%define BLEN 2px
+%define BRAD 5px
+%define BSPR -3px
+%define BCOL rgba(0, 0, 0, 0.8)
+%define BTOP    0 -BLEN BRAD BSPR BCOL
+%define BBOTTOM 0 BLEN  BRAD BSPR BCOL
+%define BRIGHT  BLEN 0  BRAD BSPR BCOL
+%define BLEFT   -BLEN 0 BRAD BSPR BCOL
+.tbs-tabpreview {
+  margin: 1px;
+  -moz-border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: rgba(167, 167, 167, 0.3);
 }
 
-.tbs-tabpreview[selected="true"] .tbs-top-middle {
-	background-image: url('BG_ACTIVE/top-middle.png') !important;
+.tbs-tabpreview[selected="true"] {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: BTOP, BRIGHT, BBOTTOM, BLEFT;
+  background: rgba(167, 167, 167, 1);
 }
 
-.tbs-tabpreview[security="high"][selected="true"] .tbs-top-middle,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-top-middle {
-  background-image: url('BG_SECURE/top-middle.png') !important;
+.tbs-tabpreview[security="high"][selected="true"] {
 }
 
-.tbs-tabpreview:hover .tbs-top-middle {
-	background-image: url('BG_HOVER/top-middle.png');
-}
-
-.tbs-top-left {
-	width: 8px;
-	background-image: url('BG_DEFAULT/top-left.png');
-	background-position: top left;
-	background-repeat: no-repeat;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-top-left {
-	background-image: url('BG_ACTIVE/top-left.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-top-left,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-top-left {
-  background-image: url('BG_SECURE/top-left.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-top-left {
-	background-image: url('BG_HOVER/top-left.png');
-}
-
-.tbs-top-right {
-	width: 8px;
-	background-image: url('BG_DEFAULT/top-right.png');
-	background-position: top right;
-	background-repeat: no-repeat;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-top-right {
-	background-image: url('BG_ACTIVE/top-right.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-top-right,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-top-right {
-  background-image: url('BG_SECURE/top-right.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-top-right {
-	background-image: url('BG_HOVER/top-right.png');
-}
-
-.tbs-bottom-middle {
-	background-image: url('BG_DEFAULT/bottom-middle.png');
-	background-repeat: repeat-x;
-	background-position: bottom left;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-bottom-middle {
-	background-image: url('BG_ACTIVE/bottom-middle.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-middle,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom-middle {
-  background-image: url('BG_SECURE/bottom-middle.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom-middle {
-	background-image: url('BG_HOVER/bottom-middle.png');
-}
-
-.tbs-bottom-left {
-	width: 8px;
-	background-image: url('BG_DEFAULT/bottom-left.png');
-	background-position: bottom left;
-	background-repeat: no-repeat;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-bottom-left {
-	background-image: url('BG_ACTIVE/bottom-left.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-left,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom-left {
-  background-image: url('BG_SECURE/bottom-left.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom-left {
-	background-image: url('BG_HOVER/bottom-left.png');
-}
-
-.tbs-bottom-right {
-	width: 8px;
-	background-image: url('BG_DEFAULT/bottom-right.png');
-	background-position: bottom right;
-	background-repeat: no-repeat;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-bottom-right {
-	background-image: url('BG_ACTIVE/bottom-right.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom-right,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-botom-right {
-  background-image: url('BG_SECURE/bottom-right.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom-right {
-	background-image: url('BG_HOVER/bottom-right.png');
-}
-
-.tbs-middle-middle {
-	background-image: url('BG_DEFAULT/middle-middle.png');
-	background-repeat: repeat;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-middle-middle {
-	background-image: url('BG_ACTIVE/middle-middle.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-middle,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-middle {
-  background-image: url('BG_SECURE/middle-middle.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle-middle {
-	background-image: url('BG_HOVER/middle-middle.png');
-}
-
-.tbs-middle-left {
-	width: 8px;
-	background-image: url('BG_DEFAULT/middle-left.png');
-	background-position: left;
-	background-repeat: repeat-y;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-middle-left {
-	background-image: url('BG_ACTIVE/middle-left.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-left,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-left {
-  background-image: url('BG_SECURE/middle-left.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle-left {
-	background-image: url('BG_HOVER/middle-left.png');
-}
-
-.tbs-middle-right {
-	width: 8px;
-	background-image: url('BG_DEFAULT/middle-right.png');
-	background-position: right;
-	background-repeat: repeat-y;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-middle-right {
-	background-image: url('BG_ACTIVE/middle-right.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-middle-right,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-middle-right {
-  background-image: url('BG_SECURE/middle-right.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle-right {
-	background-image: url('BG_HOVER/middle-right.png');
+.tbs-tabpreview:not([selected="true"]):hover {
+  background: rgba(167, 167, 167, 0.6);
 }

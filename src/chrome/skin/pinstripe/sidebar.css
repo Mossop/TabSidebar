@@ -34,7 +34,35 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-%include "background.inc.css"
+%define BLEN 2px
+%define BRAD 5px
+%define BSPR -3px
+%define BCOL rgba(0, 0, 0, 0.8)
+%define BTOP    0 -BLEN BRAD BSPR BCOL
+%define BBOTTOM 0 BLEN  BRAD BSPR BCOL
+%define BRIGHT  BLEN 0  BRAD BSPR BCOL
+%define BLEFT   -BLEN 0 BRAD BSPR BCOL
+.tbs-tabpreview {
+  margin: 1px;
+  -moz-border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: rgba(167, 167, 167, 0.3);
+  padding: 2px;
+}
+
+.tbs-tabpreview[selected="true"] {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: BTOP, BRIGHT, BBOTTOM, BLEFT;
+  background: rgba(167, 167, 167, 1);
+}
+
+.tbs-tabpreview[security="high"][selected="true"] {
+}
+
+.tbs-tabpreview:not([selected="true"]):hover {
+  background: rgba(167, 167, 167, 0.6);
+}
+
 .tabsidebar-splitter {
   border-right: 1px solid #8e8e8e;
   border-left: 1px solid #bebebe;
@@ -43,10 +71,6 @@
 
 .tbs-scrollbox {
   background-color: #616161;
-}
-
-.tbs-foreground {
-  margin: 5px 4px 5px 3px;
 }
 
 .tbs-tabpreview .tbs-title {

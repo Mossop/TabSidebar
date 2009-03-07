@@ -34,13 +34,43 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-%include "background.inc.css"
-.tbs-scrollbox {
-  background-color: #d2d1d4;
+%define BG_DEFAULT background/default
+%define BG_ACTIVE background/active
+%define BG_HOVER background/hover
+%define BG_SECURE background/active
+.tbs-tabpreview {
+  background-image: url('BG_DEFAULT/top.png'), url('BG_DEFAULT/bottom.png'), url('BG_DEFAULT/middle.png');
+  background-position: top, bottom, center;
+  background-repeat: repeat-x, repeat-x, repeat-x;
+  border: 1px solid threedshadow;
+  -moz-border-radius: 4px;
+  padding: 3px;
 }
 
-.tbs-foreground {
-  margin: 3px;
+.tbs-tabpreview[selected="true"] {
+  background-image: url('BG_ACTIVE/top.png'), url('BG_ACTIVE/bottom.png'), url('BG_ACTIVE/middle.png');
+}
+
+.tbs-tabpreview[security="high"][selected="true"],
+.tbs-tabpreview[security="low"][selected="true"] {
+  background-image: url('BG_SECURE/top.png'), url('BG_SECURE/bottom.png'), url('BG_SECURE/middle.png');
+}
+
+.tbs-tabpreview:not([selected="true"]):hover {
+  background-image: url('BG_HOVER/top.png'), url('BG_HOVER/bottom.png'), url('BG_HOVER/middle.png');
+}
+
+.tbs-tabpreview[security="extended"][selected="true"] {
+  background-color: rgba(44, 124, 45, 0.6);
+}
+
+.tbs-tabpreview[security="high"][selected="true"],
+.tbs-tabpreview[security="low"][selected="true"] {
+  background-color: rgba(30, 122, 214, 0.6);
+}
+
+.tbs-scrollbox {
+  background-color: #d2d1d4;
 }
 
 .tbs-loading {

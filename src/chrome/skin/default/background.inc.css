@@ -38,85 +38,32 @@
 %define BG_ACTIVE background/active
 %define BG_HOVER background/hover
 %define BG_SECURE background/active
-.tbs-top {
-	background-image: url('BG_DEFAULT/top.png');
-  background-repeat: repeat-x;
-  background-position: top;
-  border-top: 1px solid threedshadow;
-  border-left: 1px solid threedshadow;
-  border-right: 1px solid threedshadow;
-  -moz-border-radius-topleft: 4px;
-  -moz-border-radius-topright: 4px;
+.tbs-tabpreview {
+  background-image: url('BG_DEFAULT/top.png'), url('BG_DEFAULT/bottom.png'), url('BG_DEFAULT/middle.png');
+  background-position: top, bottom, center;
+  background-repeat: repeat-x, repeat-x, repeat-x;
+  border: 1px solid threedshadow;
+  -moz-border-radius: 4px;
 }
 
-.tbs-tabpreview[selected="true"] .tbs-top {
-	background-image: url('BG_ACTIVE/top.png') !important;
+.tbs-tabpreview[selected="true"] {
+  background-image: url('BG_ACTIVE/top.png'), url('BG_ACTIVE/bottom.png'), url('BG_ACTIVE/middle.png');
 }
 
-.tbs-tabpreview[security="high"][selected="true"] .tbs-top,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-top {
-  background-image: url('BG_SECURE/top.png') !important;
+.tbs-tabpreview[security="high"][selected="true"],
+.tbs-tabpreview[security="low"][selected="true"] {
+  background-image: url('BG_SECURE/top.png'), url('BG_SECURE/bottom.png'), url('BG_SECURE/middle.png');
 }
 
-.tbs-tabpreview:hover .tbs-top {
-	background-image: url('BG_HOVER/top.png');
+.tbs-tabpreview:not([selected="true"]):hover {
+  background-image: url('BG_HOVER/top.png'), url('BG_HOVER/bottom.png'), url('BG_HOVER/middle.png');
 }
 
-.tbs-bottom {
-	background-image: url('BG_DEFAULT/bottom.png');
-  background-repeat: repeat-x;
-  background-position: bottom;
-  border-left: 1px solid threedshadow;
-  border-right: 1px solid threedshadow;
-  border-bottom: 1px solid threedshadow;
-  -moz-border-radius-bottomleft: 4px;
-  -moz-border-radius-bottomright: 4px;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-bottom {
-	background-image: url('BG_ACTIVE/bottom.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom {
-  background-image: url('BG_SECURE/bottom.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-bottom {
-	background-image: url('BG_HOVER/bottom.png');
-}
-
-.tbs-middle {
-	background-image: url('BG_DEFAULT/middle.png');
-  background-repeat: repeat;
-  border-left: 1px solid threedshadow;
-  border-right: 1px solid threedshadow;
-}
-
-.tbs-tabpreview[selected="true"] .tbs-middle {
-	background-image: url('BG_ACTIVE/middle.png') !important;
-}
-
-.tbs-tabpreview[security="high"][selected="true"] .tbs-middle,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-middle {
-  background-image: url('BG_SECURE/middle.png') !important;
-}
-
-.tbs-tabpreview:hover .tbs-middle {
-	background-image: url('BG_HOVER/middle.png');
-}
-
-.tbs-tabpreview[security="extended"][selected="true"] .tbs-top,
-.tbs-tabpreview[security="extended"][selected="true"] .tbs-middle,
-.tbs-tabpreview[security="extended"][selected="true"] .tbs-bottom {
+.tbs-tabpreview[security="extended"][selected="true"] {
   background-color: rgba(44, 124, 45, 0.6);
 }
 
-.tbs-tabpreview[security="high"][selected="true"] .tbs-top,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-top,
-.tbs-tabpreview[security="high"][selected="true"] .tbs-middle,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-middle,
-.tbs-tabpreview[security="high"][selected="true"] .tbs-bottom,
-.tbs-tabpreview[security="low"][selected="true"] .tbs-bottom {
+.tbs-tabpreview[security="high"][selected="true"],
+.tbs-tabpreview[security="low"][selected="true"] {
   background-color: rgba(30, 122, 214, 0.6);
 }
