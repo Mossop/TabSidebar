@@ -36,14 +36,10 @@
 % ***** END LICENSE BLOCK *****
 /* Generic layout */
 .tbs-tabpreviews-vertical .tbs-scrollbox {
-	background-repeat: repeat-y;
-	background-position: left;
   padding: 0px 2px 0px 2px;
 }
 
 .tbs-tabpreviews-horizontal .tbs-scrollbox {
-	background-repeat: repeat-x;
-	background-position: top;
   padding: 2px 0px 2px 0px;
 }
 

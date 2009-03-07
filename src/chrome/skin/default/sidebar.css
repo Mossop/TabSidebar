@@ -34,43 +34,60 @@
 % the terms of any one of the MPL, the GPL or the LGPL.
 %
 % ***** END LICENSE BLOCK *****
-%define BG_DEFAULT background/default
-%define BG_ACTIVE background/active
-%define BG_HOVER background/hover
-%define BG_SECURE background/active
+%define BLEN 3px
+%define BRAD 3px
+%define BSPR 0px
+%define BCOL rgba(255, 255, 255, 0.6)
+%define BTOP    0 -BLEN BRAD BSPR BCOL
+%define BBOTTOM 0 BLEN  BRAD BSPR BCOL
+%define BRIGHT  BLEN 0  BRAD BSPR BCOL
+%define BLEFT   -BLEN 0 BRAD BSPR BCOL
 .tbs-tabpreview {
-  background-image: url('BG_DEFAULT/top.png'), url('BG_DEFAULT/bottom.png'), url('BG_DEFAULT/middle.png');
-  background-position: top, bottom, center;
-  background-repeat: repeat-x, repeat-x, repeat-x;
+  background-color: rgba(249, 248, 243, 0);
   border: 1px solid threedshadow;
   -moz-border-radius: 4px;
-  padding: 3px;
+  padding: 4px;
 }
 
 .tbs-tabpreview[selected="true"] {
-  background-image: url('BG_ACTIVE/top.png'), url('BG_ACTIVE/bottom.png'), url('BG_ACTIVE/middle.png');
-}
-
-.tbs-tabpreview[security="high"][selected="true"],
-.tbs-tabpreview[security="low"][selected="true"] {
-  background-image: url('BG_SECURE/top.png'), url('BG_SECURE/bottom.png'), url('BG_SECURE/middle.png');
+  background-color: rgba(249, 248, 243, 1);
 }
 
 .tbs-tabpreview:not([selected="true"]):hover {
-  background-image: url('BG_HOVER/top.png'), url('BG_HOVER/bottom.png'), url('BG_HOVER/middle.png');
+  background-color: rgba(249, 248, 243, 0.4);
+}
+
+.tbs-tabpreview[security="extended"] {
+  background-color: rgba(44, 124, 45, 0.3);
+}
+
+.tbs-tabpreview[security="high"],
+.tbs-tabpreview[security="low"] {
+  background-color: rgba(30, 122, 214, 0.3);
+}
+
+.tbs-tabpreview[security="extended"]:hover {
+  background-color: rgba(44, 124, 45, 0.5);
+}
+
+.tbs-tabpreview[security="high"]:hover,
+.tbs-tabpreview[security="low"]:hover {
+  background-color: rgba(30, 122, 214, 0.5);
 }
 
 .tbs-tabpreview[security="extended"][selected="true"] {
-  background-color: rgba(44, 124, 45, 0.6);
+  background-color: rgba(44, 124, 45, 0.8);
+  -moz-box-shadow: inset BTOP, inset BRIGHT, inset BBOTTOM, inset BLEFT;
 }
 
 .tbs-tabpreview[security="high"][selected="true"],
 .tbs-tabpreview[security="low"][selected="true"] {
-  background-color: rgba(30, 122, 214, 0.6);
+  background-color: rgba(30, 122, 214, 0.8);
+  -moz-box-shadow: inset BTOP, inset BRIGHT, inset BBOTTOM, inset BLEFT;
 }
 
 .tbs-scrollbox {
-  background-color: #d2d1d4;
+  background-color: #d4d2c7;
 }
 
 .tbs-loading {
