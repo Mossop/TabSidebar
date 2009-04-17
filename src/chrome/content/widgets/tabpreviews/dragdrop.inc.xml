@@ -25,7 +25,7 @@
 
               var uri = target._browser.currentURI;
               var spec = uri ? uri.spec : "about:blank";
-              dt.mozSetDataAt("text/plain", spec, 0);
+              dt.mozSetDataAt("text/x-moz-text-internal", spec, 0);
 
               dt.setDragImage(tabPreviews.capture(tab, false), 0, 0);
               aEvent.stopPropagation();
@@ -233,15 +233,20 @@
         <body>
         <![CDATA[
           var dt = aEvent.dataTransfer;
-          if (dt.mozUserCancelled || !this.tabbrowser._dragLeftWindow ||
+          if (dt.mozUserCancelled || dt.dropEffect != "none" ||
               this.previews.length == 1)
             return;
 
-          if (dt.dropEffect == "none") {
-            var draggedTab = dt.mozGetDataAt(TAB_DROP_TYPE, 0);
-            this.tabbrowser.replaceTabWithWindow(draggedTab);
-          }
           aEvent.stopPropagation();
+
+          // Ignore the drop if it was within the tabpreviews display
+          var bo = this.boxObject;
+          if (aEvent.screenX >= bo.screenX && aEvent.screenX <= (bo.screenX + bo.width) &&
+              aEvent.screenY >= bo.screenY && aEvent.screenY <= (bo.screenY + bo.height))
+            return;
+
+          var draggedTab = dt.mozGetDataAt(TAB_DROP_TYPE, 0);
+          this.tabbrowser.replaceTabWithWindow(draggedTab);
         ]]>
         </body>
       </method>
