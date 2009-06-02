@@ -67,14 +67,6 @@
           this._browser.addEventListener("DOMTitleChanged",        this._browserListener, false);
           this._browser.addEventListener("resize",                 this._browserListener, false);
           this._updatePaintListener();
-
-          const mask = Components.interfaces.nsIWebProgress.NOTIFY_ALL;
-          if (this._browser.docShell)
-            this._browser.webProgress.addProgressListener(this._progressListener, mask);
-#ifdef ${extension.debug}
-          else
-            this._logError("Could not register browser progress listener");
-#endif
         </body>
       </method>
 
@@ -88,13 +80,6 @@
             this._browser.removeEventListener("DOMTitleChanged",   this._browserListener, false);
             this._browser.removeEventListener("resize",            this._browserListener, false);
             this._browser.removeEventListener("MozAfterPaint",     this._browserListener, false);
-
-            if (this._browser.docShell)
-              this._browser.webProgress.removeProgressListener(this._progressListener);
-#ifdef ${extension.debug}
-            else
-              this._logWarning("Could not unregister browser progress listener");
-#endif
           }
           catch (e) {
 #ifdef ${extension.debug}

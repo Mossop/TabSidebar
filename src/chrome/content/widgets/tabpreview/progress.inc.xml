@@ -34,42 +34,6 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-      <field name="_progressListener">
-      ({
-        tabpreview: this,
-
-        onProgressChange : function (aWebProgress, aRequest,
-                                     aCurSelfProgress, aMaxSelfProgress,
-                                     aCurTotalProgress, aMaxTotalProgress) {
-          this.tabpreview.onProgressChange(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress);
-        },
-
-        onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
-          this.tabpreview.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
-        },
-
-        onLocationChange : function(aWebProgress, aRequest, aLocation) {
-          this.tabpreview.onLocationChange(aWebProgress, aRequest, aLocation);
-        },
-
-        onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {
-          this.tabpreview.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
-        },
-
-        onSecurityChange : function(aWebProgress, aRequest, aState) {
-          this.tabpreview.onSecurityChange(aWebProgress, aRequest, aState);
-        },
-
-        QueryInterface : function(aIID) {
-          if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-              aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-              aIID.equals(Components.interfaces.nsISupports))
-            return this;
-          throw Components.results.NS_NOINTERFACE;
-        }
-      });
-      </field>
-
       <method name="_loadStarted">
         <body>
         <![CDATA[

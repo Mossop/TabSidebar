@@ -161,7 +161,7 @@
 
       <method name="_initEvents">
         <body>
-          this.tabbrowser.addProgressListener(this._progressListener);
+          this.tabbrowser.addTabsProgressListener(this._progressListener);
 
           this.tabbrowser.tabContainer.addEventListener("TabOpen", this._eventListener, false);
           this.tabbrowser.tabContainer.addEventListener("TabClose", this._eventListener, false);
@@ -219,7 +219,7 @@
           try {
             this._destroyed = true;
 
-            this.tabbrowser.removeProgressListener(this._progressListener);
+            this.tabbrowser.removeTabsProgressListener(this._progressListener);
 
             while (this.firstChild) {
               if (this.firstChild.localName == "tabpreview")
@@ -383,25 +383,42 @@
       ({
         tabpreviews: this,
 
-        onProgressChange : function (aWebProgress, aRequest,
+        onProgressChange : function (aBrowser, aWebProgress, aRequest,
                                      aCurSelfProgress, aMaxSelfProgress,
                                      aCurTotalProgress, aMaxTotalProgress) {
+          var preview = this.tabpreviews.getPreviewForBrowser(aBrowser);
+          if (preview)
+            preview.onProgressChange(aWebProgress, aRequest,
+                                     aCurSelfProgress, aMaxSelfProgress,
+                                     aCurTotalProgress, aMaxTotalProgress);
         },
 
-        onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+        onStateChange : function(aBrowser, aWebProgress, aRequest, aStateFlags, aStatus) {
+          var preview = this.tabpreviews.getPreviewForBrowser(aBrowser);
+          if (preview)
+            preview.onStateChange(aWebProgress, aRequest, aStateFlags, aStatus);
         },
 
-        onLocationChange : function(aWebProgress, aRequest, aLocation) {
+        onLocationChange : function(aBrowser, aWebProgress, aRequest, aLocation) {
+          var preview = this.tabpreviews.getPreviewForBrowser(aBrowser);
+          if (preview)
+            preview.onLocationChange(aWebProgress, aRequest, aLocation);
         },
 
-        onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {
+        onStatusChange : function(aBrowser, aWebProgress, aRequest, aStatus, aMessage) {
+          var preview = this.tabpreviews.getPreviewForBrowser(aBrowser);
+          if (preview)
+            preview.onStatusChange(aWebProgress, aRequest, aStatus, aMessage);
         },
 
-        onSecurityChange : function(aWebProgress, aRequest, aState) {
+        onSecurityChange : function(aBrowser, aWebProgress, aRequest, aState) {
+          var preview = this.tabpreviews.getPreviewForBrowser(aBrowser);
+          if (preview)
+            preview.onSecurityChange(aWebProgress, aRequest, aState);
         },
 
-        onLinkIconAvailable : function(browser) {
-          var preview = this.tabpreviews.getPreviewForBrowser(browser);
+        onLinkIconAvailable : function(aBrowser) {
+          var preview = this.tabpreviews.getPreviewForBrowser(aBrowser);
           if (preview)
             preview.onLinkIconAvailable();
         },
