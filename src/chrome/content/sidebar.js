@@ -59,6 +59,7 @@ init: function() {
   while (topwin.parent && topwin != topwin.parent)
     topwin=topwin.parent;
   sidebar.topwindow=topwin;
+  topwin.TabSidebarHandler.sidebarInitialise();
 
   var sbs = Components.classes["@mozilla.org/intl/stringbundle;1"]
                       .getService(Components.interfaces.nsIStringBundleService);
@@ -87,6 +88,7 @@ init: function() {
  
 destroy: function() {
   var topwin = sidebar.topwindow;
+  topwin.TabSidebarHandler.sidebarDestroy();
 
   var button = topwin.document.getElementById("tabsidebar-options");
   if (button)
