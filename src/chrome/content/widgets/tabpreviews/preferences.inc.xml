@@ -9,6 +9,7 @@
 #endif
           this._showNavigation = this.preferences.getBoolPref("content.navigation");
           this._showPreviews = this.preferences.getBoolPref("content.previews");
+          this._zoom = Math.min(this.preferences.getIntPref("zoom"), 20);
           this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
           this._scrollSelects = this.preferences.getBoolPref("scrollselects");
 
@@ -36,6 +37,9 @@
 
       <field name="_showPreviews">false</field>
       <property name="showPreviews" onget="return this._showPreviews;"/>
+
+      <field name="_zoom">false</field>
+      <property name="zoom" onget="return this._zoom;"/>
 
       <field name="_updatePreviews">false</field>
       <property name="updatePreviews" onget="return (this._updatePreviews &amp;&amp; this._showPreviews);"/>
@@ -103,6 +107,11 @@
               break;
             case "drawscrolled":
               this._drawScrolled = this.preferences.getBoolPref(data);
+              this._invalidateAll();
+              break;
+            case "zoom":
+              this._zoom = Math.min(this.preferences.getIntPref(data), 20);
+              this._resize();
               this._invalidateAll();
               break;
 #ifdef ${extension.debug}

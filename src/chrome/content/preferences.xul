@@ -67,6 +67,8 @@
       name="extensions.tabsidebar.updatepreviews"/>
       <preference type="bool" id="drawscrolled" inverted="true"
       name="extensions.tabsidebar.drawscrolled"/>
+      <preference type="int" id="zoom"
+      name="extensions.tabsidebar.zoom"/>
       <preference type="int" id="position"
       name="extensions.tabsidebar.position"/>
     </preferences>
@@ -113,6 +115,10 @@
                                               label="&paneDisplay.updatepreviews.label;"/>
         <checkbox preference="drawscrolled" accesskey="&paneDisplay.drawscrolled.accesskey;"
                                              label="&paneDisplay.drawscrolled.label;"/>
+        <hbox align="center" descendchildren="true">
+          <label value="Zoom:" control="zoomScale"/>
+          <scale id="zoomScale" preference-editable="true" min="0" max="20" preference="zoom"/>
+        </hbox>
       </subpane>
 
       <separator class="thin"/>

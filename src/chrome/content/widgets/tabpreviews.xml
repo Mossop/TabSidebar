@@ -626,8 +626,10 @@
           if (previews.length > 0)
             this._logMessage("Resizing to " + this.displayWidth + "x" + this.displayHeight);
 #endif
-          for (var i = 0; i < previews.length; i++)
+          for (var i = 0; i < previews.length; i++) {
             this._resizePreview(previews[i]);
+            previews[i].calculateViewport();
+          }
           this._checkScrollPosition();
           this._updateScrollButtons();
         ]]>

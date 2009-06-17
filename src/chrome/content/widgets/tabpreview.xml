@@ -230,6 +230,8 @@
 #endif
       <field name="_browserWidth">-1</field>
       <field name="_browserHeight">-1</field>
+      <field name="_viewportWidth">-1</field>
+      <field name="_viewportHeight">-1</field>
 
       <field name="_browser"></field>
       <property name="browser" onget="return this._browser">
@@ -489,6 +491,21 @@
         </body>
       </method>
 
+      <method name="calculateViewport">
+        <body>
+          var zoom = this.previews.zoom;
+          this._viewportWidth = this.previews.displayWidth +
+                                ((zoom * (this._browserWidth - this.previews.displayWidth)) / 20);
+          this._viewportHeight = this.previews.displayHeight +
+                                 ((zoom * (this._browserHeight - this.previews.displayHeight)) / 20);
+#ifdef ${extension.debug}
+          this._logMessage("Zoom of " + zoom + " made viewport of " +
+                           this._viewportWidth + "x" + this._viewportHeight +
+                           " from browser of " + this._browserWidth + "x" + this._browserHeight);
+#endif
+        </body>
+      </method>
+
       <method name="_invalidate">
         <parameter name="region"/>
         <body>
@@ -497,21 +514,23 @@
           var zoom = 1;
           if (this._browser.docShell.contentViewer)
             zoom = this._browser.markupDocumentViewer.fullZoom;
+          var width = this._viewportWidth / zoom;
+          var height = this._viewportHeight / zoom;
           if (this.previews.drawScrolled) {
             var win = this._browser.contentWindow;
             display = {
               left:   win.scrollX,
               top:    win.scrollY,
-              right:  this._browserWidth / zoom + win.scrollX,
-              bottom: this._browserHeight / zoom + win.scrollY
+              right:  width + win.scrollX,
+              bottom: height + win.scrollY
             };
           }
           else {
             display = {
               left:   0,
               top:    0,
-              right:  this._browserWidth / zoom,
-              bottom: this._browserHeight / zoom
+              right:  width,
+              bottom: height
             };
           }
 
@@ -609,7 +628,7 @@
             var left = this._invalid.left;
             var width = (this._invalid.right - this._invalid.left);
             var height = (this._invalid.bottom - this._invalid.top);
-            var scaling = zoom * this.previews.contentWidth / this._browserWidth;
+            var scaling = zoom * this.previews.contentWidth / this._viewportWidth;
             var transx = this._invalid.left;
             var transy = this._invalid.top;
             if (this.previews.drawScrolled) {

@@ -11,6 +11,7 @@ pref("extensions.tabsidebar.content.navigation", true);
 pref("extensions.tabsidebar.content.previews", true);
 pref("extensions.tabsidebar.drawscrolled", true);
 pref("extensions.tabsidebar.updatepreviews", true);
+pref("extensions.tabsidebar.zoom", 7);
 pref("extensions.tabsidebar.scrollselects", false);
 
 pref("extensions.tabsidebar.showoptions", false);

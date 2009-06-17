@@ -160,6 +160,7 @@
 #endif
           this._browserHeight = height;
           this._browserWidth = width;
+          this.calculateViewport();
           this._invalidate(null);
         ]]>
         </body>

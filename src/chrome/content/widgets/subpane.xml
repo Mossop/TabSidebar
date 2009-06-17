@@ -106,19 +106,27 @@
         </body>
       </method>
 
+      <method name="_applyToElements">
+        <parameter name="element"/>
+        <parameter name="state"/>
+        <body>
+          var node = element.firstChild;
+          while (node) {
+            this._setElementState(node, state);
+            if (node.hasAttribute("descendchildren"))
+              this._applyToElements(node, state);
+            node = node.nextSibling;
+          }
+        </body>
+      </method>
+
       <method name="_updateElements">
         <parameter name="state"/>
         <body>
-          if (this.action == "hide") {
+          if (this.action == "hide")
             this.hidden = this._invert ? !state : state;
-          }
-          else {
-            var element = this.firstChild;
-            while (element) {
-              this._setElementState(element, state);
-              element = element.nextSibling;
-            }
-          }
+          else
+            this._applyToElements(this, state);
         </body>
       </method>
 
