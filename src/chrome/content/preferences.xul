@@ -74,49 +74,37 @@
     </preferences>
 
     <hbox align="start">
-
       <image src="chrome://tabsidebar/content/branding/logo.png"/>
-
       <separator orient="vertical"/>
-
       <vbox flex="1">
-
         <label class="title" value="&tabsidebar.brand;"/>
         <hbox>
           <label class="bold version" value="&tabsidebar.options.version; ${extension.version}"/>
         </hbox>
-
         <separator class="groove-thin"/>
-
       </vbox>
-
     </hbox>
 
     <separator/>
 
     <vbox pack="start">
-
-      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;" label="&paneGeneral.hidetabs.label;"/>
-
+      <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;"
+                                      label="&paneGeneral.hidetabs.label;"/>
       <separator class="thin"/>
-
       <checkbox preference="content.navigation" accesskey="&paneDisplay.content.navigation.accesskey;"
                                                 label="&paneDisplay.content.navigation.label;"/>
-
       <separator class="thin"/>
-
       <checkbox preference="content.previews" accesskey="&paneDisplay.content.previews.accesskey;"
                                               label="&paneDisplay.content.previews.label;"/>
-
       <separator class="thin"/>
-
       <subpane preference="content.previews" action="disable">
         <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
                                               label="&paneDisplay.updatepreviews.label;"/>
         <checkbox preference="drawscrolled" accesskey="&paneDisplay.drawscrolled.accesskey;"
-                                             label="&paneDisplay.drawscrolled.label;"/>
+                                            label="&paneDisplay.drawscrolled.label;"/>
         <hbox align="center" descendchildren="true">
-          <label value="Zoom:" control="zoomScale"/>
+          <label control="zoomScale" accesskey="&paneDisplay.zoom.accesskey;"
+                                     value="&paneDisplay.zoom.label;"/>
           <scale id="zoomScale" preference-editable="true" min="0" max="20" preference="zoom"/>
         </hbox>
       </subpane>
@@ -149,9 +137,6 @@
           </vbox>
         </radiogroup>
       </groupbox>
-
     </vbox>
-
   </prefpane>
-
 </prefwindow>

@@ -57,7 +57,7 @@
       <stylesheet src="chrome://tabsidebar/content/widgets/tabpreviews.css"/>
     </resources>
 
-    <content class="tbs-tabpreviews-vertical" hide="" align="stretch" orient="horizontal" style="visibility: hidden">
+    <content class="tbs-tabpreviews tbs-tabpreviews-vertical" hide="" align="stretch" orient="horizontal" style="visibility: hidden">
       <xul:popupset>
 
         <xul:tooltip id="tabpreview_tooltip" orient="vertical" align="center" onpopupshowing="this.parentNode.parentNode.onPreviewTooltipShowing(event);">

@@ -51,6 +51,8 @@
 <!ENTITY paneDisplay.updatepreviews.accesskey     "u">
 <!ENTITY paneDisplay.drawscrolled.label           "Always preview the start of the page.">
 <!ENTITY paneDisplay.drawscrolled.accesskey       "s">
+<!ENTITY paneDisplay.zoom.label                   "Zoom:">
+<!ENTITY paneDisplay.zoom.accesskey               "z">
 
 <!ENTITY paneDisplay.scrollselects.label          "Mouse wheel changes tab.">
 <!ENTITY paneDisplay.scrollselects.accesskey      "m">
