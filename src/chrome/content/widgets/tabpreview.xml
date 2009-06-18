@@ -71,6 +71,7 @@
         <xul:toolbarbutton class="tbs-close tbs-icon" tooltiptext="&closeTab.label;"
                            oncommand="this.preview.close()"/>
       </xul:hbox>
+      <xul:spacer class="tbs-topspacer"/>
       <xul:stack flex="1" class="tbs-stack">
         <xul:vbox pack="center" align="center" tooltip="tabpreview_tooltip" flex="1" class="tbs-container">
           <xul:box>
@@ -186,7 +187,7 @@
       </field>
 
       <field name="_stack">
-        this._anonymousNodes[1]
+        this._anonymousNodes[2]
       </field>
 
       <field name="reloadButton">

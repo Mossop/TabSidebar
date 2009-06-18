@@ -41,6 +41,9 @@
 <!ENTITY paneGeneral.hidetabs.label               "Hide the tab bar when the sidebar is open.">
 <!ENTITY paneGeneral.hidetabs.accesskey           "H">
 
+<!ENTITY paneDisplay.content.titles.label         "Display page titles.">
+<!ENTITY paneDisplay.content.titles.accesskey     "t">
+
 <!ENTITY paneDisplay.content.navigation.label     "Display navigation buttons.">
 <!ENTITY paneDisplay.content.navigation.accesskey "n">
 

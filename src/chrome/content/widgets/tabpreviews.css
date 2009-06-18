@@ -46,6 +46,10 @@
   display: none;
 }
 
+.tbs-tabpreviews[hide~="titles"] .tbs-topbox {
+  display: none;
+}
+
 .tbs-tabpreviews[hide~="navigation"] .tbs-forward,
 .tbs-tabpreviews[hide~="navigation"] .tbs-history,
 .tbs-tabpreviews[hide~="navigation"] .tbs-back,

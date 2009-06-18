@@ -7,6 +7,7 @@ pref("extensions.tabsidebar.unselecteddelay", -1);
 
 pref("extensions.tabsidebar.validaterate", 100);
 
+pref("extensions.tabsidebar.content.titles", true);
 pref("extensions.tabsidebar.content.navigation", true);
 pref("extensions.tabsidebar.content.previews", true);
 pref("extensions.tabsidebar.drawscrolled", true);

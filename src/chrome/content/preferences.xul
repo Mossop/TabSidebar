@@ -61,6 +61,8 @@
       name="extensions.tabsidebar.hidetabs"/>
       <preference type="bool" id="content.navigation"
       name="extensions.tabsidebar.content.navigation"/>
+      <preference type="bool" id="content.titles"
+      name="extensions.tabsidebar.content.titles"/>
       <preference type="bool" id="content.previews"
       name="extensions.tabsidebar.content.previews"/>
       <preference type="bool" id="updatepreviews"
@@ -93,12 +95,12 @@
       <checkbox preference="hidetabs" accesskey="&paneGeneral.hidetabs.accesskey;"
                                       label="&paneGeneral.hidetabs.label;"/>
       <separator class="thin"/>
+      <checkbox preference="content.titles" accesskey="&paneDisplay.content.titles.accesskey;"
+                                            label="&paneDisplay.content.titles.label;"/>
       <checkbox preference="content.navigation" accesskey="&paneDisplay.content.navigation.accesskey;"
                                                 label="&paneDisplay.content.navigation.label;"/>
-      <separator class="thin"/>
       <checkbox preference="content.previews" accesskey="&paneDisplay.content.previews.accesskey;"
                                               label="&paneDisplay.content.previews.label;"/>
-      <separator class="thin"/>
       <subpane preference="content.previews" action="disable">
         <checkbox preference="updatepreviews" accesskey="&paneDisplay.updatepreviews.accesskey;"
                                               label="&paneDisplay.updatepreviews.label;"/>

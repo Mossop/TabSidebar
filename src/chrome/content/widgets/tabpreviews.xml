@@ -585,8 +585,14 @@
       <method name="updateDisplay">
         <body>
         <![CDATA[
+          var hide = "";
           if (!this.showNavigation)
-            this.setAttribute("hide", "navigation");
+            hide += " navigation";
+          if (!this.showTitles)
+            hide += " titles";
+
+          if (hide.length > 0)
+            this.setAttribute("hide", hide.substring(1));
           else
             this.removeAttribute("hide");
         ]]>

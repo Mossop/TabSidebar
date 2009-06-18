@@ -7,6 +7,7 @@
           catch (e) { }
 
 #endif
+          this._showTitles = this.preferences.getBoolPref("content.titles");
           this._showNavigation = this.preferences.getBoolPref("content.navigation");
           this._showPreviews = this.preferences.getBoolPref("content.previews");
           this._zoom = Math.max(Math.min(this.preferences.getIntPref("zoom"), 20), 0);
@@ -51,6 +52,9 @@
       <field name="_showNavigation">false</field>
       <property name="showNavigation" onget="return this._showNavigation;"/>
 
+      <field name="_showTitles">false</field>
+      <property name="showTitles" onget="return this._showTitles;"/>
+
       <field name="_displayWidth">-1</field>
       <property name="displayWidth" onget="return this._displayWidth;"/>
 
@@ -82,6 +86,10 @@
         <body>
         <![CDATA[
           switch (data) {
+            case "content.titles":
+              this._showTitles = this.preferences.getBoolPref(data);
+              this.updateDisplay();
+              break;
             case "content.navigation":
               this._showNavigation = this.preferences.getBoolPref(data);
               this.updateDisplay();

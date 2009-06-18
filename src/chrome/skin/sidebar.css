@@ -154,7 +154,11 @@
 }
 
 .tbs-topbox {
-	margin: 0px 1px 2px 1px;
+	margin: 0px 1px 0px 1px;
+}
+
+.tbs-topspacer {
+  height: 2px;
 }
 
 .tbs-stack {
