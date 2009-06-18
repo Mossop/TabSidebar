@@ -140,9 +140,9 @@ getSplitter: function() {
 createPreviews: function(container) {
   var previews = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "tabpreviews");
   if (this.getOrientation() == this.ORIENTATION_VERTICAL)
-    previews.setAttribute("class", "tbs-tabpreviews-vertical");
+    previews.setAttribute("class", "tbs-tabpreviews tbs-tabpreviews-vertical");
   else
-    previews.setAttribute("class", "tbs-tabpreviews-horizontal");
+    previews.setAttribute("class", "tbs-tabpreviews tbs-tabpreviews-horizontal");
   previews.setAttribute("flex", "1");
   previews.setAttribute("id", "tabsidebar-previews");
   container.appendChild(previews);
