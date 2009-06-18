@@ -46,6 +46,10 @@
   display: none;
 }
 
+.tbs-tabpreviews:not([hide~="titles"]) .tbs-topstrip .tbs-loading {
+  display: none;
+}
+
 .tbs-tabpreviews[hide~="titles"] .tbs-topbox {
   display: none;
 }

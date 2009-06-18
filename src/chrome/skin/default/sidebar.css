@@ -90,10 +90,6 @@
   background-color: #d4d2c7;
 }
 
-.tbs-loading {
-  list-style-image: url("loading.png");
-}
-
 .tbs-favicon {
   list-style-image: url("favicon.png");
 }

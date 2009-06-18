@@ -234,8 +234,12 @@
   margin: 0px;
   padding: 0px;
 }
-  
+
 .tbs-loading {
+  list-style-image: url("chrome://global/skin/icons/loading_16.png");
+}
+
+.tbs-topbox .tbs-loading {
   opacity: 0.5;
   -moz-margin-end: 2px;
 }

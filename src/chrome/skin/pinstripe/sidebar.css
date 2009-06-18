@@ -81,10 +81,6 @@
 	border: 1px solid -moz-mac-focusring !important;
 }
 
-.tbs-loading {
-  list-style-image: url("loading.png");
-}
-
 .tbs-scrolltoolbar menuitem {
   list-style-image: url("favicon.png");
 }

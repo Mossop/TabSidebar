@@ -79,7 +79,9 @@
           </xul:box>
         </xul:vbox>
         <xul:vbox class="tbs-toolbar" style="overflow: hidden">
-          <xul:hbox pack="end" class="tbs-topstrip">
+          <xul:hbox class="tbs-topstrip">
+            <xul:image class="tbs-loading"/>
+            <xul:spacer flex="1"/>
             <xul:toolbarbutton class="tbs-security tbs-icon"
                                oncommand="this.preview.viewSecurity()"/>
           </xul:hbox>
