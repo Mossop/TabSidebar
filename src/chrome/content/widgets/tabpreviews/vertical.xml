@@ -223,7 +223,8 @@
 #endif
             return false;
           }
-          newHeight = parseInt((this._browserHeight / this._browserWidth) * newWidth);
+          newHeight = (this._browserHeight / this._browserWidth) * newWidth;
+          newHeight = parseInt(newHeight * this.aspect / 10);
 
 #ifdef ${extension.debug}
           this._logMessage("New sizes: " + newWidth + "x" + newHeight + " " + this._browserWidth + "x" + this._browserHeight);

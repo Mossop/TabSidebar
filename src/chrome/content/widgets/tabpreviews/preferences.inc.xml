@@ -9,7 +9,8 @@
 #endif
           this._showNavigation = this.preferences.getBoolPref("content.navigation");
           this._showPreviews = this.preferences.getBoolPref("content.previews");
-          this._zoom = Math.min(this.preferences.getIntPref("zoom"), 20);
+          this._zoom = Math.max(Math.min(this.preferences.getIntPref("zoom"), 20), 0);
+          this._aspect = Math.max(Math.min(this.preferences.getIntPref("aspect"), 30), 3);
           this._updatePreviews = this.preferences.getBoolPref("updatepreviews");
           this._scrollSelects = this.preferences.getBoolPref("scrollselects");
 
@@ -40,6 +41,9 @@
 
       <field name="_zoom">false</field>
       <property name="zoom" onget="return this._zoom;"/>
+
+      <field name="_aspect">false</field>
+      <property name="aspect" onget="return this._aspect;"/>
 
       <field name="_updatePreviews">false</field>
       <property name="updatePreviews" onget="return (this._updatePreviews &amp;&amp; this._showPreviews);"/>
@@ -110,7 +114,13 @@
               this._invalidateAll();
               break;
             case "zoom":
-              this._zoom = Math.min(this.preferences.getIntPref(data), 20);
+              this._zoom = Math.max(Math.min(this.preferences.getIntPref(data), 20), 0);
+              this._resize();
+              this._invalidateAll();
+              break;
+            case "aspect":
+              this._aspect = Math.max(Math.min(this.preferences.getIntPref(data), 30), 3);
+              this._calculateSize();
               this._resize();
               this._invalidateAll();
               break;

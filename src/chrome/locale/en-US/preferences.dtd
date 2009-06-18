@@ -53,6 +53,8 @@
 <!ENTITY paneDisplay.drawscrolled.accesskey       "s">
 <!ENTITY paneDisplay.zoom.label                   "Zoom:">
 <!ENTITY paneDisplay.zoom.accesskey               "z">
+<!ENTITY paneDisplay.aspect.label                 "Aspect:">
+<!ENTITY paneDisplay.aspect.accesskey             "a">
 
 <!ENTITY paneDisplay.scrollselects.label          "Mouse wheel changes tab.">
 <!ENTITY paneDisplay.scrollselects.accesskey      "m">

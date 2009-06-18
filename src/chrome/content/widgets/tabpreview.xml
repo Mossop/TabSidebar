@@ -496,8 +496,8 @@
           var zoom = this.previews.zoom;
           this._viewportWidth = this.previews.displayWidth +
                                 ((zoom * (this._browserWidth - this.previews.displayWidth)) / 20);
-          this._viewportHeight = this.previews.displayHeight +
-                                 ((zoom * (this._browserHeight - this.previews.displayHeight)) / 20);
+          var actualZoom = this._viewportWidth / this.previews.displayWidth;
+          this._viewportHeight = this.previews.displayHeight * actualZoom;
 #ifdef ${extension.debug}
           this._logMessage("Zoom of " + zoom + " made viewport of " +
                            this._viewportWidth + "x" + this._viewportHeight +
