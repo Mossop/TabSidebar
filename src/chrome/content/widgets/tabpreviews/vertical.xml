@@ -38,10 +38,8 @@
 
 <!DOCTYPE bindings [
 <!ENTITY % bidiDTD SYSTEM "chrome://global/locale/global.dtd">
-<!ENTITY % tabbrowserDTD SYSTEM "chrome://global/locale/tabbrowser.dtd" >
 <!ENTITY % tabSidebarDTD SYSTEM "chrome://tabsidebar/locale/tabsidebar.dtd" >
 %bidiDTD;
-%tabbrowserDTD;
 %tabSidebarDTD;
 ]>
 
