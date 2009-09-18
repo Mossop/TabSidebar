@@ -64,9 +64,11 @@
 }
 
 .tabsidebar-splitter {
-  border-right: 1px solid #8e8e8e;
-  border-left: 1px solid #bebebe;
-  background-color: #ececec;
+  -moz-border-start: none;
+  -moz-border-end: 1px solid #404040;
+  min-width: 1px;
+  width: 1px;
+  background-image: none !important;
 }
 
 .tbs-scrollbox {
